@@ -15,10 +15,10 @@
 /www_html/public
 /.composer/
 /global/config/session.cfg.php
-#/www_html/index.php
-#/www_html/api/index.php
-#/www_html/user/index.php
-#/www_html/backend/index.php
+/www_html/index.php
+/www_html/api/index.php
+/www_html/user/index.php
+/www_html/backend/index.php
 /www_html/memory_log.html
 /www_html/memory_backend.html
 /www_html/memory_api.html
