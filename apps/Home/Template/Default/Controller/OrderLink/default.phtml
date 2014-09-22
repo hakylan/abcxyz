@@ -1,0 +1,46 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+$document->addCss($cssPath.'linkorder.css','TOP');
+$translate_url = isset($translate_url) ? $translate_url : ''
+?>
+<script>
+    var url = '<?php echo @$url ?>';
+    var url_load_order = '<?php echo @$url_load_order ?>';
+    var TranslateUrl = '<?php echo $translate_url ?>';
+    $('._link_detail').bind('keypress', function(e) {
+        if(e.keyCode==13){
+            Order.loadOrder();
+        }
+    });
+    $(document).ready(function(){
+        setTimeout("Order.loadOrder()",500);
+    });
+</script>
+
+
+
+<a id="load_item" href="javascript:void(0)" data-cart-id="" data-shop-id="" data-href="#" style="display: none"
+   class="reload a_loading">loading</a>
+<section class="container top-content-linkorder">
+    <div class="row">
+        <div class="col-lg-8 col-sm-8 col-md-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2">
+            <p class="title uppercase normal-blod">
+                Đặt hàng qua link chi tiết sản phẩm
+            </p>
+            <div class="link-order">
+                <input type="text" placeholder="http://taobao.com..." value="<?php echo urldecode(@$url) ?>" class="form-control form-myinput _link_detail" data-id="1">
+                <span class="uppercase normal-blod _order" data-id="1">đặt hàng</span>
+            </div>
+            <p class="italic">Dán link chi tiết vào ô trên sau đó click "<span class="uppercase">đặt hàng</span>" để lấy thông tin sản phẩm</p>
+        </div>
+    </div>
+</section>
+
+<!-- End header -->
+<section class="page-linkorder _order_link_content">
+
+</section>

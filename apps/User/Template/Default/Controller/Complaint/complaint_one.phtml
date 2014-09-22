@@ -1,0 +1,94 @@
+<?php
+$page = isset($page) ? $page : 1;
+$status = isset($status) ? $status : '';
+if(sizeof($complaints) > 0){
+    $count = 0;
+    foreach ($complaints as $key=>$complaint) {
+        $count++;
+        $order = \Order::retrieveById($complaint->getOrderId());
+        $item = \OrderItem::retrieveById($complaint->getItemId());
+        ?>
+        <div class="module-float main-item">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                    <div class="module-float left">
+                        <div class="left-id"><p><?php echo $count + ( ($page - 1) * $per_page ); ?></p></div>
+                        <div class="module-float">
+                            <div class="avatar-img">
+                                <a target="_blank" href="<?php echo $item->getLink(); ?>" title="<?php echo $item->getImage(); ?>">
+                                    <img src="<?php echo $item->getImage(); ?>" />
+                                </a>
+                            </div>
+                            <p>
+                                <a href="khieu-nai-san-pham/<?php echo $complaint->getOrderId(); ?>/<?php echo $complaint->getItemId(); ?>" target="_blank" title="<?php echo $complaint->getTitle(); ?>">
+                                    <span><?php echo $complaint->getTitle(); ?></span>
+                                </a>
+
+                            </p>
+                            <p class="uppercase">
+                                <a href="<?php echo 'chi-tiet-don-hang/' . $order->getId(); ?>" target="_blank" title="<?php echo $order->getCode(); ?>"><?php echo $order->getCode(); ?></a>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-2">
+                    <p class="text-center"><?php echo number_format($complaint->getCustomerAmountReimbursement()); ?>đ</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-2">
+                    <p class="text-center normal-blue"><?php echo number_format($complaint->getRecipientAmountReimbursement()); ?>đ</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-2">
+                    <p class="text-center normal-blod"><?php echo \Complaints::getStatusTitle($complaint->getStatus()); ?></p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-2">
+                    <p class="text-center red-normal"><?php echo \Complaints::getResultsTitle($complaint->getStatus()); ?></p>
+                </div>
+            </div>
+        </div>
+
+    <?php } ?>
+<?php } else { ?>
+    <h3 class="text-center">Không tồn tại đơn hàng khiếu nại nào</h3>
+<?php } ?>
+
+<?php if($total_page > 1){ ?>
+    <?php $j = 1; ?>
+    <div class="pagination-bottom">
+        <div class="pagination-page">
+            <ul class="paginationv2">
+                <?php if($current_page > 1){ ?>
+                    <li class="pre">
+                        <a id="_page-prev"> &lt; </a>
+                    </li>
+                <?php } ?>
+
+                <?php for($i = $j; $i > 0; $i--){ ?>
+                    <?php if($current_page - $i > 0){ ?>
+                        <li>
+                            <a class="_paging" data-page="<?php echo $current_page - $i; ?>"><?php echo $current_page - $i; ?></a>
+                        </li>
+                    <?php } ?>
+                <?php } ?>
+
+                <li class="active">
+                    <a><?php echo $current_page; ?></a>
+                </li>
+
+                <?php for($i = 1; $i <= $j; $i++){ ?>
+                    <?php if($current_page + $i <= $total_page){ ?>
+                        <li>
+                            <a class="_paging" data-page="<?php echo $current_page + $i; ?>"><?php echo $current_page + $i; ?></a>
+                        </li>
+                    <?php } ?>
+                <?php } ?>
+
+                <?php if($current_page < $total_page){ ?>
+                    <li class="next">
+                        <a id="_page-next"> &gt; </a>
+                    </li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+<?php } ?>

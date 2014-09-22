@@ -1,0 +1,17 @@
+comment:
+    - '#ServiceShipping'
+    - '#Schema for ServiceShipping OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    title: { name: title, type: string, db_type: string, alltypes: [string], ntype: varchar(50), length: 50, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    type: { name: type, type: string, db_type: string, alltypes: [string], ntype: varchar(20), length: 20, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    sub_type: { name: sub_type, type: string, db_type: string, alltypes: [string], ntype: varchar(100), length: 100, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    vehicle: { name: vehicle, type: string, db_type: string, alltypes: [string], ntype: varchar(100), length: 100, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    weight_from: { name: weight_from, type: number, db_type: decimal, alltypes: [decimal], ntype: 'decimal(4,1)', length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    weight_to: { name: weight_to, type: number, db_type: decimal, alltypes: [decimal], ntype: 'decimal(4,1)', length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    weight_fee: { name: weight_fee, type: number, db_type: float, alltypes: [float], ntype: 'double(20,2)', length: 20, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    description: { name: description, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    status: { name: status, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''ACTIVE'',''DISABLED'')', length: 8, fixed: false, unsigned: false, values: [ACTIVE, DISABLED], primary: false, unique: false, default: ACTIVE, notnull: true, auto_increment: false, extra: '' }
+    created_time: { name: created_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: service_shipping

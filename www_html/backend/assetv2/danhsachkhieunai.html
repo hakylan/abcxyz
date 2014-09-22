@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Quan ly giao hang</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jqueryui.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <script type="text/javascript" src="js/process/menu.js"></script>
+    <script type="text/javascript" src="js/process/home.js"></script>
+    <script type="text/javascript" src="js/backendv2-frontend.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <!--<link rel="stylesheet" type="text/css" href="fonts/roboto/roboto.css" />-->
+    <link rel="stylesheet" type="text/css" href="css/style-typo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-header.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-menu-tab.css" />
+    <!--<link rel="stylesheet" type="text/css" href="css/custom.css" />-->
+    <link rel="stylesheet" type="text/css" href="css/cssloading.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-danhsachkhieunai.css" />
+
+</head>
+<body>
+    <header class="header">
+        <nav role="navigation" class="container header-top">
+            <div class="row">
+                <div class="col-lg-1 col-md-1">
+                    <div class="module-float logo">
+                        <a href="#"></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="module-float input-search">
+                        <input type="text" id="exampleInput" class="form-control form-myinput" placeholder="Tìm đơn hàng nhanh theo mã đơn hàng hoặc ID...">
+                        <a href="#"><span class="arrow"></span></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 pull-right">
+                    <div class="user-profile dropdown">
+                        <a data-toggle="dropdown" class="pull-right user-ico clearfix" title="" href="javascript:;">
+                            <img width="36" alt="" src="images/gravatar.jpg">
+                            <span>Lưu Trọng Hiếu</span>
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu float-right">
+                            <i class="fa fa-sort-asc dropdown-arrow"></i>
+                            <li>
+                                <a title="" href="<?php echo $controller->createUrl('user/user_profile/edit');?>">
+                                    <i class="fa fa-user"></i>
+                                    <span class="font-bold">Thông tin cá nhân</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a title="" href="<?php echo $controller->createUrl('login/logout');?>">
+                                    <i class="fa fa-sign-out"></i>
+                                    <span class="font-bold">Logout</span>
+                                </a>
+                            </li>
+                            <!--        <li class="divider"></li>-->
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+
+        <nav class="seu-menu" role="navigation">
+            <div class="container">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="col-lg-7 col-md-7 seu-main-menu" >
+                    <ul class="nav navbar-nav module-float">
+
+                        <li class="active">
+                            <a class="navbar-nav-a" href="#">Dashboard</a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Danh sách đơn hàng</a></li>
+                                <li><a href="#">Quản lý mua hàng</a></li>
+                                <li><a href="#">Mua hàng và thanh toán</a></li>
+                                <li><a href="#">Giao hàng</a></li>
+                            </ul>
+                        </li>
+
+                        <li class=" dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Người dùng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+                <div class="col-lg-5">
+                    <div class="module-float note-alert">
+                        <p class="text-right"><i class="fa fa-warning" style=""></i>Số dư khách không âm hoặc số tiền cần thu tối thiểu (<0) là khách thiếu tiền</p>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+
+    <section class="container main-body" id="main-body">
+
+        <div class="module-float module-title">
+            <p class="font-bold uppercase">Quản lý mua hàng</p>
+        </div>
+
+        <div class="module-float module-total">
+            <div class="item">
+                <p><span class="total">21</span>  đơn</p>
+                <p>Chờ đặt cọc</p>
+            </div>
+            <div class="item">
+                <p><span class="total">21</span>  đơn</p>
+                <p>Đang pai</p>
+            </div>
+            <div class="item">
+                <p><span class="total">21</span>  đơn</p>
+                <p>Đã pai</p>
+            </div>
+            <div class="item">
+                <p><span class="total">21</span>  đơn</p>
+                <p>Chờ thanh toán</p>
+            </div>
+            <div class="item font-red-new">
+                <p><span class="total">21</span>  đơn</p>
+                <p>Quá hạn pai</p>
+            </div>
+            <div class="item font-red-new">
+                <p><span class="total">21</span>  đơn</p>
+                <p>Quá hạn thanh toán</p>
+            </div>
+            <div class="item">
+                <p><span class="total">21</span>  đơn</p>
+                <p>Giao dịch viên</p>
+            </div>
+            <div class="item">
+                <p><span class="total">21</span>  đơn</p>
+                <p>Thanh toán viên</p>
+            </div>
+
+        </div>
+
+		<div class="menu-tab module-float">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="module-float v2-menu">
+                        <ul class="module-float">
+                            <li class="active">
+                                <a  href="#">Tất cả<span class="arrow"></span></a>
+                            </li>
+                            <li>
+                                <a  href="#">Chưa tiếp nhận<span class="arrow"></span></a>
+                            </li>
+                            <li>
+                                <a  href="#">Đang xử lý<span class="arrow"></span></a>
+                            </li>
+                            <li>
+                                <a  href="#">Đã chấp nhận<span class="arrow"></span></a>
+                            </li>
+                            <li>
+                                <a  href="#">Hoàn tiền<span class="arrow"></span></a>
+                            </li>
+                            <li>
+                                <a  href="#">từ chối<span class="arrow"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+		</div>
+
+        <div class="module-float search">
+            <div class="col-lg-12 col-md-12 ">
+                <div class="row module-item">
+                    <div class="module-float">
+                        <div class="col-lg-7 col-md-7">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="item-search public-position">
+                                        <span class="title-search font-gray">Mã đơn hàng:</span>
+                                        <input type="text" placeholder="Nhập mã đơn hàng..." class="form-control form-myinput" id="exampleInput">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="item-search public-position">
+                                        <span class="title-search font-gray">Mã sản phẩm:</span>
+                                        <input type="text" placeholder="Nhập mã sản phẩm..." class="form-control form-myinput" id="exampleInput">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 module-datepic">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-xs-6">
+                                    <div class="item-search date">
+                                        <input type="text" id="datepicker" class="form-control form-myinput " placeholder="Từ ngày">
+                                        <span><img src="images/calenda.png"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-xs-6">
+                                    <div class="item-search date">
+                                        <input type="text" id="datepicker2" class="form-control form-myinput " placeholder="Tới ngày">
+                                        <span><img src="images/calenda.png"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1 col-md-1 bottom">
+                            <div class="module-float submit">
+                                <button type="button" class="btn btn-red pull-right"><span class="uppercase font-white"><i class="fa fa-search"></i> Tìm kiếm</span></button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+                <div class="row module-item bottom">
+                    <div class="module-float">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="item-search">
+
+                                <div class="module-item-check module-float">
+                                    <div class="item-checklist v1"><span class="font-gray">Kết luận khiếu nại:</span></div>
+                                    <div class="item-checklist"><input type="checkbox" value="CHECKING"> Sai màu sắc/ Kích thước</div>
+                                    <div class="item-checklist"><input type="checkbox"> Sai hoa văn/ Kiểu dáng</div>
+                                    <div class="item-checklist"><input type="checkbox"> Rách/ Thủng</div>
+                                    <div class="item-checklist"><input type="checkbox"> Bị móp hoặc cong vênh</div>
+                                    <div class="item-checklist"><input type="checkbox"> Dính bẩn không giặt được</div>
+                                    <div class="item-checklist"><input type="checkbox"> Dính bẩn không giặt được</div>
+                                    <div class="item-checklist"><input type="checkbox"> Dính bẩn không giặt được</div>
+                                    <div class="item-checklist"><input type="checkbox"> Bị mốc</div>
+                                    <div class="item-checklist v2"><input type="checkbox"> Thiệt hại công ty</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="module-float search-select">
+                        <div class="col-lg-7 col-md-7">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="item-search public-position">
+                                        <span class="title-search font-gray">Nhân viên xử lý:</span>
+                                        <div class="module-float">
+                                            <select class="selectpicker">
+                                                <option value="0">Site</option>
+                                                <option>Hà Nội</option>
+                                                <option>Sài Gòn</option>
+                                                <option>Đà Nẵng</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="item-search public-position">
+                                        <span class="title-search font-gray">Nhân viên hoàn tiền:</span>
+                                        <div class="module-float">
+                                            <select class="selectpicker">
+                                                <option value="0">Site</option>
+                                                <option>Hà Nội</option>
+                                                <option>Sài Gòn</option>
+                                                <option>Đà Nẵng</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+                <div class="arrow-active">
+                    <span class="up">Thu gọn <i class="fa fa-caret-up"></i></span>
+                    <span class="down">Mở rộng <i class="fa fa-caret-down"></i></span>
+                </div>
+            </div>
+        </div>
+
+		<div class="row main-content">
+			<div class="col-lg-12 col-md-12 main-item">
+                <div class="module-float ">
+                    <div class="module-float header-top">
+                        <div class="col-lg-3 col-md-3 left">
+                            <span >id</span>
+                            <p >Đơn hàng</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center">Mã</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Đơn hàng</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Trạng thái</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Mức khách yêu cầu</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Mức tự đễ xuất</p>
+                        </div>
+                    </div>
+                </div>
+
+				<div class="module-float list">
+						<div class="module-float main-ct">
+							<div class="module-float">
+									<div class="col-lg-3 col-md-3 left">
+										<span>1</span>
+                                        <div class="avatar">
+                                            <img src="images/gravatar.jpg">
+                                        </div>
+                                        <p ><a href="#">2323ghhgh43</a></p>
+                                        <p class="font-gray">Sản phẩm thiếu</p>
+									</div>
+									<div class="col-lg-1 col-md-1">
+										<p >145</p>
+									</div>
+									<div class="col-lg-2 col-md-2">
+										<p >mehj_12132</p>
+									</div>
+									<div class="col-lg-2 col-md-2">
+										<p class="font-bold font-red">chưa tiếp nhận</p>
+									</div>
+									<div class="col-lg-2 col-md-2">
+										<p class="font-red">324.000<sup>đ</sup></p>
+									</div>
+									<div class="col-lg-2 col-md-2">
+                                        <p >300.000<sup>đ</sup></p>
+									</div>
+							</div>
+					    </div>
+                        <div class="main-ct-bottom module-float">
+                            <div class="item">
+                                <span class="arow"></span>
+                                <p>Từ chối: --------</p>
+                            </div>
+                            <div class="item">
+                                <span class="arow"></span>
+                                <p>Hoàn tiền: --------</p>
+                            </div>
+                            <div class="item">
+                                <span class="arow"></span>
+                                <p>Tiếp nhận:25/4/2014</p>
+                            </div>
+                            <div class="item">Tạo đơn:25/4/2014</div>
+
+                        </div>
+
+				</div>
+
+                <div class="module-float list">
+                    <div class="module-float main-ct">
+                        <div class="module-float">
+                            <div class="col-lg-3 col-md-3 left">
+                                <span>1</span>
+                                <div class="avatar">
+                                    <img src="images/gravatar.jpg">
+                                </div>
+                                <p ><a href="#">2323ghhgh43</a></p>
+                                <p class="font-gray">Sản phẩm thiếu</p>
+                            </div>
+                            <div class="col-lg-1 col-md-1">
+                                <p >145</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p >mehj_12132</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="font-bold font-green">Đã xử lý</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="font-red">324.000<sup>đ</sup></p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p >300.000<sup>đ</sup></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-ct-bottom module-float">
+                        <div class="item">
+                            <span class="arow"></span>
+                            <p>Từ chối: --------</p>
+                        </div>
+                        <div class="item">
+                            <span class="arow"></span>
+                            <p>Hoàn tiền: --------</p>
+                        </div>
+                        <div class="item">
+                            <span class="arow"></span>
+                            <p>Tiếp nhận:25/4/2014</p>
+                        </div>
+                        <div class="item">Tạo đơn:25/4/2014</div>
+
+                    </div>
+
+                </div>
+
+				
+			</div>
+
+
+		</div>
+
+
+		<div class="row link-bottom">
+            <div class="col-lg-12 col-md-12">
+                <ul class="pagination">
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                </ul>
+            </div>
+
+		</div>
+	</section>
+
+</body>
+</html>

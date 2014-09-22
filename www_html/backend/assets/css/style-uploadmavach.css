@@ -1,0 +1,25 @@
+.upbarcode-search{
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.upbarcode-search .module-custom{
+    margin-bottom: 20px;
+}
+.upbarcode-search .bootstrap-select button, 
+.upbarcode-search  input, 
+.upbarcode-search .input-append-wrapper .append-right input{
+    height: 40px !important;
+    position: relative;
+}
+.upbarcode-search .bootstrap-select button{
+    padding-left: 15px;
+}
+.upbarcode-search .bootstrap-select .caret{
+    top: 17px;
+}
+.upbarcode-search textarea{
+    height: 80px;
+    position: relative;
+}

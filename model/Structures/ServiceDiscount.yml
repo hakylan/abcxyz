@@ -1,0 +1,12 @@
+comment:
+    - '#ServiceDiscount'
+    - '#Schema for ServiceDiscount OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: 'int(11) unsigned', length: 4, fixed: false, unsigned: true, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    level_id: { name: level_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    service: { name: service, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '', notnull: true, auto_increment: false, extra: '' }
+    value: { name: value, type: number, db_type: float, alltypes: [float], ntype: float, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    type: { name: type, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''PERCENT'',''FIX'')', length: 7, fixed: false, unsigned: false, values: [PERCENT, FIX], primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    active: { name: active, type: integer, db_type: integer, alltypes: [integer, boolean], ntype: tinyint(1), length: 1, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: service_discount

@@ -1,0 +1,313 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$homeUrl = \SeuDo\Main::getHomeUrl();
+$document->addCss("/css/style-backendv1.css");
+$tellers_list = UserRoles::getUserByRoles(Roles::RolesPurchasersId);
+$checking_user_list = UserRoles::getUserByRoles(Roles::RolesOrderPaymentsStaffId);
+$tab_list = array(
+    0 => array(
+        "text" => "Tất cả",
+        "data_id" => "tab_all",
+        "data_status" => "all"
+    ),
+    1 => array(
+        "text" => "Đã thanh toán",
+        "data_id" => "tab_dtt",
+        "data_status" => "DEPOSITED"
+    ),
+    2 => array(
+        "text" => "Đang mua hàng",
+        "data_id" => "tab_dgd",
+        "data_status" => "NEGOTIATING"
+    ),
+    3 => array(
+        "text" => "Đã mua hàng",
+        "data_id" => "tab_dmh",
+        "data_status" => "BUYING"
+    ),
+    4 => array(
+        "text" => "Kho CN*",
+        "data_id" => "tab_khocn",
+        "data_status" => "khocn"
+    ),
+    5 => array(
+        "text" => "Kho VN*",
+        "data_id" => "tab_khovn",
+        "data_status" => "khovn"
+    ),
+    6 => array(
+        "text" => "Đang chờ giao",
+        "data_id" => "tab_dcg",
+        "data_status" => "dcg"
+    ),
+    7 => array(
+        "text" => "Đang giao hàng",
+        "data_id" => "tab_dgh",
+        "data_status" => "dgh"
+    ),
+    8 => array(
+        "text" => "Đã nhận",
+        "data_id" => "tab_dn",
+        "data_status" => "GET"
+    ),
+);
+
+?>
+
+<script src="<?php echo $publicPath.'/assets/js/jquery.reveal.js' ?>"></script>
+<script src="<?php echo $homeUrl.'assets/js/process/modal_box.js' ?>"></script>
+<script src="<?php echo $publicPath.'/assets/js/process/order_manage.js' ?>"></script>
+<script src="<?php echo $publicPath.'/assets/js/jquery.tipTip.js' ?>"></script>
+<script src="<?php echo $publicPath.'/assets/js/jquery.tipTip.minified.js' ?>"></script>
+<link rel="stylesheet" href="<?php echo $publicPath.'/assets/css/order_manage.css' ?>"/>
+<link rel="stylesheet" href="<?php echo $publicPath.'/assets/css/reveal.css' ?>"/>
+<link rel="stylesheet" href="<?php echo $publicPath.'/assets/css/tipTip.css' ?>"/>
+
+<div id="page-title" style="z-index: 0 !important;">
+    <h3>
+        QUẢN LÝ ĐƠN HÀNG
+        <small>
+        </small>
+    </h3>
+</div>
+<form id="frm_search_order">
+    <input type="hidden" name="order_by" class="_input_order_by" value="desc">
+    <table class="_table_filter">
+        <tr>
+            <td colspan="4">
+                <h3>Tìm kiếm đơn hàng</h3>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <div class="form-row">
+                    <div class="form-input col-md-12">
+                        <input type="text" placeholder="Nhập mã đơn hàng, mã khách hàng hoặc mã vận đơn" class="col-xs-4" name="keyword" />
+                        <select name="status" class="col-xs-2 _select_status_search">
+                            <?php
+                            foreach ($tab_list as $tab) {
+                                ?>
+                                <option value="<?php echo $tab['data_status'] ?>"><?php echo $tab['text'] ?></option>
+                            <?php } ?>
+                        </select>
+                        <span style="margin-left: 10px;">Từ</span>
+
+                        <input type="text" id="datepicker" name="from_time" class="col-xs-1 _from" placeholder="10-10-2010">
+                        <span style="margin-left: 10px;">Đến</span>
+
+                        <input type="text" id="datepicker1" name="to_time" class="col-xs-1 _to" placeholder="10-10-2014">
+                        <a href="#" class="btn large primary-bg _btn_search" data-id="" title="Tìm kiếm">
+                            <span class="button-content">Tìm kiếm</span>
+                        </a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+    <table class="_table_search">
+        <tr>
+            <td>
+                <h4>Thời gian</h4>
+            </td>
+            <td>
+                <h4>Kho</h4>
+            </td >
+            <td>
+                <h4>Nhân viên phụ trách</h4>
+            </td>
+            <td>
+                <h4>Sắp xếp</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="javascript:void(0)" data-time="7" class="_time_before">1 tuần trước</a><br/>
+                <a href="javascript:void(0)" data-time="30" class="_time_before">1 tháng trước</a><br/>
+                <a href="javascript:void(0)" data-time="90" class="_time_before">3 tháng trước</a><br/>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Kho CNGZ</td>
+                        <td><input type="checkbox" class="_checkbox_kho" value="CNGZ" name="cn_gz"></td>
+                    </tr>
+                    <tr>
+                        <td>Kho CNPX</td>
+                        <td><input type="checkbox" class="_checkbox_kho" value="CNPX" name="cn_px"></td>
+                    </tr>
+                    <tr>
+                        <td>Kho VNHN</td>
+                        <td><input type="checkbox" class="_checkbox_kho" value="VNHN" name="vn_hn"></td>
+                    </tr>
+                    <tr>
+                        <td>Kho VNSG</td>
+                        <td><input type="checkbox" class="_checkbox_kho" value="VNSG" name="vn_sg"></td>
+                    </tr>
+                </table>
+                <!--                 <br/>-->
+                <!--                Kho CNPX <input type="checkbox" class="_checkbox" value="" name="kho"><br/>-->
+                <!--                Kho VNHN <input type="checkbox" class="_checkbox" value="" name="kho"><br/>-->
+                <!--                Kho VNSG <input type="checkbox" class="_checkbox" value="" name="kho"><br/>-->
+            </td>
+            <td style="width: 390px;">
+                <div class="form-row" style="line-height: 50px">
+                    <div class="form-input col-md-12">
+                        <select name="tellers" class="col-md-8 _select_staff">
+                            <option value="0">Nhân viên mua hàng</option>
+                            <?php
+                            foreach ($tellers_list as $teller) {
+                                if($teller instanceof Users){
+                                    ?>
+                                    <option value="<?php echo $teller->getId() ?>">
+                                        <?php echo $teller->getUsername() ?> - <?php echo $teller->getFullName() ?>
+                                    </option>
+                                <?php }} ?>
+                        </select>
+                        <select name="checking_user" class="col-md-8 _select_staff">
+                            <option value="0">Nhân viên kiểm hàng</option>
+                            <?php
+                            foreach ($checking_user_list as $checking) {
+                                if($checking instanceof Users){
+                                    ?>
+                                    <option value="<?php echo $checking->getId() ?>">
+                                        <?php echo $checking->getUsername() ?> - <?php echo $checking->getFullName() ?>
+                                    </option>
+                                <?php }} ?>
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <a href="#" class="_order_by" data-order-by="desc">Mới nhất trước</a><br/>
+                <a href="#" class="_order_by" data-order-by="asc">Cũ nhất trước</a>
+            </td>
+        </tr>
+    </table>
+
+</form>
+
+<div class="ui-widget-overlay ui-front opacity-80 hide _modal_confirm"></div>
+
+<div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable no-shadow _modal" style="position: fixed; height: auto; width: 500px; top: 133.333px; left: 15%; display: none;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                <span id="ui-id-8" class="ui-dialog-title">
+                        Thông báo
+                </span>
+        <button id="_close-modal" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close">
+            <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span>
+            <span class="ui-button-text">Đóng lại</span>
+        </button>
+    </div>
+    <div class="pad10A" style="text-align: center">
+        <h3>Bạn có muốn xóa đơn hàng này không?</h3><br/>
+        <div class="form-row" >
+            <a class="btn medium bg-black poiter _close_modal">
+                            <span type="submit" class="button-content btnSubmit">
+                               HỦY
+                            </span>
+            </a>
+            <a class="btn medium primary-bg radius-all-4 poiter _close_modal _del_order">
+                            <span type="submit" class="button-content btnSubmit">
+                               Đồng ý
+                            </span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="_temp_fre" style="display: none">
+    <div class="_div_fre_one" data-order-id="0">
+        <span class="_span_fre" data-order-id="0">
+
+        </span>
+        <a href="javascript:void(0)" class="_edit_fre" data-order-id="0">
+            Sửa
+        </a>
+        <div class="form-input col-md-13 _div_edit_fre" data-order-id="0" style="display: none;">
+            <div class="input-append-wrapper input-append-right">
+                <div class="input-append bg-green _save_edit_fre" data-order-id="0">
+                    <i class="glyph-icon icon-save"></i>
+                </div>
+                <div class="append-right">
+                    <input type="text" value=""  class="_input_edit_fre" data-order-id="0" >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="_temp_inv" style="display: none">
+    <div class="_div_inv_one">
+        <span class="_span_inv">
+
+        </span>
+        <a href="javascript:void(0)" class="_edit_inv">
+            Sửa</a>
+        <div class="form-input col-md-13 _div_edit_inv" style="display: none;">
+            <div class="input-append-wrapper input-append-right">
+                <div class="input-append bg-green _save_edit_inv">
+                    <i class="glyph-icon icon-save"></i>
+                </div>
+                <div class="append-right">
+                    <input type="text" class="_input_edit_inv" >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="clear: both" >
+    <div class="example-code">
+
+        <div class="tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
+            <ul class="nav nav-tabs">
+                <?php
+                foreach ($tab_list as $tab) {
+                    ?>
+                    <li class="<?php if($tab['data_status'] == "all"){ ?>active<?php } ?> _tab"
+                        data-status="<?php echo $tab['data_status'] ?>" data-id="<?php echo $tab['data_id'] ?>">
+                        <a href="#<?php echo $tab['data_id'] ?>" title="<?php echo $tab['text'] ?>"
+                           data-status="<?php echo $tab['data_status'] ?>" data-toggle="tab">
+                            <?php echo $tab['text'] ?>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+            <div class="tab-content">
+                <?php
+                foreach ($tab_list as $tab) {
+
+                    ?>
+                    <div class="tab-pane <?php if($tab['data_status'] == "all"){ ?>active<?php } ?> _div_content_order" data-status="<?php echo $tab['data_status'] ?>" id="<?php echo $tab['data_id'] ?>">
+                        <div class="list-order">
+                            <table class="table table-hover text-center">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">MÃ ĐƠN HÀNG</th>
+                                    <th>NGƯỜI BÁN</th>
+                                    <th>GIÁ TRỊ</th>
+                                    <th>TRẠNG THÁI</th>
+                                    <th>KHO</th>
+                                    <th>PHỤ TRÁCH</th>
+                                    <th>THAO TÁC</th>
+                                </tr>
+                                </thead>
+                                <tbody class="_tbody_content" data-id="<?php echo $tab['data_id'] ?>">
+                                <td colspan="7">
+                                    <h1 style="margin-bottom: 20px">
+                                        <img src="<?php echo \SeuDo\Main::getHomeUrl().'/assets/img/small/loading31.gif' ?>">
+                                    </h1>
+                                </td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                <?php } ?>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,251 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$document->title = t("Thông báo");
+$publicPath = Main::getHomeUrl();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath= $publicPath . 'assets/js/';
+if($document instanceof \Flywheel\Document\Html) {
+$document->addCss($cssPath . 'detail-notifi.css');
+$document->addJs($jsPath . 'login.js', 'BOTTOM');
+}
+$notifications = @$notifications;
+$array_paging = @$array_paging;
+$current_page = @$current_page;
+?>
+
+<div class="module-content">
+<section class="order-title">
+    <div class="seu-module-ct">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title"><span class="title-page">Thông báo</span></p>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--    list cart-->
+
+<section class="main-notifi">
+    <div class="seu-module-ct">
+
+        <div class="module-content" id="content_notify">
+            <?php
+            foreach($notifications as $notification){
+            ?>
+            <div class="module-item-ct">
+                <div class="item-title">
+                    <p class="normal-blod"><?php echo $notification["date_time"];?></p>
+                </div>
+                <div class="item-content">
+                    <ul>
+                        <?php
+                        foreach($notification["data"] as $data){
+                            if ($data["type"] == 'CONFIRM_ORDER') {
+                        ?>
+                                <li class="<?php if($data['is_new']) echo "new";?>" >
+                                    <div class="avatar">
+                                        <img src="<?php echo $data['order_avatar'];?>">
+                                    </div>
+                                    <div class="module-ct">
+                                        <p class="module-title">
+                                            Đơn hàng <a  href="<?php echo $data['order_url'];?>"><?php echo $data['order_name'];?></a> <?php echo $data['confirm_msg'];?>
+
+                                        </p>
+                                        <p class="md-note box">
+                                            <span class="italic font-small"><?php echo $data['created_time'];?></span>
+                                        </p>
+                                    </div>
+                                </li>
+                        <?php
+                            } else if ($data["type"] == 'ORDER_STATUS') {
+                        ?>
+                                <li class="<?php if($data['is_new']) echo "new";?>">
+                                    <div class="avatar">
+                                        <img src="<?php echo $data['order_avatar'];?>">
+                                    </div>
+                                    <div class="module-ct">
+                                        <p class="module-title">
+                                            Đơn hàng <a  href="<?php echo $data['order_url'];?>"><?php echo $data['order_name'];?></a> <?php echo $data['order_status'];?>
+                                        </p>
+                                        <p class="md-note box">
+                                            <span class="italic font-small"><?php echo $data['created_time'];?></span>
+                                        </p>
+                                    </div>
+                                </li>
+                        <?php
+                            }else if ($data["type"] == 'CHAT_ORDER') {
+                        ?>
+                                <li class="<?php if($data['is_new']) echo "new";?>">
+                                    <div class="avatar">
+                                        <img src="<?php echo $data['order_avatar'];?>">
+                                    </div>
+                                    <div class="module-ct">
+                                        <p class="module-title">
+                                            <?php
+                                            if($data['is_log']){
+                                            ?>
+                                                Đơn hàng <a  href="<?php echo $data['order_url'];?>"><?php echo $data['order_name'];?></a><?php echo $data['confirm_msg'];?>
+                                            <?php
+                                            }else{
+                                            ?>
+                                                <?php echo $data['confirm_msg'];?><a  href="<?php echo $data['order_url'];?>"><?php echo $data['order_name'];?></a>
+                                            <?php
+                                            }
+                                            ?>
+                                        </p>
+                                        <p class="md-note box">
+                                            <span class="italic font-small"><?php echo $data['created_time'];?></span>
+                                        </p>
+                                    </div>
+                                </li>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+            <?php
+            }
+            ?>
+            <div class="pagination-bottom">
+                <div class="pagination-page">
+                    <input type="hidden" name="current_page" id="current_page" value="1"/>
+                    <ul class="paginationv2">
+                        <?php
+                        if($current_page > 1){
+                        ?>
+                            <li class="paging_notify pre" rel="pre"><a href="#"> &lt; </a></li>
+                        <?php
+                        }
+                        foreach($array_paging as $page){
+                            if($page['is_current_page']){
+                        ?>
+                        <li class="active paging_notify" rel="<?php echo $page['page'];?>"><a href="#"><?php echo $page['page'];?></a></li>
+                        <?php
+                            }else{
+                        ?>
+                        <li class="paging_notify" rel="<?php echo $page['page'];?>"><a href="#"><?php echo $page['page'];?></a></li>
+                        <?php
+                            }
+                        }
+                        if($total_page > 1 && $current_page < $total_page){
+                        ?>
+                        <li class="paging_notify next" rel="next"><a href="#"> &gt; </a></li>
+                        <?php
+                        }
+                        ?>
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+</div>
+<!--template notification all-->
+<script id="notify_item" type="text/x-handlebars-template">
+    <div class="module-item-ct">
+        {{>item_title}}
+        <div class="item-content">
+            <ul>
+            {{>item_content}}
+            </ul>
+        </div>
+    </div>
+</script>
+
+<script id="notify_title_date" type="text/x-handlebars-template">
+    <div class="item-title">
+        <p class="normal-blod">{{date_time}}</p>
+    </div>
+</script>
+
+<script id="notify_all_order_status" type="text/x-handlebars-template">
+    {{#if is_new}}
+    <li class="new" >
+        {{else}}
+    <li>
+        {{/if}}
+        <div class="avatar">
+            <img src="{{order_avatar}}">
+        </div>
+        <div class="module-ct">
+            <p class="module-title">
+                Đơn hàng <a  href="{{order_url}}">{{order_name}}</a> {{order_status}}
+            </p>
+            <p class="md-note box">
+                <span class="italic font-small">{{created_time}}</span>
+            </p>
+        </div>
+    </li>
+</script>
+
+<script id="notify_all_confirm_order" type="text/x-handlebars-template">
+    {{#if is_new}}
+    <li class="new" >
+        {{else}}
+    <li>
+        {{/if}}
+        <div class="avatar">
+            <img src="{{order_avatar}}">
+        </div>
+        <div class="module-ct">
+            <p class="module-title">
+                Đơn hàng <a  href="{{order_url}}">{{order_name}}</a> {{confirm_msg}}
+            </p>
+            <p class="md-note box">
+                <span class="italic font-small">{{created_time}}</span>
+            </p>
+        </div>
+    </li>
+</script>
+
+<script id="notify_all_chat_order" type="text/x-handlebars-template">
+    {{#if is_new}}
+    <li class="new" >
+        {{else}}
+    <li>
+        {{/if}}
+        <div class="avatar">
+            <img src="{{order_avatar}}">
+        </div>
+        <div class="module-ct">
+            <p class="module-title">
+                {{#if is_log}}
+                    Đơn hàng <a  href="{{order_url}}"> {{order_name}}</a>{{confirm_msg}}
+                {{else}}
+                    {{confirm_msg}} <a  href="{{order_url}}"> {{order_name}}</a>
+                {{/if}}
+
+            </p>
+            <p class="md-note box">
+                <span class="italic font-small">{{created_time}}</span>
+            </p>
+        </div>
+    </li>
+</script>
+
+<script id="notify_all_paging" type="text/x-handlebars-template">
+    <div class="pagination-bottom">
+        <div class="pagination-page">
+            <input type="hidden" name="current_page" id="current_page" value="{{page}}"/>
+            <ul class="paginationv2">
+                {{#if pre_page}}
+                    <li class="paging_notify pre" rel="pre"><a href="#"> &lt; </a></li>
+                {{/if}}
+                {{#each array_paging}}
+                    <li class="paging_notify {{#if is_current_page}}active{{/if}}" rel="{{page}}"><a href="#">{{page}}</a></li>
+                {{/each}}
+                {{#if next_page}}
+                    <li class="paging_notify next" rel="next"><a href="#"> &gt; </a></li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+</script>

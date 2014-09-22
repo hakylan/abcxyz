@@ -1,0 +1,244 @@
+<?php
+$document = $controller->document();
+$document->title = "Danh sách đơn hàng xác nhận";
+$user_url = \SeuDo\Main::getUserUrl();
+$document->addJs("{$user_url}assets/js/process/order_confirm.js","TOP");
+$order_list_wait = isset($order_list_wait) ? $order_list_wait : array();
+$order_list_confirmed = isset($order_list_confirmed) ? $order_list_confirmed : array();
+$total_confirmed = isset($total_confirmed) ? $total_confirmed : 0;
+$total_wait = isset($total_wait) ? $total_wait : 0;
+?>
+<div class="module-content">
+    <section class="order-title">
+        <div class="seu-module-ct">
+            <div class="module-inner">
+                <div class="module-title">
+                    <p class="title"><span class="title-page">Đơn hàng xác nhận</span></p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!--    list cart-->
+
+    <section class="adress-cart list-cart deposit ">
+        <div class="body-order">
+            <ul id="myTab" class="nav nav-tabs my-tabs">
+                <li class="active" ><a data-toggle="tab" href="#customer_wait">Chờ xác nhận</a></li>
+                <li ><a data-toggle="tab" href="#customer_confirmed">Đã xác nhận</a></li>
+            </ul>
+            <div class="tab-content my-tab-content">
+
+
+                    <div id="customer_wait" class="tab-pane active">
+                    <div class="module">
+                        <div class="top-main header-deposit">
+                            <div class="col-lg-5 col-md-5 col-xs-5">
+                                <div class="col-lg-7 col-md-7 col-xs-7">
+                                    <div class="checkbox-deposit">
+                                        <span class="uppercase">#</span>
+                                    </div>
+                                    <p class="normal-blod checkbox">Đơn hàng</p>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-xs-5 right-top-deposit">
+                                    <p class="normal-blod uppercase">Trạng thái</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-xs-7 right-top-deposit">
+                                <div class="col-lg-2 col-md-2 col-xs-2">
+                                    <p class="normal-blod uppercase">S.phẩm</p>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-xs-3">
+                                    <p class="normal-blod uppercase">T.tiền hàng</p>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-xs-5">
+                                    <p class="normal-blod uppercase">Chú thích</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-xs-2">
+                                    <p class="normal-blod uppercase">Xác nhận</p>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="cart-list-content header-deposit _ul_order_confirm">
+                            <?php if(!empty($order_list_wait)){
+                                foreach ($order_list_wait as $key=>$order) {
+                                    if($order instanceof \Order){
+                                        $key ++;
+                                ?>
+                            <li class="_order_content" data-order-id="<?php echo $order->getId() ?>">
+                                <div class="col-lg-5 col-md-5 col-xs-5">
+                                    <div class="col-lg-7 col-md-7 col-xs-7">
+                                        <div class="checkbox-deposit">
+                                            <span class="uppercase"><?php echo $key ?></span>
+                                        </div>
+                                        <p class="normal checkbox">
+                                            <a title="<?php echo $order->getCode() ?>" href="<?php echo \SeuDo\Main::getUserRouter()->createUrl("order_detail/default",array("id"=>$order->getId())) ?>">
+                                                #<?php echo $order->getCode() ?>
+                                            </a>
+                                        </p>
+                                        <p class="normal-blod checkbox"><?php echo $order->getSellerName() ?></p>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-xs-5 right-top-deposit">
+                                        <p class="normal">
+                                            <?php
+                                            if($order->getIsDeleted() == 1){
+                                                echo "Hủy";
+                                            }else{
+                                                echo $order->getStatusTitle();
+                                            }
+                                            ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-xs-7 right-top-deposit">
+                                    <div class="col-lg-2 col-md-2 col-xs-2">
+                                        <p class="normal"><?php echo $order->recive_quantity ?>/<?php echo $order->order_quantity ?></p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-xs-3">
+                                        <p class="normal"><?php echo Common::numberFormat($order->total_amount) ?><sup>đ</sup></p>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-xs-5">
+                                        <p class="font-small red-normal"><?php echo $order->getNoteCustomerConfirm() ?></p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-xs-2">
+                                        <p class="normal">
+                                            <a href="javascript:void(0)" data-target="#confirm<?php echo $order->id ?>" data-toggle="modal">
+                                                Xác nhận
+                                            </a>
+                                        </p>
+
+                                        <div style="display: none;" class="modal fade finish-poup" id="confirm<?php echo $order->id ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Xác nhận đơn hàng</span></h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <?php
+                                                            $message = $order->getNoteCustomerConfirm() != "" ?
+                                                                "Bạn có muốn xác nhận đơn hàng này khi bị <i> \"{$order->getNoteCustomerConfirm()}\" </i> không?":
+                                                                "Bạn có muốn xác nhận đơn hàng này không?";
+                                                        ?>
+                                                        <p class="normal"> <?php echo $message ?></p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                            <button type="button" class="btn btn-gray" data-dismiss="modal">Không</button>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                            <button type="button" class="btn btn-blue _order_confirm" data-dismiss="modal"
+                                                                    data-order-id="<?php echo $order->getId() ?>">Đồng ý</button>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <?php }}
+                            }else{ ?>
+                                <li style="text-align: center">
+                                    <h3>Không tồn tại đơn hàng nào</h3>
+                                </li>
+                            <?php } ?>
+
+                        </ul>
+                    </div>
+                </div>
+                <div id="customer_confirmed" class="tab-pane ">
+                    <div class="module">
+                        <div class="top-main header-deposit">
+                            <div class="col-lg-5 col-md-5 col-xs-5">
+                                <div class="col-lg-7 col-md-7 col-xs-7">
+                                    <div class="checkbox-deposit">
+                                        <span class="uppercase">#</span>
+                                    </div>
+                                    <p class="normal-blod checkbox">Đơn hàng</p>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-xs-5 right-top-deposit">
+                                    <p class="normal-blod uppercase">Trạng thái</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-xs-7 right-top-deposit">
+                                <div class="col-lg-2 col-md-2 col-xs-2">
+                                    <p class="normal-blod uppercase">S.phẩm</p>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-xs-3">
+                                    <p class="normal-blod uppercase">T.tiền hàng</p>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-xs-5">
+                                    <p class="normal-blod uppercase">Chú thích</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-xs-2">
+                                    <p class="normal-blod uppercase">Xác nhận</p>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="cart-list-content header-deposit ">
+                            <?php if(!empty($order_list_confirmed)){
+                                $k = 0;
+                                foreach ($order_list_confirmed as $order) {
+                                    if($order instanceof \Order){
+                                        $k++;
+                                        ?>
+                                        <li>
+                                            <div class="col-lg-5 col-md-5 col-xs-5">
+                                                <div class="col-lg-7 col-md-7 col-xs-7">
+                                                    <div class="checkbox-deposit">
+                                                        <span class="uppercase"><?php echo $k ?></span>
+                                                    </div>
+                                                    <p class="normal checkbox">
+                                                        <a title="<?php echo $order->getCode() ?>" href="<?php echo \SeuDo\Main::getUserRouter()->createUrl("order_detail/default",array("id"=>$order->getId())) ?>">
+                                                            #<?php echo $order->getCode() ?>
+                                                        </a>
+                                                    </p>
+                                                    <p class="normal-blod checkbox"><?php echo $order->getSellerName() ?></p>
+                                                </div>
+                                                <div class="col-lg-5 col-md-5 col-xs-5 right-top-deposit">
+                                                    <p class="normal">
+                                                        <?php
+                                                        if($order->getIsDeleted() == 1){
+                                                            echo "Hủy";
+                                                        }else{
+                                                            echo $order->getStatusTitle();
+                                                        }
+                                                        ?>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-7 col-md-7 col-xs-7 right-top-deposit">
+                                                <div class="col-lg-2 col-md-2 col-xs-2">
+                                                    <p class="normal"><?php echo $order->recive_quantity ?>/<?php echo $order->order_quantity ?></p>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-xs-3">
+                                                    <p class="normal"><?php echo Common::numberFormat($order->total_amount) ?><sup>đ</sup></p>
+                                                </div>
+                                                <div class="col-lg-5 col-md-5 col-xs-5">
+                                                    <p class="font-small red-normal"><?php echo $order->getNoteCustomerConfirm() ?></p>
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-xs-2">
+                                                    <p class="normal">
+                                                        <a href="javascript:void(0)" data-order-id="<?php echo $order->getId() ?>">
+                                                            Đã xác nhận
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    <?php }}
+                            }else{ ?>
+                                <li style="text-align: center">
+                                    <h3>Không tồn tại đơn hàng nào</h3>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,24 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = Main::getHomeUrl();
+$document->title = t("Cảnh báo lỗi!");
+$cssPath = $publicPath . 'assets/css/';
+$imgPath = $publicPath.'assets/images';
+$jsPathFront = $publicPath . 'assets/js/';
+?>
+
+<section class="page-register editavatar">
+    <nav class="container" >
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                            <div class="alert icon-alert-alert col-md-12">
+                                <h4>CẢNH BÁO</h4>
+                                <p>Lỗi, không tìm thấy do đường dẫn đã hết hạn hoặc không tồn tại! <br>
+                                    Hãy liên hệ bộ phận CSKH hoặc sử dụng công cụ chát trực tiếp trên trang. </p>
+                            </div>
+            </div>
+            <!--        </div>-->
+    </nav>
+
+</section>

@@ -1,0 +1,123 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$home_url = \SeuDo\Main::getHomeUrl();
+$document->title = t("Công cụ đặt hàng");
+$imgPath =$publicPath.'assets/images/';
+$jsPath = $publicPath . 'assets/js/';
+$document->addJsVar("HomeUrl",\SeuDo\Main::getHomeUrl());
+?>
+
+<section class="cart-header introbook">
+    <nav class="container" >
+        <div class="row">
+            <div class="">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-title">
+                            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-8 col-md-8 col-sm-8 ">
+                                <p class="title"><span class="title-page uppercase normal-blod">Hướng dẫn cài đặt công cụ đặt hàng nhanh</span></p>
+                                <p class="normal">Đặt hàng nhanh chóng với nút "<span class="uppercase"> Đặt hàng sếu đỏ</span>" được cài trên thanh "<span class="uppercase"> đánh dấu</span>" của trình duyệt.</p>
+                            </div>
+                        </div>
+                        <div class="module-ct">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+</section>
+
+<section class="finish introbook-content">
+    <nav class="container" >
+        <div class="row">
+            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-8 col-md-8 col-sm-8 ">
+                <div class="seu-module intro-bookbar">
+                    <div class="module-inner">
+                        <div class="module-ct">
+                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                <div class="item-ct">
+                                    <p class="normal">Giữ chuột, kéo nút "<span class="normal-blod"> ĐẶT HÀNG SẾU ĐỎ</span> " lên thanh Đánh Dấu của trình duyệt (Bookmarks Bar).</p>
+                                </div>
+                            </div>
+                            <a class="btn btn-red-b btn-lg pull-right _grab"
+                               href="
+                            javascript:
+                               (function() {
+                                    var file_js = document.createElement('script');
+                                    file_js.setAttribute('src', '<?php echo $home_url;?>assets/js/jquery-1.10.2.min.js?t=' + Math.random());
+                                    document.body.appendChild(file_js);
+                                    var file_js = document.createElement('script');
+                                    file_js.setAttribute('src', '<?php echo $home_url;?>assets/js/bookmarklet.js?t=' + Math.random());
+                                    document.body.appendChild(file_js);
+                                    }()
+                                );"> ĐẶT HÀNG SEUDO
+                                <span class="arow"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <p class="normal">Nếu cảm thấy khó khăn, bạn có thể sử dụng công cụ "Đặt Hàng Trên Trang" <a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('/order_link')?>">tại đây</a>.</p>
+            </div>
+        </div>
+    </nav>
+</section>
+<section class="introbook-content-bottom">
+    <nav class="container" >
+        <div class="row">
+            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-8 col-md-8 col-sm-8 ">
+                <div class="seu-module intro-bookbar">
+                    <div class="module-inner">
+                        <div class="module-ct">
+                            <div class="module-title">
+                                <p class="title italic uppercase normal-blod">Hướng dẫn</p>
+                            </div>
+                            <div class="module-ct">
+                                <div class="module-ct-item _bookmarklet-chrome">
+                                    <span class="left-item normal-blod"><i>1 </i></span>
+                                    <p class="normal">Đối với trình duyệt <strong>Chrome</strong>, hiển thị "Thanh đánh dấu" bằng cách: trên thanh công cụ >
+                                        click Hiển thị (View) >
+                                        Luôn hiện trang đánh dấu (Always Show Bookmarks Bar) hoặc bấm CTRL + SHIFT + B.</p>
+                                </div>
+                                <div class="module-ct-item _bookmarklet-firefox" hidden="">
+                                    <span class="left-item normal-blod"><i>1 </i></span>
+                                    <p class="normal">Đối với trình duyệt <strong>Firefox</strong>, hiển thị "Thanh đánh dấu" bằng cách: trên thanh công cụ (nếu thanh công cụ bị ẩn hãy nhấn ALT trên bàn phím để hiển thị)
+                                        click Hiển thị (View) > click Thanh công cụ (Toolbars) > Trang đánh dấu (Bookmarks Toolbar).</p>
+                                </div>
+                                <div class="module-ct-item">
+                                    <span class="left-item normal-blod"><i>2 </i></span>
+                                    <p class="normal">Rê chuột lên nút "Đặt Hàng Sếu Đỏ", bấm, giữ chuột và kéo thả vào thanh "Đánh Dấu" (Bookmark Bar).</p>
+                                </div>
+                                <div class="module-ct-item">
+                                    <span class="left-item normal-blod"><i>3 </i></span>
+                                    <p class="normal">Truy cập vào trang bán hàng TQ, vào chi tiết của sản phẩm bạn muốn đặt. Click vào nút "Đặt Hàng Sếu Đỏ" trên thanh "Đánh Dấu". Công cụ sẽ hiển thị giao diện đặt hàng cho sản phẩm đó.</p>
+                                </div>
+                                <div class="module-ct-item">
+                                    <p class="normal">
+                                        Nếu quý khách không thể đặt hàng vui lòng liên hệ CSKH: <a href="mailto:cskh@seudo.vn">cskh@seudo.vn</a> hoặc số Hotline:
+                                        <strong>04 629 335 36</strong> hoặc <a href="javascript:void($zopim.livechat.say('I need help with ordering tool!'))">sử dụng công cụ chát</a> trên trang để được hướng dẫn.
+                                    </p>
+                                </div>
+                                <div class="module-ct-item">
+                                    <p class="normal">
+                                        Xin cảm ơn!
+                                    </p>
+                                </div>
+                                <div class="img-avatar _bookmarklet-chrome">
+                                    <img class="_img-bookmarklet" src="<?php echo $imgPath;?>/imgdemo/chrome.png">
+                                </div>
+                                <div class="img-avatar _bookmarklet-firefox" hidden="">
+                                    <img class="_img-bookmarklet" src="<?php echo $imgPath;?>/imgdemo/firefox.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</section>
+
+<!--    list cart-->

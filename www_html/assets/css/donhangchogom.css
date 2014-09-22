@@ -1,0 +1,312 @@
+.note-tab{                     
+    margin-top : 10px;
+    margin-bottom : 10px;
+}
+.note-tab .module-content{
+    display: inline-block;
+    width: 100%;
+    border: 1px solid #ccc;
+    background: #f7f8f9;
+    padding: 8px 10px;
+}
+.note-tab .module-content p{
+    margin-top: 3px;
+}
+.deposit .top-main.header-deposit p{
+    font-size: 11px;
+    font-weight: normal;
+}
+.header-deposit > div,
+.header-deposit .item-list > div,
+.header-deposit .right > div,
+.bottom-list .right > div,
+.bottom-list > div,
+.bottom-list .right .to-right > div,
+.header-deposit .right .to-right > div{
+    padding-left: 5px ;
+    padding-right: 5px ;
+}
+.header-deposit .right .to-right .time{
+    font-size: 11px;
+}
+.cart-list-content{
+    float: left;
+    width: 100%;
+}
+.cart-list-content .item-list{
+    display: inline-block;
+    width: 100%;  
+    padding: 8px 0 !important;
+}
+.cart-list-content .item-list:nth-child(2n){
+    background: none repeat scroll 0 0 #F5F7F9;
+}
+.deposit .top-main.header-deposit{
+    background: none;
+    border-bottom :1px solid #ccc;
+}
+.addusser{
+    float: left;
+    width: 100%;
+    background: #efefef;
+    position: relative;
+    padding: 15px;
+    padding-left: 50px;
+}
+.addusser .address-active{         
+    background: url("../images/mapaddress-active.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    height: 30px;
+    left: 16px;
+    position: absolute;
+    top: 12px;
+    width: 23px;
+}
+.bottom-list{
+    float: left;
+    width: 100%;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    padding-bottom: 10px; 
+}
+.bottom-list .right > div{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.bottom-list-footer{
+    float: left;
+    width: 100%;
+    margin-top: 20px;
+}
+.bottom-list-footer .submit{
+    padding-right: 20px;
+    margin-top: 4px;
+}
+.bottom-list-footer .submit.v2{
+    padding-right: 20px;
+    margin-top: 10px;
+}
+.bottom-list-footer .submit > button{
+    padding: 15px 30px;
+}
+.awaiting-popup .modal-body{
+    display: inline-block;
+}
+.awaiting-popup .modal-footer {
+    margin-top: 0;
+}
+.awaiting-popup .awaiting-text{
+    position: relative;
+    padding-right: 75px;
+}
+.awaiting-popup .awaiting-text .click-awaiting-text{
+    position: absolute;
+    width: 70px;
+    top: 7px;
+    right: 0;
+    text-align: left;
+    cursor: pointer;
+}
+.awaiting-popup .awaiting-text .click-awaiting-text span.cancel{ 
+    display: none;
+}
+.awaiting-popup .awaiting-text.none .click-awaiting-text span.cancel{ 
+    display: block;
+}
+.awaiting-popup .awaiting-text.none .click-awaiting-text span.add{ 
+    display: none;
+}
+.awaiting-popup .awaiting-text p.normal{
+    opacity: 1;
+    transition: all 0.5s ease 0s;
+    padding-top: 7px;
+    text-align: left;
+    float: left;
+}
+.awaiting-popup .awaiting-text.none p.normal{
+    opacity: 0;  
+}
+.awaiting-popup .awaiting-text .input{
+    opacity: 0;
+    transition: all 0.5s ease 0s;
+    float: left;
+    margin-top: -33px;
+    position: relative;
+    z-index: 9;
+    width: 100%;
+}
+.awaiting-popup .awaiting-text .input input{
+    margin-bottom: 5px;
+}
+.awaiting-popup .awaiting-text.none .input{
+    opacity: 1;  
+}
+.awaiting-popup #awaiting-block{
+    color: #0072BC;    
+    cursor: pointer;
+}
+.awaiting-popup #awaiting-block:hover{
+    color: #0072BC;  
+    text-decoration: underline;
+}
+.awaiting-none{
+    display: none;
+}
+.bottom-list-footer .submit > button > span{
+    font-size: 12px;
+}
+.bottom-list-footer .note{
+    margin-right: 15px;
+    padding: 5px 10px;
+    border-radius:3px ;
+}  
+.bottom-list .bottom-total{
+    padding-left: 15px;
+}
+.order-acc .header-deposit p.checkbox{
+    padding-left: 75px;
+}
+.order-acc .header-deposit .checkbox-deposit{
+    width: 75px;
+    padding-left: 15px; 
+    position: absolute;
+    z-index: 1;
+}
+.order-acc .top-main.header-deposit .checkbox-deposit{
+    margin-top: 0; 
+}
+.deposit .header-deposit .checkbox-deposit span{
+    margin-left: 17px;
+}  
+.bottom-list-footer .note { position: relative; background: #FEF0B3; border: 6px solid #FEF0B3; } 
+.bottom-list-footer .note:after, 
+.bottom-list-footer .note:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+.bottom-list-footer .note:after { border-color: rgba(254, 240, 179, 0); border-left-color: #FEF0B3; border-width: 5px; margin-top: -5px; } 
+.bottom-list-footer .note:before { border-color: rgba(254, 240, 179, 0); border-left-color: #FEF0B3; border-width: 13px; margin-top: -13px; }
+.finish-poup .modal-body{
+    text-align: left;
+}
+ .modal-body p span.left{
+    width: 90px;
+    display: inline-block;
+}
+.finish-poup .modal-footer{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.finish-poup .userpass input{
+    width: 200px;
+    margin: 0 auto;
+}
+.finish-poup .userpass{
+    text-align: center;
+}
+.awaiting .finish-poup .modal-dialog{
+    width: 600px;
+}
+.awaiting #myModalrechar .modal-dialog{
+    width: 400px;
+} 
+.awaiting-popup .modal-footer.v1.none{
+    display: none; 
+}  
+.finish-poup .item{
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.finish-poup .note{
+    background: #FEF0B3;
+    padding: 10px 15px;
+}
+.finish-poup .note p{
+    margin-bottom: 3px;
+}
+.finish-poup.myModalitem .modal-dialog{
+    width: 300px;
+}
+.finish-poup.myModalitem .modal-dialog .item{
+    float: left;
+    width: 100%;
+}
+.finish-poup.myModalitem .modal-dialog .item .left{
+    float: left;
+    width: 50%;
+    text-align: right;    
+}
+.finish-poup.myModalitem .modal-dialog .item .right{
+    float: left;
+    width: 50%;
+    padding-left: 15px;
+}
+.list-cart .tab-pane > div{
+    margin-bottom: 30px;
+}
+.awaiting-v2 .item{
+    padding-left: 25px;
+    position: relative;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+.awaiting-v2 .item.border{
+    border-bottom: 1px solid #ccc;
+}
+.awaiting-v2 .item .checkbox{
+    width: 10px;
+    top: 0;
+    margin: 0;
+    left: 0;
+    position: absolute;
+}
+.awaiting-v2 .item .opacity{
+    background: #fff;
+    opacity: 0.8;
+    position: absolute;
+    width: 96%;
+    height: 100%;
+    top: 0;
+    left: 15px;
+    display: block;
+}
+.awaiting-v2 .item.block .opacity{ 
+    display: none;
+}
+/*Đơn hàng hoạt động*/  
+.order-acc .acti-img .header-deposit .checkbox-deposit{
+    padding-left: 0;
+}
+.acti-img .header-deposit > div,
+.acti-img .header-deposit .item-list > div,
+.acti-img .header-deposit .right > div,
+.acti-img .bottom-list .right > div,
+.acti-img .bottom-list > div,
+.acti-img .bottom-list .right .to-right > div,
+.acti-img .header-deposit .right .to-right > div{
+    padding-left: 15px ;
+    padding-right: 15px ;
+}
+.deposit .acti-img .header-deposit .checkbox-deposit span{
+    margin-left: 2px;
+}
+.list-cart.deposit .acti-img .cart-list-content li{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.order-acc .acti-img .cart-list-content.header-deposit p.checkbox{
+    padding-left: 100px;
+}
+.acti-img .detail-avatar{
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    overflow: hidden;
+    top: -10px;
+    left: 50px;
+}
+.acti-img .detail-avatar img{
+    display: inline-block;
+    width: 100%;
+}
+.acti-img .header-deposit p.checkbox{
+    padding-left: 32px;
+}
+/*end đơn hàng hoạt động*/

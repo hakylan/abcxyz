@@ -1,0 +1,58 @@
+<?php
+$order_code = isset($order_code) ? $order_code : '';
+$text_link = isset($text_link) ? $text_link : '';
+$type_button = isset($type_button) ? $type_button : 'a';
+$urlLoadTransaction = isset($urlLoadTransaction) ? $urlLoadTransaction : 'a';
+$app = isset($app) ? $app : 'user';
+$class = isset($class) ? $class : 'a';
+$document = $this->document();
+$publicHomePath = \SeuDo\Main::getHomeUrl();
+
+?>
+<script>
+    var urlLoadTransaction = '<?php echo $urlLoadTransaction ?>';
+</script>
+<?php if($app === 'user'){ ?>
+<?php if($type_button == 'a'){ ?>
+<a href="javascript:void(0)" data-toggle="modal" class="_transaction_modal_view"
+   data-code-order="<?php echo $order_code ?>" data-app-id="user" title="<?php echo $text_link ?>" data-target="#modal<?php echo $order_code ?>">
+    <?php echo $text_link ?></a>
+<?php }else if($type_button == 'button'){ ?>
+    <button data-toggle="modal" data-app-id="user" data-code-order="<?php echo $order_code ?>" data-target="#modal<?php echo $order_code ?>"
+            type="button" class="btn btn-blue pull-right _transaction_modal_view"><span class="normal-blod"><?php echo $text_link ?></span></button>
+<?php } ?>
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal<?php echo $order_code ?>"
+     class="modal fade" style="display: none;">
+    <div class="modal-dialog" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-body _transaction<?php echo $order_code ?>" data-code-order="<?php echo $order_code ?>">
+                <div class="loading-data _loading_order" data-code-order="<?php echo $order_code ?>" style="">
+                    <img src="<?php echo $publicHomePath.'/assets/img/small/loading31.gif' ?>" style="width: 80px">
+                </div>
+                <br/>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div>
+<?php }else if($app == 'backend'){ ?>
+    <?php if($type_button == 'a'){ ?>
+        <a href="javascript:void(0)" class="_transaction_modal_view" data-app-id="backend"
+           data-code-order="<?php echo $order_code ?>" title="<?php echo $text_link ?>"
+           data-reveal-id="transactionHistory<?php echo $order_code ?>">
+            <?php echo $text_link ?>
+        </a>
+    <?php }else if($type_button == 'button'){ ?>
+        <button data-code-order="<?php echo $order_code ?>" data-app-id="backend" data-reveal-id="transactionHistory<?php echo $order_code ?>"
+                type="button" class="btn btn-blue pull-right _transaction_modal_view"><span class="normal-blod"><?php echo $text_link ?></span></button>
+    <?php } ?>
+    <div id="transactionHistory<?php echo $order_code ?>" class="reveal-modal _transaction_modal">
+        <div style="text-align:center"><h1>Lịch sử giao dịch - <?php echo $order_code ?></h1></div>
+        <div class="_transaction<?php echo $order_code ?> _transaction_modal_content" data-code-order="<?php echo $order_code ?>">
+            <div class="loading-data _loading_order" style="text-align: center">
+                <img src="<?php echo $publicHomePath.'/assets/img/small/loading31.gif' ?>" style="width: 80px">
+            </div>
+            <br/>
+        </div>
+        <a class="close-reveal-modal">&#215;</a>
+    </div>
+<?php } ?>

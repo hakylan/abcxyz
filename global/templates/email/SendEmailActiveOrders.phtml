@@ -1,0 +1,96 @@
+<?php
+    $orders = isset( $orders ) ? $orders : array();
+    $d = array();
+    if( sizeof($orders) > 0 ) {
+        foreach( $orders as $key => $order ) {
+
+            if( $order instanceof \Order ) {
+                if(!isset( $d[ $order->getStatus() ][ 'total_amount_real_payment_amount' ])){
+                    $d[ $order->getStatus() ][ 'total_amount_real_payment_amount' ] = 0;
+                    $d[ $order->getStatus() ][ 'total_amount_missing_money' ] = 0;
+                    $d[ $order->getStatus() ][ 'total_amount' ] = 0;
+                }
+
+                $d[ $order->getStatus() ][ 'title' ] = \Order::$statusTitle[ $order->getStatus() ];
+                $d[ $order->getStatus() ][ 'data' ][] = $order;
+
+                if( isset( $d[ $order->getStatus() ] ) ) {
+                    $d[ $order->getStatus() ][ 'total_amount_real_payment_amount' ] += $order->getRealPaymentAmount();
+                    $d[ $order->getStatus() ][ 'total_amount_missing_money' ] += $order->getMissingMoney();
+                    $d[ $order->getStatus() ][ 'total_amount' ] += $order->getTotalAmount();
+                } else {
+                    $d[ $order->getStatus() ][ 'total_amount_real_payment_amount' ] = 0;
+                    $d[ $order->getStatus() ][ 'total_amount_missing_money' ] = 0;
+                    $d[ $order->getStatus() ][ 'total_amount' ] = 0;
+                }
+            }
+        }
+
+    }
+
+    if( sizeof($d) > 0 ) {
+        foreach( $d as $key => $value ) {
+            echo '<h2 style="font-bold; ">Đơn hàng ở trạng thái "' . $value['title'] . '" (' . sizeof( $value['data'] ) . ')</h2>';
+            ?>
+                <table border="1" style="width: 100%;" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã đơn hàng</th>
+                        <th>
+
+                            Tổng giá trị<br />
+                            ( <?php echo \Common::numberFormat( $value['total_amount'] ) ?> VNĐ )
+
+                        </th>
+                        <th>
+                            Đã thanh toán<br />
+                            ( <?php echo \Common::numberFormat( $value['total_amount_real_payment_amount'] ) ?> VNĐ )
+                        </th>
+                        <th>
+                            Còn thiếu<br />
+                            ( <?php echo \Common::numberFormat( $value['total_amount_missing_money'] ) ?> VNĐ )
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <?php $count = 0; ?>
+                        <?php foreach($value['data'] as $order){ ?>
+                            <?php if($order instanceof \Order){ ?>
+                                <?php
+                                    $count++;
+                                    $order_id = $order->getId() ? (int)$order->getId() : 0;
+                                    $order_code = $order->getCode() ? $order->getCode() : '';
+                                    $order_status = $order->getStatus() ? $order->getStatus() : "";
+                                    $link_order = "http://seudo.vn/user/chi-tiet-don-hang/" . $order_id;
+                                ?>
+                                <tr>
+                                    <td width="5%" style="text-align: center; padding: 5px;"><?php echo $count; ?></td>
+                                    <td width="15%" style="text-align: center; padding: 5px;">
+                                        <a href="<?php echo $link_order ?>" target="_blank" title="<?php echo $order_code ?>">
+                                            <?php echo $order_code ?>
+                                        </a>
+                                    </td>
+                                    <td width="30%" style="text-align: center; padding: 5px;">
+                                        <?php echo \Common::numberFormat( $order->getTotalAmount() ) ?> VNĐ
+                                    </td>
+                                    <td width="25%" style="text-align: center; padding: 5px;">
+
+                                        <?php echo \Common::numberFormat( $order->getRealPaymentAmount() ) ?> VNĐ
+
+                                    </td>
+                                    <td width="25%" style="text-align: center; padding: 5px;">
+
+                                        <?php echo \Common::numberFormat( $order->getMissingMoney() ) ?> VNĐ
+
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            <?php
+        }
+    }
+
+?>

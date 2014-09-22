@@ -1,0 +1,9 @@
+comment:
+    - '#EmailBanned'
+    - '#Schema for EmailBanned OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: 'int(11) unsigned', length: 4, fixed: false, unsigned: true, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    email: { name: email, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: true, default: '', notnull: true, auto_increment: false, extra: '' }
+    created_time: { name: created_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: timestamp, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: 'on update current_timestamp', current_timestamp: true }
+infos:
+    _dbConnectName: email_banned

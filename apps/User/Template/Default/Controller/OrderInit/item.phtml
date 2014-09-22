@@ -1,0 +1,137 @@
+<?php
+    $order_items = isset($order_items) ? $order_items : array();
+    $order_id = isset($order_id) ? $order_id : 0;
+if(!empty($order_items)){
+    foreach ($order_items as $order_item) {
+        if($order_item instanceof \OrderItem){
+            $stock = isset($order_item->stock) && intval($order_item->stock) != 0 ? $order_item->getStock() : 200;
+            $step = isset($order_item->step) ? $order_item->getStep() : 1;
+            $require = intval($order_item->getRequireMin()) <=0 ? 1 : intval($order_item->getRequireMin());
+    ?>
+<li class="_li_order_item" data-order-id="<?php echo $order_item->getOrderId() ?>" data-item-id="<?php echo $order_item->getId() ?>">
+    <input type="hidden" class="_detail_order_item" data-require_min="<?php echo $require ?>"
+           data-inventory="<?php echo $stock ?>" data-step="<?php echo $step ?>"
+           data-item-id="<?php echo $order_item->getId() ?>" data-order-id="<?php echo $order_id ?>"
+           data-price="<?php echo str_replace('.','',Common::numberFormat($order_item->getPrice()))  ?>">
+    <input type="hidden" class="_order_item_type" data-order-id="<?php echo $order_id ?>"
+           data-item-id="<?php echo $order_item->getId();?>" data-type="<?php if($order_item->getPrice()<35000){echo 'access';}else{echo 'normal';}?>">
+    <ul>
+        <li class="col-lg-6 col-md-6 col-sm-6 module-left-ct">
+            <div class="img-item">
+                <div class="module-avatar-img">
+                    <img src="<?php echo $order_item->getImage() ?>" style="height: 100%" alt="<?php echo $order_item->getTitle() ?>">
+                </div>
+            </div>
+            <div class="content">
+                <p>
+                    <a href="<?php echo $order_item->getLink() ?>" target="_blank" rel="nofollow"
+                       class="normal-blod">
+                        <?php echo Common::subString($order_item->getTitle(),100)  ?>
+                       </a><span class="italic">
+                        <?php if($order_item->getWeight() > 0){ ?>
+                        (<?php echo $order_item->getWeight() ?>Kg)
+                        <?php } ?>
+                    </span></p>
+
+                <div class="comment-kd">
+                        <p class="note normal _edit_comment" data-item-id="<?php echo $order_item->getId() ?>">
+                            <?php
+                            if($order_item->getNote() == ''){
+                                echo 'Chú thích: Vui lòng để lại lời nhắn';
+                            }else{
+                                echo $order_item->getNote();
+                            }
+                            ?>
+                        </p>
+                    <div class="note-submit _div_comment" data-item-id="<?php echo $order_item->getId() ?>" >
+                        <input class="form-control form-myinput _input_comment" data-item-id="<?php echo $order_item->getId() ?>"
+                               type="text" placeholder="<?php if($order_item->getNote() == ''){echo 'Để lại lời nhắn, Enter đã gửi ';
+                                }else{ echo $order_item->getNote();
+                                }?>"
+                <?php if($order_item->getNote() != ''){ ?>
+                    value="<?php echo $order_item->getNote(); ?>"
+                <?php } ?>
+                            >
+                        <div class="note-submit-button">
+                        </div>
+                    </div>
+
+                </div>
+        </li>
+        <li class="col-lg-2 col-md-2 col-sm-2 module-custom">
+            <?php
+
+            if($order_item->getPropertyTranslated() != ''){ ?>
+
+                <p class="normal"><?php echo $order_item->getPropertyTranslated() ?></p>
+            <?php }else{ ?>
+                <p class="normal"><?php echo $order_item->getProperty() ?></p>
+            <?php } ?>
+        </li>
+        <li class="col-lg-2 col-md-2 col-sm-2 module-custom ">
+            <div class="input-sl dropdown">
+                <input type="text" placeholder="0"
+                       value="<?php echo $order_item->getOrderQuantity() ?>"
+                       class="form-control form-myinput _quantity_item" data-order-id="<?php echo $order_id ?>"
+                        data-item-id="<?php echo $order_item->getId() ?>"
+                    >
+                <div role="menu" style="display: none" class="tooltip1 dropdown-menu _div_error" data-item-id="<?php echo $order_item->getId() ?>">
+                    <p class="_message_error" data-item-id="<?php echo $order_item->getId() ?>"></p>
+                </div>
+                <div class="arowsl">
+                    <div class="arowsl-left-right">
+                        <a href="#" data-step="<?php echo $order_item->getStep();?>" class="left _up_quantity"
+                           data-item-id="<?php echo $order_item->getId() ?>"></a>
+                        <a href="#" data-step="<?php echo $order_item->getStep();?>" class="right _down_quantity"
+                           data-item-id="<?php echo $order_item->getId() ?>"></a>
+                    </div>
+                </div>
+                <span class="remove" data-target="#myModalfinish" data-toggle="modal">
+                    <a href="#" data-target="#_confirm_delete_item<?php echo $order_item->getId() ?>" data-toggle="modal">Xóa</a>
+
+                    <div style="display: none;" class="modal fade finish-poup" id="_confirm_delete_item<?php echo $order_item->getId() ?>" tabindex="-1" role="dialog"
+                         aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Thông báo</span></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="color: #000000">Bạn có muốn xóa sản phẩm này không?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <button type="button" class="btn btn-gray btn-sm" data-dismiss="modal">Đóng</button>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <button type="button" class="btn btn-blue btn-sm _delete_item"
+                                                data-item-id="<?php echo $order_item->getId() ?>" data-dismiss="modal">Đồng ý</button>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+                </span>
+            </div>
+
+        </li>
+        <li class="col-lg-2 col-md-2 col-sm-2 module-custom">
+            <p class="red-normal">
+                <b class="_total_price" data-price="<?php echo str_replace('.','',Common::numberFormat($order_item->getOrderQuantity() * $order_item->getPrice())) ?>" data-order-id="<?php echo $order_id ?>" data-item-id="<?php echo $order_item->getId() ?>">
+                    <?php echo Common::numberFormat($order_item->getOrderQuantity() * $order_item->getPrice()) ?><sup>đ</sup></b></p>
+            <p class="italic">(
+                <span class="_quantity_item_span" data-order-id="<?php echo $order_id ?>" data-item-id="<?php echo $order_item->getId() ?>">
+                    <?php echo $order_item->getOrderQuantity() ?>
+                </span>
+                x
+                <span class="_price_vnd" data-order-id="<?php echo $order_id ?>" data-item-id="<?php echo $order_item->getId() ?>">
+                    <?php echo Common::numberFormat($order_item->getPrice()) ?><sup>đ</sup>
+                </span>
+                )</p>
+        </li>
+    </ul>
+</li>
+<?php }
+    }
+} ?>

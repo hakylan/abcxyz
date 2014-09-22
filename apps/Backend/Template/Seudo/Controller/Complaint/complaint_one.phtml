@@ -1,0 +1,272 @@
+<?php
+
+    $total_page = isset($total_page) ? $total_page : 1;
+    $current_page = isset($current_page) ? $current_page : 1;
+    $complaints = isset($complaints) ? $complaints : array();
+
+    $total_status_all = isset($total_status_all) ? $total_status_all : 0;
+    $total_status_waiting_receive = isset($total_status_waiting_receive) ? $total_status_waiting_receive : 0;
+    $total_status_oustanding = isset($total_status_oustanding) ? $total_status_oustanding : 0;
+    $total_status_accept = isset($total_status_accept) ? $total_status_accept : 0;
+    $total_status_reject = isset($total_status_reject) ? $total_status_reject : 0;
+    $total_status_refund = isset($total_status_refund) ? $total_status_refund : 0;
+
+    if($complaints instanceof \Complaints){
+
+    }
+?>
+<div class="module-float main-content">
+    <div class="module-float main-item">
+        <div class="module-float ">
+            <div class="module-float header-top">
+                <div class="col-lg-4 col-md-4 left">
+                    <span >id</span>
+                    <p >Tên khiếu nại</p>
+                </div>
+
+                <div class="col-lg-8 col-md-8">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Mã khách</p>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Đơn hàng</p>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <p class="text-center">Trạng thái</p>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <p class="text-center">Mức khách yêu cầu</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Mức tự đề xuất</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php
+        $page = isset($page) ? $page : 1;
+        $status = isset($status) ? $status : '';
+        if(sizeof($complaints) > 0){
+            $count = 0;
+            foreach ($complaints as $key => $complaint) {
+                if($complaint instanceof \Complaints){
+                $count++;
+                $order = \Order::retrieveById($complaint->getOrderId());
+                $buyer = $order->getBuyer();
+                $item = \OrderItem::retrieveById($complaint->getItemId());
+
+                $delay = $diff_day = "";
+                if($complaint->getRefocusTime() && $complaint->getRefocusTime() != '0000-00-00 00:00:00' && $status == \Complaints::STATUS_OUSTANDING){
+                    $__refocus_time = new \DateTime($complaint->getRefocusTime());
+                    $delay = strtotime($__refocus_time->format("Y-m-d")) >= strtotime(date("Y-m-d")) ? "delay" : "";
+
+                    //show num_day
+                    if( strtotime($__refocus_time->format("Y-m-d")) > strtotime(date("Y-m-d")) ){
+                        $diff_day = "(+ " . \Common::calDistanceBetweenDay($__refocus_time->format("Y-m-d"), date("Y-m-d")) . " n)";
+                    }
+                }
+
+                ?>
+
+                <div class="module-float list _item-complaint-view <?php echo $delay; ?>">
+                    <div class="module-float main-ct">
+                        <div class="module-float">
+                            <div class="col-lg-4 col-md-4 left">
+                                <span><?php echo $complaint->getId(); ?></span>
+                                <div class="avatar">
+                                    <a target="_blank" href="<?php echo $item->getLink(); ?>" title="<?php echo $item->getImage(); ?>">
+                                        <img src="<?php echo $item->getImage(); ?>" />
+                                    </a>
+                                </div>
+                                <p>
+                                    <a href="complaint/detail/<?php echo $complaint->getId() ?>" target="_blank" title="<?php echo $complaint->getTitle(); ?>">
+                                        <?php echo $complaint->getTitle(); ?>
+                                    </a>
+                                </p>
+                                <p class="font-gray font-small">
+                                    <?php if($complaint->getType() == \Complaints::TYPE_PRODUCT_NOT_RECEIVED){ ?>
+                                        Sản phẩm thiếu
+                                    <?php } ?>
+
+                                    <?php if($complaint->getType() == \Complaints::TYPE_PRODUCT_ERROR){ ?>
+                                        Sản phẩm lỗi (
+                                        <?php
+                                            $text_reasons = $count_text = "";
+                                            $text_max_length = 50;
+                                            $reasons = \ComplaintsReasons::getAllReasonsByComplaint($complaint->getId());
+                                            foreach((array)$reasons as $key => $r){
+//                                                print_r($r);
+                                                $count_text .= \Complaints::getReasonTitle($r->getLongType()) . ',';
+                                                if(strlen($text_reasons) < $text_max_length){
+                                                    $text_reasons .= \Complaints::getReasonTitle($r->getLongType()) . ',';
+                                                }
+                                                if(strlen($count_text) > $text_max_length && ($key + 1) == sizeof($reasons)){
+                                                    $text_reasons .= "...";
+                                                }
+                                            }
+                                            echo $text_reasons;
+                                        ?>
+                                        )
+                                    <?php } ?>
+                                </p>
+                            </div>
+
+                            <div class="col-lg-8 col-md-8">
+                                <div class="row">
+
+                                    <div class="col-lg-2 col-md-2">
+                                        <p><a href="<?php echo $controller->createUrl('user/detail', array('id' => $buyer->getId())); ?>" target="_blank"><?php echo $buyer->getUsername(); ?></a> (<?php echo $buyer->getCode() ? $buyer->getCode() : "" ?>)</p>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-2">
+                                        <p><a href="order/detail/<?php echo $order->getId(); ?>" target="_blank" title="<?php echo $order->getCode(); ?>"><?php echo $order->getCode(); ?></a></p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3">
+                                        <p class="font-bold <?php echo \Complaints::getStatusColor($complaint->getStatus()) ?>"><?php echo \Complaints::getStatusTitle($complaint->getStatus()); ?></p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3">
+                                        <p class="font-red">
+                                            <?php
+                                                echo number_format($complaint->getCustomerAmountReimbursement() / 1000);
+                                            ?>
+                                            K
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2">
+                                        <p>
+                                            <?php
+                                                echo number_format($complaint->getRecipientAmountReimbursement() / 1000);
+                                            ?>
+                                            K
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-ct-bottom module-float">
+
+                        <?php
+                        $create_time = $recipient_time = $approval_time = $reject_time = $refocus_time = "";
+
+                        if($complaint->getCreateTime() && $complaint->getCreateTime() != '0000-00-00 00:00:00'){
+                            $create_time = new \DateTime($complaint->getCreateTime());
+                            $create_time = $create_time->format("d/m/Y");
+                        }
+
+
+                        if($complaint->getRecipientTime() && $complaint->getRecipientTime() != '0000-00-00 00:00:00'){
+                            $recipient_time = new \DateTime($complaint->getRecipientTime());
+                            $recipient_time = $recipient_time->format("d/m/Y");
+                        }
+
+                        //Nếu gần đến hạn xử lý thì thời gian sẽ là màu đỏ
+                        $refocus_color = "";
+                        if($complaint->getRefocusTime() && $complaint->getRefocusTime() != '0000-00-00 00:00:00'){
+                            $_refocus_time = new \DateTime($complaint->getRefocusTime());
+                            $refocus_time = $_refocus_time->format("d/m/Y");
+                            $refocus_color = strtotime($_refocus_time->format("Y-m-d")) <= strtotime(date("Y-m-d")) ? "font-red" : "";
+                        }
+
+
+                        if($complaint->getApprovalTime() && $complaint->getApprovalTime() != '0000-00-00 00:00:00'){
+                            $approval_time = new \DateTime($complaint->getApprovalTime());
+                            $approval_time = $approval_time->format("d/m/Y");
+                        }
+
+
+                        if($complaint->getRejectTime() && $complaint->getRejectTime() != '0000-00-00 00:00:00'){
+                            $reject_time = new \DateTime($complaint->getRejectTime());
+                            $reject_time = $reject_time->format("d/m/Y");
+                        }
+
+                        ?>
+
+                        <div class="item">
+                            <span class="arow"></span>
+                            <p class="font-small">Từ chối:<?php echo $reject_time; ?></p>
+                        </div>
+
+                        <div class="item">
+                            <span class="arow"></span>
+                            <p class="font-small">Hoàn tiền:<?php echo $approval_time; ?></p>
+                        </div>
+
+                        <div class="item">
+                            <span class="arow"></span>
+                            <p class="font-small <?php echo $refocus_color; ?>">Hạn xử lý:<?php echo $refocus_time; ?> <?php echo $diff_day; ?></p>
+                        </div>
+
+                        <div class="item">
+                            <span class="arow"></span>
+                            <p class="font-small">Tiếp nhận:<?php echo $recipient_time; ?></p>
+                        </div>
+
+                        <div class="item">
+                            <p class="font-small">Thời gian tạo:<?php echo $create_time; ?></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <?php } ?>
+            <?php }  ?>
+        <?php } else { ?>
+            <h3 class="text-center">Không tìm thấy khiếu nại nào.</h3>
+        <?php } ?>
+
+    </div>
+</div>
+
+<input type="hidden" name="total_status_all" t="" value="<?php echo $total_status_all ?>" />
+<input type="hidden" name="total_status_waiting_receive" t="<?php echo \Complaints::STATUS_WAITING_RECEIVE ?>" value="<?php echo $total_status_waiting_receive ?>" />
+<input type="hidden" name="total_status_oustanding" t="<?php echo \Complaints::STATUS_OUSTANDING ?>" value="<?php echo $total_status_oustanding ?>" />
+<input type="hidden" name="total_status_accept" t="<?php echo \Complaints::STATUS_ACCEPT ?>" value="<?php echo $total_status_accept ?>" />
+<input type="hidden" name="total_status_reject" t="<?php echo \Complaints::STATUS_REJECT ?>" value="<?php echo $total_status_reject ?>" />
+<input type="hidden" name="total_status_refund" t="<?php echo \Complaints::STATUS_REFUND ?>" value="<?php echo $total_status_refund ?>" />
+
+<?php if($total_page > 1){ ?>
+    <?php $j = 3; ?>
+    <div class="pagination-bottom">
+        <div class="pagination-page">
+            <ul class="pagination">
+                <?php if($current_page > 1){ ?>
+                    <li class="pre">
+                        <a id="_page-prev"> &lt; </a>
+                    </li>
+                <?php } ?>
+
+                <?php for($i = $j; $i > 0; $i--){ ?>
+                    <?php if($current_page - $i > 0){ ?>
+                        <li>
+                            <a class="_paging" data-page="<?php echo $current_page - $i; ?>"><?php echo $current_page - $i; ?></a>
+                        </li>
+                    <?php } ?>
+                <?php } ?>
+
+                <li class="active">
+                    <a><?php echo $current_page; ?></a>
+                </li>
+
+                <?php for($i = 1; $i <= $j; $i++){ ?>
+                    <?php if($current_page + $i <= $total_page){ ?>
+                        <li>
+                            <a class="_paging" data-page="<?php echo $current_page + $i; ?>"><?php echo $current_page + $i; ?></a>
+                        </li>
+                    <?php } ?>
+                <?php } ?>
+
+                <?php if($current_page < $total_page){ ?>
+                    <li class="next">
+                        <a id="_page-next"> &gt; </a>
+                    </li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+<?php } ?>

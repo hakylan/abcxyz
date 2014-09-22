@@ -1,0 +1,76 @@
+.search-order .item-search.title{
+    padding-top: 3px;
+    font-size: 14px;
+
+}
+.order-acc .search-order .seu-module-ct{
+    padding-bottom: 0;
+}
+.main-notifi{
+    padding-left: 30px;
+    margin-top: 30px;
+}
+.main-notifi .seu-module-ct{
+    float: left;
+    width: 100%;
+}
+.main-notifi .module-item-ct .item-title{
+    background: #f8f8f8;
+    border-bottom: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+    padding-top: 6px;
+    padding-left: 10px;
+    float: left;
+    width: 100%;
+}
+.main-notifi .module-item-ct .item-content li.new{
+	background: #f7f8f9;
+}
+.main-notifi .module-item-ct .item-content ul,
+.main-notifi .module-item-ct .item-content ul li{
+    float: left;
+    width: 100%;
+    position: relative;
+}
+.main-notifi .module-item-ct .item-content ul li{
+    border-bottom: 1px solid #ddd;
+    min-height: 50px;
+    padding-left: 50px;
+    padding-top: 8px;
+    padding-bottom: 10px;
+}
+.main-notifi .module-item-ct .item-content ul li:last-child{
+    border: none;
+}
+.main-notifi .module-item-ct .item-content ul li p{
+    margin-bottom: 3px;
+}
+.main-notifi .module-item-ct .item-content ul li .avatar{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 10px;
+    left: 0px;
+    border: 1px solid #dfdfdf;
+    overflow: hidden;
+}
+.main-notifi .module-item-ct .item-content ul li .avatar img{
+    display: inline-block;
+    width: 100%;
+}
+.main-notifi .module-item-ct{
+    float: left;
+    width: 100%;
+}
+.main-notifi .module-content{
+    position: relative;
+    float: left;
+    padding-bottom: 75px;
+    width: 100%;
+}
+.main-notifi .pagination-bottom{
+    position: absolute;
+    left: 0px;
+    bottom:0px;
+    width: 100%;
+}

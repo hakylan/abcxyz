@@ -1,0 +1,69 @@
+.upfile .input-computer{
+    cursor: pointer; 
+    width: 100%;  
+    height: 31px;
+}
+.upfile .seubtn{
+    position: relative;
+}
+.barcode-search{
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.barcode-search .date{
+    float: left;
+    padding-left: 30px;
+    position: relative;
+}
+.barcode-search .date input{
+    display: inline-block;
+    width: 100%;
+}
+.barcode-search .date span{
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 20px;
+}
+.maincontent{
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+.barcode .top-main {
+    padding-top: 8px;  
+}
+.barcode .list-main .title,
+.barcode .top-main .title{
+    position: relative;
+    padding-left: 50px;
+}
+.barcode .list-main .title span,
+.barcode .top-main .title span{
+    position: absolute;
+    width : 50px;
+    top: 0px;
+    left: 16px;
+}
+.barcode .list-main .item-content{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.barcode .list-main .item-content .date span{
+    margin-top: 2px;
+}
+.barcode .list-main .item-content .link-fiile span{
+    border: 1px solid #0072BC;
+    border-radius: 2px;
+    color: #0072BC;
+    padding: 2px 4px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+.finish-poup.itemdetail .modal-dialog{
+    width: 600px;
+}
+.barcode .list-main .item-content:nth-child(2n){
+    background: none repeat scroll 0 0 #FAFAFA;
+}

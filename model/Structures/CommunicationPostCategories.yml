@@ -1,0 +1,13 @@
+comment:
+    - '#CommunicationPostCategories'
+    - '#Schema for CommunicationPostCategories OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    parent_id: { name: parent_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(3), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    title: { name: title, type: string, db_type: string, alltypes: [string], ntype: varchar(250), length: 250, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    slug: { name: slug, type: string, db_type: string, alltypes: [string], ntype: varchar(250), length: 250, fixed: false, unsigned: false, values: {  }, primary: false, unique: true, default: null, notnull: false, auto_increment: false, extra: '' }
+    description: { name: description, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    post_count: { name: post_count, type: integer, db_type: integer, alltypes: [integer], ntype: int(5), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: false, auto_increment: false, extra: '' }
+    order: { name: order, type: integer, db_type: integer, alltypes: [integer], ntype: int(3), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: false, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: communication_post_categories

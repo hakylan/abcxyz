@@ -1,0 +1,66 @@
+<?php
+use Flywheel\Document\Html;
+use SeuDo\Main;
+$publicPath = Main::getBackendUrl();
+$publicHomePath = Main::getHomeUrl();
+/** @var Html $document */
+$document = $this->document();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="<?php echo $document->getBaseUrl() ?>">
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <link rel="icon" href="<?php echo $publicHomePath?>assets/images/icon-footer/LogoSeuDo1_ICO.ico">
+    <title><?php if($this->document()->title){ echo $this->document()->title.' - ';}?> Seudo Admin</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <!--[if lt IE 9]>
+      <script src="assets/js/minified/core/html5shiv.min.js"></script>
+      <script src="assets/js/minified/core/respond.min.js"></script>
+    <![endif]-->
+    <?php
+    $publicPath = Main::getHomeUrl();
+    $publicPath = $document->getPublicPath();
+    $imgPath = $publicPath . 'assets/img/';
+    $imagePath = $publicPath . 'assets/images/';
+    $document->addJsVar('backend_url', $controller->createUrl('/'), 'TOP');
+    ?>
+    <link href="<?php echo Main::getHomeUrl() ?>assets/css/loading.css" rel="stylesheet" type="text/css" media="all">
+
+    <?php
+    echo $document->css('TOP');
+    echo $document->js('TOP');
+//    require_once GLOBAL_PATH . '/include/GA.php';
+    ?>
+
+
+</head>
+    <body>
+    <!--Modal Begin: alert-->
+
+
+    <div class="loading-data _loading" style="display: none">
+        <div class="content">
+            <?php td('Đang tải dữ liệu'); ?> <span>...</span>
+        </div>
+    </div>
+
+    <div class="ui-front loader ui-widget-overlay bg-white opacity-100" id="loading">
+        <img alt="" src="<?php echo $imagePath ?>loader-dark.gif">
+    </div>
+
+    <div class="demo-example" id="page-wrapper">
+        <!-- Header -->
+        <?php $this->widget('app.Widget.Header'); ?>
+        <!--/ header -->
+
+        <!-- Page content -->
+        <div id="page-content-wrapper">
+            <?php echo $buffer ?>
+        </div>
+    </div>
+</body>
+<?php echo $document->js('BOTTOM'); ?>
+</html>

@@ -1,0 +1,42 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 5/7/14
+ * Time: 5:08 PM
+ */
+$array_transaction_error = isset($array_transaction_error) ? $array_transaction_error : array();
+if(!empty($array_transaction_error)){
+
+foreach ($array_transaction_error as $transaction_error) {
+?>
+    <hr/>
+    <h3>Thông tin:</h3>
+    <p><span>Khách hàng:</span> <?php echo $transaction_error["info"]["user"] ?></p>
+    <p><span>Đơn hàng:</span> <?php echo $transaction_error["info"]["order_code"] ?></p>
+    <h3>Giao dịch</h3>
+    <?php
+    foreach ($transaction_error as $key => $transaction) {
+        if($key == "info"){
+            continue;
+        }
+        $text = $key == "deposit" ? "Order_Deposit" : "Order_payment";
+         echo "<h4>{$text}</h4>";
+        foreach ($transaction as $value) {
+    ?>
+
+
+    <p>Transaction Code : <?php echo $value["transaction_code"] ?></p>
+    <p><span>Transaction Type:</span> <?php echo $value["transaction_type"] ?></p>
+    <p><span>Amount:</span> <?php echo $value["amount"] ?></p>
+    <p><span>Ending Balance:</span> <?php echo $value["ending_balance"] ?></p>
+    <p><span>Note:</span> <?php echo $value["transaction_note"] ?></p><br/>
+    <?php
+            }
+        }
+    ?>
+    <br/>
+
+<?php }}else{ ?>
+    Không tồn tại đơn hàng nào có nhiều hơn 1 lần đặt cọc hoặc thanh toán.
+<?php } ?>

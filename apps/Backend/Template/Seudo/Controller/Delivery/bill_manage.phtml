@@ -1,0 +1,261 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 6/13/14
+ * Time: 3:07 PM
+ */
+$document = $controller->document();
+$document->addCss("css/style-quanlyphieugiaohang.css");
+$document->addCss("css/font-awesome.min.css");
+$document->addCss("css/bootstrap-select.min.css");
+$document->addCss("css/cssloading.css");
+$document->addJs('js/jqueryui.js', 'TOP');
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs('bootstrap/js/bootstrap-select.min.js', 'TOP');
+$document->addJs('js/process/bill_list.js', 'TOP');
+
+$address_ids = isset($address_ids) ? $address_ids : array();
+$document->addJsCode('
+    var bill_template = Handlebars.compile($("#_bill_info").html());
+    ',
+    'BOTTOM',
+    'standard'
+);
+$code = isset($code) ? $code : "";
+$province = isset($province) ? $province : "";
+$start_date = isset($start_date) ? $start_date : "";
+$end_date = isset($end_date) ? $end_date : "";
+$order = isset($order) ? $order : "";
+$user = isset($user) ? $user : "";
+$cod = isset($cod) ? $cod : "";
+$page = isset($page) ? $page : "";
+$total_page = isset($total_page) ? $total_page : "";
+$warehouse = isset($warehouse) ? $warehouse : "";
+$domestic_shipping = isset($domestic_shipping) ? $domestic_shipping : "";
+?>
+<script>
+    $(document).ready(function(){
+        var datepicker = $('#start_date');
+        if(datepicker.length > 0 && datepicker != null){
+            $( "#start_date" ).datepicker({
+                onClose: function( selectedDate ) {
+                    $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
+                }
+            });
+            $( "#end_date" ).datepicker({
+                onClose: function( selectedDate ) {
+                    $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
+                }
+            });
+        }
+        $('.selectpicker').selectpicker({
+            'selectedText': 'cat'
+        });
+    });
+</script>
+<script id="_bill_info" type="text/x-handlebars-template">
+    <div class="module-float total">
+        <p>Tìm thấy <span class="font-bold">{{total}}</span> phiếu.</p>
+    </div>
+    <div class="module-float ">
+        <div class="module-float header-top">
+            <div class="col-lg-4 col-md-4 left">
+                <span>id</span>
+                <p>Số phiếu</p>
+            </div>
+            <div class="col-lg-2 col-md-2 text-left">
+                <p>Khách hàng</p>
+            </div>
+            <div class="col-lg-1 col-md-1">
+                <p>COD</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p>Tỉnh/Thành Phố</p>
+            </div>
+            <div class="col-lg-1 col-md-1">
+                <p>Kho</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p>Ngày giao</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="module-float list">
+        {{#each domestic_shipping}}
+        <div class="module-float main-ct">
+            <div class="module-float">
+                <div class="col-lg-4 col-md-4 left">
+                    <span>{{domestic_shipping.id}}</span>
+
+                    <p><a href="{{domestic_shipping.link_detail}}" target="_blank">{{domestic_shipping.code}}</a></p>
+                    <p class="uppercase" style="position: relative; overflow: hidden; width: 350px;">
+                        {{domestic_shipping.order_code}}
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-2 text-left">
+                    <p><a href="{{user.user_link_backend}}" target="_blank">@{{user.username}}/<span class="uppercase">{{user.code}}</span></a></p>
+                </div>
+                <div class="col-lg-1 col-md-1">
+                    <p>{{#if domestic_shipping.cod}}Có{{else}}Không{{/if}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p>{{address.province.label}}</p>
+                </div>
+                <div class="col-lg-1 col-md-1">
+                    <p class="uppercase">{{domestic_shipping.warehouse}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 right">
+                    <p>{{date domestic_shipping.created_time}}</p>
+                </div>
+                <a class="print" href="{{domestic_shipping.bill_link}}" target="_blank"><i class="fa fa-print"></i> In phiếu</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</script>
+
+
+<div class="row main-content">
+    <?php
+    $searchFrm = new \Flywheel\Html\Form('frm_search', $this->createUrl('delivery/bill_manage/default'), 'GET');
+    $searchFrm->setHtmlOption(array(
+        'id' => '_frm_search'
+    ));
+    $searchFrm->beginForm();
+    ?>
+    <div class="col-lg-12 col-md-12 search">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="item-search">
+                    <p>Tìm theo số phiếu</p>
+                    <input type="text" placeholder="Mã số phiếu..." value="<?php echo $code ?>"
+                           class="form-control form-myinput _domestic_code" name="code">
+                    <input type="hidden" name="page" class="_page" value="1"/>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <div class="item-search module-float">
+                    <p>Tỉnh thành phố</p>
+                    <?php
+                    $province_list = \Locations::findByType(Locations::LOCATION_STATE);
+
+                    ?>
+                    <select class="selectpicker _select_location" style="width: 95%; height: 35px; padding: 8px;" name="province">
+                        <option value="0" <?php if($province == 0){ ?> selected="selected"<?php } ?>>Tất cả</option>
+                        <?php
+                        if(!empty($province_list)){
+                            foreach ($province_list as $pro) {
+                                if($pro instanceof \Locations){?>
+                                    <option value="<?php echo $pro->getId() ?>" <?php if($province == $pro->getId()){ ?> selected="selected"<?php } ?>>
+                                        <?php echo $pro->getLabel()?></option>
+                                <?php
+                                }
+                            }
+                        }
+                        ?>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <div class="item-search module-float">
+                    <p>Kho phân phối</p>
+                    <select class="selectpicker _warehouse" name="warehouse">
+                        <option value="0" <?php if($warehouse == 0){ ?> selected="selected"<?php } ?>>Tất cả</option>
+                        <option value="VNHN" <?php if($warehouse == "CNGZ"){ ?> selected="selected"<?php } ?>>Hà Nội</option>
+                        <option value="VNSG" <?php if($warehouse == "VNSG"){ ?> selected="selected"<?php } ?>>Sài Gòn</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-2">
+                <p>Ngày tạo phiếu</p>
+                <div class="item-search date">
+                    <input type="text" id="start_date" value="<?php echo $start_date ?>" class="form-control form-myinput" name="start_date" placeholder="Từ ngày">
+                    <span><img src="<?php echo \SeuDo\Main::getBackendUrl() ?>/assetv2/images/calenda.png"></span>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-2">
+                <p class="none">m</p>
+                <div class="item-search date">
+                    <input type="text" id="end_date" class="form-control form-myinput" value="<?php echo $end_date ?>" name="end_date" placeholder="Tới ngày">
+                    <span><img src="<?php echo \SeuDo\Main::getBackendUrl() ?>/assetv2/images/calenda.png"></span>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="item-search">
+                    <input type="text" placeholder="Mã đơn hàng..." name="order" class="_order_code form-control form-myinput" >
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="item-search module-float">
+                    <input type="text" placeholder="Username, mã khách" name="user" class="form-control form-myinput _user" >
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 text-center">
+                <div class="item-search module-float">
+                    <p class="margin-bottom">
+                        <input type="checkbox" name="cod" class="_cod" value="1"/> Có COD
+                        <input type="checkbox" name="domestic_shipping" class="_domestic_shipping" value="1"/> Thu phí VCNĐ
+                        <!--                        <a href="javascript:void(0)" class="_cod">Có COD</a>-->
+                        <!--                        <a href="javascript:void(0)" class="_domestic_shipping">Thu phí VCNĐ</a>-->
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-1 col-md-1 col-xs-1 pull-right">
+                <div class="item-search">
+                    <button type="button" class="btn btn-blue module-float _btn_search">
+                        <span class="uppercase font-white font-bold">Tìm kiếm</span></button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <?php $searchFrm->endForm(); ?>
+
+    <div class="col-lg-12 col-md-12 main-item _main_content">
+
+    </div>
+    <div class="col-lg-12 col-md-12">
+        <div class="col-lg-5 col-md-5">
+
+        </div>
+        <div class="col-lg-5 col-md-5">
+            <div class="pagination-bottom">
+                <div class="pagination-page">
+
+                    <?php if($total_page > 1){ ?>
+                        <ul class="pagination">
+                            <?php if($page > 1){ ?>
+                                <li class="pre"><a href="javascript:void(0)" class="_page_bill"
+                                                   data-page="<?php echo $page - 1 ?>">
+                                        &lt; </a></li>
+                            <?php } ?>
+                            <?php for($i = 1 ; $i <= $total_page;$i++){ ?>
+                                <li class="_li_page <?php if($page == $i){ ?>active<?php } ?>"
+                                    data-page-id="<?php echo $i ?>" >
+                                        <a href="javascript:void(0)" data-page="<?php echo $i ?>" class="_page_bill"><?php echo $i ?>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                            <?php if($page < $total_page){ ?>
+                                <li class="next"><a href="javascript:void(0)"
+                                                    data-page="<?php echo $page + 1  ?>" class="_page_bill"> &gt; </a></li>
+
+                            <?php } ?>
+                        </ul>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

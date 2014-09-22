@@ -1,0 +1,358 @@
+<?php
+use Flywheel\View\Render;
+/** @var Render $this */
+/** @var \Backend\Controller\Order\FreightBill $controller */
+
+$title = t('Quản Lý Mã Vận Đơn');
+$this->document()->title .= $title;
+
+$this->document()->addCss('css/freight_bill.css');
+
+$this->document()->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$this->document()->addJs('js/process/freight_bill.js');
+$this->document()->addJsVar('get_orders_url', $this->createUrl('order/freight_bill/get_orders'));
+$this->document()->addJsVar('save_freight_bill_url', $this->createUrl('order/freight_bill/save_bill'));
+$this->document()->addJsVar('remove_freight_bill_url', $this->createUrl('order/freight_bill/remove_bill'));
+$this->document()->addJsVar('fb_manage_page', $this->createUrl('order/freight_bill'));
+$this->document()->addJsVar('ofs_url', $this->createUrl('order/management/out_of_stock'));
+
+$searchForm = new \Flywheel\Html\Form('search-frm');
+
+$this->document()->addJsCode('
+    freight_bill_page_init();
+');
+
+$status = @$status;
+$members = @$members;
+$homeland = @$homeland;
+?>
+<div id="page-title" class="seu-main-header">
+    <div class="container">
+        <h3 class="main-header-title">
+            <p class="normal"><?php echo $title; ?></p>
+        </h3>
+    </div>
+</div>
+
+<div id="page-content" class="seu-page-content freight-bill no-header">
+    <div class="container">
+        <!-- Search -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h4><?php td('Lọc Đơn Hàng'); ?></h4>
+            </div>
+
+            <div class="row row-form clearfix bottom-margin">
+                <?php
+                $searchFrm = new \Flywheel\Html\Form('search-frm', $this->createUrl('order/freight_bill'), 'GET');
+                $searchFrm->setHtmlOption(array(
+                    'id' => 'search-frm'
+                ));
+                $searchFrm->beginForm();
+                ?>
+                <div class="form-input col-md-4">
+                    <p><?php td('Tìm theo mã đơn hàng, mã đơn site gốc hoặc user mua hàng'); ?></p>
+                    <input name="keyword" value="<?php echo $keyword ?>" type="text" placeholder="">
+                </div>
+                <div class="form-input col-md-2">
+                    <p><?php td('Tìm theo mã vận đơn'); ?></p>
+                    <input name="freight_bill" value="<?php echo $freight_bill ?>" type="text" placeholder="">
+                </div>
+                <div class="form-input col-md-2">
+                    <p><?php td('Mã khách hoặc tên đăng nhập'); ?></p>
+                    <input name="customer_code" value="<?php echo $customer_code; ?>" type="text" placeholder="">
+                </div>
+                <div class="form-input col-md-2">
+                    <p><?php td('Tìm theo nguồn hàng'); ?></p>
+                    <?php
+                    $searchForm->selectOption('homeland', $homeland)
+                        ->addOption('Nguồn hàng', '')
+                        ->addOption('taobao.com', 'TAOBAO')
+                        ->addOption('tmall.com', 'TMALL')
+                        ->addOption('1688.com', '1688')
+                        ->addOption('eelly.com', 'EELLY.COM')
+                        ->display();
+                    ?>
+                </div>
+
+                <div class="form-input col-md-2">
+                    <p><?php td('Tìm theo người mua hàng'); ?></p>
+                    <select name="tellers_id">
+                        <option value="">TẤT CẢ</option>
+                    <?php
+                    foreach($members as $member){
+                        if($member instanceof \Users){ ?>
+                        <option value="<?php echo $member->getId(); ?>"><?php echo $member->getUsername(); ?></option>
+                    <?php } } ?>
+                </div>
+
+                <input type="hidden" name="filter_mode" value="<?php echo $filter_mode ?>">
+                <input type="hidden" name="ordering" value="<?php echo $ordering ?>">
+                <input type="hidden" name="status" value="<?php echo $status?>">
+                <input type="hidden" name="page" value="<?php echo $page ?>">
+            </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1 text-right">
+                    <?php td('Người Mua');
+                    $statusFreight = \Order::$statusFreight;
+                    ?>
+                </div>
+                <div class="col-md-11">
+                    <?php $class = ($status == "")? 'primary-bg' : 'ui-state-default'; ?>
+                    <a href="javascript:;" class="btn small <?php echo $class; ?> _prefix-select" data-value="">
+                        <span class="button-content"><?php td('TẤT CẢ') ;?></span>
+                    </a>
+                    <?php if(is_array($statusFreight)){
+                        foreach($statusFreight as $key=>$value){?>
+                            <?php $class = ($status == $key)? 'primary-bg' : 'ui-state-default'; ?>
+                            <a href="javascript:;" class="btn small <?php echo $class; ?> _prefix-select" data-value="<?php echo $key ?>">
+                                <span class="button-content"><?php echo $value;?></span>
+                            </a>
+                        <?php }
+                    }?>
+                </div>
+            </div>
+        <?php $searchForm->endForm(false); ?>
+            <div class="row bottom-margin">
+                <div class="col-lg-1 text-right">
+                    <?php td('Lọc theo'); ?>
+                </div>
+                <div class="col-lg-11">
+                    <a href="javascript:;" class="_filter_mode" data-mode="empty_freight_bill"><?php td("CHƯA CÓ VĐ"); ?></a> &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+                    <a href="javascript:;" class="_filter_mode" data-mode="all"><?php td("TẤT CẢ"); ?></a>
+                    <!--
+                    &nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;
+                    <?php td('Nhóm theo') ?>:
+                    <a href="javascript:;" class="_group-by _bold" data-group-by="seller_homeland"><?php td("Site Gốc"); ?></a> &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+                    <a href="javascript:;" class="_group-by" data-group-by="account_purchase_origin"><?php td("User Mua Hàng"); ?></a>
+                    -->
+                </div>
+            </div>
+        </div>
+        <!--/search -->
+
+        <!-- Orders -->
+        <div class="row">
+            <!-- Errors -->
+            <div class="infobox col-lg-6 error-bg center-margin hidden" id="_error-placeholder">
+                <div class="large btn font-orange info-icon">
+                    <i class="glyph-icon icon-warning"></i>
+                </div>
+                <h4><?php td('Có lỗi xảy ra'); ?></h4>
+                <p></p>
+            </div>
+            <!--/errors -->
+        </div>
+
+        <div class="row">
+            <div class="infobox bg-gray col-lg-6 col-lg-offset-3">
+                <p><strong>TIPS</strong></p>
+                <ul>
+                    <li>- Copy mã vận đơn, <strong>paste</strong> để lưu không cần click nút</li>
+                    <li>- Điền mã vận đơn, <strong>enter</strong> hoặc nhấn phím <strong>dấu cách</strong>(space) để lưu không cần click nút</li>
+                    <li>- Click vào tên user mua hàng để lọc các đơn hàng mua bởi user đó</li>
+                    <li>- Sửa mã vận đơn bằng cách xóa mã vận đơn cũ, thêm mã vận đơn mới</li>
+                    <li>- Thông tin không khớp báo ngay cho quản lý</li>
+                    <li>- Vẫn thấy khó dùng quá thì liên hệ anh Hiếu đập chai - <a href="mailto:luutronghieu@alimama.vn">luutronghieu@alimama.vn</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12" id="_orders-list-placeholder"></div>
+        </div>
+        <!--/orders -->
+
+        <!-- Paging -->
+        <div class="row">
+            <div class="col-lg-offset-4 col-lg-4 text-center">
+                <a href="javascript:;" class="btn large primary-bg center-margin _load-more-orders" data-target="<?php echo $page+1 ?>">
+                    <span class="button-content uppercase">
+                        <i class="glyph-icon icon-cloud-download"></i>
+                        <span><?php td('TẢI THÊM ĐƠN'); ?></span>
+                    </span>
+                </a> &nbsp;
+
+                <span class="hidden" id="_paging-info">
+                    (trang <span id="_current_page_no"></span>) &nbsp;/&nbsp;
+                    <a href="javascript:;" target="1" class="_back-to-page-1">Về trang 1</a>
+                </span>
+            </div>
+        </div>
+        <!--/paging-->
+    </div>
+</div>
+
+<script id="_orders_list" type="text/x-handlebars-template">
+    {{#if total}}
+    <p>Tìm thấy <strong>{{total}}</strong> đơn hàng</p>
+    {{/if}}
+    {{#each orders}}
+    <h3>{{@key}}</h3>
+        {{#each this}}
+        <h4>{{@key}}</h4>
+            <div id="orders-list">
+                <div class="orders-list-header font-gray row">
+                    <div class="col-lg-3">
+                        <div class="col-lg-1">ID</div>
+                        <div class="col-lg-11"><?php td('Đơn Hàng'); ?></div>
+                    </div>
+                    <div class="col-lg-2"><?php td('Tiền Hàng'); ?></div>
+                    <div class="col-lg-2"><?php td('User Mua'); ?></div>
+                    <div class="col-lg-2"><?php td('Người Bán'); ?></div>
+                    <div class="col-lg-3"><?php td('Khách Hàng'); ?></div>
+                </div>
+                {{#each this}}
+                    {{>list}}
+                {{/each}}
+            </div>
+            <div class="divider"></div>
+        {{/each}}
+    {{/each}}
+</script>
+
+<script id="_list-partial" type="text/x-handlebars-template">
+    <div class="bottom-margin order-item-placeholder _order-item-placeholder" id="_order-item-{{id}}">
+        <div class="row order-info">
+            <div class="col-lg-3">
+                <div class="col-lg-1"><small>{{id}}</small></div>
+                <div class="col-lg-11">
+                    <a href="{{detail_link}}" target="_blank"><strong>{{code}}</strong></a><br>
+                    {{order_status status}}
+                    {{#if eligible_out_of_stock}}
+                        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+                        <a href="javascript:;" class="_out-of-stock" data-order-id="{{id}}">
+                            <?php td('Hết hàng'); ?>
+                        </a>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-lg-2">
+                {{#if direct_fill_amount_cny}}
+                <p><span class="amount_cny">{{direct_fill_amount_cny}}<sup>¥</sup></span></p>
+                {{/if}}
+                {{#if total_amount}}
+                <p>Giá trị: <span class="amount_vnd">{{total_amount}}</span></p>
+                {{/if}}
+            </div>
+            <div class="col-lg-2">
+                <a href="javascript:;" class="_filter-by-purchase-acc" data-account="{{account_purchase_origin}}">{{account_purchase_origin}}</a>
+            </div>
+            <div class="col-lg-2">
+                <img src="{{icon_homeland seller_homeland}}">
+                <strong>{{seller_aliwang}}</strong>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="row">
+                    <div class="col-lg-9">
+                {{#if customer}}
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <a href="{{customer.detail_link}}" target="_blank">
+                            <img src="{{customer.avatar}}" class="user-avatar">
+                        </a>
+                    </div>
+                    <div class="user-name">
+                        <a href="{{customer.detail_link}}" target="_blank"><strong>{{customer.last_name}} {{customer.first_name}}</strong></a> ({{customer.code}})<br>
+                        <span class="font-gray-dark">@{{customer.username}}</span>
+                    </div>
+                </div>
+                {{/if}}
+                    </div>
+                    <div class="col-lg-3">
+                        <span class="staff-avatar">
+                        {{#if teller}}
+                            <a title="Mua hàng {{teller.last_name}} {{teller.first_name}}" href="{{teller.detail_link}}" target="_blank">
+                            <img src="{{teller.avatar}}">
+                            </a>
+                        {{/if}}
+                        &nbsp;
+                        {{#if payment}}
+                        <a title="Thanh toán {{teller.last_name}} {{teller.first_name}}" href="{{payment.detail_link}}" target="_blank">
+                            <img src="{{payment.avatar}}">
+                        </a>
+                        {{/if}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Order Bottom -->
+        <div class="row freight-bill-bottom">
+            <div class="freight-bill-placeholder col-lg-10">
+                <div class="col-lg-2 font-gray-dark text-left">
+<!--                    --><?php //td('Đơn site gốc'); ?>
+                    <input value="{{invoice}}" class="_selectCopyAll" tabindex="{{id}}">
+                </div>
+                <div class="col-lg-3 add-fb-form">
+                    <div class="form-row">
+                        <div class="form-input col-lg-10">
+                            <input type="text" placeholder="<?php td('Dán mã vận đơn') ;?>" class="_add_freight_bill"
+                                   tabindex="{{id}}" name="add_freight_bill" data-order-id="{{id}}" id="_add-order-bill-{{id}}" >
+                            <span class="parsley-error-list"></span>
+                        </div>
+
+                        <div class="form-input col-lg-2">
+                            <a href="javascript:;" class="btn small disabled primary-bg _save-freight-bill"
+                               rel="_add-order-bill-{{id}}" data-order-id="{{id}}">
+                                <span class="button-content">
+                                    <i class="glyph-icon icon-plus"></i>
+                                    <!--<?php td('THÊM'); ?>-->
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <!--/add freight_bill -->
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="_order-freight-bill-placeholder" id="_order-freight-bill-placeholder-{{id}}">
+                        <ul id="_list-freight-bill-{{id}}">
+                            {{>freight_bill_placeholder}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-1">
+                <span class="font-gray-dark"><?php td('Đặt cọc:'); ?></span><br>
+                <strong>{{date deposit_time}}</strong>
+            </div>
+            <div class="col-lg-1">
+                <span class="font-gray-dark"><?php td('Mua hàng:'); ?></span><br>
+                <strong>{{date bought_time}}</strong>
+            </div>
+        </div>
+        <!--/ order bottom -->
+    </div>
+</script>
+
+<script id="_freight-bill" type="text/x-handlebars-template">
+    {{#each freight_bill}}
+    <li id="_freight-bill-{{order_id}}-{{freight_bill}}" class="_float-left">
+        <strong><span>{{freight_bill}}</span></strong> &middot; <a href="#" data-toggle="modal" data-target="#myModal{{id}}">Xóa</a>
+    </li>
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal{{id}}" class="modal fade finish-poup itemdetail v2" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                    <h4 id="myModalLabel" class="modal-title"><p class="text-left normal-blod title">Xóa mã vận đơn</p></h4>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc muốn xóa mã vận đơn <strong>{{freight_bill}}</strong>?</p>
+                    <p class="_error_delete_freight_bill" style="color:red;"></p>
+                </div>
+                <div class="modal-footer">
+
+                    <button class="btn btn-blue btn-sm pull-right button-save _remove-freight-bill" type="button" data-id="{{id}}" data-value="{{freight_bill}}" data-order-id="{{order_id}}">Xác nhận</button>
+                    <button class="btn btn-gray btn-sm pull-right button-close" data-dismiss="modal" type="button">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</script>

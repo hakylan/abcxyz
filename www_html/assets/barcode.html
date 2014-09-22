@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Demo Home</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom.css" />
+
+    <script>
+        $(document).ready(function(){
+            //fix primary
+            var height = $(window).height() - 98;
+            var w_primary = $('.primary').width();
+            $('.primary').css({'height': height, 'overflow': 'hidden'});
+            $('.sidebar-left').css({'height': height});
+            $('.sidebar-right').css({'height': height});
+
+            $('.list-box-primary').slimscroll({
+                height: height - 110,
+                width: w_primary
+            });
+
+            $('.custom-navbar-nav a.navbar-nav-a').hover(function(){
+                $('.custom-nav-dropdown').hide();
+                $('.custom-navbar-nav li.first').removeClass('dropdown-toggle open');
+                $('.dropdown-menu-item-arrow').addClass('hidden');
+
+                var $this = $(this).parent();
+
+                $this.addClass('dropdown-toggle open');
+                $this.find('.custom-nav-dropdown').show();
+                $this.find('.dropdown-menu-item-arrow').removeClass('hidden');
+            });
+
+            $('.custom-nav-dropdown').mouseleave(function(){
+                $(this).hide();
+                $(this).parent().find('.dropdown-menu-item-arrow').addClass('hidden');
+            });
+
+            $('.custom-panel-select-box').click(function(){
+                $(this).parent().find('.custom-content-select-box').removeClass('hidden');
+            });
+
+            $('.custom-content-select-box').mouseleave(function(){
+                $(this).addClass('hidden');
+            });
+
+            $('.custom-list-group-item li').click(function(e){
+                var value = $(this).data('value');
+                var target = $(this).parents('.custom-select-box');
+                target.find('.title-select-box').html(value);
+                target.find('.custom-content-select-box').addClass('hidden');
+
+                $('._input-barcode').removeAttr('disabled', 'disabled');
+                $('._input-barcode').focus();
+                $('._input-barcode').addClass('custom-input-active');
+            });
+
+            $('.clear-result').click(function(){
+                if(confirm('Bạn có chắc chắn?')){
+                    $('.total-barcode').html('0');
+                    $('.list-box-primary li.item-box-primary').remove();
+                }
+            });
+
+        });
+    </script>
+
+</head>
+<body>
+
+<nav role="navigation" class="background-0E7DBE collapse navbar-collapse bs-navbar-collapse">
+    <div class="margin-auto w95">
+        <ul class="nav navbar-nav custom-navbar-nav-hover-none">
+            <li class="padding-left-20">
+                <a class="font-size-17 font-bold text-uppercase font-color-white" href="../getting-started">QUẢN LÝ VẬN HÀNH</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<nav class="background-white navbar-default custom-navbar-nav-height border-bottom-ddd" role="navigation">
+    <div class="container-fluid margin-auto w95 custom-navbar-nav-height">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="pull-left custom-navbar-nav-height collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="custom-navbar-nav-height nav navbar-nav custom-navbar-nav">
+
+                <li class="first custom-active navbar-li">
+                    <a class="navbar-nav-a font-bold text-uppercase font-color-0E7DBE" href="#">Dashboard</a>
+                </li>
+
+                <li class="first dropdown navbar-li pos-relative">
+                    <a href="#" class="navbar-nav-a font-color-3E4754 font-bold text-uppercase dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <li><a href="#">Danh sách đơn hàng</a></li>
+                        <li><a href="#">Quản lý mua hàng</a></li>
+                        <li><a href="#">Mua hàng và thanh toán</a></li>
+                        <li><a href="#">Giao hàng</a></li>
+                    </ul>
+                </li>
+
+                <li class="first dropdown navbar-li">
+                    <a href="#" class="navbar-nav-a font-color-3E4754 font-bold text-uppercase dropdown-toggle" data-toggle="dropdown">Người dùng <b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div><!-- /.navbar-collapse -->
+
+        <div class="pull-right col-lg-4">
+            <div class="panel-form-search">
+                <input class="pull-left input-form-search" type="text" placeholder="Nhập mã vạch, ENTER để xem chi tiết" />
+                <a class="pull-right btn-submit"><i class="font-color-white fa fa-reply"></i></a>
+
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="col-lg-12 margin-top-1" id="main-content">
+<div class="margin-auto w95">
+<div class="col-lg-3 sidebar-left">
+    <div class="padding-20-10">
+        <h4 class="text-uppercase font-bold margin-bottom-30">Quét mã vạch</h4>
+
+        <div class="custom-select-box pos-relative">
+            <div class="custom-panel-select-box pull-left w100 z-index-0">
+                <div class="pull-left title-select-box font-bold">HÀNH ĐỘNG</div>
+                <div class="pull-right arrow-select-box"><i class="fa fa-caret-down"></i></div>
+            </div>
+
+            <div class="custom-content-select-box pos-absolute hidden">
+                <h5 class="caption text-uppercase">Kho quảng châu</h5>
+                <ul class="custom-list-group-item">
+                    <li data-value="nhap-cngz">Nhập - CNGZ</li>
+                    <li data-value="nhap-cngz">Nhập - CNGZ</li>
+                </ul>
+                <h5 class="caption text-uppercase">Kho quảng châu</h5>
+                <ul class="custom-list-group-item">
+                    <li data-value="nhap-dchn">Nhập - DCHN</li>
+                    <li data-value="xuat-dchn">Xuất - DCHN</li>
+                    <li data-value="nhap-vnhn">Nhập - VNHN</li>
+                    <li data-value="xuat-vnhn">Xuất - VNHN</li>
+                </ul>
+            </div>
+        </div>
+
+        <input disabled="disabled" class="margin-top-12 custom-input _input-barcode" type="text" value="" placeholder="NHẬP MÃ VẠCH" />
+
+        <div class="context-total-barcode"><span class="total-barcode font-bold">34</span> mã đã quét</div>
+
+        <div class="box-sidebar">
+            <h4 class="title-box-sidebar font-bold">MÃ BỘ PHẬN</h4>
+            <ul class="list-box-sidebar">
+                <li><span class="font-bold">CNGZ</span> - <span class="font-color-898989">Kho bộ phận quảng châu</span></li>
+                <li><span class="font-bold">VNHN</span> - <span class="font-color-898989">Kho phân phối hà nội</span></li>
+                <li><span class="font-bold">DCHN</span> - <span class="font-color-898989">Phòng kiểm hàng hà nội</span></li>
+                <li><span class="font-bold">VNSG</span> - <span class="font-color-898989">Kho phân phối sài gòn</span></li>
+            </ul>
+        </div>
+
+        <div class="box-sidebar">
+            <h4 class="title-box-sidebar font-bold">HÀNH ĐỘNG</h4>
+            <ul class="list-box-sidebar">
+                <li><span class="font-bold">NHẬP</span> - <span class="font-color-898989">Nhập kho hoặc bắt đầu vào một khâu</span></li>
+                <li><span class="font-bold">XUẤT</span> - <span class="font-color-898989">Xuất kho hoặc ra khỏi một khâu</span></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div class="col-lg-3 primary background-white h100 pos-relative">
+<h4 class="title-column text-uppercase font-bold">Kết quả quét</h4>
+<div class="box-primary">
+<ul class="pull-left list-box-primary">
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">16</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold font-color-ec0423"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                <a target="_blank" class="" href="" title="seudo.vn">seudo.vn</a>
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">15</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                <a target="_blank" class="" href="" title="seudo.vn">orderhang.com</a>
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">14</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                vận đơn
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary border-radius-red">
+    <div class="pull-left box-left-primary">13</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+
+        <div class="pull-right des-box-primary text-right">
+            <div class="font-color-ec0423 text-center">
+                <i class="fa fa-warning padding-top-9"></i><br />
+                Lỗi dữ liệu vui lòng thử lại
+            </div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">12</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold font-color-ec0423"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                <a target="_blank" class="" href="" title="seudo.vn">seudo.vn</a>
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">11</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                <a target="_blank" class="" href="" title="seudo.vn">orderhang.com</a>
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">10</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                vận đơn
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary border-radius-red">
+    <div class="pull-left box-left-primary">9</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+
+        <div class="pull-right des-box-primary text-right">
+            <div class="font-color-ec0423 text-center">
+                <i class="fa fa-warning padding-top-9"></i><br />
+                Lỗi dữ liệu vui lòng thử lại
+            </div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">8</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold font-color-ec0423"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                <a target="_blank" class="" href="" title="seudo.vn">seudo.vn</a>
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">7</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                <a target="_blank" class="" href="" title="seudo.vn">orderhang.com</a>
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">6</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                vận đơn
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary border-radius-red">
+    <div class="pull-left box-left-primary">5</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+
+        <div class="pull-right des-box-primary text-right">
+            <div class="font-color-ec0423 text-center">
+                <i class="fa fa-warning padding-top-9"></i><br />
+                Lỗi dữ liệu vui lòng thử lại
+            </div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">4</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold font-color-ec0423"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                <a target="_blank" class="" href="" title="seudo.vn">seudo.vn</a>
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">3</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                <a target="_blank" class="" href="" title="seudo.vn">orderhang.com</a>
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary">
+    <div class="pull-left box-left-primary">2</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+        <div class="pull-right des-box-primary text-right">
+            <div class="link-box-primary">
+                vận đơn
+            </div>
+            <div class="time-box-primary">10:15</div>
+        </div>
+    </div>
+</li>
+
+<li class="item-box-primary border-radius-red">
+    <div class="pull-left box-left-primary">1</div>
+    <div class="pull-right box-right-primary">
+        <div class="pull-left title-box-primary">
+            <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+            <div class="store text-uppercase">NHẬP / VNHN</div>
+        </div>
+
+        <div class="pull-right des-box-primary text-right">
+            <div class="font-color-ec0423 text-center">
+                <i class="fa fa-warning padding-top-9"></i><br />
+                Lỗi dữ liệu vui lòng thử lại
+            </div>
+        </div>
+    </div>
+</li>
+
+</ul>
+
+<div class="box-footer-primary pos-absolute">
+    <ul class="list-item-footer-primary">
+        <li class="font-bold cursor-pointer"><i class="fa fa-file-excel-o"></i>XUẤT EXCEL</li>
+        <li class="font-bold cursor-pointer clear-result"><i class="fa fa-times"></i>XÓA KQ QUÉT</li>
+        <li><input class="btn-close-bag" /></li>
+    </ul>
+</div>
+</div>
+
+</div>
+<div class="col-lg-6 sidebar-right"></div>
+</div>
+</div>
+
+</body>
+</html>

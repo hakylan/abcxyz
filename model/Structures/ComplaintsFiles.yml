@@ -1,0 +1,13 @@
+comment:
+    - '#ComplaintsFiles'
+    - '#Schema for ComplaintsFiles OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    name: { name: name, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '', notnull: false, auto_increment: false, extra: '' }
+    path: { name: path, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '', notnull: false, auto_increment: false, extra: '' }
+    complaint_id: { name: complaint_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: false, auto_increment: false, extra: '' }
+    file_type: { name: file_type, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '', notnull: false, auto_increment: false, extra: '' }
+    invalid: { name: invalid, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: NONE, notnull: false, auto_increment: false, extra: '' }
+    create_time: { name: create_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: complaints_files

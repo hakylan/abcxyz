@@ -1,0 +1,21 @@
+<?php
+require __DIR__ .'/../../bootstrap.php';
+$globalCnf = require ROOT_PATH . '/config.cfg.php';
+$config = array_merge( $globalCnf, require __DIR__ . '/../../apps/Api/Config/main.cfg.php');
+
+$env = \Flywheel\Base::ENV_PRO;
+try {
+    $app = \Flywheel\Base::createApiApp($config, $env, true);
+    $app->run();
+    Common::writeFileMemoryLog("memory_api.html");
+} catch (\Flyapi\Exception $fe) {
+    \SeuDo\ErrorHandler::printError($fe->getCode(), $fe->getMessage());
+} catch (\Exception $e) {
+    if ($env == \Flywheel\Base::ENV_DEV) {
+        \Flywheel\Exception::printExceptionInfo($e);
+    } else {
+        \SeuDo\ErrorHandler::printError($e->getCode());
+    }
+
+    \SeuDo\ErrorHandler::exceptionHandling($e);
+}

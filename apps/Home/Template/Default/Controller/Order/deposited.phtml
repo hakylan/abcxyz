@@ -1,0 +1,251 @@
+<section class="profile order-acc">
+<nav class="container">
+<div class="row">
+<div class="profile-body">
+<div class="seu-module">
+<!-- Begin menuacc -->
+
+<div class="profile-user">
+    <div class="sidebar-user-header">
+        <p class="title">SeuDo</p>
+
+        <p class="normal">Con Sếu Đỏ</p>
+    </div>
+    <div class="avatar">
+        <img src="images/imgdemo/avatardefault.png">
+    </div>
+    <div class="item-sidebar-menu">
+        <div class="menu-title">
+            <p class="title uppercase">đơn hàng</p>
+        </div>
+        <ul class="sidebar-user">
+            <li  class="active">
+                <a href="<?php echo $this->createUrl('don-hang-cho-thanh-toan')?>">+ Chờ thanh toán <span class="count">0</span></a>
+            </li>
+            <li>
+                <a href="<?php echo $this->createUrl('don-hang-dang-hoat-dong')?>">+ Đang hoạt động <span class="count">0+</span></a>
+            </li>
+            <li>
+                <a href="#">+ Kết thúc</a>
+            </li>
+            <li>
+                <a href="#">+ Hết hàng / Hủy</a>
+            </li>
+            <li>
+                <a href="#">+ Đang khiếu nại</a>
+            </li>
+        </ul>
+    </div>
+    <div class="item-sidebar-menu">
+        <div class="menu-title">
+            <p class="title uppercase">giao dịch</p>
+        </div>
+        <ul class="sidebar-user">
+            <li>
+                <a href="#">+ Lịch sử giao dịch</a>
+            </li>
+            <li>
+                <a href="#">+ Nạp tiền</a>
+            </li>
+            <li>
+                <a href="#">+ Rút tiền</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="item-sidebar-menu">
+        <div class="menu-title">
+            <p class="title uppercase">lịch sử</p>
+        </div>
+        <ul class="sidebar-user">
+            <li>
+                <a href="#">+ Sản phẩm đã mua</a>
+            </li>
+            <li>
+                <a href="#">+ Sản phẩm theo doi</a>
+            </li>
+            <li>
+                <a href="#">+ Người bán quan tâm</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="item-sidebar-menu">
+        <div class="menu-title">
+            <p class="title uppercase">cá nhân</p>
+        </div>
+        <ul class="sidebar-user">
+            <li>
+                <a href="#">+ Thông tin</a>
+            </li>
+            <li>
+                <a href="#">+ Đổi mật khẩu</a>
+            </li>
+            <li>
+                <a href="#">+ Thoát</a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<!-- End menuacc -->
+<div class="module-content">
+
+    <section class="order-title">
+        <div class="seu-module-ct">
+            <div class="module-inner">
+                <div class="module-title">
+                    <p class="title"><span class="title-page">Đơn hàng chờ thanh toán</span></p>
+
+                    <div class="dateday pull-right">
+                        <div class="link left">
+                            <a href="javascript:void(0);"  class="_changeDate" data-today="<?php echo $today?>" data-range="<?php echo $today?>">Hôm nay </a>
+                            <span class="arow"></span>
+                        </div>
+                        <div class="link">
+                            <a href="javascript:void(0);" class="_changeDate" data-today="<?php echo $today?>" data-range="<?php echo $early7days?>">7 ngày trước </a>
+                            <span class="arow"></span>
+                        </div>
+                        <div class="link">
+                            <a href="javascript:void(0);"  class="_changeDate"  data-today="<?php echo $today?>" data-range="<?php echo $early30days?>">30 ngày trước </a>
+                            <span class="arow"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="search-order">
+        <div class="seu-module-ct">
+            <div class="s-title">
+                <p class="uppercase normal-blod"> Tìm kiếm </p>
+            </div>
+            <div class="s-content">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="item-search">
+                            <input id="_sellerName" class="form-control form-myinput" type="text"
+                                   placeholder="Tìm mã đơn hoặc tên người bán">
+                        </div>
+                    </div>
+                  <?php /*  <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="item-search">
+                            <select id="_targetCode" class="selectpicker pull-right">
+                                <option value="0">Nơi nhận</option>
+                                <option value="01">Hà Nội</option>
+                                <option value="02">Sài Gòn</option>
+                            </select>
+                        </div>
+                    </div> */?>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="item-search date">
+                            <span>Từ</span>
+                            <input id="datepicker" data-date-format="yyyy-mm-dd" class="datepicker form-control form-myinput pull-right" type="text"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="item-search date">
+                            <span>đến</span>
+                            <input id="datepicker2" data-date-format="yyyy-mm-dd" class="datepicker form-control form-myinput pull-right" type="text"/>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <div class="item-search">
+                            <button class="btn btn-blue pull-right" id="_submitSearch" type="button"><span
+                                    class="uppercase normal-blod">Tìm</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="normal">Tìm thấy <span class="normal-blod" id="_resultCount">0</span> đơn hàng.</p>
+        </div>
+    </section>
+
+    <!--    list cart-->
+
+    <section class="adress-cart list-cart deposit ">
+        <div class="body-order">
+            <div class="module">
+                <div class="top-main header-deposit">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="checkbox-deposit">
+                            <span class="uppercase">#</span>
+                        </div>
+                        <p class="normal-blod checkbox">Đơn hàng</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 right-top-deposit">
+                        <p class="normal-blod uppercase">Trạng thái</p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 right-top-deposit">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <p class="normal-blod uppercase">Sản phẩm</p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <p class="normal-blod uppercase">Tiền hàng</p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <p class="normal-blod uppercase">Tổng tiền</p>
+                        </div>
+                    </div>
+
+                </div>
+                <ul id="_displayOrders" class="cart-list-content header-deposit">
+                    <?php /*
+                <li>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="checkbox-deposit">
+                            <span class="uppercase">1</span>
+                        </div>
+                        <p class="normal checkbox"><a href="#">#123894833hfdh</a></p>
+                        <p class="normal-blod checkbox">Tên ??n hàng</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 right-top-deposit">
+                        <p class="normal">?ã mua hàng</p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 right-top-deposit">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <p class="normal">320</p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <p class="normal">320.000<sup>?</sup></p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <p class="red-normal">30.000.000<sup>?</sup><span class="icon-cham"></span></p>
+                        </div>
+                    </div>
+
+                </li>
+ */
+                    ?>
+
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+
+</div>
+
+</div>
+</div>
+</nav>
+</section>
+
+<script type="text/javascript">
+    var ORDER_DEPOSITED_URL = '<?php echo $this->createUrl('order_deposited')?>/';
+</script>
+
+
+
+<?php
+$assets = new \Flywheel\Asset\Asset('common');
+//$assets->printTag('assets/js/bootstrap-datepicker.js', 'js');
+$assets->printTag('assets/js/process/order_deposited.js', 'js');
+?>

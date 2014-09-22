@@ -1,0 +1,23 @@
+comment:
+    - '#DebugRefundDiscount'
+    - '#Schema for DebugRefundDiscount OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: 'int(11) unsigned', length: 4, fixed: false, unsigned: true, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    user_id: { name: user_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    order_id: { name: order_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    fee_buying: { name: fee_buying, type: number, db_type: float, alltypes: [float], ntype: float, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    fee_checking: { name: fee_checking, type: number, db_type: float, alltypes: [float], ntype: float, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    fee_transport: { name: fee_transport, type: number, db_type: float, alltypes: [float], ntype: float, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    fee_fixed: { name: fee_fixed, type: number, db_type: float, alltypes: [float], ntype: float, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    note: { name: note, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    money_refund: { name: money_refund, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    point: { name: point, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    total_point: { name: total_point, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    old_level: { name: old_level, type: string, db_type: string, alltypes: [string], ntype: varchar(100), length: 100, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    new_level: { name: new_level, type: string, db_type: string, alltypes: [string], ntype: varchar(100), length: 100, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    status_calculated: { name: status_calculated, type: integer, db_type: integer, alltypes: [integer, boolean], ntype: tinyint(1), length: 1, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    service_buying_id: { name: service_buying_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    service_checking_id: { name: service_checking_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    service_transport_id: { name: service_transport_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: debug_refund_discount

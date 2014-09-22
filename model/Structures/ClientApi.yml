@@ -1,0 +1,13 @@
+comment:
+    - '#ClientApi'
+    - '#Schema for ClientApi OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    user_id: { name: user_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    client_id: { name: client_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    scope: { name: scope, type: string, db_type: string, alltypes: [string], ntype: varchar(300), length: 300, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    refresh_token: { name: refresh_token, type: string, db_type: string, alltypes: [string], ntype: varchar(300), length: 300, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    deviceid: { name: deviceid, type: string, db_type: string, alltypes: [string], ntype: varchar(50), length: 50, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    gcm_reg_id: { name: gcm_reg_id, type: string, db_type: string, alltypes: [string], ntype: varchar(300), length: 300, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: client_api

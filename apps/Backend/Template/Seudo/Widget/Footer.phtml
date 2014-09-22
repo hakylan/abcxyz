@@ -1,0 +1,43 @@
+<?php
+/** @var \Backend\Controller\BackendBase $controller */
+/** @var $document */
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$is_view_order_manage = $controller->isAllowed(PERMISSION_ORDER_VIEW_ORDER_MANAGE);
+$is_view_purchase_manage = $controller->isAllowed(PERMISSION_ORDER_VIEW_PURCHASE_MANAGE);
+$is_purchase_order = $controller->isAllowed(PERMISSION_PURCHASE_ORDER);
+$is_order_payment = $controller->isAllowed(PERMISSION_ORDER_PAYMENT);
+
+$user = \BaseAuth::getInstance()->getUser();
+$username = '';
+$email = '';
+
+if( $user instanceof \Users ) {
+    $username = $user->getUsername() ? $user->getUsername() : '';
+    $email = $user->getEmail() ? $user->getEmail() : '';
+}
+?>
+
+<script type="text/javascript">
+    var zopim_username = '<?php echo $username; ?>';
+    var zopim_email = '<?php echo $email; ?>';
+    //load zopim js
+    $.ajax({
+        url: 'assetv2/js/zopim.js',
+        dataType : "SCRIPT",
+        success: function (response) {
+            //Lấy thông tin người dùng
+            $.ajax({
+                url: 'assetv2/js/getUsernameEmailZopim.js',
+                dataType : "SCRIPT",
+                success: function (response) {
+                    //TODO
+                }
+            });
+        }
+    });
+</script>
+
+<div class="container">
+    <p>Copyright Alimama</p>
+</div>

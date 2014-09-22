@@ -1,0 +1,11 @@
+comment:
+    - '#Permissions'
+    - '#Schema for Permissions OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    code: { name: code, type: string, db_type: string, alltypes: [string], ntype: char(50), length: 50, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    label: { name: label, type: string, db_type: string, alltypes: [string], ntype: varchar(50), length: 50, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    role_id: { name: role_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    on: { name: on, type: integer, db_type: integer, alltypes: [integer, boolean], ntype: tinyint(4), length: 1, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '1', notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: permissions

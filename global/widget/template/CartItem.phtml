@@ -1,0 +1,133 @@
+<?php
+$it = isset($cart_item) ? $cart_item : array();
+if($it instanceof \CartItem){
+
+    if($it->site != 'seudo'){
+        $item_link = $it->link_origin;
+    }else{
+        $item_link = "http://seudo.vn";
+    }
+
+    $exchange_rate = ExchangeRate::getExchange();
+
+    $inventory = $it->getStock();
+
+    $price = $it->promotion_price != '' ? $it->promotion_price : $it->price;
+
+    if(intval($price) == 0){
+        $price = CartItem::getPriceByPriceTable($it->price_table,$it->amount);
+    }
+
+    $price_vn = $it->price_vnd;
+
+    if(intval($price_vn) == 0){
+
+        $price_vn = $price* $exchange_rate;
+        $it->price = $price;
+        $it->price_vnd = $price_vn;
+        $it->save();
+    }
+
+    if(intval($price_vn) == 0){
+        return '';
+    }
+
+
+    ?>
+    <li class="detect-delete _li_item_cart" data-cart-id="<?php echo $it->getId()?>">
+        <input type="hidden" class="_detail_cart" data-require_min="<?php echo $it->require_min ?>"
+               data-inventory="<?php echo $inventory ?>" data-step="<?php echo $it->getStep() ?>"
+               data-cart-id="<?php echo $it->id ?>" data-shop-id="<?php echo $it->shop_id ?>"
+               data-price="<?php echo str_replace('.','',Common::numberFormat($price_vn))  ?>"
+               data-item-site-id="<?php $it->getItemId() ?>"
+            >
+        <ul>
+            <li class="col-lg-6 col-md-6 col-sm-6 module-left-ct">
+                <div class="img-item">
+                    <img data-original="<?php echo $it->img_model ?>" style="width: 100%;height: 100%">
+                </div>
+                <div class="content">
+                    <p><a href="<?php echo $item_link ?>" class="_title_item" data-item-site-id="<?php echo $it->getItemId() ?>"
+                          data-shop-id="<?php echo $it->shop_id ?>" data-cart-id="<?php echo $it->id ?>"
+                          rel="nofollow" target="_blank">
+                            <?php echo Common::subString($it->title,120) ?>
+                        </a>
+                    </p>
+                    <p><?php echo $it->getPropertiesTranslate() ?></p>
+                </div>
+            </li>
+            <li class="col-lg-1 col-md-1 col-sm-1 module-custom">
+                <div class="input-sl dropdown">
+                    <input type="text" data-toggle="dropdown" placeholder="0" value="<?php echo $it->amount ?>"
+                           class="form-control form-myinput _quantity_item" data-item-site-id="<?php echo $it->getItemId() ?>" data-shop-id="<?php echo $it->shop_id ?>"
+                           data-cart-id="<?php echo $it->id ?>">
+                    <div aria-labelledby="dLabel" role="menu" class="tooltip1 dropdown-menu _div_error" style="display: none"
+                         data-cart-id="<?php echo $it->id ?>">
+                        <p class="_message_error" data-cart-id="<?php echo $it->id ?>"></p>
+                    </div>
+                    <div class="arowsl">
+                        <div class="arowsl-left-right">
+                            <a href="javascript:void(0)" class="left _up_quantity" data-cart-id="<?php echo $it->id ?>"></a>
+                            <a href="javascript:void(0)" class="right _down_quantity" data-cart-id="<?php echo $it->id ?>"></a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </li>
+            <li class="col-lg-2 col-md-2 col-sm-2 module-custom">
+                <p class="normal _price_vnd" data-item-site-id="<?php echo $it->getItemId() ?>" data-cart-id="<?php echo $it->id ?>"><?php echo Common::numberFormat($price_vn); ?><sup>đ</sup></p>
+            </li>
+            <li class="col-lg-1 col-md-1 col-sm-1 module-custom">
+                <p class="red-normal">
+                    <b class="_total_price" data-price="<?php echo Common::roundingMoney($price_vn*$it->amount) ?>" data-shop-id="<?php echo $it->shop_id ?>"
+                       data-cart-id="<?php echo $it->id ?>">
+                        <?php echo Common::numberFormat($price_vn*$it->amount) ?><sup>đ</sup>
+                    </b>
+                </p>
+            </li>
+
+            <li class="col-lg-2 col-md-2 col-sm-2 module-custom">
+                <span class="remove" data-target="#deleteCart<?php echo $it->id ?>" data-toggle="modal"></span>
+                <div style="display: none;" class="modal fade finish-poup" id="deleteCart<?php echo $it->id ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Xóa sản phẩm</span></h4>
+                            </div>
+                            <div class="modal-body">
+                                <p class="normal">Bạn có chắc chắn muốn xóa sản phẩm này không?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <button type="button" class="btn btn-gray" data-dismiss="modal">Không</button>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <button type="button" class="btn btn-blue _delete_items" data-dismiss="modal" data-cart-id="<?php echo $it->id ?>">Đồng ý</button>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+            </li>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 border">
+                <div class="border-bottom"></div>
+            </div>
+        </ul>
+        <?php if($inventory == 0){ ?>
+            <div class="delete-list-item ">
+                <div class="delete-ct col-lg-6 col-md-6 col-sm-6 col-sm-offset-3 col-md-offset-3 col-lg-offset-3">
+                    <span class="red-normal uppercase"><b>Sản phẩm này đã dừng bán.</b></span>
+                    <span >Vui lòng xóa khỏi giỏ để tiếp tục đặt hàng</span>
+                    <button type="button" class="btn btn-gray pull-right _delete_items" data-cart-id="<?php echo $it->id ?>">
+                <span class="delete-item white"  >
+
+                </span>Xóa khỏi giỏ</button>
+                </div>
+            </div>
+        <?php } ?>
+
+    </li>
+<?php } ?>

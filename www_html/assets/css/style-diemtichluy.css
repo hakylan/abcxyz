@@ -1,0 +1,62 @@
+.profile .module-inner .module-title{
+    padding-left: 15px;
+}
+.order-acc .search-order{
+    padding-left: 15px;
+}
+.profile .profile-body .seu-module{
+    box-shadow: 2px 2px 1px -1px #ddd;
+}
+.order-acc .search-order .seu-module-ct .s-content .title{
+    font-size: 11px;
+    color: #898989;
+}
+.order-acc .search-order .seu-module-ct .s-content .text-ct{
+    font-size: 18px;
+    font-weight: bold;
+    /*text-transform: uppercase;*/
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+.order-acc.activiti .search-order{
+    border-bottom: 1px solid #ddd;
+}
+.main-body{
+    border-top: 1px solid #fff;
+    float: left;
+    width: 100%;
+}
+.module-main-body{
+    border-top: 1px solid #fff;
+    float: left;
+    width: 100%;
+}
+.module-main-body .module-top{
+    float: left;
+    width: 100%;
+    background: #f3f3f3;
+    min-height: 27px;
+    padding-top: 5px;
+    border-bottom: 1px solid #ddd;
+}
+.module-main-body .key{
+    float: left;
+    width: 25%;
+    text-align: center;
+}
+.module-main-body .key-ct{
+    padding-left: 10px;
+}
+.module-main-body .module-content{
+    float: left;
+    width: 100%;
+    border-top: 2px solid #f3f3f3;
+}
+.module-main-body .module-content .ct-item{
+    float: left;
+    width: 100%;
+    min-height: 70px;
+    padding-top: 25px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}

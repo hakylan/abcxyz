@@ -1,0 +1,25 @@
+<?php if(isset($orderComments) && !empty($orderComments)):
+    foreach ($orderComments as $comment):
+        if($comment instanceof \OrderComment):
+            $userCommentId = $comment->getCreatedBy();
+            $userComment = \Users::retrieveById($userCommentId);
+            ?>
+            <div class="mychat-item">
+                <div class="item-avatar">
+                    <img src="<?php echo \Users::getAvatar32x($userComment);?>">
+                </div>
+                <div class="item-ct">
+                    <p class="normal"><span class="normal-blod"><?php echo $userComment->getFullName();?>:</span>
+                        <?php echo $comment->getContent();?> </p>
+                    <p class="normal"><span class="italic">
+                                <?php
+                                $time = new DateTime($comment->getCreatedTime());
+                                echo $time->format('d-m-Y H:i:s');
+                                ?>
+                            </span></p>
+                </div>
+            </div>
+        <?php
+        endif;
+    endforeach;
+endif;?>

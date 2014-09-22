@@ -1,0 +1,8 @@
+comment:
+    - '#SystemConfig'
+    - '#Schema for SystemConfig OMs'
+colums:
+    config_key: { name: config_key, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: '', notnull: true, auto_increment: false, extra: '' }
+    config_value: { name: config_value, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: system_config

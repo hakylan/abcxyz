@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Chi tiết khiếu nại người bán</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jqueryui.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <script type="text/javascript" src="js/process/menu.js"></script>
+    <script type="text/javascript" src="js/process/home.js"></script>
+    <script type="text/javascript" src="js/tooltip.js"></script>
+    <script type="text/javascript" src="js/backendv2-frontend.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/roboto/roboto.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-typo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-header.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-menu-tab.css" />
+
+    <link rel="stylesheet" type="text/css" href="css/cssloading.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-chitietkhieunaiv2.css" />
+
+</head>
+<body>
+    <header class="header">
+        <nav class="note-menu">
+
+        </nav>
+
+        <nav role="navigation" class="container header-top">
+            <div class="row">
+                <div class="col-lg-1 col-md-1">
+                    <div class="module-float logo">
+                        <a href="#"></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="module-float input-search">
+                        <input type="text" id="exampleInput" class="form-control form-myinput" placeholder="Tìm đơn hàng nhanh theo mã đơn hàng hoặc ID...">
+                        <a href="#"><span class="arrow"></span></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 pull-right">
+
+                </div>
+            </div>
+        </nav>
+
+        <nav class="seu-menu" role="navigation">
+            <div class="container">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="col-lg-7 col-md-7 seu-main-menu" >
+                    <ul class="nav navbar-nav module-float">
+
+                        <li class="active">
+                            <a class="navbar-nav-a" href="#">Dashboard</a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Danh sách đơn hàng</a></li>
+                                <li><a href="#">Quản lý mua hàng</a></li>
+                                <li><a href="#">Mua hàng và thanh toán</a></li>
+                                <li><a href="#">Giao hàng</a></li>
+                            </ul>
+                        </li>
+
+                        <li class=" dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Người dùng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+                <div class="col-lg-5">
+                    <div class="module-float note-alert">
+                        <p class="text-right"><i class="fa fa-warning" style=""></i>Số dư khách âm hoặc số tiền cần thu tối thiểu âm (<0) là khách thiếu tiền</p>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+
+    <section class="seu-breadcrumb">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <ul>
+                        <li><a href="#">Trang chủ</a><span class="arrow"></span></li>
+                        <li><a href="#">Danh sách khiếu nại</a><span class="arrow"></span></li>
+                        <li><span>Khiếu nại đơn hàng</span><span class="uppercase">fdfd_3232</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="detail-title">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="module-title">
+                        <p><span class="title">Khiếu nại trên đơn hàng</span><span class="arrow"></span><span class="font-gray">Lý do: Không thấy hàng, Phát sai hàng.</span><span class="active">đang xử lý</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="detail-ct detail">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 module-ct-center">
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Mã:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p>#3232</p>
+                        </div>
+                    </div>
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Id:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p class="uppercase">iu2891291</p>
+                        </div>
+                    </div>
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Sản phẩm:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p>43/23/12</p>
+                        </div>
+                    </div>
+
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Tiền hàng:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p><span>12.000<sup>đ</sup></span> <span class="font-gray font-normal font-small">(10 NDT)</span></p>
+                        </div>
+                    </div>
+
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Acc mua hàng:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p>Alimama-2</p>
+                        </div>
+                    </div>
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Người bán:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p class="tiny-title">
+                                <a href="http://shop59633202taobao..com" rel="nofollow" target="_blank">
+                                    <img src="images/taobao.png">
+                                </a>
+                                <span>shop59633202taobao</span>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-5 col-md-5 module-ct-center">
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Id đơn gốc:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p class="font-blue uppercase font-normal">3232dhjs23232</p>
+                        </div>
+                    </div>
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Vận đơn:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p class="uppercase">iu2891291</p>
+                        </div>
+                    </div>
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Mã hóa đơn Alipay:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p>43fdf5454</p>
+                        </div>
+                    </div>
+                    <div class="module-float">
+                        <div class="module-float5 left">
+                            <p>Tính chất:</p>
+                        </div>
+                        <div class="module-float5 right">
+                            <p class="font-normal">Kiểm hàng, đóng gỗ, dễ vỡ</p>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-3 col-md-3 right">
+                        <div class="module-float user-avatar">
+                            <div class="avatar">
+                                <img src="images/gravatar.jpg">
+                            </div>
+
+                            <p><span class="font-bold">ana</span><span class="arrow"></span><span class="uppercase">k3121</span></p>
+                            <p class="font-user">@ana987</p>
+
+                        </div>
+                        <div class="module-float"><i class="fa fa-phone"></i>0934 666 888</div>
+                        <div class="module-float"><i class="glyphicon glyphicon-envelope"></i>alimama@gmail.com</div>
+
+                        <div class="module-float"><i class="fa fa-map-marker"></i>Số 7 - Ngõ 3 - Đường 4</div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </section>
+
+    <section class="detail-ctv3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <p class="title">Khiếu nại dịch vụ của đơn hàng</p>
+                    <div class="module-float ">
+                        <div class="module-float header-top font-gray">
+                            <div class="col-lg-1 col-md-1">id</div>
+                            <div class="col-lg-4 col-md-4">
+                                <p class="text-left">Tên khiếu nại</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="text-left">Lý do</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p>Tình trạng</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p>Hạn xử lý</p>
+                            </div>
+
+                            <div class="accout"><p class="text-left">Phụ trách</p></div>
+                        </div>
+                        <div class="module-float list">
+                            <div class="module-float main-ct">
+                                <div class="module-float">
+                                    <div class="col-lg-1 col-md-1">1</div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <p class="text-left">Khách hàng khiếu nại sp 31, đơn hàng 12323</p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2">
+                                        <p class="text-left">Không thấy hàng</p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2">
+                                        <p class="font-bold uppercase">Thành công</p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2">
+                                        <p>10/10/2010</p>
+                                    </div>
+                                    <a href="#" class="user-acc">
+                                        <div class="img-acc">
+
+                                            <div class="avatar">
+                                                <img src="images/gravatar.jpg">
+                                            </div>
+                                            <i class="fa fa-chevron-right"></i>
+
+                                        </div>
+                                    </a>
+
+                                    <div class="border-left"></div>
+                                </div>
+                            </div>
+
+                            <div class="module-float main-ct">
+                                <div class="module-float">
+                                    <div class="col-lg-1 col-md-1">1</div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <p class="text-left">Khách hàng khiếu nại sp 31, đơn hàng 12323</p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2">
+                                        <p class="text-left">Không thấy hàng</p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2">
+                                        <p class="font-bold uppercase">Thành công</p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2">
+                                        <p class="font-red">18/06/2014</p>
+                                    </div>
+                                    <a href="#" class="user-acc">
+                                        <div class="img-acc">
+
+                                            <div class="avatar">
+                                                <img src="images/gravatar.jpg">
+                                            </div>
+                                            <i class="fa fa-chevron-right"></i>
+
+                                        </div>
+                                    </a>
+
+                                    <div class="border-left"></div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row bottom">
+                <div class="col-lg-6 col-md-6">
+                    <div class="module-float">
+                        <p class="font-bold margin-bottom">Nhân viên quản lý khiếu nại</p>
+                        <div class="module-float">
+                            <div class="user-v2">
+                                <div class="avatar-v2">
+                                    <img src="images/gravatar.jpg">
+                                </div>
+                            </div>
+                            <div class="module_float">Nguyễn Văn A</div>
+                        </div>
+                    </div>
+                    <p>Tạo đơn: <span class="font-bold">12/4/2014</span></p>
+                    <p>Tiếp nhận: <span class="font-bold">12/4/2014</span></p>
+                    <p>Thành công: <span class="font-bold">12/4/2014</span></p>
+
+                </div>
+
+                <div class="col-lg-6 col-md-6 search-bottom-v2">
+                    <div class="module-float">
+                        <div class="left">
+                            <p>Cấp khiếu nại:</p>
+                        </div>
+                        <div class="right">
+                            <select class="selectpicker">
+                                <option value="0">Người bán</option>
+                                <option>Hà Nội</option>
+                                <option>Sài Gòn</option>
+                                <option>Đà Nẵng</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="module-float">
+                        <div class="left">
+                            <p>Hạn xử lý:</p>
+                        </div>
+                        <div class="right">
+                            <div class="module-float date-input">
+                                <input type="text" placeholder="" class="form-control form-myinput select-input" id="datepicker2">
+                                <span><img src="images/calenda.png"></span>
+                                <i class="fa fa-caret-down"></i>
+                            </div>
+                        </div>
+                        <div class="module-float">
+                            <textarea  rows="1" placeholder="Nhập chú thích" class="form-control form-mytextarea" name="" id=""></textarea>
+                        </div>
+                        <div class="module-float button">
+                            <div class="module_float">
+                                <button data-message="Chấp nhận" data-type="RECEIVING" id="" class=" btn btn-red pull-right" value="Chấp nhận">Thất bại</button>
+                                <button data-message="Chấp nhận" data-target="#popupnewvc" data-toggle="modal"  id="" class=" btn btn-red pull-right" value="Chấp nhận">Thành công</button>
+                                <button data-message="Chấp nhận" data-type="RECEIVING" id="" class=" btn btn-red pull-right" value="Chấp nhận">Tiếp nhận</button>
+
+                                <div class="modal fade popupnew" id="popupnewvc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                                <h4 class="modal-title"><p>Nhập số tiền đòi được</p></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="module-float">
+                                                    <input type="text" id=""  class="form-control form-myinput focusnew" placeholder="">
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-gray">Hủy</button>
+                                                <button type="button" class="btn btn-red">Đồng ý</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

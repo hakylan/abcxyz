@@ -1,0 +1,23 @@
+comment:
+    - '#CommunicationPosts'
+    - '#Schema for CommunicationPosts OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    user_id: { name: user_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    category_id: { name: category_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    title: { name: title, type: string, db_type: string, alltypes: [string], ntype: varchar(250), length: 250, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    alias: { name: alias, type: string, db_type: string, alltypes: [string], ntype: varchar(250), length: 250, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    content: { name: content, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    images: { name: images, type: string, db_type: string, alltypes: [string], ntype: varchar(1000), length: 1000, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    rate_avg: { name: rate_avg, type: integer, db_type: integer, alltypes: [integer], ntype: int(5), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: false, auto_increment: false, extra: '' }
+    rate_total: { name: rate_total, type: integer, db_type: integer, alltypes: [integer], ntype: int(5), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: false, auto_increment: false, extra: '' }
+    rate_score: { name: rate_score, type: integer, db_type: integer, alltypes: [integer], ntype: int(5), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: false, auto_increment: false, extra: '' }
+    rate_detail: { name: rate_detail, type: string, db_type: string, alltypes: [string], ntype: varchar(200), length: 200, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    rate_voters: { name: rate_voters, type: string, db_type: string, alltypes: [string], ntype: varchar(500), length: 500, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    rate_data: { name: rate_data, type: string, db_type: string, alltypes: [string], ntype: varchar(300), length: 300, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    comment_count: { name: comment_count, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: false, auto_increment: false, extra: '' }
+    status: { name: status, type: integer, db_type: integer, alltypes: [integer, boolean], ntype: tinyint(1), length: 1, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '1', notnull: false, auto_increment: false, extra: '' }
+    created_date: { name: created_date, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    modified_date: { name: modified_date, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: communication_posts

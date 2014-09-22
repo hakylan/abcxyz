@@ -1,0 +1,11 @@
+comment:
+    - '#CartShop'
+    - '#Schema for CartShop OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    uid: { name: uid, type: string, db_type: string, alltypes: [string], ntype: varchar(50), length: 50, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    shop_id: { name: shop_id, type: string, db_type: string, alltypes: [string], ntype: varchar(100), length: 100, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    shop_username: { name: shop_username, type: string, db_type: string, alltypes: [string], ntype: varchar(100), length: 100, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    comment: { name: comment, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: cart_shop

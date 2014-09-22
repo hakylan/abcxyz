@@ -1,0 +1,15 @@
+comment:
+    - '#WarehouseMapping'
+    - '#Schema for WarehouseMapping OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    city_id: { name: city_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    method: { name: method, type: integer, db_type: integer, alltypes: [integer, boolean], ntype: tinyint(1), length: 1, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '1', notnull: true, auto_increment: false, extra: '' }
+    start_weight: { name: start_weight, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    end_weight: { name: end_weight, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    start_fee: { name: start_fee, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    end_fee: { name: end_fee, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    warehouse: { name: warehouse, type: string, db_type: string, alltypes: [string], ntype: varchar(10), length: 10, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: HANOI, notnull: true, auto_increment: false, extra: '' }
+    created_time: { name: created_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: warehouse_mapping

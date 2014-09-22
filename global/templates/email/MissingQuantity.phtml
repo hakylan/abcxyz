@@ -1,0 +1,19 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 6/2/14
+ * Time: 3:10 AM
+ */
+$order_list = isset($order_list) ? $order_list : array();
+foreach ($order_list as $order) {
+    if($order instanceof \Order){
+        $checker = \Users::retrieveById($order->getCheckerId());
+?>
+    <h3>+ Mã đơn hàng - <?php echo $order->getId() ?></h3>
+    <p>+ Link: <a href="<?php echo "http://seudo.vn/backend/order/detail/{$order->getId()}" ?>">
+            <?php echo $order->getCode() ?></a></p>
+    <p>+ Số lượng kiểm: <?php echo $order->getReciveQuantity() ?></p>
+    <p>+ Số lượng mua: <?php echo $order->getPendingQuantity() ?></p>
+    <p>+ Người kiểm: <?php echo $checker->getFullName()." - {$checker->getEmail()}" ?>.</p><br/>
+<?php }} ?>

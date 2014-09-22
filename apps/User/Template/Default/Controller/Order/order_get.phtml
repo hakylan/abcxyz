@@ -1,0 +1,178 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 2/15/14
+ * Time: 7:55 AM
+ */
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = \SeuDo\Main::getHomeUrl();
+$document->addJs($publicHomePath.'/assets/js/process/order_active.js');
+$document->addCss($publicHomePath.'/assets/css/donhangchogom.css');
+$document->addJsVar("STATUS_WAITING_FOR_DELIVERY",\Order::STATUS_WAITING_FOR_DELIVERY);
+$document->addJsVar("OrderActiveUrl",\SeuDo\Main::getUserRouter()->createUrl('OrderGet/default'));
+$status_list = array(
+    array(
+        "text" => "Hủy / Hết hàng",
+        "data_id" => "tab_all",
+        "data_status" => "DeletedOut"
+    ),
+    array(
+        "text" => "Hủy",
+        "data_id" => "tab_deleted",
+        "data_status" => "Deleted"
+    ),
+    array(
+        "text" => "Hết hàng",
+        "data_id" => "tab_out_of",
+        "data_status" => \Order::STATUS_OUT_OF_STOCK
+    )
+);
+
+$keyword = isset($keyword) ? $keyword : '';
+$status = isset($status) ? $status : "0";
+$from_time = isset($from_time) ? $from_time : 0;
+$to_time = isset($to_time) ? $to_time : 0;
+$page = isset($page) ? $page : 0;
+$total_page = isset($total_page) ? $total_page : 1;
+
+?>
+<input type="hidden" class="_order_active_main" value="">
+<div class="module-content">
+    <section class="order-title">
+        <div class="seu-module-ct">
+            <div class="module-inner">
+                <div class="module-title">
+                    <p class="title"><span class="title-page">Đơn hàng đã nhận</span></p>
+                    <div class="dateday pull-right">
+                        <div class="link left">
+                            <a href="javascript:void(0)" data-time="0" class="_time_before" class="today">Hôm nay </a>
+                            <span class="arow"></span>
+                        </div>
+                        <div class="link">
+                            <a href="javascript:void(0)" data-time="7" class="_time_before">7 ngày trước </a>
+                            <span class="arow"></span>
+                        </div>
+                        <div class="link">
+                            <a href="javascript:void(0)" data-time="30" class="_time_before">30 ngày trước </a>
+                            <span class="arow"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="search-order">
+        <div class="seu-module-ct">
+            <div class="s-title">
+                <p class="uppercase normal-blod"> Tìm kiếm đơn </p>
+            </div>
+            <div class="s-content">
+                <div class="row">
+                    <input type="hidden" class="_is_delete" value="1"/>
+                    <form id="_search" method="get" action="">
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="item-search">
+                                <input name="keyword" value="<?php echo $keyword ?>" class="form-control form-myinput" type="text" placeholder="Tìm mã đơn hoặc tên người bán">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="item-search date">
+                                <span>Từ</span>
+                                <input id="datepicker" name="from_time" value="<?php echo $from_time ?>"
+                                       class="form-control form-myinput pull-right _from" type="text" placeholder="01/01/2014">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="item-search date">
+                                <span>Đến</span>
+                                <input id="datepicker2" name="to_time" value="<?php echo $to_time ?>"
+                                       class="form-control form-myinput pull-right _to" type="text" placeholder="02/01/2014">
+                            </div>
+                        </div>
+                        <input type="hidden" class="_page" name="page" value="<?php echo $page ?>">
+                        <input type="hidden" class="_select_status" name="status" value="<?php echo \Order::STATUS_RECEIVED ?>"/>
+                    </form>
+
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <div class="item-search">
+                            <button class="btn btn-blue pull-right _btn_filter" type="button"><span class="uppercase normal-blod">Tìm</span></button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="item-search">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="normal">Tìm thấy <span class="normal-blod _total_filter">0</span> đơn hàng.</p>
+        </div>
+    </section>
+
+    <!--    list cart-->
+
+    <section class="adress-cart list-cart deposit ">
+        <div class="body-order">
+            <div class="module acti-img">
+                <div class="top-main header-deposit">
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="checkbox-deposit">
+                            <span class="uppercase">#</span>
+                        </div>
+                        <p class="normal-blod checkbox">Đơn hàng</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 right-top-deposit">
+                        <p class="normal-blod uppercase">Trạng thái</p>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-7 right-top-deposit">
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <p class="normal-blod uppercase">Sản phẩm</p>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <p class="normal-blod uppercase">Tổng tiền hàng</p>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <p class="normal-blod uppercase">Trả lại</p>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <p class="normal-blod uppercase">Đã thanh toán</p>
+                        </div>
+                    </div>
+
+                </div>
+                <ul class="cart-list-content header-deposit _order_active" data-status="<?php echo \Order::STATUS_RECEIVED ?>">
+                    <li>
+                        <img src="<?php echo $publicHomePath.'/assets/img/small/loading31.gif' ?>"
+                             style="width: 120px;margin-left: 46%;">
+                    </li>
+                </ul>
+                <?php if($total_page > 1){ ?>
+                    <div class="pagination-page">
+                        <ul class="paginationv2">
+                            <?php if($page > 1){ ?>
+                                <li class="pre"><a href="javascript:void(0)" class="_page_order" data-page-id="<?php echo $page - 1 ?>">
+                                        &lt; </a></li>
+                            <?php } ?>
+                            <?php for($i = 1 ; $i <= $total_page;$i++){ ?>
+                                <li class="_li_page <?php if($page == $i){ ?>active<?php } ?>" data-page-id="<?php echo $i ?>" >
+                                    <a href="javascript:void(0)" data-page-id="<?php echo $i ?>" class="_page_order"><?php echo $i ?>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                            <?php if($page < $total_page){ ?>
+                                <li class="next"><a href="javascript:void(0)" data-page-id="<?php echo $page + 1  ?>" class="_page_order"> &gt; </a></li>
+
+                            <?php } ?>
+                        </ul>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,34 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 2/11/14
+ * Time: 2:54 PM
+ */
+if(isset($none)){
+?>
+<div data-id="<?php echo $order_id.$key ?>" class="_div_fre_one">
+<span data-text="<?php echo $fre ?>" data-id="<?php echo $order_id.$key ?>"
+      data-order-id="<?php echo $order_id ?>" class="_span_fre">
+                         <?php echo $fre ?>
+</span>
+    <a href="javascript:void(0)" data-id="<?php echo $order_id.$key ?>"
+       data-order-id="<?php echo $order_id ?>" data-text="<?php echo $fre ?>"
+       class="_edit_fre">
+        Sửa</a>
+    <div class="form-input col-md-13 _div_edit_fre" data-id="<?php echo $order_id.$key ?>"
+         data-order-id="<?php echo $order_id ?>" style="display: none;">
+        <div class="input-append-wrapper input-append-right">
+            <div class="input-append bg-green _save_edit_fre" data-id="<?php echo $order_id.$key ?>"
+                 data-order-id="<?php echo $order_id ?>" >
+                <i class="glyph-icon icon-save"></i>
+            </div>
+            <div class="append-right">
+                <input type="text" value="<?php echo $fre ?>"  class="_input_edit_fre"
+                       data-text="<?php echo $fre ?>" data-id="<?php echo $order_id.$key ?>"
+                       data-order-id="<?php echo $order_id ?>" >
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>

@@ -1,0 +1,281 @@
+
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$order_list = isset($order_list) ? $order_list : array();
+$is_edit_fre = $controller->isAllowed(PERMISSION_ORDER_EDIT_FREIGHT_BILL);
+$is_add_fre = $controller->isAllowed(PERMISSION_ORDER_EDIT_FREIGHT_BILL);
+$is_edit_inv =  $controller->isAllowed(PERMISSION_ORDER_EDIT_INVOICE);
+$is_add_inv =  $controller->isAllowed(PERMISSION_ORDER_EDIT_INVOICE);
+$is_delete_order =  $controller->isAllowed(PERMISSION_ORDER_DELETE_ORDER);
+$is_view_history =  $controller->isAllowed(PERMISSION_ORDER_VIEW_HISTORY);
+$is_view_transaction =  $controller->isAllowed(PERMISSION_ORDER_VIEW_TRANSACTION);
+if(!empty($order_list)){
+    foreach ($order_list as $order) {
+        if(!$order || !($order instanceof Order)) continue;
+        $freight_bill = explode(';',$order->freight_bill);
+        $invoice = explode(';',$order->invoice);
+        $user = Users::retrieveById($order->buyer_id);
+        if(!$user || !($user instanceof Users)) continue;
+
+        ?>
+    <tr class="_tr_order" data-order-id="<?php echo $order->getId() ?>">
+        <td>
+            <?php
+            $paid_staff = Users::retrieveById($order->paid_staff_id);
+
+            $tellers = Users::retrieveById($order->tellers_id);
+
+            $avatar_paid_staff = Users::getAvatar32x($paid_staff);
+
+            $avatar_tellers = Users::getAvatar32x($tellers);
+
+            $avatar = Users::getAvatar48x($user); //::getAvatar32x($user);
+            ?>
+            <a class="someClass" style="float: left"
+               title="<img style='width:100px;height:100px;float:left' src='<?php echo $avatar ?>'>
+               <span >Tên Tk: <?php echo $user->username ?> <br/> Họ tên: <?php echo $user->last_name.$user->first_name ?>
+               <br/>Mã KH: <?php echo $user->getCode() ?> </span>" href="javascript:void(0)">
+                <img style="width: 48px;height:48px;float: left" src="<?php echo $avatar ?>"><br/>
+                <?php echo $user->getCode() ?>
+            </a>
+
+            <div class="div_mdh">
+                <a href="javascript:void(0)"><?php echo $order->code ?></a><br/>
+                    <strong>Vận đơn:</strong>
+                <div class="_div_fre" data-order-id="<?php echo $order->id ?>">
+                <?php
+                foreach ($freight_bill as $key=>$fre) {
+                    if(empty($fre)){
+                        continue;
+                    }
+                ?>
+                    <div data-id="<?php echo $order->id.$key ?>" class="_div_fre_one">
+                        <span data-text="<?php echo $fre ?>" data-id="<?php echo $order->id.$key ?>"
+                              data-order-id="<?php echo $order->id ?>" class="_span_fre">
+                             <?php echo $fre ?>
+
+                        </span>
+                        <?php if($is_edit_fre){ ?>
+                            <a href="javascript:void(0)" data-id="<?php echo $order->id.$key ?>"
+                               data-order-id="<?php echo $order->id ?>" data-text="<?php echo $fre ?>"
+                               class="_edit_fre">
+                                Sửa</a>
+                            <div class="form-input col-md-13 _div_edit_fre" data-id="<?php echo $order->id.$key ?>"
+                                 data-order-id="<?php echo $order->id ?>" style="display: none;">
+                                <div class="input-append-wrapper input-append-right">
+                                    <div class="input-append bg-green _save_edit_fre" data-order-id="<?php echo $order->id ?>"
+                                         data-id="<?php echo $order->id.$key ?>">
+                                        <i class="glyph-icon icon-save"></i>
+                                    </div>
+                                    <div class="append-right">
+                                        <input type="text" value="<?php echo $fre ?>"  class="_input_edit_fre"
+                                               data-text="<?php echo $fre ?>" data-id="<?php echo $order->id.$key ?>"
+                                               data-order-id="<?php echo $order->id ?>" >
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                <?php }?>
+                </div>
+
+            <?php if($is_add_fre){ ?>
+                <a class="_add_fre" data-order-id="<?php echo $order->id ?>" href="javascript:void(0)" >Thêm</a>
+                <div class="form-input col-md-13 _div_add_fre" data-order-id="<?php echo $order->id ?>"
+                     data-order-id="<?php echo $order->id ?>" style="display: none;">
+                    <div class="input-append-wrapper input-append-right">
+                        <div class="input-append bg-green _save_add_fre" data-order-id="<?php echo $order->id ?>">
+                            <i class="glyph-icon icon-save"></i>
+                        </div>
+                        <div class="append-right">
+                            <input type="text" placeholder="Nhấn enter để lưu" class="_input_add_fre"
+                                   data-order-id="<?php echo $order->id ?>" >
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+            </div>
+
+
+        </td>
+        <td class="text-left">
+            <div>
+                <span class="_box_invoice" data-order-id="<?php echo $order->id ?>">
+                    <?php echo $order->seller_name ?> <br/>
+                </span >
+                <strong>Hóa đơn:</strong>
+                <div class="div_invoice" data-order-id="<?php echo $order->id ?>">
+                    <?php
+                    if($invoice)
+                    foreach ($invoice as $key=>$inv) {
+                        if(empty($inv)){
+                            continue;
+                        }
+                        ?>
+                        <div data-id="<?php echo $order->id.$key ?>" class="_div_inv_one">
+                            <span data-text="<?php echo $inv ?>" data-id="<?php echo $order->id.$key ?>"
+                                  data-order-id="<?php echo $order->id ?>" class="_span_inv">
+                                 <?php echo $inv ?>
+
+                            </span>
+                            <?php if($is_edit_inv){ ?>
+                                <a href="javascript:void(0)" data-id="<?php echo $order->id.$key ?>"
+                                   data-order-id="<?php echo $order->id ?>" data-text="<?php echo $inv ?>"
+                                   class="_edit_inv">
+                                    Sửa</a>
+                                <div class="form-input col-md-13 _div_edit_inv" data-id="<?php echo $order->id.$key ?>"
+                                     data-order-id="<?php echo $order->id ?>" style="display: none;">
+                                    <div class="input-append-wrapper input-append-right">
+                                        <div class="input-append bg-green _save_edit_inv" data-order-id="<?php echo $order->id ?>"
+                                             data-id="<?php echo $order->id.$key ?>">
+                                            <i class="glyph-icon icon-save"></i>
+                                        </div>
+                                        <div class="append-right">
+                                            <input type="text" value="<?php echo $inv ?>"  class="_input_edit_inv"
+                                                   data-text="<?php echo $inv ?>" data-id="<?php echo $order->id.$key ?>"
+                                                   data-order-id="<?php echo $order->id ?>" >
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    <?php }?>
+                </div>
+
+            <?php if($is_add_inv){ ?>
+                <a class="_add_inv" data-order-id="<?php echo $order->id ?>" href="javascript:void(0)" >Thêm</a>
+                <div class="form-input col-md-13 _div_add_inv" data-order-id="<?php echo $order->id ?>"
+                     style="display: none;">
+                    <div class="input-append-wrapper input-append-right">
+                        <div class="input-append bg-green _save_add_inv" data-order-id="<?php echo $order->id ?>">
+                            <i class="glyph-icon icon-save"></i>
+                        </div>
+                        <div class="append-right">
+                            <input type="text" placeholder="Nhấn enter để lưu" class="_input_add_inv"
+                                   data-order-id="<?php echo $order->id ?>" >
+                        </div>
+                    </div>
+                </div>
+
+            <?php } ?>
+            </div>
+        </td>
+        <td class="text-left">
+                SP: <?php echo $order->order_quantity ?>/<?php echo $order->recive_quantity ?><br/>
+                GIÁ: <?php echo Common::numberFormat($order->total_amount) ?><sup>đ</sup>
+        </td>
+        <td class="text-left">
+
+            <?php
+            echo $order->getStatusTitle();
+            ?>
+        </td>
+        <td class="text-left">
+            <?php if($order->current_warehouse && $order->current_warehouse != ''){  ?>
+                <?php echo $order->current_warehouse ?> <br/>
+                <?php
+                if($order->current_warehouse){
+                    $warehouse_time = new DateTime($order->current_warehouse_time);
+                    echo $warehouse_time->format("H:i:s d:m:Y");
+                }else{
+                    echo "00:00:00 00-00-0000";
+                }
+             }else{
+                echo "Chưa có thông tin";
+            }
+
+            ?><br/>
+        </td>
+        <td class="text-left">
+            <?php if($order->tellers_id == 0 && $order->paid_staff_id == 0){ ?>
+                Chưa có người phụ trách
+            <?php } ?>
+            <?php if($order->tellers_id != 0){ ?>
+                <a class="someClass" style="float: left"
+                   title="<img style='width:100px;height:100px;' src='<?php echo $avatar_tellers ?>'>
+               <span>Nhân viên mua hàng  <br/>Tên Tk: <?php echo $tellers->username ?> <br/> Họ tên: <?php echo $tellers->last_name.$tellers->first_name ?></span>"
+                   href="javascript:void(0)">
+                    <img src="<?php echo $avatar_tellers ?>" class="img_nv" style="border: 1px solid blue;width: 24px;height: 24px">
+
+                </a>
+
+            <?php } ?>
+        <?php if($order->paid_staff_id != 0){ ?>
+            <a class="someClass" style="float: left"
+               title="<img style='width:100px;height:100px;' src='<?php echo $avatar_paid_staff ?>'>
+               <span>Nhân viên thanh toán   <br/>Tên Tk: <?php echo $paid_staff->username ?> <br/> Họ tên:
+               <?php echo $paid_staff->last_name.$paid_staff->first_name ?></span>" href="javascript:void(0)">
+                <img src="<?php echo $avatar_paid_staff ?>" style="border: 1px solid #ffff00;width: 24px;height: 24px">
+
+            </a>
+
+        <?php } ?>
+        </td>
+        <td class="text-left">
+            <?php if($is_delete_order){ ?>
+
+            <a href="javascript:void(0)" class="_open_modal_confirm" data-order-id="<?php echo $order->id ?>">Hủy</a><br/>
+            <?php } ?>
+            <?php if($is_view_history){ ?>
+            <a href="javascript:void(0)" class="_order_history big-link" data-animation="fade"
+               data-reveal-id="orderHistory<?php echo $order->id ?>" data-order-id="<?php echo $order->id ?>"
+               title="Lịch sử đơn">Lịch sử đơn</a><br/>
+            <div id="orderHistory<?php echo $order->id ?>" class="reveal-modal" data-order-id="<?php echo $order->id ?>">
+                <h1>Lịch sử đơn</h1>
+                <table class="table table-striped text-center">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Mã đơn hàng</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-center">Tiền</th>
+                        <th class="text-center">Kho</th>
+                        <th class="text-center">Chi tiết</th>
+                        <th class="text-center">Thời gian</th>
+                    </tr>
+                    </thead>
+                    <tbody class="_order_history_content" data-order-id="<?php echo $order->id ?>">
+                    <tr>
+                        <td colspan="7">
+                            <h1 style="margin-bottom: 20px">
+                                <img src="<?php echo \SeuDo\Main::getHomeUrl().'/assets/img/small/loading31.gif' ?>" style="width: 80px">
+                            </h1>
+                        </td>
+                    <tr>
+                    </tbody>
+                </table>
+                <a class="close-reveal-modal">&#215;</a>
+            </div>
+            <?php } ?>
+
+<!--            Lịch sử giao dịch-->
+            <?php
+            if($is_view_transaction){
+                $this->widget('app.Widget.TransactionModalBox', array(
+                    'order_code' => $order->getCode(),
+                    'text_link' => "Lịch sử giao dịch",
+                    'type_button' => 'a',
+                    'app' => 'backend'
+                ));
+            }
+            ?>
+        </td>
+
+    </tr>
+<?php }}else{ ?>
+<tr>
+    <td colspan="7">
+        <h1 style="margin-bottom: 20px">
+            Không tồn tại đơn hàng nào trong mục này
+        </h1>
+    </td>
+<tr>
+<?php } ?>
+<script>
+    $(function(){
+        $(".someClass").tipTip();
+    });
+</script>
+
+

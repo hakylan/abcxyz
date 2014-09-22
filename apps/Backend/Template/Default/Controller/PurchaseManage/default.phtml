@@ -1,0 +1,236 @@
+<?php
+?>
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+
+$document->addCss("/css/style-backendv1.css");
+//$document->addCss("/css/stylev2.css");
+$tab_list = array(
+
+    //    'INIT', => Khởi tạo
+//    'DEPOSITED', => đã đặt cọc
+//    'BUYING', -  đang mua
+//    'NEGOTIATING', - đang đàm phán
+//    'NEGOTIATED', - đã đàm phán
+//    'BOUGHT', - đã mua
+//    'SELLER_DELIVERED', - người bán đã giao
+//    'CHECKING', - đang kiểm hàng
+//    'CHECKED', -  đã kiểm
+//    'DELIVERED', - đã giao
+//    'GET' - đã nhận
+//,'OUT_OF_STOCK' - hết hàng
+    array(
+        "text" => "Tất cả",
+        "data_id" => "tab_all",
+        "data_status" => "all"
+    ),
+    array(
+        "text" => "Chờ đặt hàng",
+        "data_id" => "tab_cdh",
+        "data_status" => \Order::STATUS_DEPOSITED
+    ),
+    array(
+        "text" => "Đang mua hàng",
+        "data_id" => "tab_ddh",
+        "data_status" => \Order::STATUS_BUYING
+    ),
+    array(
+        "text" => "Đã mua hàng",
+        "data_id" => "tab_dmh",
+        "data_status" => \Order::STATUS_NEGOTIATED
+    ),
+    array(
+        "text" => "Chờ xác nhận",
+        "data_id" => "tab_cxn",
+        "data_status" => \Order::CUSTOMER_CONFIRM_WAIT
+    ),
+//    array(
+//        "text" => "Chờ thanh toán",
+//        "data_id" => "tab_ctt",
+//        "data_status" => \Order::STATUS_NEGOTIATED
+//    ),
+    array(
+        "text" => "Đã thanh toán",
+        "data_id" => "tab_dtt",
+        "data_status" => \Order::STATUS_BOUGHT
+    ),
+    array(
+        "text" => "Hủy / Hết hàng",
+        "data_id" => "tab_hhh",
+        "data_status" => "OUT_OF_STOCK"
+    ),
+);
+$order_maximum_received_once = SystemConfig::retrieveByConfigKey(SystemConfig::ORDER_MAXIMUM_RECEIVED_ONCE);
+$order_maximum_received_a_day = SystemConfig::retrieveByConfigKey(SystemConfig::ORDER_MAXIMUM_RECEIVED_A_DAY);
+$order_maximum_time_to_payment = SystemConfig::retrieveByConfigKey(SystemConfig::ORDER_MAXIMUM_TIME_TO_PAYMENT);
+$order_maximum_to_place = SystemConfig::retrieveByConfigKey(SystemConfig::ORDER_MAXIMUM_TIME_TO_PLACE);
+$order_maximum_time_process = SystemConfig::retrieveByConfigKey(SystemConfig::ORDER_MAXIMUM_TIME_PROCESS);
+$is_change_config = $controller->isAllowed(PERMISSION_PURCHASE_CHANGE_CONFIG);
+$teller_number = isset($teller_number) ? $teller_number : 0;
+$paid_staff_number = isset($paid_staff_number) ? $paid_staff_number : 0;
+
+$config = array(
+    array(
+        "data" => $order_maximum_received_once,
+        "text" => "Số đơn tối đa một lần nhận"
+    ),
+    array(
+        "data" => $order_maximum_received_a_day,
+        "text" => "Số đơn tối đa một ngày nhận"
+    ),
+    array(
+        "data" => $order_maximum_time_to_payment,
+        "text" => "Thời gian tối đa phải đặt hàng (giờ)"
+    )
+);
+$config1 = array(
+    array(
+        "data" => $order_maximum_to_place,
+        "text" => "Thời gian tối đa phải thanh toán (giờ)"
+    ),
+    array(
+        "data" => $order_maximum_time_process,
+        "text" => "Thời gian tối đa phải xử lý đơn hàng (giờ)"
+    )
+);
+
+?>
+<script src="<?php echo $publicPath.'/assets/js/jquery.reveal.js' ?>"></script>
+<script src="<?php echo $publicPath.'/assets/js/process/purchase_manage.js' ?>"></script>
+<script src="<?php echo $publicPath.'/assets/js/jquery.tipTip.js' ?>"></script>
+<script src="<?php echo $publicPath.'/assets/js/jquery.tipTip.minified.js' ?>"></script>
+<link rel="stylesheet" href="<?php echo $publicPath.'/assets/css/order_manage.css' ?>"/>
+<link rel="stylesheet" href="<?php echo $publicPath.'/assets/css/reveal.css' ?>"/>
+<link rel="stylesheet" href="<?php echo $publicPath.'/assets/css/tipTip.css' ?>"/>
+<style>
+
+</style>
+<div id="page-title">
+    <h3>
+        QUẢN LÝ MUA HÀNG
+        <small>
+        </small>
+    </h3>
+    <div id="breadcrumb-right">
+        <div class="float-right _div_statistics">
+             <span>Giao dịch viên : <strong><?php echo $teller_number ?></strong></span>
+             <span>Thanh toán viên : <strong><?php echo $paid_staff_number ?></strong></span>
+             <span>Tổng đơn đang mua : <strong><?php echo $total_order ?></strong></span>
+        </div>
+    </div>
+
+</div>
+<form action="" method="get" id="frm_search">
+    <input name="page" type="hidden" class="_page" value="1">
+    <input name="status" type="hidden" class="_status" data-id="tab_all" value="all">
+</form>
+<div>
+    <table class="_table">
+        <tr>
+            <?php
+            foreach ($config as $cf) {
+
+                if($cf['data'] instanceof SystemConfig ){
+
+            ?>
+            <td class="_text_td"><span><?php echo $cf['text'] ?>:</span></td>
+            <td class="_input_td">
+                <div class="form-input col-md-12 _div_add_inv">
+                    <div class="input-append-wrapper input-append-right">
+                        <div class="input-append bg-green <?php if($is_change_config){ ?>_save_config<?php } ?>"
+                             <?php if(!$is_change_config){ ?>style="cursor: context-menu" <?php } ?>
+                             data-key="<?php echo $cf['data']->getConfigKey() ?>">
+                            <i class="glyph-icon icon-save"></i>
+                        </div>
+                        <div class="append-right">
+                            <input type="text" <?php if(!$is_change_config){ ?>disabled="disabled" <?php } ?> class="_input_config"
+                                   data-key="<?php echo $cf['data']->getConfigKey() ?>"
+                                   value="<?php echo $cf['data']->getConfigValue() ?>" >
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <?php }} ?>
+        </tr>
+        <tr>
+            <?php
+            foreach ($config1 as $cf) {
+                if($cf['data'] instanceof SystemConfig ){
+
+            ?>
+            <td class="_text_td"><span><?php echo $cf['text'] ?>:</span></td>
+            <td class="_input_td">
+                <div class="form-input col-md-12 _div_add_inv">
+                    <div class="input-append-wrapper input-append-right">
+                        <div class="input-append bg-green <?php if($is_change_config){ ?>_save_config<?php } ?>"
+                             <?php if(!$is_change_config){ ?>style="cursor: context-menu" <?php } ?>
+                             data-key="<?php echo $cf['data']->getConfigKey() ?>">
+                            <i class="glyph-icon icon-save"></i>
+                        </div>
+                        <div class="append-right">
+                            <input type="text" <?php if(!$is_change_config){ ?>disabled="disabled" <?php } ?> class="_input_config"
+                                   data-key="<?php echo $cf['data']->getConfigKey() ?>"
+                                   value="<?php echo $cf['data']->getConfigValue() ?>" >
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <?php }} ?>
+            <td></td>
+        </tr>
+    </table>
+</div>
+<div >
+    <div class="example-code" style="margin: auto; width: 94%;">
+
+        <div class="tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
+            <ul class="nav nav-tabs">
+                <?php
+                foreach ($tab_list as $tab) {
+                    ?>
+                    <li class="<?php if($tab['data_status'] == "all"){ ?>active<?php } ?> _tab" data-status="<?php echo $tab['data_status'] ?>" data-id="<?php echo $tab['data_id'] ?>">
+                        <a href="#<?php echo $tab['data_id'] ?>" title="<?php echo $tab['text'] ?>" data-status="<?php echo $tab['data_status'] ?>" data-toggle="tab">
+                            <?php echo $tab['text'] ?>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+            <div class="tab-content">
+                <?php
+                foreach ($tab_list as $tab) {
+
+                    ?>
+                    <div class="tab-pane <?php if($tab['data_status'] == "all"){ ?>active<?php } ?> _div_content_order" data-status="<?php echo $tab['data_status'] ?>" id="<?php echo $tab['data_id'] ?>">
+                        <div class="list-order" style="border: 1px solid rgb(233, 236, 241);">
+                            <table class="table table-hover text-center">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Đơn hàng</th>
+                                    <th>Giá trị</th>
+                                    <th>Người bán</th>
+                                    <th>Người mua</th>
+                                    <th>Giao dịch viên</th>
+                                    <th>Thanh toán viên</th>
+                                </tr>
+                                </thead>
+                                <tbody class="_tbody_content" data-id="<?php echo $tab['data_id'] ?>">
+                                <tr>
+                                    <td colspan=6">
+                                        <h1 style="margin-bottom: 20px">
+                                            <img src="<?php echo \SeuDo\Main::getHomeUrl().'/assets/img/small/loading31.gif' ?>">
+                                        </h1>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                <?php } ?>
+                </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Demo Home</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jqueryui.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <script type="text/javascript" src="js/process/menu.js"></script>
+    <script type="text/javascript" src="js/process/home.js"></script>
+	
+    <script type="text/javascript" src="js/logistic-frontend.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-typo.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-dabao.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/roboto/roboto.css" />
+	<script type="text/javascript">
+        
+    </script>
+</head>
+<body>
+
+    <nav role="navigation" class="background-0E7DBE collapse navbar-collapse bs-navbar-collapse">
+        <div class="margin-auto">
+            <div class="col-lg-12 margin-none padding-none">
+                <ul class="pull-left nav navbar-nav custom-navbar-nav-hover-none col-lg-10">
+                    <li class="padding-left-20">
+                        <a class="font-size-17 font-bold text-uppercase font-color-white" href="">QUẢN LÝ VẬN HÀNH</a>
+                    </li>
+                </ul>
+
+                <div class="pull-right col-lg-2">
+
+                    <div class="cursor-pointer">
+                        <i class="pull-right fa fa-caret-down font-color-white" style="margin-top: 20px; margin-left: 7px;"></i>
+                        <div class="pull-right margin-top-10 avatar" style="background: url('images/gravatar.jpg');"></div>
+                    </div>
+
+                    <div class="pull-right notification pos-relative margin-right-20 margin-top-10">
+                        <i class="fa fa-bell-o pos-absolute"></i>
+                        <span class="badge pos-absolute">3</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="_custom-navbar-nav background-white navbar-default custom-navbar-nav-height border-bottom-ddd" role="navigation">
+        <div class="container-fluid margin-auto custom-navbar-nav-height">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="pull-left custom-navbar-nav-height collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="custom-navbar-nav-height nav navbar-nav custom-navbar-nav">
+
+                <li class="first custom-active navbar-li">
+                    <a class="navbar-nav-a font-bold text-uppercase font-color-0E7DBE" href="#">Dashboard</a>
+                </li>
+
+                <li class="first dropdown navbar-li pos-relative">
+                    <a href="#" class="navbar-nav-a font-color-3E4754 font-bold text-uppercase dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <li><a href="#">Danh sách đơn hàng</a></li>
+                        <li><a href="#">Quản lý mua hàng</a></li>
+                        <li><a href="#">Mua hàng và thanh toán</a></li>
+                        <li><a href="#">Giao hàng</a></li>
+                    </ul>
+                </li>
+
+                <li class="first dropdown navbar-li">
+                    <a href="#" class="navbar-nav-a font-color-3E4754 font-bold text-uppercase dropdown-toggle" data-toggle="dropdown">Người dùng <b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div><!-- /.navbar-collapse -->
+            <div class="pull-right col-lg-4">
+            <div class="pull-right panel-form-search">
+                <input class="pull-left input-form-search" type="text" placeholder="Nhập mã vạch, ENTER để xem chi tiết" />
+                <a class="pull-right btn-submit"><i class="font-color-white fa fa-reply"></i></a>
+            </div>
+        </div>
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="col-lg-12 margin-top-1" id="main-content">
+        <div class="margin-auto">
+            <div class="col-lg-3 sidebar-left">
+                <h4 class="text-uppercase font-bold margin-bottom-30">Quét mã vạch</h4>
+
+                <div class="custom-select-box pos-relative">
+                    <div class="custom-panel-select-box pull-left w100 z-index-0">
+                        <div class="pull-left title-select-box font-bold">HÀNH ĐỘNG</div>
+                        <div class="pull-right arrow-select-box"><i class="fa fa-caret-down"></i></div>
+                    </div>
+
+                    <div class="custom-content-select-box pos-absolute hidden">
+                        <h5 class="caption text-uppercase">Kho quảng châu</h5>
+                        <ul class="custom-list-group-item">
+                            <li data-value="NHẬP - CNGZ">NHẬP - CNGZ</li>
+                            <li data-value="NHẬP - CNGZ">NHẬP - CNGZ</li>
+                        </ul>
+                        <h5 class="caption text-uppercase">Kho hà nội</h5>
+                        <ul class="custom-list-group-item">
+                            <li data-value="NHẬP - DCHN">NHẬP - DCHN</li>
+                            <li data-value="XUẤT - DCHN">XUẤT - DCHN</li>
+                            <li data-value="NHẬP - VNHN">NHẬP - VNHN</li>
+                            <li data-value="XUẤT - VNHN">XUẤT - VNHN</li>
+                        </ul>
+                        <h5 class="caption text-uppercase">Kho sài gòn</h5>
+                        <ul class="custom-list-group-item">
+                            <li data-value="NHẬP - VNSG">NHẬP - VNSG</li>
+                            <li data-value="XUẤT - VNSG">XUẤT - VNSG</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <input disabled="disabled" class="margin-top-12 custom-input _input-barcode" type="text" value="" placeholder="NHẬP MÃ VẠCH" />
+
+                <div class="context-total-barcode"><span class="total-barcode font-bold">34</span> mã đã quét</div>
+
+                <div class="box-sidebar">
+                    <h4 class="title-box-sidebar font-bold">MÃ BỘ PHẬN</h4>
+                    <ul class="list-box-sidebar">
+                        <li><span class="font-bold">CNGZ</span> - <span class="font-color-898989">Kho nhận Quảng Châu</span></li>
+                        <li><span class="font-bold">VNHN</span> - <span class="font-color-898989">Kho phân phối Hà Nội</span></li>
+                        <li><span class="font-bold">DCHN</span> - <span class="font-color-898989">Phòng kiểm hàng Hà Nội</span></li>
+                        <li><span class="font-bold">VNSG</span> - <span class="font-color-898989">Kho phân phối Sài Gòn</span></li>
+                    </ul>
+                </div>
+
+                <div class="box-sidebar">
+                    <h4 class="title-box-sidebar font-bold">HÀNH ĐỘNG</h4>
+                    <ul class="list-box-sidebar">
+                        <li><span class="font-bold">NHẬP</span> - <span class="font-color-898989">Nhập kho hoặc Bắt đầu vào một khâu</span></li>
+                        <li><span class="font-bold">XUẤT</span> - <span class="font-color-898989">Xuất kho hoặc Ra khỏi một khâu</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 h100 pos-relative">
+                <div class="primary background-white">
+                    <h4 class="title-column text-uppercase font-bold">Kết quả quét</h4>
+                    <div class="box-primary pos-relative">
+                        <ul class="pull-left list-box-primary">
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">11</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold font-color-ec0423"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            <a target="_blank" class="" href="" title="seudo.vn">seudo.vn</a>
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">10</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            <a target="_blank" class="" href="" title="orderhang.com">orderhang.com</a>
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">9</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            <a target="_blank" class="" href="" title="orderhang.com">orderhang.com</a>
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">8</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            <a target="_blank" class="" href="" title="orderhang.com">orderhang.com</a>
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">7</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            <a target="_blank" class="" href="" title="orderhang.com">orderhang.com</a>
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">6</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            <a target="_blank" class="" href="" title="orderhang.com">orderhang.com</a>
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">5</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            <a target="_blank" class="" href="" title="orderhang.com">orderhang.com</a>
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">4</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            <a target="_blank" class="" href="" title="orderhang.com">orderhang.com</a>
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">3</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            <a target="_blank" class="" href="" title="orderhang.com">orderhang.com</a>
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary">
+                                <div class="pull-left box-left-primary">2</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="link-box-primary">
+                                            vận đơn
+                                        </div>
+                                        <div class="time-box-primary">10:15</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="item-box-primary border-radius-red">
+                                <div class="pull-left box-left-primary">1</div>
+                                <div class="pull-right box-right-primary">
+                                    <div class="pull-left title-box-primary">
+                                        <div class="code text-uppercase font-bold"><span>S/HI12_2443646</span></div>
+                                        <div class="store text-uppercase">NHẬP / VNHN</div>
+                                    </div>
+
+                                    <div class="pull-right des-box-primary text-right">
+                                        <div class="font-color-ec0423 text-center">
+                                            <i class="fa fa-warning padding-top-9"></i><br />
+                                            Lỗi dữ liệu, vui lòng thử lại
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                        <div class="pos-absolute box-primary-line"></div>
+
+                        <div class="box-footer-primary pos-absolute">
+                            <ul class="list-item-footer-primary">
+                                <li class="font-bold cursor-pointer export-excel"><i class="fa fa-file-excel-o"></i>XUẤT EXCEL</li>
+                                <li class="font-bold cursor-pointer clear-result"><i class="fa fa-times"></i>XÓA KQ QUÉT</li>
+                                <li class="link-popup">
+									<button class="btn btn-blue " data-toggle="modal" data-target="#popupbarcode" type="button"><span class="uppercase font-white font-bold">Đóng bao</span></button>
+								</li>
+                            </ul>
+							
+							<!--     modal box-->
+								 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupbarcode" class="modal fade popupbarcode" >
+									  <div class="modal-dialog">
+										<div class="modal-content step1">
+										  <div class="modal-header">
+											<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+											<h4 id="myModalLabel" class="modal-title"><p class="title">Đóng bao 34 mã vạch đã quét</p></h4>
+										  </div>
+										  <div class="modal-body">
+												<div class="module-float main-ct-step1">
+													<div class="button-default click-new"><i class="fa fa-plus"></i><span class="uppercase">Tạo bao mới</span></div>
+													<span class="or">hoặc</span>
+													<div class="select-boostrap">
+														<select class="selectpicker">
+															<option value="0" class="hidden">Chọn bao hôm nay</option>
+															<option>2121hj2121</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+															<option>436463hjhj3232</option>
+														</select>
+													</div>
+													<button class="btn btn-blue next click-step-finish" type="button"><span class="uppercase font-white font-bold">Tiếp</span><span class="arrow-next"></span></button>
+												</div>
+												<div class="module-float main-ct-step3">
+													<div class="col-lg-6 col-md-6">
+														<div class="module-float item">
+															<form action="" class="module-float">
+																<div class="col-lg-3 col-md-3">
+																	<p class="title one">Công ty<span class="font-red"><sup>*</sup></span></p>
+																</div>
+																<div class="col-lg-4 col-md-4">
+																	<p class="uppercase"><input class="radio" checked="checked" type="radio" name="sex" value="1" >ali</p>
+																</div>
+																<div class="col-lg-5 col-md-5">
+																	<p class="uppercase"><input class="radio" type="radio" name="sex" value="">tpc</p>
+																</div>
+															</form>
+														</div>
+														<div class="module-float item">
+															<form action="" class="module-float">
+																<div class="col-lg-3 col-md-3">
+																	<p class=" title one">Tính chất<span class="font-red"><sup>*</sup></span></p>
+																</div>
+																<div class="col-lg-4 col-md-4">
+																	<p class="uppercase"><input class="radio" checked="checked" type="radio" name="sex" value="1" >ghép kho</p>
+																</div>
+																<div class="col-lg-5 col-md-5">
+																	<p class="uppercase"><input class="radio" type="radio" name="sex" value="1" >nguyên bao khách</p>
+																</div>
+															</form>
+														</div>
+														<div class="module-float item">
+															<div class="col-lg-3 col-md-3">
+																<p class="title">Chuyển tới<span class="font-red"><sup>*</sup></span></p>
+															</div>
+															<div class="col-lg-9 col-md-9">
+																<div class="select-boostrap module-float">
+																	<select class="selectpicker">
+																		<option value="0" class="hidden">Chọn kho/nhà khách</option>
+																		<option>2121hj2121</option>
+																		<option>436463hjhj3232</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="module-float item">
+															<div class="col-lg-3 col-md-3">
+																<p class="title one">Phương thức VC<span class="font-red"><sup>*</sup></span></p>
+															</div>
+															<div class="col-lg-9 col-md-9">
+																<div class="select-boostrap module-float">
+																	<select class="selectpicker">
+																		<option value="0" class="hidden">Chọn phương thức VC</option>
+																		<option>2121hj2121</option>
+																		<option>436463hjhj3232</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="module-float item">
+															<div class="col-lg-3 col-md-3">
+																<p class="title">Đối tác VC<span class="font-red"><sup>*</sup></span></p>
+															</div>
+															<div class="col-lg-9 col-md-9">
+																<div class="select-boostrap module-float">
+																	<select class="selectpicker">
+																		<option value="0" class="hidden">Chọn đối tác VC</option>
+																		<option>2121hj2121</option>
+																		<option>436463hjhj3232</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="module-float item" >
+															<div class="col-lg-3 col-md-3">
+																<p class=" title one">Bao hàng có<span class="font-red"><sup>*</sup></span></p>
+															</div>
+															<div class="col-lg-4 col-md-4">
+																<p class="uppercase"><input class="radio" type="checkbox">Đóng ghỗ</p>
+															</div>
+															<div class="col-lg-5 col-md-5">
+																<p class="uppercase"><input class="radio" type="checkbox">Dễ vỡ</p>
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-6 col-md-6 right">
+														<div class="module-float">
+															<div class="col-lg-3 col-md-3">
+																<p class=" title">Ghi chú</p>
+															</div>
+															<div class="col-lg-9 col-md-9">
+																	<textarea class="form-control form-mytextarea" placeholder="Nội dung" rows="3"></textarea>
+															</div>
+														</div>
+														<div class="module-float ">
+															<div class="col-lg-3 col-md-3">
+																<p class=" title one">Cân nặng</p>
+																<p class="font-gray">(kg)</p>
+															</div>
+															<div class="col-lg-3 col-md-3">
+																<input type="text" id="exampleInput" class="form-control form-myinput" placeholder="">
+															</div>
+															<div class="col-lg-4 col-md-4 pull-right">
+																<button class="btn btn-blue next" type="button"><span class="uppercase font-white font-bold">Tiếp</span><span class="arrow-next"></span></button>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="module-float main-ct-step4">
+													<div class="button-default click-new"><i class="fa fa-plus"></i><span class="uppercase">Tạo bao mới</span></div>
+													<span class="or">hoặc</span>
+													<div class="select-boostrap">
+														<select class="selectpicker">
+															<option value="0" class="hidden">Chọn bao hôm nay</option>
+															<option>2121hj2121</option>
+															<option>436463hjhj3232</option>
+														</select>
+													</div>
+													<button class="btn btn-blue next click-step-finish" type="button"><span class="uppercase font-white font-bold">Tiếp</span><span class="arrow-next"></span></button>
+												</div>
+										  </div>
+										  
+										</div>
+									  </div>
+								 </div>
+							<!--        end modal box-->
+							
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 sidebar-right margin-none">
+                    <div class="box-bag">
+                    <h4 class="title-bag font-bold text-uppercase">Bao hàng trong ngày</h4>
+
+                    <div class="panel-list-bag">
+                        <div class="_sub-title-bag sub-title-bag text-uppercase font-bold">ALIMAMA (20) <i class="margin-left-8 fa fa-caret-down"></i></div>
+                        <ul class="list-bag">
+                            <li class="item-bag">
+                                <div class="col-lg-10 item-bag-left">
+                                    <div class="item-bag-code"><a href="#" data-target="#popupbarcodeedit" data-toggle="modal"><span>AC1_24051</span></a> / CNGZ</div>
+                                    <div class="item-bag-barcode">68 mã vạch</div>
+									
+                                </div>
+									<!--     modal box-->
+									 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupbarcodeedit" class="modal fade popupbarcode" >
+										  <div class="modal-dialog">
+											<div class="modal-content step1">
+											  <div class="modal-header">
+												<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+												<h4 id="myModalLabel" class="modal-title"><p class="title">Sửa thông tin bao 323hjh43</p></h4>
+											  </div>
+											  <div class="modal-body">
+													<div class="module-float main-ct-step3 block">
+														<div class="col-lg-6 col-md-6">
+														<div class="module-float item">
+															<form action="" class="module-float">
+																<div class="col-lg-3 col-md-3">
+																	<p class="title one">Công ty<span class="font-red"><sup>*</sup></span></p>
+																</div>
+																<div class="col-lg-4 col-md-4">
+																	<p class="uppercase"><input class="radio" checked="checked" type="radio" name="sex" value="1" >ali</p>
+																</div>
+																<div class="col-lg-5 col-md-5">
+																	<p class="uppercase"><input class="radio" type="radio" name="sex" value="">tpc</p>
+																</div>
+															</form>
+														</div>
+														<div class="module-float item">
+															<form action="" class="module-float">
+																<div class="col-lg-3 col-md-3">
+																	<p class=" title one">Tính chất<span class="font-red"><sup>*</sup></span></p>
+																</div>
+																<div class="col-lg-4 col-md-4">
+																	<p class="uppercase"><input class="radio" checked="checked" type="radio" name="sex" value="1" >ghép kho</p>
+																</div>
+																<div class="col-lg-5 col-md-5">
+																	<p class="uppercase"><input class="radio" type="radio" name="sex" value="1" >nguyên bao khách</p>
+																</div>
+															</form>
+														</div>
+														<div class="module-float item">
+															<div class="col-lg-3 col-md-3">
+																<p class="title">Chuyển tới<span class="font-red"><sup>*</sup></span></p>
+															</div>
+															<div class="col-lg-9 col-md-9">
+																<div class="select-boostrap module-float">
+																	<select class="selectpicker">
+																		<option value="0" class="hidden">Chọn kho/nhà khách</option>
+																		<option>2121hj2121</option>
+																		<option>436463hjhj3232</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="module-float item">
+															<div class="col-lg-3 col-md-3">
+																<p class="title one">Phương thức VC<span class="font-red"><sup>*</sup></span></p>
+															</div>
+															<div class="col-lg-9 col-md-9">
+																<div class="select-boostrap module-float">
+																	<select class="selectpicker">
+																		<option value="0" class="hidden">Chọn phương thức VC</option>
+																		<option>2121hj2121</option>
+																		<option>436463hjhj3232</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="module-float item">
+															<div class="col-lg-3 col-md-3">
+																<p class="title">Đối tác VC<span class="font-red"><sup>*</sup></span></p>
+															</div>
+															<div class="col-lg-9 col-md-9">
+																<div class="select-boostrap module-float">
+																	<select class="selectpicker">
+																		<option value="0" class="hidden">Chọn đối tác VC</option>
+																		<option>2121hj2121</option>
+																		<option>436463hjhj3232</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="module-float item" >
+															<div class="col-lg-3 col-md-3">
+																<p class=" title one">Bao hàng có<span class="font-red"><sup>*</sup></span></p>
+															</div>
+															<div class="col-lg-4 col-md-4">
+																<p class="uppercase"><input class="radio" type="checkbox">Đóng ghỗ</p>
+															</div>
+															<div class="col-lg-5 col-md-5">
+																<p class="uppercase"><input class="radio" type="checkbox">Dễ vỡ</p>
+															</div>
+														</div>
+													</div>
+														<div class="col-lg-6 col-md-6 right">
+															<div class="module-float">
+																<div class="col-lg-3 col-md-3">
+																	<p class=" title">Ghi chú</p>
+																</div>
+																<div class="col-lg-9 col-md-9">
+																		<textarea class="form-control form-mytextarea" placeholder="Nội dung" rows="3"></textarea>
+																</div>
+															</div>
+															<div class="module-float ">
+																<div class="col-lg-3 col-md-3">
+																	<p class=" title one">Cân nặng</p>
+																	<p class="font-gray">(kg)</p>
+																</div>
+																<div class="col-lg-3 col-md-3">
+																	<input type="text" id="exampleInput" class="form-control form-myinput" placeholder="">
+																</div>
+																<div class="col-lg-4 col-md-4 pull-right">
+																	<button class="btn btn-blue next click-step-finish" type="button"><span class="uppercase font-white font-bold">Lưu</span></button>
+																	
+																</div>
+															</div>
+															<div class="module-float link-item-bottom">
+																<a href="#" class="pull-right">In tem quản lý bao hàng</a>
+															</div>
+														</div>
+													</div>
+													
+											  </div>
+											  
+											</div>
+										  </div>
+									 </div>
+								<!--        end modal box-->
+                                <div class="col-lg-2 item-bag-right item-bag-kg text-right padding-top-9">68<sup><small>kg</small></sup></div>
+                            </li>
+                            <li class="item-bag">
+                                <div class="col-lg-10 item-bag-left">
+                                    <div class="item-bag-code"><a href="#"><span>AC1_24051</span></a> / CNGZ</div>
+                                    <div class="item-bag-barcode">68 mã vạch</div>
+                                </div>
+                                <div class="col-lg-2 item-bag-right item-bag-kg text-right padding-top-9">68<sup><small>kg</small></sup></div>
+                            </li>
+                            <li class="item-bag">
+                                <div class="col-lg-10 item-bag-left">
+                                    <div class="item-bag-code"><a href="#"><span>AC1_24051</span></a> / CNGZ</div>
+                                    <div class="item-bag-barcode">0 mã vạch</div>
+                                </div>
+                                <div class="col-lg-2 item-bag-right item-bag-alert text-center padding-top-3">Chưa có cân nặng</div>
+                            </li>
+                            <li class="item-bag">
+                                <div class="col-lg-10 item-bag-left">
+                                    <div class="item-bag-code"><a href="#"><span>AC1_24051</span></a> / CNGZ</div>
+                                    <div class="item-bag-barcode">0 mã vạch</div>
+                                </div>
+                                <div class="col-lg-2 item-bag-right item-bag-alert text-center padding-top-3">Chưa có cân nặng</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="panel-list-bag">
+                        <div class="_sub-title-bag sub-title-bag text-uppercase font-bold">HOA NAM - TPC (20) <i class="margin-left-8 fa fa-caret-down"></i></div>
+                        <ul class="list-bag">
+                            <li class="item-bag">
+                                <div class="col-lg-10 item-bag-left">
+                                    <div class="item-bag-code"><span>AC1_24051</span> / CNGZ</div>
+                                    <div class="item-bag-barcode">68 mã vạch</div>
+                                </div>
+                                <div class="col-lg-2 item-bag-right item-bag-kg text-right padding-top-9">68<sup><small>kg</small></sup></div>
+                            </li>
+                            <li class="item-bag">
+                                <div class="col-lg-10 item-bag-left">
+                                    <div class="item-bag-code"><span>AC1_24051</span> / CNGZ</div>
+                                    <div class="item-bag-barcode">68 mã vạch</div>
+                                </div>
+                                <div class="col-lg-2 item-bag-right item-bag-kg text-right padding-top-9">68<sup><small>kg</small></sup></div>
+                            </li>
+                            <li class="item-bag">
+                                <div class="col-lg-10 item-bag-left">
+                                    <div class="item-bag-code"><span>AC1_24051</span> / CNGZ</div>
+                                    <div class="item-bag-barcode">0 mã vạch</div>
+                                </div>
+                                <div class="col-lg-2 item-bag-right item-bag-alert text-center padding-top-3">Chưa có cân nặng</div>
+                            </li>
+                            <li class="item-bag">
+                                <div class="col-lg-10 item-bag-left">
+                                    <div class="item-bag-code"><span>AC1_24051</span> / CNGZ</div>
+                                    <div class="item-bag-barcode">0 mã vạch</div>
+                                </div>
+                                <div class="col-lg-2 item-bag-right item-bag-alert text-center padding-top-3">Chưa có cân nặng</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                </div>
+        </div>
+    </div>
+
+</body>
+</html>

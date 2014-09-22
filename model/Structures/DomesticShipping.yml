@@ -1,0 +1,23 @@
+comment:
+    - '#DomesticShipping'
+    - '#Schema for DomesticShipping OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    code: { name: code, type: string, db_type: string, alltypes: [string], ntype: char(20), length: 20, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    user_address_id: { name: user_address_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    user_id: { name: user_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    weight: { name: weight, type: number, db_type: float, alltypes: [float], ntype: 'float(11,2)', length: 11, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0.00', notnull: true, auto_increment: false, extra: '' }
+    warehouse: { name: warehouse, type: string, db_type: string, alltypes: [string], ntype: char(10), length: 10, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    domestic_shipping_fee: { name: domestic_shipping_fee, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    purpose_charge_fee: { name: purpose_charge_fee, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    cod: { name: cod, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    payment_amount: { name: payment_amount, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    transaction_code: { name: transaction_code, type: string, db_type: string, alltypes: [string], ntype: varchar(50), length: 50, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    created_by: { name: created_by, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    shipper_mobile: { name: shipper_mobile, type: string, db_type: string, alltypes: [string], ntype: char(25), length: 25, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    created_time: { name: created_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+    updated_time: { name: updated_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+    status: { name: status, type: string, db_type: string, alltypes: [string], ntype: char(15), length: 15, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: ACTIVE, notnull: true, auto_increment: false, extra: '' }
+    real_cod: { name: real_cod, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: domestic_shipping

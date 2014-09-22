@@ -1,0 +1,136 @@
+.selectCountry{
+    padding: 7px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.selectCountryCmt{
+    padding: 7px;
+    margin-bottom: 10px;
+    width: 70%;
+}
+.password_strength{
+    float: right;
+    color: #BF362A;
+    font-weight: bold;
+}
+.password_strength.password_strength_2 {
+    color: #D84B37;
+}
+.password_strength.password_strength_3 {
+    color: #749619;
+}
+.password_strength.password_strength_4 {
+    color: #A0BA59;
+}
+.uploadavatar .uploadfileface button, .uploadavatar .uploadfile .btn-file, .linkupload input {
+    height: 31px;
+}
+.uploadavatar .uploadfile .btn-file {
+    display: inline-block;
+    margin-top: 25px;
+    padding-top: 10px;
+    position: relative;
+    width: 100%;
+}
+.uploadfile input {
+    height: 6%;
+    left: 13px;
+    opacity: 0;
+    position: absolute;
+    top: 13px;
+    width: 28%;
+}
+.port {
+    border: 1px solid #DDDDDD;
+    height: 300px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    width: 300px;
+}
+._edit{
+    cursor: pointer;
+}
+.img-face img{
+    width: 32px;
+}
+.preview.ui-draggable.top {
+    cursor: move;
+    left: 0 !important;
+    position: relative;
+    visibility: visible;
+    width: 100% !important;
+}
+.preview.ui-draggable.left {
+    cursor: move;
+    height: 100% !important;
+    position: relative;
+    top: 0 !important;
+    visibility: visible;
+}
+p.normal.facebook {
+    padding: 7px 7px;
+    text-transform: none;
+}
+p.normal.facebook .icon-facebook {
+    width: 33px;
+}
+.poiter {
+    cursor: pointer;
+}
+._sms-phone {
+    font-size: 18px;
+    padding: 7px;
+}
+._redBold18 {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+}
+.profile .item-sidebar-menu .menu-title.order span {
+    background: url("../images/icon-footer/box.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.profile .item-sidebar-menu .menu-title.exchange span {
+    background: url("../images/icon-footer/exchange.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.profile .item-sidebar-menu .menu-title.history span {
+    background: url("../images/icon-footer/history.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.profile .item-sidebar-menu .menu-title.user span {
+    background: url("../images/icon-footer/user.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.font-size-14{
+    font-size: 14px;
+}
+.font-size-12{
+    font-size: 12px;
+}
+.profile .adress-cart .item-list .cart-list-content > li.active{
+    background: #ffffca;
+}
+#preview {
+    display: inline-block;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+.normal.his-bottom.pull-right {
+    text-align: right;
+}
+.text-black{
+    color: #032D3E;
+}
+._edit-profile,._edit-disabled,._no-edit-disabled,._edit{
+    cursor: pointer;
+    color: #447BC4;
+}
+._img-edit:hover{
+   background: url("../images/edit.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0)
+}
+.profile .module-inner .module-ct .item-profile .email span {
+    margin-right: 10px !important;
+}
+.no-margin-bot{
+    margin-bottom: 5px !important;
+}

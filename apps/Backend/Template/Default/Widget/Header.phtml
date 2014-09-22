@@ -1,0 +1,201 @@
+<?php
+use SeuDo\Main;
+/** @var \Backend\Controller\BackendBase $controller */
+/** @var  $document */
+$document = $this->document();
+$publicPath = Main::getBackendUrl();
+$publicPathHome = Main::getHomeUrl();
+$assets = new \Flywheel\Asset\Asset('backend');
+$jsPathHome = $publicPathHome . 'assets/js/';
+$jsPath = $publicPath . 'assets/js/';
+$imgPath = $publicPath . 'assets/images/';
+$user = BackendAuth::getInstance()->getUser();
+$items = @$items;
+
+$document->addJs('js/zopim.js', 'BOTTOM');
+$document->addJs('js/zopim.js', 'BOTTOM-USER');
+
+$document->addJsVar('zopim_username',$user->getUsername(),'BOTTOM');
+$document->addJsVar('zopim_email',$user->getEmail(),'BOTTOM');
+$document->addJs('js/getUsernameEmailZopim.js', 'BOTTOM')
+
+?>
+
+
+
+<div class="clearfix" id="page-header">
+<div id="header-logo">
+    <a id="close-sidebar" title="" data-placement="bottom" class="tooltip-button" href="javascript:;" data-original-title="Close sidebar">
+        <i class="glyph-icon icon-caret-left"></i>
+    </a>
+    <a id="rm-close-sidebar" title="" data-placement="bottom" class="tooltip-button hidden" href="javascript:;" data-original-title="Open sidebar">
+        <i class="glyph-icon icon-caret-right"></i>
+    </a>
+    <a id="responsive-open-menu" title="" class="tooltip-button hidden" href="javascript:;" data-original-title="Navigation Menu">
+        <i class="glyph-icon icon-align-justify"></i>
+    </a>
+    Fides Admin <i class="opacity-80">1.1</i>
+    <div class="logo-seudo">
+        <img src="<?php echo $imgPath;?>menu_mini.jpg">
+    </div>
+</div>
+<div class="user-profile dropdown">
+    <a data-toggle="dropdown" class="user-ico clearfix" title="" href="javascript:;">
+        <img width="36" alt="" src="<?php echo \Users::getAvatar32x($user);?>">
+        <span><?php echo $user->getUsername();?></span>
+        <i class="glyph-icon icon-chevron-down"></i>
+    </a>
+    <ul class="dropdown-menu float-right">
+        <li>
+            <a title="" href="<?php echo $controller->createUrl('user/user_profile/edit');?>">
+                <i class="glyph-icon icon-signout font-size-13 mrg5R"></i>
+                <span class="font-bold">Thông tin cá nhân</span>
+            </a>
+        </li>
+        <li>
+            <a title="" href="<?php echo $controller->createUrl('login/logout');?>">
+                <i class="glyph-icon icon-signout font-size-13 mrg5R"></i>
+                <span class="font-bold">Logout</span>
+            </a>
+        </li>
+<!--        <li class="divider"></li>-->
+
+    </ul>
+</div>
+
+<?php if ($items) :?>
+
+<div class="top-icon-bar menubackend-v2">
+<div class="dropdown">
+    <a title="Dashboard" href="<?php echo $controller->createUrl('')?>">
+        <i class="glyph-icon icon-dashboard"></i>
+        Dashboard
+        <i class="glyph-icon icon-double-angle-down arow-down-v2"></i>
+    </a>
+</div>
+
+    <div class="dropdown">
+
+        <a title="Thành viên" href="javascript:;" data-toggle="dropdown">
+            <i class="glyph-icon icon-user"></i>
+            Thành viên
+            <i class="glyph-icon icon-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+            <?php if(isset($items['member'])){
+                for ($i = 0, $size = sizeof($items['member']); $i < $size; ++$i) :
+                    ?>
+            <li>
+                <a href="<?php echo $items['member'][$i]['url']; ?>" title="">
+                    <?php echo $items['member'][$i]['label']; ?>
+                </a>
+            </li>
+            <?php endfor; } ?>
+        </ul>
+    </div>
+
+    <div class="dropdown">
+        <a title="Hệ thống" href="javascript:;" data-toggle="dropdown">
+            <i class="glyph-icon icon-cogs"></i>
+            Hệ thống
+            <i class="glyph-icon icon-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+            <?php if(isset($items['system'])){
+                for ($j = 0, $size = sizeof($items['system']); $j < $size; ++$j) :
+                    ?>
+                    <li>
+                        <a href="<?php echo $items['system'][$j]['url']; ?>" title="">
+                            <?php echo $items['system'][$j]['label']; ?>
+                        </a>
+                    </li>
+            <?php endfor; } ?>
+        </ul>
+    </div>
+    <div class="dropdown">
+        <a title="Đơn hàng" href="javascript:;" data-toggle="dropdown">
+            <i class="glyph-icon icon-file-text"></i>
+            Đơn hàng
+            <i class="glyph-icon icon-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+            <?php if(isset($items['orders'])){
+                for ($k = 0, $size = sizeof($items['orders']); $k < $size; ++$k) :
+                    ?>
+                    <li>
+                        <a href="<?php echo $items['orders'][$k]['url']; ?>" title="">
+                            <?php echo $items['orders'][$k]['label']; ?>
+                        </a>
+                    </li>
+            <?php endfor; } ?>
+        </ul>
+    </div>
+
+    <div class="dropdown">
+        <a title="Giao hàng" href="javascript:;" data-toggle="dropdown">
+            <i class="glyph-icon icon-file-text"></i>
+            Giao hàng
+            <i class="glyph-icon icon-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+            <?php if(isset($items['delivery'])){
+                foreach ($items['delivery'] as $delivery_url) {
+
+                    ?>
+                    <li>
+                        <a href="<?php echo $delivery_url['url']; ?>" title="">
+                            <?php echo $delivery_url['label']; ?>
+                        </a>
+                    </li>
+                <?php } } ?>
+        </ul>
+    </div>
+    <div class="dropdown">
+        <a title="Cộng đồng" href="javascript:;" data-toggle="dropdown">
+            <i class="glyph-icon icon-barcode"></i>
+            Vận hành
+            <i class="glyph-icon icon-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+            <?php if(isset($items['operation'])){
+                for ($l = 0, $size = sizeof($items['operation']); $l < $size; ++$l) :
+                    ?>
+                    <li>
+                        <a href="<?php echo $items['operation'][$l]['url']; ?>" title="">
+                            <?php echo $items['operation'][$l]['label']; ?>
+                        </a>
+                    </li>
+                <?php endfor; } ?>
+        </ul>
+    </div>
+
+    <div class="dropdown">
+        <a title="Khiếu nại" href="javascript:;" data-toggle="dropdown">
+            <i class="glyph-icon icon-barcode"></i>
+            Khiếu nại
+            <i class="glyph-icon icon-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+            <?php if(isset($items['complaint'])){
+                for ($m = 0, $size = sizeof($items['complaint']); $m < $size; ++$m) :
+                    ?>
+                    <li>
+                        <a href="<?php echo $items['complaint'][$m]['url']; ?>" title="">
+                            <?php echo $items['complaint'][$m]['label']; ?>
+                        </a>
+                    </li>
+                <?php endfor; } ?>
+        </ul>
+    </div>
+
+</div>
+
+<?php endif; ?>
+
+</div>
+<!-- #page-header -->
+<div class="infobox warning-bg">
+    <p class="text-center"><i class="glyph-icon icon-exclamation"></i>
+        HỆ THỐNG SEUDO.VN SỐ DƯ TÀI KHOẢN KHÁCH ÂM (< 0), HOẶC SỐ TIỀN TỐI THIỂU CẦN THU ÂM (< 0) CÓ NGHĨA LÀ KHÁCH THIẾU TIỀN
+    </p>
+</div>

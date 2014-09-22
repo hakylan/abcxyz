@@ -1,0 +1,16 @@
+comment:
+    - '#Consumer'
+    - '#Schema for Consumer OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: 'int(11) unsigned', length: 4, fixed: false, unsigned: true, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    name: { name: name, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    description: { name: description, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    status: { name: status, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''ACTIVE'',''INACTIVE'')', length: 8, fixed: false, unsigned: false, values: [ACTIVE, INACTIVE], primary: false, unique: false, default: ACTIVE, notnull: true, auto_increment: false, extra: '' }
+    consumer_key: { name: consumer_key, type: string, db_type: string, alltypes: [string], ntype: char(16), length: 16, fixed: true, unsigned: false, values: {  }, primary: false, unique: true, default: null, notnull: true, auto_increment: false, extra: '' }
+    consumer_secret: { name: consumer_secret, type: string, db_type: string, alltypes: [string], ntype: char(32), length: 32, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: '', notnull: true, auto_increment: false, extra: '' }
+    allowed_ips: { name: allowed_ips, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    created_time: { name: created_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+    modified_time: { name: modified_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+    active_time: { name: active_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: consumer

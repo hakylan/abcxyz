@@ -1,0 +1,146 @@
+<?php
+    use \SeuDo\Main;
+    $document = $this->document();
+    $publicPath = $document->getPublicPath();
+    $publicHomePath = Main::getHomeUrl();
+
+    $jsPath = $publicHomePath.'assets/js/';
+    $jsBackendPath = $publicHomePath.'backend/assets/js/';
+    $cssPath = $publicHomePath.'assets/css/';
+    $imgPath = $publicHomePath.'assets/images/';
+
+    $document->addJs(Main::getUserUrl().'assets/js/handlebars-v1.3.0.js', 'TOP');
+    $document->addJs($jsPath.'process/list_accumulation_score.js',"TOP");
+    $document->addJs($jsPath.'libs/common.js',"TOP");
+    $document->addJs($jsPath.'jquery.scrollTo.min.js',"TOP");
+
+    $document->addCss($cssPath.'style-diemtichluy.css');
+
+    $page = isset($page) ? $page : 1;
+    $userInfo = isset($userInfo) ? $userInfo : array();
+
+//    print_r($userInfo);
+
+?>
+
+
+<form id="_search">
+    <input type="hidden" name="page" value="<?php echo $page; ?>" />
+</form>
+
+<div class="module-content">
+
+    <section class="order-title">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title"><span class="title-page">Bảng điểm tích lũy</span></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="search-order" id="_level"></section>
+
+    <!--    list cart-->
+
+    <section class="module-main-body">
+        <div class="module-top">
+            <div class="col-md-2">
+                <span class="key">STT</span>
+                <span class="key-ct">Thời gian</span>
+            </div>
+            <div class="col-md-2">Đơn hàng</div>
+            <div class="col-md-5">Lí do</div>
+            <div class="col-md-1 text-center">Thay đổi</div>
+            <div class="col-md-2">Tổng tích lũy</div>
+        </div>
+        <div class="module-content" id="_list"></div>
+        <div id="_show-paging" class=""></div>
+    </section>
+
+</div>
+
+
+<script id="_item-row-view-tpl" type="text/x-handlebars-template">
+    <div class="ct-item _item-row-view">
+        <div class="col-md-2">
+            <span class="key">{{stt}}</span>
+        <span class="key-ct">{{date created_time}}</span>
+        </div>
+        <div class="col-md-2">
+            <a href="{{link}}" target="_blank" title="{{object_code}}">{{object_code}}</a>
+        </div>
+        <div class="col-md-5">{{note}}</div>
+        <div class="col-md-1 text-center"><span class="font-blue">{{point}}</span></div>
+        <div class="col-md-2">{{total_point}}</div>
+    </div>
+</script>
+
+<script id="_level-tpl" type="text/x-handlebars-template">
+    <div class="seu-module-ct">
+        <div class="s-title">
+        <p class="normal-blod"><span class="uppercase"><?php echo $userInfo['shorten_fullname']; ?></span> (@<?php echo $userInfo['username']; ?>)</p>
+    </div>
+    <div class="s-content">
+        <div class="row">
+        <div class="col-md-2">
+        <p class="title">Cấp độ:</p>
+    <p class="text-ct bold-blue">{{level_title}}</p>
+    </div>
+    <div class="col-md-2">
+        <p class="title">Điểm tích lũy:</p>
+        <p class="text-ct">{{score}}</p>
+
+        {{#if check_last_level}}
+            <p class="title hidden">(Vip {{_level}}: 0)</p>
+        {{/if}}
+
+    </div>
+    <div class="col-md-2">
+        <p class="title">C.khấu phí mua hàng:</p>
+        <p class="text-ct">{{discount_bought}} %</p>
+
+        {{#if check_last_level}}
+            <p class="title">(Vip {{_level}}: {{_discount_bought}} %)</p>
+        {{/if}}
+    </div>
+    <div class="col-md-2">
+        <p class="title">C.khấu phí kiểm hàng:</p>
+        <p class="text-ct">{{discount_checking}} %</p>
+
+        {{#if check_last_level}}
+            <p class="title">(Vip {{_level}}: {{_discount_checking}}%)</p>
+        {{/if}}
+    </div>
+    <div class="col-md-2">
+        <p class="title">C.khấu phí VC Q.tế:</p>
+        <p class="text-ct">{{discount_transport}} %</p>
+
+        {{#if check_last_level}}
+            <p class="title">(Vip {{_level}}: {{_discount_transport}} %)</p>
+        {{/if}}
+    </div>
+    <div class="col-md-2">
+        <p class="title">Phí DV cố định trên đơn:</p>
+        <p class="text-ct">
+            <span class="_money-amount" data-amount="{{fixed_fee_service}}">
+                {{fixed_fee_service}}
+            </span>
+        </p>
+
+        {{#if check_last_level}}
+            <p class="title">
+            (
+                Vip {{_level}}:
+                 <span class="_money-amount" data-amount="{{_fixed_fee_service}}">
+                    {{_fixed_fee_service}}
+                </span>
+            )
+            </p>
+        {{/if}}
+    </div>
+
+    </div>
+    </div>
+
+    </div>
+</script>

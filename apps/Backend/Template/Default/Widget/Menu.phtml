@@ -1,0 +1,185 @@
+<?php
+/** @var \Backend\Controller\BackendBase $controller */
+/** @var $document */
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$is_view_order_manage = $controller->isAllowed(PERMISSION_ORDER_VIEW_ORDER_MANAGE);
+$is_view_purchase_manage = $controller->isAllowed(PERMISSION_ORDER_VIEW_PURCHASE_MANAGE);
+$is_purchase_order = $controller->isAllowed(PERMISSION_PURCHASE_ORDER);
+$is_order_payment = $controller->isAllowed(PERMISSION_ORDER_PAYMENT);
+?>
+
+
+<div id="page-sidebar" class="scrollable-content">
+<div id="sidebar-menu">
+<ul>
+    <li>
+        <a href="<?php echo $this->createUrl()?>" title="Dashboard">
+            <i class="glyph-icon icon-home"></i>
+            Dashboard
+        </a>
+    </li>
+    <li>
+        <a href="javascript:;" title="Components">
+            <i class="glyph-icon icon-user"></i>
+            Thành viên
+        </a>
+        <ul>
+            <li>
+                <a href="<?php echo $this->createUrl('user/default') ?>" title="Dashboard panels">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Quản lý thành viên
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->createUrl('user/add') ?>" title="Social boxes">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Thêm mới thành viên
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="javascript:;" title="Systems">
+            <i class="glyph-icon icon-cogs"></i>
+            Hệ thống
+        </a>
+        <ul>
+            <li>
+                <a href="<?php echo \SeuDo\Main::getRouter('backend')->createUrl("ExchangeRate/default")?>" title="Quản lý tỷ giá">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Quản lý tỷ giá
+                </a>
+            </li>
+            <li>
+                <a title="Phân quyền" href="<?php echo $this->createUrl('role') ?>">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Phân quyền
+                </a>
+            </li>
+            <li>
+                <a title="Location" href="<?php echo $this->createUrl('location') ?>">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Location
+                </a>
+            </li>
+            <li>
+                <a title="Dịch vụ mua hàng" href="<?php echo $this->createUrl('serviceBuying') ?>">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Biểu phí mua hàng
+                </a>
+            </li>
+            <li>
+                <a title="Dịch vụ kiểm hàng" href="<?php echo $this->createUrl('serviceChecking') ?>">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Biểu phí kiểm hàng
+                </a>
+            </li>
+            <li>
+                <a title="Dịch vụ chuyển hàng" href="<?php echo $this->createUrl('serviceShipping') ?>">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Biểu phí chuyển hàng
+                </a>
+            </li>
+           <li>
+                <a title="Dịch vụ đóng gói" href="<?php echo $this->createUrl('servicePacking') ?>">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Biểu phí đóng gói
+                </a>
+            </li>
+            <li>
+                <a title="Dịch vụ đóng gỗ" href="<?php echo $this->createUrl('serviceFixedFee') ?>">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Biểu phí dịch vụ cố định
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="javascript:;" title="Đơn hàng">
+            <i class="glyph-icon icon-book"></i>
+            Đơn hàng
+        </a>
+        <ul>
+            <?php if($is_view_order_manage){ ?>
+            <li>
+                <a href="<?php echo $controller->createUrl('order_manage/default')?>" title="Quản lý đơn hàng">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Quản lý đơn hàng
+                </a>
+            </li>
+            <?php }
+            if($is_view_purchase_manage){
+            ?>
+            <li>
+                <a href="<?php echo $controller->createUrl('purchase_manage/default')?>" title="Quản lý mua hàng">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Quản lý mua hàng
+                </a>
+            </li>
+            <?php } ?>
+            <?php if($is_purchase_order || $is_order_payment){ ?>
+            <li>
+                <a href="<?php echo $controller->createUrl('OrderPaid/Default')?>" title="Mua hàng & thanh toán">
+                    <i class="glyph-icon icon-chevron-right"></i>
+                    Mua hàng & thanh toán
+                </a>
+            </li>
+            <?php } ?>
+
+        </ul>
+    </li>
+
+    <li>
+        <a href="javascript:;" title="Đơn hàng">
+            <i class="glyph-icon icon-book"></i>
+            Vận Hành
+        </a>
+        <ul>
+            <?php if($controller->isAllowed(PERMISSION_UPLOAD_BARCODE)) :?>
+                <li>
+                    <a href="<?php echo $controller->createUrl('barcode/file/upload_page')?>" title="Upload file mã vạch">
+                        <i class="glyph-icon icon-chevron-right"></i>
+                        Upload file mã vạch
+                    </a>
+                </li>
+            <?php endif; ?>
+            <?php if($controller->isAllowed(PERMISSION_VIEW_BARCODE_TRACKING)) :?>
+                <li>
+                    <a href="<?php echo $controller->createUrl('barcode/history')?>" title="Lịch sử mã vạch">
+                        <i class="glyph-icon icon-chevron-right"></i>
+                        Lịch sử mã vạch
+                    </a>
+                </li>
+            <?php endif; ?>
+            <?php if ($controller->isAllowed(PERMISSION_VIEW_UPLOADED_BARCODE_SCAN_FILES)) : ?>
+                <li>
+                    <a href="<?php echo $controller->createUrl('barcode/file/history')?>" title="File bắn mã vạch">
+                        <i class="glyph-icon icon-chevron-right"></i>
+                        File bắn mã vạch
+                    </a>
+                </li>
+            <?php endif; ?>
+
+        </ul>
+    </li>
+</ul>
+<div class="divider mrg5T mobile-hidden"></div>
+<div class="text-center mobile-hidden">
+    <div class="button-group display-inline">
+        <a href="javascript:;" class="btn medium bg-green tooltip-button" data-placement="top" title="Messages">
+            <i class="glyph-icon icon-flag"></i>
+        </a>
+        <a href="javascript:;" class="btn medium bg-green tooltip-button" data-placement="top" title="Mailbox">
+            <i class="glyph-icon icon-inbox"></i>
+        </a>
+        <a href="javascript:;" class="btn medium bg-green tooltip-button" data-placement="top" title="Content">
+            <i class="glyph-icon icon-hdd"></i>
+        </a>
+    </div>
+
+</div>
+</div>
+
+</div>
+<!-- #page-sidebar -->

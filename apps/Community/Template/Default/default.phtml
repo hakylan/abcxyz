@@ -1,0 +1,88 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+$home_Url = \Flywheel\Config\ConfigHandler::get('url.home');
+
+
+$cmyAssets = new \Flywheel\Asset\Asset('community');
+$cmyAssets->css(
+    array(
+        'bootstrap.min.css', 'mytypo.css', 'header.css', 'footer.css', 'style.css'
+    )
+);
+$cmyAssets->js(
+    array(
+        'jquery-1.10.2.min.js', 'bootstrap.min.js', 'jquery.raty.js', 'notify.min.js', 'notify-bootstrap.js', 'community.js'
+    )
+);
+
+$cmnAssets = new \Flywheel\Asset\Asset('common');
+$cmnAssets->js(array('all.js', 'process/login_facebook.js', 'owl.carousel.min.js'));
+$cmnAssets->css(array('owl.carousel.css', 'owl.theme.css','seudo.css','style.css','header.css'));
+?>
+<!DOCTYPE html>
+<html xmlns:fb="http://ogp.me/ns/fb#">
+<head>
+    <title><?php echo $document->title != '' ? $document->title : 'Seudo.vn' ?></title>
+
+    <meta property="fb:app_id" content="1449847118569980"/>
+    <?php
+    $cmyAssets->display('css');
+    $cmyAssets->display('js');
+    $cmnAssets->display('js');
+    $cmnAssets->display('css');?>
+    <script>
+        var BASE_URL = '<?php echo $controller->createUrl('/');?>';
+        var url_login = '<?php echo $home_Url.'Login/login';?>';
+        var url_register = '<?php echo $home_Url.'Register/default';?>';
+        var LoginFacebookUrl = '<?php echo $home_Url.'ConnectFacebook';?>';
+    </script>
+
+</head>
+<body>
+<!--  Header -->
+<?php
+$this->widget('app.Widget.Header', array(
+    'user' => CommunityAuth::getInstance()->getUser()
+));
+?>
+<!-- End Header -->
+
+
+<!-- Main Content -->
+<?php echo $buffer; ?>
+<!-- End Content -->
+
+<!-- Footer -->
+<?php $this->widget('app.Widget.Footer'); ?>
+<!-- End footer -->
+
+<div id="fb-root"></div>
+
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '1449847118569980',
+            status: true,
+            xfbml: true
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+</body>
+
+
+</html>

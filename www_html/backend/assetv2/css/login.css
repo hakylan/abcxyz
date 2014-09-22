@@ -1,0 +1,40 @@
+.login-container {
+    padding-top: 30px;
+}
+
+#login-form {
+    background-color: #fff;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+#login-form .login-block {
+    padding: 10px 30px;
+}
+
+#login-form .login-block:first-child {
+    padding-top: 30px;
+}
+
+#login-form #login-error {
+    padding-bottom: 0;
+}
+
+#login-form .login-block:last-child {
+    padding-bottom: 30px;
+}
+
+#login-form #login-captcha {
+    background-color: #f6f7f8;
+}
+
+#login-form #login-captcha img {
+    width: 100%;
+}
+
+#login-form #login-captcha .form-group {
+    margin: 5px 0;
+}
+
+#login-form #login-button button {
+    width: 100%;
+}

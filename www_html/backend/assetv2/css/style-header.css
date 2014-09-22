@@ -1,0 +1,203 @@
+.note-page{
+    background: #fcf8e3;
+    padding-top: 10px;
+    padding-bottom: 6px;
+}
+.note-page i{
+    margin-right: 5px;
+}
+.header .header-top{
+    background: #d92026;
+    height: 50px;
+}
+.header .header-top .logo{
+     height: 50px;
+ }
+.header .header-top .logo a{
+    float: left;
+    width: 100%;
+    height: 100%;
+    background: url("../images/LogoSeuDo1_ICO.ico") no-repeat scroll left -3px / 50px 50px rgba(0, 0, 0, 0) ;
+}
+.header-top .input-search{
+    margin-top: 10px;
+    position: relative;
+}
+.header-top .input-search input{
+    border: none;
+    height: 30px;
+    box-shadow: none;
+}
+.header-top .input-search a{
+    position: absolute;
+    top: 0px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: #b1171c;
+}
+.header-top .input-search a span{
+    height: 15px;
+    left: 7px;
+    position: absolute;
+    top: 9px;
+    width: 18px;
+    background: url("../images/icons/next-search.png") no-repeat  ;
+}
+.seu-menu{
+    height: 45px;
+    border-bottom: 1px solid #dddddd;
+    background: #fff;
+}
+.seu-main-menu li > a {
+    padding: 13px 0px;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+}
+.seu-main-menu > ul > li > a,
+.seu-main-menu > ul > li > a:focus,
+.seu-main-menu > ul > li > a:hover {
+    background: none !important;
+}
+.seu-main-menu li.active > a:hover,
+.seu-main-menu li.active > a:focus,
+.seu-main-menu li.active > a {
+    color: #d92026;
+    border-bottom: 2px solid #d92026;
+    padding-bottom: 10px;
+}
+.seu-main-menu li > a .caret{
+    margin-top: -1px;
+}
+.seu-main-menu > ul{
+    margin-left: -30px;
+}
+.seu-main-menu > ul > li{
+    padding: 0 17px;
+}
+.seu-main-menu > ul > li:focus,
+.seu-main-menu > ul > li:hover{
+    background:  #e7e7e7;
+}
+.seu-menu .note-alert{
+    padding-top: 11px;
+}
+.seu-menu .note-alert i{
+    margin-right: 5px;
+}
+.seu-menu ul.dropdown-menu{
+    border-bottom: 3px solid #D92026;
+    border-radius: 0;
+    border-top: medium none #EEEEEE;
+    font-size: 12px;
+    min-width: 200px;
+    padding-bottom: 10px;
+    padding-top: 15px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.275);
+}
+.seu-menu ul.dropdown-menu li{
+    padding: 2px 0px ;
+    position: relative;
+}
+.seu-menu ul.dropdown-menu li a{
+    text-transform: none;
+    padding: 5px 8px;
+    font-weight: normal;
+}
+.seu-menu .dropdown-menu-item-arrow{
+    bottom: -12px;
+    color: #ffffff;
+    font-size: 18px;
+    left: 10px;
+    position: absolute;
+    z-index: 99999;
+}
+.seu-menu ul.dropdown-menu li a:hover{
+    color: #fff;
+    background: #D92026;
+}
+.seu-menu ul.dropdown-menu li a:hover span{
+    color: #fff;
+    font-weight: bold;
+}
+.user-profile > a img {
+    border: 2px solid #fff;
+    border-radius: 25px;
+    height: 32px;
+    left: 0;
+    position: absolute;
+    top: 10px;
+    width: 32px;
+}
+
+/*style menu user*/
+.form-input-icon {
+    position: relative;
+}
+
+.form-input-icon input {
+    padding-left: 32px;
+}
+
+.form-input-icon .fa {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    height: 24px;
+    line-height: 24px;
+    min-width: 24px;
+    text-align: center;
+    border: 0;
+}
+
+.user-profile > a{
+    color: #fff;
+    font-weight: bold;
+    height: 50px;
+    padding-left: 40px;
+    padding-top: 15px;
+    position: relative;
+}
+.user-profile > a:focus,
+.user-profile > a:hover{
+    text-decoration: none;
+}
+.user-profile{
+    height: 50px;
+    float: right;
+    min-width: 150px;
+}
+.user-profile .dropdown-menu{
+    padding: 0;
+    margin: 0;
+}
+.user-profile .dropdown-menu .dropdown-arrow{
+    color: #fff;
+    font-size: 20px;
+    position: absolute;
+    right: 6px;
+    top: -8px;
+}
+.user-profile .dropdown-menu > li > a{
+     padding-top: 5px;
+     padding-bottom: 5px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.user-profile .dropdown-menu > li:last-child > a{
+    border-radius: 0 0 2px 2px;
+}
+
+/*menu chat block*/
+
+.header.menu-chat .header-top{
+    padding-right: 300px !important;
+}
+/* end menu chat block*/
+
+/*Style footer*/
+.footer{
+    min-height: 50px;
+}
+/*end Style footer*/

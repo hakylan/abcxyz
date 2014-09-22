@@ -1,0 +1,538 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 6/3/14
+ * Time: 2:25 PM
+ */
+$document = $controller->document();
+$document->addCss("css/style-quanlygiaohang.css");
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs('js/process/delivery.js', 'TOP');
+$document->addJs('js/autoNumeric.js');
+$address_ids = isset($address_ids) ? $address_ids : array();
+$document->addJsCode('
+    var user_template = Handlebars.compile($("#_user_info").html());
+    var order_template = Handlebars.compile($("#_order_info").html());
+    var address_template = Handlebars.compile($("#_address_info").html());
+    ',
+    'BOTTOM',
+    'standard'
+);
+$searchFrm = new \Flywheel\Html\Form('frm_search', $this->createUrl('delivery_manage/default'), 'GET');
+$searchFrm->setHtmlOption(array(
+    'id' => '_frm_search'
+));
+$searchFrm->beginForm();
+
+$page = isset($page) ? $page : 1;
+$warehouse = isset($warehouse) ? $warehouse : "all";
+$address = isset($address) ? $address : "";
+$customer = isset($customer) ? $customer : "";
+?>
+<div class="menu-tab module-float">
+    <div class="row">
+        <div class="col-lg-3 col-md-3">
+            <div class="module-float v2-menu">
+                <ul class="module-float">
+                    <li class="<?php if($warehouse == "all"){ echo "active";} ?> _li_warehouse">
+                        <a  href="javascript:void(0)" class="_warehouse" data-value="all">Tất cả<span class="arrow"></span></a>
+                    </li>
+                    <li class="<?php if($warehouse == "VNHN"){ echo "active";} ?> _li_warehouse">
+                        <a  href="javascript:void(0)" class="_warehouse" data-value="VNHN">VNHN<span class="arrow"></span></a>
+                    </li>
+                    <li class="<?php if($warehouse == "VNSG"){ echo "active";} ?> _li_warehouse">
+                        <a  href="javascript:void(0)" class="_warehouse" data-value="VNSG">VNSG<span class="arrow"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 search">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <p class="font-gray">địa chỉ:</p>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <input type="hidden" name="warehouse" class="_warehouse_search" value="<?php echo $warehouse ?>"/>
+                    <input type="hidden" name="page" class="_page" value="<?php echo $page ?>"/>
+                    <input type="text" placeholder="Nhập tên quận/huyện hoặc tỉnh/thành phố..." value="<?php echo $address ?>"
+                           class="form-control form-myinput _address_search" name="address">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 search">
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <p class="font-gray">Khách:</p>
+                </div>
+                <div class="col-lg-10 col-md-10">
+                    <input type="text" placeholder="Nhập mã hoặc tên đăng nhập..." value="<?php echo $customer ?>"
+                           class="form-control form-myinput _customer_search" name="customer">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1 col-md-1 search-submit">
+            <div class="module-float">
+                <a href="javascript:void(0)" class="btn-reder _btn_filter">Tìm kiếm</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<?php $searchFrm->endForm(); ?>
+<!--<div class="module-float link-bottom">-->
+<!--    <div class="pull-right">-->
+<!--        <div class="module-title">-->
+<!--         <div class="pull-right button-default"><i class="fa fa-file-excel-o"></i><span class="uppercase">Đính file xuất kho</span></div>-->
+<!--        </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<script id="_order_info" type="text/x-handlebars-template">
+
+    {{#each orders}}
+        <div class="module-float item-ct {{#if is_disabled}}opacity{{/if}} _order_detail" data-request-delivery="{{is_confirm_delivery}}"
+             data-is-out="{{is_out}}" data-order-id="{{id}}">
+            <div class="col-lg-3 col-md-3 left">
+                <span><input type="checkbox" class="_checkbox_order" data-address-id="{{user_address_id}}" data-code="{{code}}" data-order-id="{{id}}" value="{{id}}"
+                    {{#if is_disabled}}disabled="disabled"{{else}}checked="checked"{{/if}} ></span>
+                <p ><a href="{{backend_detail_link}}" target="_blank">{{code}}</a></p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="font _status_order" data-order-id="{{id}}">{{status_title}}</p>
+            </div>
+            <div class="col-lg-1 col-md-1">
+                <p class="text-center font">{{current_warehouse}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="text-center uppercase _warehouse_status" data-order-id="{{id}}">{{warehouse_status_title}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="text-center">{{recive_quantity}} SP / {{weight}}kg</p>
+            </div>
+            <div class="col-lg-2 col-md-2 no-opacity">
+                {{#if is_confirm_delivery}}
+                    {{#if is_out}}
+                    <p class="text-center  font-gray">{{confirm_delivery_time_format}}</p>
+                    {{else}}
+                        <p class="text-center _p_refresh_order" data-order-id="{{id}}">
+                            <a class="refresh _refresh_order" data-order-id="{{id}}" href="javascript:void(0)">
+                                <i class="fa fa-refresh"></i> Refresh</a>
+                        </p>
+                        <?php if($controller->isAllowed(PERMISSION_DELIVERY_CHANGE_SHIPPING_FEE)){ ?>
+                        <p class="text-center _request_delivery" style="display: none" data-order-id="{{id}}"><span class="next-order">YC giao</span></p>
+                        <?php } ?>
+                        <p class="text-center font-gray _time_delivery" data-order-id="{{id}}" style="display: none">{{confirm_delivery_time_format}}</p>
+                {{/if}}
+                {{else}}
+                    <p class="text-center _p_refresh_order" style="display: none" data-order-id="{{id}}">
+                        <a class="refresh _refresh_order" data-order-id="{{id}}" href="javascript:void(0)">
+                            <i class="fa fa-refresh"></i> Refresh</a>
+                    </p>
+                    <?php if($controller->isAllowed(PERMISSION_DELIVERY_CHANGE_SHIPPING_FEE)){ ?>
+                    <p class="text-center _request_delivery" data-order-id="{{id}}"><span class="next-order">YC giao</span></p>
+                    <?php } ?>
+                    <p class="text-center font-gray _time_delivery" data-order-id="{{id}}" style="display: none">{{confirm_delivery_time_format}}</p>
+                {{/if}}
+            </div>
+        </div>
+    {{/each}}
+    <div class="module-float bottom-list">
+        <p class="text-center">Khách có {{count}} đơn chưa về
+            <?php if($controller->isAllowed(PERMISSION_USER_VIEW_FINANCE)){ ?>
+            , tiền hàng chưa về:
+            <span class="_money-amount" data-amount="{{total_amount}}">{{total_amount}}</span>
+            <?php } ?>
+        </p>
+    </div>
+</script>
+
+<script id="_user_info" type="text/x-handlebars-template">
+    <div class="avatar">
+        <a href="{{link_detail_backend}}" target="_blank">
+            <img src="{{avatar_128x}}">
+        </a>
+
+    </div>
+    <p>
+        <a href="{{link_detail_backend}}" target="_blank">
+            <span class="font-bold">{{fullname}}</span> <span class="uppercase">/ {{code}}</span>
+        </a>
+
+    </p>
+    <p class="font-gray">@<a href="{{link_detail_backend}}" target="_blank">{{username}}</a></p>
+</script>
+
+<script id="_address_info" type="text/x-handlebars-template">
+    <div class="acc-ct module-float font-small " >
+        <p class="font-bold"><i class="fa fa-map-marker"></i>{{address.reciver_name}}</p>
+        <p>{{address.detail}} - {{address.district_label}} - {{address.province_label}} / {{address.reciver_phone}}</p>
+        <p class="font-gray">{{address.note}}</p>
+        <br>
+        <p class="margin-bottom"><span class="font-bold"><i class="fa fa-truck"></i>  Phí VC Nội Địa:</span>
+            {{#if shipping_fee}}
+                <span class="_shipping_fee {{class_money shipping_fee}}" data-address-id="{{address.id}}"
+                      data-amount="{{shipping_fee}}">{{money_format shipping_fee}}đ</span>
+            <?php if($controller->isAllowed(PERMISSION_DELIVERY_CHANGE_SHIPPING_FEE)){ ?>
+            <a href="javascript:void(0)" data-target="#popupnewvc{{address.id}}" data-toggle="modal">Sửa</a>
+            <?php } ?>
+            {{else}}
+            <span class="_shipping_fee" data-address-id="{{address.id}}">Không có</span>
+            <?php if($controller->isAllowed(PERMISSION_DELIVERY_CHANGE_SHIPPING_FEE)){ ?>
+             - <a href="#" data-target="#popupnewvc{{address.id}}" data-toggle="modal">Tạo</a>
+            <?php } ?>
+            {{/if}}
+        </p>
+
+        <p class="margin-bottom">
+            <span class="font-bold"><i class="fa fa-ticket"></i>  COD:</span>
+            {{#if cod}}
+            <span class="_cod_span {{class_money shipping_fee}}" data-amount="{{cod}}"
+                  data-address-id="{{address.id}}" >{{money_format cod}}đ</span>
+            <?php if($controller->isAllowed(PERMISSION_DELIVERY_CHANGE_COD)){ ?>
+             <a href="#" data-target="#popupnewcod{{address.id}}" data-toggle="modal">Sửa</a>
+            <?php } ?>
+            {{else}}
+            <span class="_cod_span" data-address-id="{{address.id}}">Không có</span>
+            <?php if($controller->isAllowed(PERMISSION_DELIVERY_CHANGE_COD)){ ?>
+            - <a href="#" data-target="#popupnewcod{{address.id}}" data-toggle="modal">Tạo</a>
+            <?php } ?>
+            {{/if}}
+        </p>
+        <div class="note">
+            {{#if is_positive}}
+            <?php if($controller->isAllowed(PERMISSION_USER_VIEW_FINANCE)){ ?>
+                <p>Tài chính dương, có thể giao hàng</p>
+                <p>Số dư + COD - Phí VC = <span class="font-red-new _money-amount" data-amount="{{financial}}">{{financial}}</span></p>
+            <?php }else{ ?>
+                <p>Tài chính dương, có thể giao hàng</p>
+            <?php } ?>
+            {{else}}
+                <?php if($controller->isAllowed(PERMISSION_USER_VIEW_FINANCE)){ ?>
+                    <p>Tài chính khách chưa đủ</p>
+                    <p>Số dư + COD - Phí VC = <span class="font-red-new _money-amount" data-amount="{{financial}}">{{financial}}</span></p>
+                <?php }else{ ?>
+                    <p>tài chính khách chưa đủ</p>
+                <?php } ?>
+            {{/if}}
+        </div>
+        <div class="submit">
+            <?php if($controller->isAllowed(PERMISSION_ORDER_CHANGE_DELIVERY)){ ?>
+            <button href="#" class="btn btn-red module-float uppercase font-small font-bold"
+                                    data-target="#pupupCreateBill{{address.id}}" data-toggle="modal">Giao hàng các đơn đã chọn</button>
+            <?php } ?>
+
+        </div>
+    </div>
+
+    <!--     modal box tạo phí COD-->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupnewcod{{address.id}}" class="modal fade popupnew" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                    <h4  class="modal-title"><p class="title">Thu tiền khi giao hàng (cod)</p></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="item row">
+                        <div class="col-lg-4 col-md-4">
+                            <div class="module-float">
+                                <p>Khách:</p>
+                                <p class="font-bold">{{user.fullname}}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="module-float">
+                                <p>Số dư hiện tại:</p>
+                                <?php if($controller->isAllowed(PERMISSION_USER_VIEW_FINANCE)){ ?>
+                                    <p><span class="font-red-new _money-amount" data-amount="{{user.account_balance}}">{{user.account_balance}}</span></p>
+                                <?php }else{ ?>
+                                    <p>(Không có quyền xem)</p>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="module-float">
+                                <p>Tiền còn thiếu trong các đơn hàng chờ giao:</p>
+                                <p class="font-red-new font-bold _money-amount" data-amount="{{missing_amount}}">
+                                    {{missing_amount}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="item row">
+                        <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                            <div class="module-float cod-note">
+                                <div class="col-lg-3 col-md-3 text-right">
+                                    <p>Số tiền COD:</p>
+                                    <p class="font-gray">VND</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <input type="text" placeholder="" data-a-dec="," data-a-sep="." class="form-control form-myinput _cod" value="{{cod}}" data-address-id="{{address.id}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-red _btn_save_cod" data-address-id="{{address.id}}" type="button">Lưu</button>
+                    <button class="btn btn-gray _btn_close_cod" type="button" data-address-id="{{address.id}}" data-dismiss="modal">Hủy</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--        end modal box COD-->
+
+    <!--     modal box tạo phí vận chuyển-->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupnewvc{{address.id}}" class="modal fade popupnew" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                    <h4  class="modal-title"><p class="title">Thu phí VC nội địa</p></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="item row">
+                        <div class="col-lg-5 col-md-5">
+                            <div class="module-float">
+                                <div class="col-lg-4 col-md-4">
+                                    <p class="text-right">Khách:</p>
+                                </div>
+                                <div class="col-lg-8 col-md-8">
+                                    <p class="font-bold">{{user.fullname}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">Địa chỉ:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <p >{{address.detail}}, {{address.district_label}}, {{address.province_label}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item row">
+                        <div class="col-lg-5 col-md-5">
+                            <div class="module-float">
+                                <div class="col-lg-4 col-md-4">
+                                    <p class="text-right">Điện thoại:</p>
+                                </div>
+                                <div class="col-lg-8 col-md-8">
+                                    <p class="font-bold">{{address.reciver_phone}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">Tỉnh:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <p class="font-bold">{{province_label}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="item row">
+                        <div class="col-lg-5 col-md-5">
+                            <div class="module-float">
+                                <div class="col-lg-4 col-md-4">
+                                    <p class="text-right margin-bottom">Phí VC:</p>
+                                    <p class="text-right font-gray">VND</p>
+                                </div>
+                                <div class="col-lg-8 col-md-8">
+                                    <input type="text" value="{{shipping_fee}}" class="form-control form-myinput _domestic_shipping_fee"
+                                           data-address-id="{{address.id}}" placeholder="" data-a-dec="," data-a-sep=".">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">Mục đích thu:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <textarea rows="3" placeholder="" class="form-control form-mytextarea _purpose_charge"
+                                              data-address-id="{{address.id}}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-red _btn_save_fee" data-address-id="{{address.id}}" type="button">Lưu Phí</button>
+                    <button class="btn btn-gray _btn_close_fee" data-address-id="{{address.id}}" type="button" data-dismiss="modal">Hủy</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--        end modal box-->
+
+    <!--     modal box-->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="pupupCreateBill{{address.id}}" class="modal fade popupnew" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close _close_create_bill" data-address-id="{{address.id}}" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                    <h4  class="modal-title"><p class="title">Tạo phiếu giao hàng</p></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="item row">
+                        <div class="col-lg-5 col-md-5">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">Khách:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <p class="font-bold">{{user.fullname}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">Người nhận:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <p class="font-bold">{{address.reciver_name}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item row">
+                        <div class="col-lg-5 col-md-5">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">Mã:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <p class="font-bold">{{user.code}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">Địa chỉ:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <p >{{address.detail}}, {{address.district_label}}, {{address.province_label}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item row">
+                        <div class="col-lg-5 col-md-5">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">COD:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <p class="_cod_span {{class_money shipping_fee}}" data-amount="{{cod}}"
+                                       data-address-id="{{address.id}}" >{{money_format cod}}<sup>đ</sup></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">Tỉnh:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <p class="font-bold">{{address.province_label}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item row">
+                        <div class="col-lg-5 col-md-5">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">PHÍ VC:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+
+                                    <p class="font-bold _shipping_fee {{class_money shipping_fee}}" data-address-id="{{address.id}}"
+                                    data-amount="{{shipping_fee}}">{{money_format shipping_fee}}<sup>đ</sup></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7">
+                            <div class="module-float">
+                                <div class="col-lg-3 col-md-3">
+                                    <p class="text-right">Điện thoại:</p>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <p class="font-bold">{{address.reciver_phone}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item row">
+                        <div class="item-bottom col-lg-12 col-md-12">
+                            <span>Đơn hàng:</span>
+                            <p class="font-bold uppercase _list_order_check" data-address-id="{{address.id}}">
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-red _create_bill" data-is-create="0" data-address-id="{{address.id}}" type="button">Tạo phiếu</button>
+                    <button class="btn btn-gray _print_bill disabled" disabled="disabled" data-address-id="{{address.id}}" type="button"><i class="fa fa-print"></i> In Phiếu</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<!--        end modal tạo phí vận chuyển-->
+</script>
+
+<div class="row main-content _main_content">
+    <img src="<?php echo \SeuDo\Main::getBackendUrl() ?>assetv2/images/loading/loading51.gif" style="width: 120px; margin-top: 120px; margin-left: 45%;">
+</div>
+<span style="display: none" class="_loading_main">
+<img src="<?php echo \SeuDo\Main::getBackendUrl() ?>assetv2/images/loading/loading51.gif" style="width: 120px; margin-top: 120px; margin-left: 45%;">
+</span>
+
+<!--<div class="row note-main">-->
+<!--    <div class="col-lg-12 col-md-12">-->
+<!--        <div class="module-float note-main-top">-->
+<!--            <img src="images/icons/border-topgiaohang.png">-->
+<!--        </div>-->
+<!--        <div class="module-float note-main-ct text-center font-gray">-->
+<!--            <p>Các đơn hàng: <span class="font-bold">hj_3232, hdjsh_57847, hj_3232, hdjsh_57847, hj_3232, hdjsh_57847, hj_3232, hdjsh_57847, hj_3232, hdjsh_57847</span> </p>-->
+<!--            <p>đã được chuyển từ trạng thái "ĐANG GIAO", có thể xem danh sách các đơn trên <a href="#">tại đây</a></p>-->
+<!--        </div>-->
+<!--        <div class="module-float note-main-bottom">-->
+<!--            <img src="images/icons/border-bottomgiaohang.png">-->
+<!--        </div>-->
+<!--    </div>-->
+<!---->
+<!--</div>-->
+
+<!--<div class="row link-bottom">-->
+<!--    <div class="col-lg-12 col-md-12">-->
+<!--        <ul class="pagination">-->
+<!--            <li class="active"><a href="#">1</a></li>-->
+<!--            <li><a href="#">2</a></li>-->
+<!--            <li><a href="#">3</a></li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</div>-->

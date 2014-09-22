@@ -1,0 +1,95 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPathUser = $document->getPublicPath();
+$publicPath = Main::getHomeUrl();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+$document->addCss($publicPathUser . 'assets/css/profile.css');
+$document->addJsVar('base_url', Main::getHomeRouter()->createUrl('/'), 'TOP');
+$document->addJsVar('LoginFacebookUrl',$publicPath.'ConnectFacebook','TOP');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title><?php echo $document->title != '' ? $document->title : 'Seudo.vn' ?></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="<?php echo $publicPath?>/assets/images/icon-footer/LogoSeuDo1_ICO.ico">
+
+    <!--        Load JS-->
+    <link href="<?php echo $publicPath ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $publicPath ?>assets/bootstrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $publicPath ?>assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $publicPath ?>assets/bootstrap/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $cssPath ?>mytypo.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $cssPath ?>header.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $cssPath ?>owl.carousel.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $jsPathFront ?>rate/rateit.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $cssPath ?>owl.theme.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $cssPath ?>cssloading.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $cssPath ?>style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $cssPath;?>loading.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $cssPath ?>footer.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $cssPath ?>check-browser.css" rel="stylesheet" type="text/css" media="all">
+    <?php echo $document->css(); ?>
+    <link href="<?php echo $cssPath ?>responsive.css" rel="stylesheet" type="text/css" media="all">
+
+    <script src="<?php echo $jsPathFront?>jquery-1.10.2.min.js"></script>
+    <!--        <script type="text/javascript" src="--><?php //echo $jsPathFront ?><!--jquery1.10.2.js"></script>-->
+    <script type="text/javascript" src="<?php echo $publicPath ?>assets/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php echo $publicPath ?>assets/bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="<?php echo $jsPathFront ?>owl.carousel.min.js"></script>
+    <script type="text/javascript" src="<?php echo $jsPathFront ?>rate/jquery.rateit.min.js"></script>
+    <script type="text/javascript" src="<?php echo $jsPathFront ?>jqueryui.js"></script>
+    <script type="text/javascript" src="<?php echo $jsPathFront ?>masonry.pkgd.js"></script>
+    <script type="text/javascript" src="<?php echo $jsPathFront ?>masonry.pkgd.js"></script>
+    <script type="text/javascript" src="<?php echo $jsPath ?>order_active.js"></script>
+    <script type="text/javascript" src="<?php echo $jsPath;?>order_link_base.js"></script>
+    <script type="text/javascript" src="<?php echo $jsPathFront;?>seudo-frontend.js"></script>
+    <script type="text/javascript" src="<?php echo $publicPath . '/assets/js/jquery.lazyload.js' ?>"></script>
+    <?php
+    require_once GLOBAL_PATH . '/include/GA.php';
+    echo $document->js('TOP');
+    ?>
+</head>
+<body>
+
+<!--  Header -->
+<?php
+$this->widget('app.Widget.Header', array(
+    'user' => BaseAuth::getInstance()->getUser(),
+    'is_header_slide' => 0
+));
+?>
+<!-- End Header -->
+
+<!-- Main Content -->
+<div id="_main_content">
+<section class="profile order-acc">
+    <nav class="container" >
+        <div class="row">
+            <div class="profile-body page-history">
+                <div class="seu-module">
+                    <?php $this->widget('app.Widget.MenuProfile'); ?>
+                    <?php echo $buffer; ?>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+</section>
+    </div>
+<!-- End Content -->
+
+<!-- Footer -->
+<?php $this->widget('app.Widget.Footer'); ?>
+<!-- End footer -->
+
+<?php $this->widget('app.Widget.FacebookWidget'); ?>
+</body>
+
+<?php
+echo $document->js('BOTTOM-USER');
+?>
+</html>

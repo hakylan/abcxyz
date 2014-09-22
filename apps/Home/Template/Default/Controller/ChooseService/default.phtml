@@ -1,0 +1,572 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+
+$document->addJs($jsPathFront . 'jquery.lazyload.js', "TOP");
+$document->addJs($jsPathFront.'seudo-frontendv2.js',"TOP");
+?>
+<section class="cart-header">
+    <nav class="container">
+        <div class="row">
+            <div class="">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-title">
+                            <p class="title"><span class="title-page">Chọn dịch vụ</span></p>
+                        </div>
+                        <div class="module-ct">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+</section>
+
+<section class="cartaddress-alert">
+    <nav class="container">
+        <div class="row">
+            <p>Hãy kiểm tra các thông tin đơn hàng và tiến hành thanh toán tiền cọc để tiếp tục.</p>
+        </div>
+    </nav>
+</section>
+
+<form id="submitOrder" onsubmit="return false">
+<input type="hidden" id="provinceReceiveId" value="<?php
+$address = \Locations::retrieveById($receiveAddress->getProvinceId());
+echo $address->getKeyCode();
+?>"/>;
+<?php
+foreach ($shopOrders as $order) {
+    $weight = 0;
+    $transfer_fee = 0;
+    ?>
+    <section class="container adress-cart list-cart single" data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>"
+             id="_shopOrder_<?php echo $order['shopInfo']['shopId'] ?>">
+    <div class="row">
+    <div class="module">
+    <div class="title-name">
+        <p class="normal"><span class="normal-blod"><?php echo $order['shopInfo']['shopUsername'] ?></span>
+            <span class="arrow-cach"></span>
+            <a href="#" data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>"
+               data-target="#_modalConfirmDel_<?php echo $order['shopInfo']['shopId'] ?>" data-toggle="modal">
+                Hủy cả đơn hàng
+            </a>
+        </p>
+
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+             id="_modalConfirmDel_<?php echo $order['shopInfo']['shopId'] ?>" class="modal fade finish-poup in"
+             style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h4 class="modal-title">
+                            <span class="uppercase normal-blod">Xác nhận xóa đơn hàng</span>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="normal">Có chắc bạn muốn xóa đơn hàng này ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button data-dismiss="modal" class="btn btn-gray" type="button">Không</button>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button data-dismiss="modal" class="btn btn-blue _removeCartShop"
+                                    data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>" type="button">Xóa đơn hàng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+        <!--
+        <button class="myModalErr" style="display: none;" data-target="#myModalErr"
+                data-toggle="modal"></button>
+        <div style="display: none;" class="modal fade finish-poup" id="myModalErr" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Cảnh báo</span>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="normal">
+                            &nbsp;&nbsp;Bạn chưa chọn sản phẩm nào.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-md-offset-3">
+                            <button type="button" class="btn btn-gray" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+    </div>
+    <div class="top-main ">
+        <div class="col-lg-7 col-md-7 col-sm-7 left">
+            <p class="normal-blod uppercase">Sản phẩm</p>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2">
+            <p class="normal-blod uppercase">Số lượng</p>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1">
+            <p class="normal-blod uppercase">Trọng lượng</p>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2">
+            <p class="normal-blod uppercase">Giá</p>
+        </div>
+
+    </div>
+    <ul class="cart-list-content" data-shop="<?php echo $order['shopInfo']['shopId'] ?>">
+        <?php
+        foreach ($order['cartItems'] AS $item) {
+            if (!$item instanceof \CartItem) {
+                continue;
+            }
+            $data = json_decode($item->getData(), true);
+            $weight += $item->getWeight();
+            $transfer_fee += $exchange * $data['transfer_fee'];
+            ?>
+
+            <li id="_cartItem_<?php echo $item->getId() ?>">
+                <ul>
+                    <li class="col-lg-7 col-md-7 col-sm-7 module-left-ct">
+                        <div class="img-item">
+                            <img src="<?php echo $item->getImageShow() ?>"/>
+                        </div>
+                        <div class="content">
+                            <p>
+                                <a class="normal-blod" href="<?php echo $item->getLinkOrigin() ?>" target="_blank">
+                                    <?php echo $item->getTitle() ? $item->getTitle() : $data['title_init'] ?>
+                                </a>
+                            </p>
+
+                            <div class="option">
+                                <p class="italic">
+                                    <?php echo $item->getPropertiesTranslate() ? $item->getPropertiesTranslate()
+                                        : $data['property_translate'][$item->getProperties()] ?>
+                                </p>
+                            </div>
+                            <div class="comment-kd">
+                                <p id="_item_note_<?php echo $item->getId() ?>" class="note italic _item_note"
+                                   data-cart-id="<?php echo $item->getId() ?>">
+                                    <?php echo !empty($item->comment) ? $item->getComment()
+                                        : 'Click vào đây nếu bạn muốn ghi chú thích cho sản phẩm'; ?>
+                                </p>
+
+                                <div class="note-submit">
+                                    <input type="text" placeholder="Để lại lời nhắn, enter để gửi"
+                                           class="form-control form-myinput _input_note"
+                                           data-cart-id="<?php echo $item->getId() ?>"
+                                           id="_note_<?php echo $item->getId() ?>"
+                                           value="<?php echo $item->getComment() ?>">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-lg-2 col-md-2 col-sm-2 module-custom">
+                        <div class="input-sl dropdown">
+                            <input type="text" value="<?php echo $item->getAmount() ?>"
+                                   id="item_quantity_<?php echo $item->getId() ?>"
+                                   class="form-control form-myinput item_quantity"
+                                   data-price="<?php echo $item->getPriceVnd() ?>"
+                                   data-step="<?php echo $item->getStep() ?>"
+                                   data-canbook="<?php echo $data['stock'][$item->getProperties()] ?>"
+                                   data-require="<?php echo $item->getRequireMin() ?>"
+                                   data-toggle="dropdown" data-item-id="<?php echo $item->getItemId(); ?>"/>
+
+                            <div class="tooltip1 dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <p>Số lượng phải là bội số của <?php echo $item->getStep() ?></p>
+                            </div>
+                            <div class="arowsl">
+                                <div class="arowsl-left-right">
+                                    <a class="left change_quantity"
+                                       data-change-type="up"
+                                       data-cart-id-obj="#item_quantity_<?php echo $item->getId() ?>"
+                                       data-cart-id="<?php echo $item->getId() ?>"
+                                       data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>"
+                                       data-step="<?php echo $item->getStep() ?>"
+                                       href="#"></a>
+                                    <a class="right change_quantity"
+                                       data-change-type="down"
+                                       data-cart-id-obj="#item_quantity_<?php echo $item->getId() ?>"
+                                       data-cart-id="<?php echo $item->getId() ?>"
+                                       data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>"
+                                       data-step="<?php echo $item->getStep() ?>"
+                                       href="#"></a>
+                                </div>
+                            </div>
+                            <span data-toggle="modal" data-target="#_confirmDelItem_<?php echo $item->id ?>"
+                                  class="remove" data-shop="<?php echo $order['shopInfo']['shopId']; ?>"></span>
+                        </div>
+
+                        <div aria-hidden="true" role="dialog" tabindex="-1"
+                             id="_confirmDelItem_<?php echo $item->id ?>" class="modal fade finish-poup"
+                             style="display: none;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×
+                                        </button>
+                                        <h4 class="modal-title"><span class="uppercase normal-blod">Xác nhận</span>
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="normal">Có chắc bạn muốn xóa sản phẩm này khỏi đơn hàng?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <button data-dismiss="modal" class="btn btn-gray" type="button">Quay lại
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <button data-dismiss="modal" class="btn btn-blue _removeCartItem"
+                                                    data-cart-id="<?php echo $item->id ?>" type="button">
+                                                Xóa
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+
+                    </li>
+                    <li class="col-lg-1 col-md-1 col-sm-1 module-custom">
+                        <p class="normal"><?php echo $item->getWeight() ?></p>
+                    </li>
+                    <li class="col-lg-2 col-md-2 col-sm-2 module-custom" id="_totalItemPrice_<?php echo $item->id ?>">
+                        <p class="red-normal">
+                            <b><?php echo Common::numberFormat($item->getAmount() * $item->getPriceVnd()) ?>
+                                <sup>đ</sup></b>
+                        </p>
+
+                        <p class="italic">(<?php echo $item->getAmount() ?>
+                            x <?php echo Common::numberFormat($item->getPriceVnd()) ?><sup>đ</sup>)</p>
+                    </li>
+                    <div class="col-lg-12 col-md-12 col-sm-12 border">
+                        <div class="border-bottom"></div>
+                    </div>
+                </ul>
+            </li>
+        <?php }?>
+        <li class="delete-list-item"> <!-- add class 'block' to show -->
+            <div class="delete-ct col-lg-6 col-md-7 col-sm-7 col-sm-offset-2 col-md-offset-2 col-lg-offset-3">
+                <span class="red-normal uppercase"><b>Yêu cầu số lượng tối thiểu:</b></span>
+                <br/>
+                <span>Số lượng tối thiểu của sản phẩm <span class="item-name" style="font-weight: bold;"></span>
+                    &nbsp;là <span class="item-require-min" style="font-weight: bold;"></span>.
+                </span>
+                <span class="delete-itemshop"></span>
+            </div>
+        </li>
+    </ul>
+    <input type="hidden" value="<?php echo $weight ?>" id="weight_<?php echo $order['shopInfo']['shopId']; ?>"/>
+
+    <div class="single-chat">
+        <div class="add-chat">
+            <div class="col-lg-7 col-md-7 col-sm-7">
+                <div class="seu-module myaccout">
+                    <div class="module-inner">
+                        <?php
+                        $currentUser = isset($currentUser) ? $currentUser : new \Users();
+                        $receiveAddress = isset($receiveAddress) ? $receiveAddress : new \UserAddress();
+                        ?>
+                        <div class="module-avatar">
+                            <!-- Receive info -->
+                            <img src="<?php echo $this->document()->getPublicPath() ?>/assets/images/location.png"
+                                 alt="<?php echo $receiveAddress->getReciverName() ?>"
+                                 title="<?php echo $receiveAddress->getReciverName() ?>">
+                        </div>
+                        <div class="module-ct">
+                            <p class="normal"><span class="normal-blod"><?php echo $receiveAddress->getReciverName() ?></span>
+                                / <?php echo $receiveAddress->getReciverPhone() ?> <span class="edit-add"
+                                                                                         style="display: none;"><a
+                                        href="#">Thay đổi địa chỉ</a></span></p>
+
+                            <p class="normal">
+                                <?php
+                                $district = \Locations::retrieveById($receiveAddress->getDistrictId());
+                                $province = \Locations::retrieveById($receiveAddress->getProvinceId());
+                                echo $receiveAddress->getDetail() . ', ' . $district->getLabel() . ', ' . $province->getLabel()
+                                ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5">
+                <div class="seu-module mychat">
+                    <div class="module-inner">
+                        <div class="module-chat">
+                            <input type="text"
+                                   placeholder="Trao đổi với chúng tôi về đơn hàng này, Enter để gửi"
+                                   class="form-control form-myinput _commentCart"
+                                   id="_commentCart_<?php echo $order['shopInfo']['shopId'] ?>"
+                                   data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>"/>
+                        </div>
+                        <div class="module-ct" style="float: left"
+                             id="_commentCartContent_<?php echo $order['shopInfo']['shopId'] ?>">
+                            <?php
+                            $comments = json_decode($order['cartItems'][0]->comment_shop);
+                            if ($comments):
+                                foreach ($comments AS $cmt):
+                                    $cmtUser = \Users::retrieveById($cmt->uid);
+                                    ?>
+                                    <div class="mychat-item">
+                                        <div class="item-avatar">
+                                            <img src="<?php echo \Users::getAvatar32x($cmtUser); ?>">
+                                        </div>
+                                        <div class="item-ct">
+                                            <p class="normal">
+                                                <span class="normal-blod"><?php echo $cmtUser->getFullname() ?></span>
+                                                <span
+                                                    class="italic"><?php echo $cmt->created_time ?></span>
+                                            </p>
+
+                                            <p class="normal"><?php echo $cmt->content ?></p>
+                                        </div>
+                                    </div>
+                                <?php endforeach; endif ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-bottom">
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="seu-module tick-sevice">
+                    <div class="check-exp ">
+                        <input class="_choose_service" data-type="express"
+                               data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>"
+                               type="checkbox" value="<?php echo \Services::TYPE_EXPRESS_CHINA_VIETNAM ?>">
+                        <span class="normal-blod">Chuyển phát nhanh </span>
+                        <div class="dropdow-error">
+                            <span class="close-exp">x</span>
+                            <p class="font-small">Chúng tôi sẽ thông báo lại giá khi xác định được khối lượng đơn hàng.</p>
+                            <p class="font-small">Áp dụng đồng nhất mức phí CPN là  45.000đ/kg về HN & 60.000đ/kg về SG </p>
+                            <p class="font-small">Quảng Châu &ndash;&gt; Hà Nội : từ 2-3 ngày ( Thông thường là 2 ngày )</p>
+                            <p class="font-small">Quảng Châu &ndash;&gt; Sài Gòn : từ 2-4 ngày ( Thông thường là 3 ngày )</p>
+                        </div>
+                    </div>
+                    <p class="normal">
+                        <input class="_choose_service" data-type="checking"
+                               data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>"
+                               type="checkbox" value="<?php echo \Services::TYPE_CHECKING ?>"
+                               checked><span>Kiểm hàng?</span>
+
+                        <input class="_submit_shop" name="shops" type="hidden"
+                               value="<?php echo $order['shopInfo']['shopId'] ?>"/>
+                        <input class="_selected_services" name="services" data-is-submit="0"
+                               data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>"
+                               data-address-id="<?php echo $receiveAddressId ?>"
+                               type="hidden"
+                               id="_selected_services_<?php echo $order['shopInfo']['shopId'] ?>"
+                               value="<?php echo \Services::TYPE_BUYING . ',' . \Services::TYPE_CHECKING ?>"/>
+                    </p>
+                    <p class="normal">
+                        <input class="_choose_service" data-type="packing"
+                               data-shop-id="<?php echo $order['shopInfo']['shopId'] ?>"
+                               type="checkbox" value="<?php echo \Services::TYPE_WOOD_CRATING ?>"><span>Đóng gỗ?</span>
+                    </p>
+
+                    <p class="normal bottom" style="display: none;"><input type="checkbox" value=""><span>
+                            Bạn muốn xác nhận đơn hàng này sau khi chúng tôi giao dịch với người bán?</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7">
+                <div class="price-sevice">
+                    <div class="seu-module ">
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <p class="normal">Tiền hàng</p>
+
+                            <p class="normal">
+                                <span class="red-bold">
+                                    <span
+                                        id="_totalAmount_<?php echo $order['shopInfo']['shopId'] ?>"><?php echo Common::numberFormat($order['orderInfo']['totalAmount']) ?></span>
+                                    <sup>đ</sup></span></p>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <p class="normal">Phí mua hàng</p>
+
+                            <p class="normal">
+                                <span class="red-normal">
+                                    <span class="<?php echo \Services::TYPE_BUYING ?>_money"
+                                        id="_totalBuyingFee_<?php echo $order['shopInfo']['shopId'] ?>">
+                                        <?php echo Common::numberFormat($order['orderInfo']['totalBuyingFee']) ?>
+                                    </span><sup>đ</sup>
+                                </span>
+
+                                <span style="font-size: 12px; color: gray;display: none" class="_buying_discount_fee">
+                                    (<del><?php echo Common::numberFormat($order['orderInfo']['totalBuyingDiscountFee']) ?><sup>đ</sup></del>)
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <p class="normal">Phí kiểm hàng</p>
+
+                            <p class="normal">
+                                <span class="red-normal">
+                                    <span class="<?php echo \Services::TYPE_CHECKING ?>_money"
+                                          id="_totalCheckingFee_<?php echo $order['shopInfo']['shopId'] ?>">
+                                        <?php echo Common::numberFormat($order['orderInfo']['totalCheckingFee']) ?>
+                                    </span>
+                                    <sup>đ</sup>
+                                </span>
+                                <span style="font-size: 12px; color: gray;display: none" class="_checking_discount_fee">
+                                    (<del><?php echo Common::numberFormat($order['orderInfo']['totalBuyingDiscountFee']) ?><sup>đ</sup></del>)
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <p class="normal">Phí vận chuyển <sup>(*)</sup></p>
+
+                            <p class="normal">
+                                <span class="red-normal">
+                                    <span style="display: none;" class="<?php echo \Services::TYPE_WOOD_CRATING ?>_money total_packing_money"></span>
+                                     <span
+                                         id="_totalShippingFee_<?php echo $order['shopInfo']['shopId'] ?>"
+                                         data-fix="<?php echo $transfer_fee; ?>">
+                                         <?php echo Common::numberFormat($transfer_fee) //$order['orderInfo']['totalShippingFee'] ?>
+                                     </span>
+                                    <sup>đ</sup>
+                                </span>
+                                <span style="font-size: 12px; color: gray;display: none" class="_shipping_discount_fee">
+                                    (<del><?php echo Common::numberFormat($order['orderInfo']['totalBuyingDiscountFee']) ?><sup>đ</sup></del>)
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="seu-module bottom">
+                        <p class="normal">* Phí vận chuyển là tạm tính, quý khách sẽ thanh toán trước khi
+                            chúng tôi giao hàng. </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 dum-order">
+                <div class="seu-module tick-sevice">
+                    <p class="normal"><span class="normal left">Tổng:</span><span
+                            class="normal right">
+                            <b id="_cartItemCount_<?php echo $order['shopInfo']['shopId'] ?>"><?php echo Common::numberFormat($order['orderInfo']['totalQuantity']) ?></b>
+
+                            sản phẩm / <b
+                                id="_cartWeightCount_<?php echo $order['shopInfo']['shopId'] ?>"><?php echo Common::numberFormat($order['orderInfo']['totalWeight']) ?>
+                            </b>kg</span></p>
+
+                    <p class="normal"><span class="normal left">Tổng chi phí:</span><span
+                            class="normal right">
+                            <b id="_totalFee_<?php echo $order['shopInfo']['shopId'] ?>"><?php echo Common::numberFormat($order['orderInfo']['totalFee']) ?></b>
+                            <sup>đ</sup></span></p>
+
+                    <p class="normal"><span class="normal left">Đặt cọc tối thiểu:</span><span
+                            class="normal-blod right">
+                             <b id="_totalDepositFee_<?php echo $order['shopInfo']['shopId'] ?>"><?php echo Common::numberFormat($order['orderInfo']['totalDepositFee']) ?></b>
+                            <sup>đ</sup></span></p>
+
+                    <input type="hidden" value="<?php echo $order['orderInfo']['totalQuantity']; ?>"
+                           class="_goSum" data-type="totalQuantity"
+                           id="_totalQuantity_<?php echo $order['shopInfo']['shopId'] ?>"/>
+                    <input type="hidden" value="<?php echo $order['orderInfo']['totalAmount']; ?>"
+                           class="_goSum" data-type="totalAmount"
+                           id="_totalAmount_<?php echo $order['shopInfo']['shopId'] ?>"/>
+                    <input type="hidden" value="<?php echo $order['orderInfo']['totalWeight']; ?>"
+                           class="_goSum" data-type="totalWeight"
+                           id="_totalWeight_<?php echo $order['shopInfo']['shopId'] ?>"/>
+                    <input type="hidden" value="<?php echo $order['orderInfo']['totalDepositFee']; ?>"
+                           class="_goSum" data-type="totalDepositFee"
+                           id="_totalDeposit_<?php echo $order['shopInfo']['shopId'] ?>"/>
+                    <input type="hidden" value="<?php echo $order['orderInfo']['totalFee']; ?>"
+                           class="_goSum" data-type="totalFee"
+                           id="_totalFee_<?php echo $order['shopInfo']['shopId'] ?>"/>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+
+    </section>
+
+<?php } ?>
+<section class="cart-bottom single-bottom">
+    <nav class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 next">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <a href="<?php echo $this->createUrl('gio-hang') ?>" type="button" class="btn btn-gray btn-sm">Quay
+                            lại giỏ hàng</a>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-3 total-money">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-ict">
+                            <span class="normal left">Tổng:</span>
+
+                            <p class="normal"><span class="normal-blod" id="totalQuantity">0</span> sản phẩm / <span
+                                    class="normal-blod" id="totalWeight">0</span>
+                                kg</p>
+                        </div>
+                        <div class="module-ict">
+                            <span class="normal left bottom">Số tiền cọc:</span>
+
+                            <p class="normal price red-normal"><b id="totalDeposit">0</b><sup>đ</sup></p>
+                        </div>
+                        <input type="hidden" id="receiveAddressId" value="<?php echo $receiveAddressId ?>">
+                        <button type="button" id="submitOrders" class="btn btn-blue btn-lg"><span
+                                class="uppercase normal-blod">Kết đơn</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</section>
+</form>
+
+<span class="_loading_submit hidden" data-target="#_loading_submit" data-toggle="modal"></span>
+
+<div style="display: none;" class="modal fade finish-poup" id="_loading_submit" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Thông báo</span></h4>
+            </div>
+            <div class="modal-body">
+                <p class="price-red1 _message" style="font-size: 14px">
+                    <img style="margin-right: 15px; width: 25px;" src="<?php echo \SeuDo\Main::getHomeUrl() ?>assets/img/small/loading9.gif">
+                    Đang tạo đơn hàng, vui lòng chờ.</p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<script>
+    var CHOOSE_SERVICE_URL = '<?php echo \SeuDo\Main::getHomeRouter()->createUrl('chooseService')?>';
+</script>
+
+<script type="text/javascript" src="<?php echo $jsPathFront . '/process/choose_services.js'; ?>"></script>

@@ -1,0 +1,16 @@
+comment:
+    - '#ServiceFixedFees'
+    - '#Schema for ServiceFixedFees OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    name: { name: name, type: string, db_type: string, alltypes: [string], ntype: varchar(50), length: 50, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    description: { name: description, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    service_type: { name: service_type, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''KH'',''MH'',''DG'',''VC'')', length: 2, fixed: false, unsigned: false, values: [KH, MH, DG, VC], primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    fee: { name: fee, type: number, db_type: float, alltypes: [float], ntype: float, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: false, auto_increment: false, extra: '' }
+    created_date: { name: created_date, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: false, auto_increment: false, extra: '' }
+    begin_date: { name: begin_date, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: false, auto_increment: false, extra: '' }
+    expired_date: { name: expired_date, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: false, auto_increment: false, extra: '' }
+    last_update: { name: last_update, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: false, auto_increment: false, extra: '' }
+    status: { name: status, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''ACTIVE'',''DISABLED'')', length: 8, fixed: false, unsigned: false, values: [ACTIVE, DISABLED], primary: false, unique: false, default: ACTIVE, notnull: false, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: service_fixed_fees

@@ -1,0 +1,1440 @@
+<?php
+use Flywheel\View\Render;
+
+$document = $this->document();
+
+$document->addCss('css/style-chitietdonhang.css');
+$document->addCss('css/cssloading.css');
+$document->addCss('css/bootstrap-select.min.css');
+
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs('js/autoNumeric.js');
+$document->addJs('js/process/order_detail.js?v=9');
+$document->addJs('js/backendv2-frontend.js');
+$document->addJs('js/jqueryui.js?v=10', 'TOP');
+$document->addJs('js/tooltip.js',"BOTTOM");
+$document->addJs('js/jquery.timeago.js');
+//$document->addJs('js/jquery.textareaAutogrow.js');
+//$document->addJs('js/keyevent.js');
+
+$document->addJsVar('get_order_items_url', $this->createUrl('order/detail/get_items'));
+//$document->addJsVar('link_add_order_comment', $this->createUrl('order/order_comment/add_message'));
+$document->addJsVar("linkAddComplaintSeller", $this->createUrl('ComplaintSeller/init/addcomplaintseller'));
+$document->addJsVar("linkUpdateStatusSuccessComplaintSeller", $this->createUrl('ComplaintSeller/init/updatestatussuccess'));
+$document->addJsVar("linkUpdateStatusFailureComplaintSeller", $this->createUrl('ComplaintSeller/init/updatestatusfailure'));
+$document->addJsVar('add_fee_wood_crating', $this->createUrl('orderCommon/updateFeeWoodCrating'));
+$document->addJsVar("linkGetListComplaintSellers", $this->createUrl('ComplaintSeller/managerment/GetListComplaintSellers'));
+$document->addJsVar('linkGetListComplaint', $this->createUrl('Complaint/Managerment/GetGirdComplaints'));
+$document->addJsVar('linkGetListTransactionOrder', $this->createUrl('order/detail/GetListTransactionOrder'));
+$document->addJsVar('linkGetListFreeOrder', $this->createUrl('order/detail/GetListFreeOrder'));
+$document->addJsVar("linkAddOrderComment",$this->createUrl('Order/OrderComment/AddMessage'));
+$document->addJsVar("linkAddOrderItemComment", $this->createUrl('Order/OrderItemComment/AddMessage'));
+$document->addJsVar("linkMoreOrderItemComment", $this->createUrl('Order/OrderItemComment/ListMoreComments'));
+$document->addJsVar("linkListOrderComments", $this->createUrl('Order/OrderComment/ListOrderComments'));
+$document->addJsVar("linkGetAllOrderItemComments", $this->createUrl('Order/OrderItemComment/GetAllOrderItemComments'));
+$document->addJsVar("linkGetRealPaymentAmount", $this->createUrl('order/detail/GetRealPaymentAmount'));
+$document->addJsVar("LinkUpdatePackageWeight", $this->createUrl('order/detail/UpdatePackageWeight'));
+$document->addJsVar("LinkAddPackageChecking", $this->createUrl('order/detail/AddPackageChecking'));
+$document->addJsVar("LinkManageConfirm", $this->createUrl('order/detail/ManageConfirm'));
+
+$document->addJsVar('CUSTOMER_CONFIRM_WAIT', \Order::CUSTOMER_CONFIRM_WAIT);
+
+$document->addJsVar("linkOutOfStock", $this->createUrl('OrderCommon/OutOfStock'));
+
+$document->addJsVar('PERMISSION_ORDER_CHANGE_WAIT_DELIVERY', $controller->isAllowed(PERMISSION_ORDER_CHANGE_WAIT_DELIVERY));
+$document->addJsVar('PERMISSION_ORDER_CHANGE_REQUEST_DELIVERY', $controller->isAllowed(PERMISSION_ORDER_CHANGE_REQUEST_DELIVERY));
+$document->addJsVar('PERMISSION_ORDER_CHANGE_DELIVERY', $controller->isAllowed(PERMISSION_ORDER_CHANGE_DELIVERY));
+
+$document->addJsCode('
+    var chat_row_template = Handlebars.compile($("#_order_chat_row_template").html());
+    var order_item_comment_template = Handlebars.compile($("#_order_item_comment").html());
+    var item_order_item_comment_template = Handlebars.compile($("#_item_order_item_comment").html());
+    var item_row_complaint_seller = Handlebars.compile($("#_item-row-complaint-seller").html());
+    var item_row_complaint = Handlebars.compile($("#_item-row-complaint").html());
+    var list_transaction_order_template = Handlebars.compile($("#_list-transaction-order-tpl").html());
+    var render_fee = Handlebars.compile($("#_render_fee").html());
+    var item_template = Handlebars.compile($("#_list-item-template").html());
+    var box_guide = Handlebars.compile($("#_box-guide").html());
+    var item_row_package = Handlebars.compile($("#_item-row-package-tpl").html());
+    var item_row_package_checking = Handlebars.compile($("#_item-row-package-checking-tpl").html());
+    var order_tpl = Handlebars.compile($("#_order-template").html());
+
+    Handlebars.registerPartial("list_item_comments", $("#_item_order_item_comment").html());', 'BOTTOM', 'standard'
+);
+$permission_change_to_waiting_for_delivery = isset( $permission_change_to_waiting_for_delivery ) ? $permission_change_to_waiting_for_delivery : false;
+$order = isset($order) ? $order : array();
+if($order instanceof \Order){
+
+}
+?>
+
+<div id="_content"></div>
+<div id="_order-detail-placeholder">
+    <div class="seu-page-content item-detail no-header">
+        <div class="container">
+            <div class="row">
+                <div class="tab-content main-chat-v2">
+                    <div class="main-content">
+                        <div class="border-header-list">
+                            <div class="border"></div>
+                        </div>
+                        <div class="module-title"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- RIGHT CHAT -->
+    <div data-order-id="<?php echo $order->getId(); ?>" id="seu-chat-tab-<?php echo $order->getId(); ?>" class="sidebar-left seubox-chat summaryv2 seu-chat-tab _order_comment scroll-to-fixed-fixed" style="height: 610px; z-index: 1000; position: fixed; top: 0px; margin-left: 0px; width: 268px; left: 1079px;">
+
+        <form id="_filter-comment-by-type" action="" type="get">
+            <div class="search-check">
+                <div class="module-float font-small font-gray">
+                    <div class="module_float title">
+                        <span class="font-bold">Lọc:</span>
+                    </div>
+                    <div class="module_float">
+                        <input type="checkbox" data-value="CHAT" name="CHAT" class="radio _filter-comment"> Chat
+                    </div>
+                    <div class="module_float">
+                        <input type="checkbox" data-value="ACTIVITY" name="ACTIVITY" class="radio _filter-comment"> H.Động
+                    </div>
+                    <div class="module_float">
+                        <input type="checkbox" data-value="LOG" name="LOG" class="radio _filter-comment"> Log
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="item-side-left v2 top">
+            <div class="module-content">
+                <div class="item-chat-main">
+                    <div id="_box-external" class="chat-box"></div>
+                </div>
+                <div class="item-chat form-input">
+                    <!--
+                    <textarea
+                        data-order-id="<?php echo $order->getId(); ?>" <?php if(!$controller->isAllowed(PERMISSION_COMMUNICATE_CUSTOMER)){ ?>disabled="disabled" placeholder="Bạn không có quyền chat với khách"<?php }else{ ?>
+                        placeholder="Chat với khách. Enter để gửi" <?php } ?>
+                        rows="1" name="msg_chat" data-type="EXTERNAL" class="textarea-no-resize _input-chat" id="_msg-chat-external"></textarea>
+                    -->
+
+                    <input data-order-id="<?php echo $order->getId(); ?>" <?php if(!$controller->isAllowed(PERMISSION_COMMUNICATE_CUSTOMER)){ ?>disabled="disabled" placeholder="Bạn không có quyền chat với khách"<?php }else{ ?>
+                        placeholder="Chat với khách. Enter để gửi" <?php } ?> name="msg_chat" data-type="EXTERNAL" class="textarea-no-resize _input-chat" id="_msg-chat-external">
+                </div>
+                <div class="border-chat-top">
+                    <div class="line_through"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="item-side-left v2 bottom">
+            <div class="module-content">
+                <div class="item-chat-main">
+                    <div id="_box-internal" class="chat-box"></div>
+                </div>
+                <div class="item-chat form-input">
+                    <input data-order-id="<?php echo $order->getId(); ?>" placeholder="Chat với nội bộ. Enter để gửi" name="msg_chat" data-type="INTERNAL" class="textarea-no-resize _input-chat" id="_msg-chat-internal">
+                </div>
+            </div>
+        </div>
+
+        <div class="opacity-chatbottom"></div>
+        <div class="border-left-chat"></div>
+
+    </div>
+    <!--/right chat -->
+</div>
+
+<script id="_order_chat_row_template" type="text/x-handlebars-template">
+    <!-- <abbr style="display: none" class="timeago" title="{{_time}}"></abbr> -->
+    {{#if is_chat}}
+        <div class="module-item _item-view-comment CHAT">
+            <div class="position-avatar">
+                <a href="user/detail/{{user_id}}" target="_blank" class="user-img-tool" title="" rel="tooltipbottom" data-original-title="@{{account}}<br />{{shorten_fullname}}">
+                    <img class="img-rounded" alt="" src="{{img_path}}">
+                </a>
+            </div>
+            <p class="normal">
+                <!--
+                <a class="font-black" href="user/detail/{{user_id}}" target="_blank">
+                    {{#if is_internal}}
+                        <span class="user-seudo">{{shorten_fullname}}</span>
+                    {{/if}}
+                    {{#if is_external}}
+                        {{#if is_customer}}
+                            <span class="user">{{shorten_fullname}}</span>
+                        {{else}}
+                            <span class="user-seudo">{{shorten_fullname}}</span>
+                        {{/if}}
+                    {{/if}}
+                </a>
+                -->
+                <span class="font-gray-dark time pull-right">{{date sub_time}}</span>
+            </p>
+            <p class="normal">{{{message}}}</p>
+        </div>
+    {{/if}}
+    {{#if is_log}}
+        <div class="module-item _item-view-comment LOG">
+            <p class="font-gray-dark">
+                {{{message}}}&nbsp;&nbsp;&nbsp;{{date sub_time}}
+            </p>
+        </div>
+    {{/if}}
+    {{#if is_activity}}
+        <div class="module-item  _item-view-comment ACTIVITY">
+            <p class="font-gray-dark">
+                <a class="font-gray" href="user/detail/{{user_id}}" title="{{shorten_fullname}}" target="_blank"><strong>{{shorten_fullname}}</strong></a>
+                {{{message}}}&nbsp;&nbsp;&nbsp;{{date sub_time}}
+            </p>
+        </div>
+    {{/if}}
+</script>
+
+<script id="_order_item_comment" type="text/x-handlebars-template">
+    {{#each info}}
+    {{> list_item_comments}}
+    {{/each}}
+</script>
+
+<script id="_item_order_item_comment" type="text/x-handlebars-template">
+    <div class="comment-title _content_chat_item_view">
+        {{#if is_activity}}
+            <p class="font-gray-dark" style="margin-top: 3px">
+                <a class="font-gray" href="user/detail/{{user_id}}" title="{{username}}" target="_blank"><strong>{{shorten_fullname}}</strong></a>
+                {{message}} - {{short_time}}
+            </p>
+        {{else}}
+            <a href="user/detail/{{user_id}}" target="_blank" title="{{username}}">{{shorten_fullname}}</a>
+            {{message}}
+            <span class="pull-right font-gray">{{short_time}}</span>
+        {{/if}}
+
+    </div>
+</script>
+
+<script id="_box-guide" type="text/x-handlebars-template">
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModalalert" class="modal fade finish-poup itemdetail" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                    <h3 id="myModalLabel" class="modal-title"><p class="text-left normal-blod title">Hướng dẫn</p></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="item-module-popup trlg">
+                        <div class="module-title font-bold"> Nhập trọng lượng</div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 content">
+                            <p> - Nhập số gram</p>
+                            <p> - VD: 1600gram(1,6kg)</p>
+                            <p> - Enter hoặc click vào nút lưu</p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 pull-right">
+
+                            <img alt="" src="assets/images/trongluong.jpg" />
+                        </div>
+                    </div>
+                    <div class="item-module-popup checkut">
+                        <div class="module-title font-bold"> Sửa số lượng khi kiểm hàng</div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 content">
+                            <p> - Hiển thị số lượng ---- Số lượng kiểm / Số lượng mua / Số lượng đặt</p>
+                            <p> - Di chuột lên vùng sản phẩm sẽ hiển thị như hình bên.</p>
+                            <p> - Click ( <span><img alt="" src="assets/images/arow-ali-up.png"/></span> ) để tăng hoặc ( <span><img alt="" src="assets/images/arow-ali.png"/></span> ) để giảm số lượng.</p>
+                            <p> - Có thể sửa số lượng trực tiếp trong ô nhập liệu.</p>
+                            <p> - Click " hết hàng " để chuyển số lượng về 0.</p>
+                            <p> - Click " nhận đủ " để chuyển số lượng = số lượng mua.</p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <img class="img" alt="" src="assets/images/kiemhang.jpg"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script id="_list-item-template" type="text/x-handlebars-template">
+
+    {{#if type}}
+    {{#each items}}
+        <div class="module-float content-item _item-product-view" data-item-id="{{id}}" data-order-id="{{order_id}}" data-order-code="{{order_code}}" data-page-size="3" page="1">
+        <div class="col-md-6 col-lg-6 left">
+            <div class="module-float">
+                {{#if edit_quantity}}
+                    <input is_out_of_stock="0" is_receive_enough="0" type="checkbox" class="chk radio" name="chk" value="chk" />
+                {{else}}
+                    <input disabled="disabled" is_out_of_stock="0" is_receive_enough="0" type="checkbox" class="chk radio" name="chk" value="chk" />
+                {{/if}}
+
+                <div class="module-float">
+                    <div class="img">
+                        <a href="{{link}}" target="_blank">
+                            <img data-original="{{convert_image image}}" class="lazy">
+                        </a>
+                    </div>
+                    <p>
+                        <span class="font-gray font-small">ID: </span><span class="uppercase">{{id}}</span>
+                        <span class="font-red _order-item-complaint"></span>
+                        <span class="link-size"> - <a href="{{link}}" target="_blank">Link gốc</a></span>
+                    </p>
+                    <p>
+                        {{#if show_note}}
+                            <span class="font-gray">Chú thích:</span>
+                            {{note}}
+                        {{/if}}
+                    </p>
+
+                    <div id="_chat-item-body-{{order_id}}-{{id}}" class="comment-item">
+                        <div class="comment-title chat">
+                            <input type="text" loaded="0" data-item-id="{{id}}" data-order-id={{order_id}} placeholder="Chát về sản phẩm..."
+                                   name="" data-type="EXTERNAL" class="input-chat _item_input_chat" />
+                        </div>
+
+                        <div class="_item-product-comments"></div>
+
+                        <div style="display: none" page="2" data-page-size="3" data-order-id="{{order_id}}" data-item-id="{{id}}" class="comment-title bottom _view_item_chat" id="_show-more-item-comment-{{order_id}}-{{id}}">
+                            <div class="border-link">
+                                <p class="text-center"><a href="javascript:">Xem thêm <span class="_total-remain-product-comments">0</span> trao đổi</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="module-float padd-top">
+                <p>{{property_translated}}</p>
+                <p class="font-gray">{{property}}</p>
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2 padd-top">
+            <div class="module-float">
+                <p>
+                    <span class="font-gray">Đơn giá: </span>
+                    <span class="_money-amount-k-none" data-amount="{{price}}">{{price}}</span>
+
+                    <span class="font-green">{{price_cny}}<sup>¥</sup></span>
+                </p>
+
+                <p><span class="font-gray">Tổng: </span> <span class="_money-amount-k-none" data-amount="{{total_amount_pending_vnd}}">{{total_amount_pending_vnd}}</span> <span class="font-green">{{total_amount_pending_cny}}<sup>¥</sup></span></p>
+
+                <!--
+                {{#if show_amount_by_pendding_quantity}}
+                    <p><span class="font-gray">Tổng: </span> <span class="_money-amount-k-none" data-amount="{{total_amount_pending_vnd}}">{{total_amount_pending_vnd}}</span> <span class="font-green">{{total_amount_pending_cny}}<sup>¥</sup></span></p>
+                {{/if}}
+                {{#if show_amount_by_recive_quantity}}
+                    <p><span class="font-gray">Tổng: </span> <span class="_money-amount-k-none" data-amount="{{total_amount_recive_vnd}}">{{total_amount_recive_vnd}}</span> <span class="font-green">{{total_amount_recive_cny}}<sup>¥</sup></span></p>
+                {{/if}}
+                {{#if show_amount_by_order_quantity}}
+                    <p><span class="font-gray">Tổng: </span> <span class="_money-amount-k-none" data-amount="{{total_amount_order_vnd}}">{{total_amount_order_vnd}}</span> <span class="font-green">{{total_amount_order_cny}}<sup>¥</sup></span></p>
+                {{/if}}
+                -->
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <div class="module-float quantity">
+                {{#if edit_quantity}}
+                    <div class="numbers-row">
+                        <div class="dec button _qtyplus">-</div>
+                        <input type="text" data-order-code="{{code}}" data-order-id="{{order_id}}" data-item-id="{{id}}" id="_item-receive-quantity-{{id}}" class="sl-input quantity" recive_quantity="{{recive_quantity}}" name="quantity" value="{{recive_quantity}}">
+                        <div class="inc button _qtyminus">+</div>
+                    </div>
+                {{else}}
+                    <span class="receive-quantity" data-item-id="{{id}}">{{recive_quantity}}</span>
+                {{/if}}
+
+                <span class="pending-quantity" data-pending-quantity="{{pending_quantity}}" data-item-id="{{id}}">/ {{pending_quantity}}</span>
+                <span class="order-quantity" data-order-quantity="{{order_quantity}}" data-item-id="{{id}}">/ {{order_quantity}}</span>
+
+            </div>
+
+            <div class="module-float">
+                <div class="lock-ac">
+                    {{#if edit_quantity}}
+                        <a data-order-code="{{code}}" data-item-id="{{id}}" href="javascript:" class="font-red-new border _item-change-out-of-stock">Hết hàng</a>
+                        <a data-item-id="{{id}}" class="font-green _item-change-pendding-quantity" href="javascript:">Nhận đủ</a>
+                    {{/if}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {{/each}}
+    {{else}}
+        <div class="infobox warning-bg" id="_item-list-error">
+            <p>{{message}}</p>
+        </div>
+    {{/if}}
+
+</script>
+
+<!-- Các phí trên đơn -->
+<script id="_render_fee" type="text/x-handlebars-template">
+    <div class="row">
+        <div class="col-lg-3 col-md-3">
+            <div class="module-float">
+                <p class="font-gray"><span class="uppercase font-bold">Tiền hàng</span> (1)</p>
+                <p class="_money-amount-k font-bold" data-amount="{{real_amount}}">{{real_amount}}</p>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-5 step2">
+            <div class="module-float">
+                <div class="module-float">
+                    <p class="font-gray">
+                        <span class="uppercase font-bold">Phí dịch vụ</span> (2) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="javascript:" class="font-small hidden">Sửa</a>
+                    </p>
+                    {{#each order_services}}
+                        <p><span class="free">Phí {{description}}</span>
+                        <span class="_money-amount-k _money_services pull-right" data-type="{{service_code}}" data-amount="{{money}}">
+                            {{money}}
+                        </span>
+                    </p>
+                    {{/each}}
+                    <?php if($controller->isAllowed(PERMISSION_ORDER_PACKAGING_SURCHARGES)){?>
+                        <p>
+                            <a data-toggle="modal" data-target="#checkwood" href="javascript:;" class="_span_fee_wood_crating {{#if is_wood_crating}} {{else}}hide{{/if}}"  >
+                                + Thêm phí đóng gỗ
+                            </a>
+                        </p>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            <div class="module-float">
+                <p class="font-gray"><span class="uppercase font-bold">Trả lại</span> (4)</p>
+                <p class="_money-amount-k font-bold margin-bottom" data-amount="{{real_refund_amount}}">{{real_refund_amount}}</p>
+
+                <p class="font-gray"><span class="uppercase font-bold">Đã thanh toán</span> (5)</p>
+                <p class="_money-amount-k font-bold margin-bottom" data-amount="{{real_payment_amount}}">{{real_payment_amount}}</p>
+
+                <p class="font-gray"><span class="uppercase font-bold">Đặt cọc</span> (6)</p>
+                <p class="_money-amount-k font-bold margin-bottom" data-amount="{{deposit_amount}}">{{deposit_amount}}</p>
+
+                <p class="font-gray"><span class="uppercase font-bold">Còn thiếu</span> (7) = (3+4) - 5</p>
+                <p class="_money-amount-k font-bold font-red-new" data-amount="{{missing_amount}}">{{missing_amount}}</p>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-lg-12 bottom-footer">
+            <div class="module-float">
+                <p class="font-small pull-right"><span class="font-gray uppercase font-bold">Tổng giá trị đơn</span> (3): &nbsp;&nbsp; <span class="font-green font-bold _money-amount-k" data-amount="{{total_amount}}">{{total_amount}}</span></p>
+            </div>
+        </div>
+
+    </div>
+</script>
+<!-- Kết thúc các phí trên đơn -->
+
+<!-- BEGIN LSGD -->
+<script id="_list-transaction-order-tpl" type="text/x-handlebars-template">
+    {{#each transaction_order}}
+        <div class="item">
+            <p class="">{{transaction_code}}<span class="font-green pull-right _money-amount-k" data-amount="{{amount}}">{{amount}}</span></p>
+            <p class="font-small">{{transaction_type_title}} - <span class="font-gray">{{closed_time_format_type2}}</span></p>
+        </div>
+    {{/each}}
+</script>
+<!-- END LSGD -->
+
+<!-- BEGIN TEMPLATE KNNB -->
+<script id="_item-row-complaint-seller" type="text/x-handlebars-template">
+    <div class="module-float main-ct _item-row-complaint-seller-view">
+        <div class="module-float">
+            <div class="col-lg-1 col-md-1">
+                {{id}}
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <p class="text-left">{{reason_title}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="uppercase font-bold text-left">{{status_title}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="font-red">{{refocus_time}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p>{{amount_seller_refund}} NDT</p>
+            </div>
+
+            <a class="user-acc" href="ComplaintSeller/detail/{{id}}" title="">
+                {{#if processed_by}}
+                <div class="img-acc">
+                    <div class="avatar">
+                        <img src="{{info_processed.avatar}}" alt="" />
+                    </div>
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+                {{/if}}
+            </a>
+
+            <div class="border-left"></div>
+        </div>
+    </div>
+</script>
+<!-- END TEMPLATE KNNB -->
+
+<!-- BEGIN TEMPLATE ROW PACKAGE CHECKING -->
+<script id="_item-row-package-checking-tpl" type="text/x-handlebars-template">
+    <p class="title-v2 _item-row-package-checking-view">
+        <span class="font-gray"><i class="fa fa-check"></i></span>
+        <span class="font-normal">NV >{{created_by.shorten_fullname}} kiểm lúc {{date created_time}}</span>
+    </p>
+</script>
+<!-- END TEMPLATE ROW PACKAGE CHECKING -->
+
+<!-- BEGIN TEMPLATE ROW PACKAGE -->
+<script id="_item-row-package-tpl" type="text/x-handlebars-template">
+    <div class="item-ct _item-row-package-view" data-id="{{id}}">
+        <div class="col-lg-2 col-md-2 left">
+            <div class="module-float">
+                <div class="key-id">{{idx}}</div>
+                <p class="title">{{package_code}}</p>
+                <p class="title-v2">vđ: {{freight_bill}}</p>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2">
+            <p class="ct-margintop">
+                <a href="{{detail_link_logistic_package_barcode}}" target="_blank">{{logistic_package_barcode}}</a>
+            </p>
+        </div>
+
+        <div class="col-lg-2 col-md-2">
+            <div class="text-center">
+                <span class="user-img-tool" rel="tooltipbottom" data-original-title="{{#if is_warehouse_status_time}}({{date warehouse_status_time}}){{/if}}">
+                    {{current_warehouse}}<br />
+                    {{warehouse_status_title}}
+                </span>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-2">
+            <p class="title">{{status_title}}</p>
+            <div class="_list-checking"></div>
+        </div>
+        <div class="col-lg-2 col-md-2">
+            <p class="ct-margintop">{{total_checking}}</p>
+        </div>
+        <div class="col-lg-2 col-md-2">
+            <div class="module-float save-input">
+
+                <!--
+
+                <?php if( $edit_weight ) { ?>
+                    <div class="append-right">
+                        <a href="javascript:" class="input-append _click-save-weight-package">
+                            <i class="fa fa-save"></i>
+                        </a>
+                        <input data-a-sep="." data-a-dec="," type="text" class="_txt-weight-package" name="" value="{{weight}}" placeholder="" />
+                    </div>
+
+                    {{# if show_level }}
+                        ({{level}})
+                    {{/if}}
+
+                <?php } else { ?>
+                    <p class="ct-margintop">
+                        {{weight}}
+                        {{# if show_level }}
+                            ({{level}})
+                        {{/if}}
+                    </p>
+                <?php } ?>
+
+                -->
+
+                <p class="ct-margintop">
+                    {{weight}}
+                    {{# if show_level }}
+                    ({{level}})
+                    {{/if}}
+                </p>
+
+            </div>
+            <a class="pull-right package _click-check-packing hidden" href="javascript:">Kiểm <i class="fa fa-angle-right"></i></a>
+        </div>
+    </div>
+</script>
+<!-- END TEMPLATE ROW PACKAGE -->
+
+<!-- BEGIN KNDV -->
+<script id="_item-row-complaint" type="text/x-handlebars-template">
+    <div class="module-float main-ct _item-row-complaint-view">
+        <div class="module-float">
+            <div class="col-lg-1 col-md-1">{{id}}</div>
+            <div class="col-lg-4 col-md-4">
+                <p class="text-left">
+                    {{title}}
+                </p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="text-left">{{type_title}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="font-bold uppercase">{{status_title}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p>{{recipient_time}}</p>
+            </div>
+            <a target="_blank" href="complaint/detail/{{id}}">
+                <div class="img-acc">
+                    <div class="avatar">
+                        {{#if show_info_recipient_by}}
+                        <img src="{{info_recipient_by.avatar}}">
+                        {{/if}}
+                    </div>
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+            </a>
+            <div class="border-left"></div>
+        </div>
+    </div>
+</script>
+<!-- END KNDV -->
+
+<!-- BEGIN ORDER TEMPLATE -->
+<script id="_order-template" type="text/x-handlebars-template">
+    <section class="order-detai-title">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 left">
+                    <div class="module-float">
+                        <div class="avatar-img">
+                            <img class="lazy" data-original="{{convert_image avatar}}" />
+                        </div>
+                        <p><span class="title">{{code}}</span> <span class="font-gray uppercase">id: {{id}}</span></p>
+                        <p><a href="{{buyer.detail_link}}" target="_blank">@{{buyer.username}}</a>/ {{buyer.last_name}} {{buyer.first_name}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8 right">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <div class="module-float step1 text-center">
+                                <p class="uppercase">
+                                    {{#if current_warehouse}}
+                                        {{current_warehouse}}
+                                    {{else}}
+                                        ---
+                                    {{/if}}
+
+                                    {{#if destination_warehouse}}
+                                        / {{destination_warehouse}}
+                                    {{else}}
+                                        / ---
+                                    {{/if}}
+                                </p>
+                                <p class="font-gray font-small">
+                                    {{#if show_warehouse_in_time}}
+                                        Nhập kho: {{date warehouse_in_time}}
+                                    {{/if}}
+
+                                    {{#if show_warehouse_out_time}}
+                                        Xuất kho: {{date warehouse_out_time}}
+                                    {{/if}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <?php
+                            $permission_choose_service = $controller->isAllowed(PERMISSION_ORDER_EDIT_SERVICES_REQUEST)
+                                                            && $order->getStatus() != \Order::STATUS_OUT_OF_STOCK;
+                        ?>
+
+                        <div class="col-lg-4 col-md-4 step2">
+                            <div class="module_float">
+                                <input data-type="<?php echo \Services::TYPE_CHECKING ?>"
+                                       {{#if need_checking}}checked="checked"{{/if}}
+                                       type="checkbox"
+                                       <?php echo $permission_choose_service ? '' : ' disabled="disabled" ' ?>
+                                       class="radio _choose-service" id="_service-checking"><label for="_service-checking"><i class="fa fa-chevron-down"></i> <span class="font-small">Kiểm</span></label>
+                            </div>
+
+                            <div class="module_float">
+                                <input data-type="<?php echo \Services::TYPE_WOOD_CRATING ?>"
+                                       {{#if check_wood_crating}}checked="checked"{{/if}}
+                                       type="checkbox"
+                                       <?php echo $permission_choose_service ? '' : ' disabled="disabled" ' ?>
+                                       class="radio _choose-service" id="_service-woodpile"><label for="_service-woodpile"><i class="fa fa-cube"></i> <span class="font-small">Đóng gỗ</span></label>
+                            </div>
+
+                            <div class="module_float">
+                                <input data-type="<?php echo \Services::TYPE_EXPRESS_CHINA_VIETNAM ?>"
+                                       {{#if is_cpn}}checked="checked"{{/if}}
+                                       type="checkbox"
+                                       <?php echo $permission_choose_service && $order->isBeforeStatus( \Order::STATUS_WAITING_FOR_DELIVERY ) ? '' : ' disabled="disabled" ' ?>
+                                       class="radio _choose-service" id="_service-cpn"><label for="_service-cpn"><span class="icon-cpn">icon-cpn</span> <span class="font-small">CPN</span></label>
+                            </div>
+
+                            <div class="module_float">
+                                <input data-type="<?php echo \Services::TYPE_FRAGILE ?>"
+                                       {{#if check_fragile}}checked="checked"{{/if}}
+                                       type="checkbox"
+                                       <?php echo $permission_choose_service ? '' : ' disabled="disabled" ' ?>
+                                       class="radio _choose-service" id="_service-fragile"><label for="_service-fragile"><i class="fa fa-glass"></i> <span class="font-small">Dễ vỡ</span></label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 step3">
+                            <p class="font-bold uppercase text-center {{order_status_color}}" id="_order-status-current">{{order_status status}}</p>
+                            {{#if need_checking}}
+                                <p class="text-center font-small">
+                                    {{#if is_checking_status_checked}}
+                                        <i class="fa fa-chevron-down"></i> Đã kiểm
+                                    {{/if}}
+                                    {{#if is_checking_status_not_yet_checked}}
+                                        Chưa kiểm
+                                    {{/if}}
+                                </p>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{# if show_customer_confirm}}
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 font-small font-gray">
+                        Đơn hàng đang được gửi khách xác nhận, lí do:
+                        <strong>
+                            {{#if is_show_note_customer_confirm}}
+                                {{note_customer_confirm}}
+                            {{else}}
+                                ---
+                            {{/if}}
+                        </strong>
+                        từ
+                        <strong>{{date confirm_created_time}}</strong>
+                        {{#if show_time_left_customer_confirm}}
+                            ({{time_left_customer_confirm}} ngày)
+                        {{/if}}
+
+
+                        <?php if( $controller->isAllowed(PERMISSION_ORDER_CUSTOMER_CONFIRM) ){ ?>
+                        <span id="_show-btn-click-customer-confirm">
+                        · <a id="_btn-click-customer-confirm" href="javascript:">Xác nhận</a>
+                        </span>
+                        <?php } ?>
+                    </div>
+                </div>
+            {{/if}}
+
+        </div>
+    </section>
+
+    <section class="order-detai-scoll-top hidden">
+        <div class="container">
+            <div class="module-scoll-top">
+                <div class="module-float">
+                    <p><span class="font-bold uppercase">{{code}}</span> · <a href="{{buyer.detail_link}}" target="_blank">@{{buyer.username}}</a>/ {{buyer.last_name}} {{buyer.first_name}} <span class="v2">{{order_status status}}</span> <span class="v1">Trạng thái: &nbsp;</span> </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="order-detai-tab">
+    <div class="container">
+    <div class="module-float">
+    <div class="module-float detai-tab">
+        <ul class="module-float" id="_tab">
+            <li class="active">
+                <a href="javascript:">Thông tin chung</a>
+            </li>
+            <li>
+                <a href="javascript:">Lịch sử</a>
+            </li>
+            <li>
+                <a href="javascript:">Khiếu nại<span style="display: none" class="arrow" id="_total-complaint">0</span></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="module-float detai-tab-ct _detail-tab-ct">
+        <div class="module-float history">
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Tỷ giá</p>
+                    <p class="module-ct">{{exchange}} VND</p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Người bán</p>
+                    <p class="module-ct">
+                        <a target="_blank" rel="nofollow" href="http://{{seller_name}}.{{seller_home_land}}.com">
+                            <img style="width: 16px!important" data-original="{{seller_favicon_site}}" class="lazy" />
+                        </a>
+                        {{seller_name}}
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Bill VC</p>
+                    <p class="module-ct">{{name_recipient_origin}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Trạng thái kho</p>
+                    <p class="module-ct">{{warehouse_status}}</p>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <p class="title">Mua hàng</p>
+                    {{#if teller}}
+                    <p class="module-ct">
+                        <span class="font-normal">
+                            <a target="_blank" href="{{teller.detail_link}}">{{teller.shorten_fullname}}</a>
+                            /
+                            <a target="_blank" href="{{teller.detail_link}}">{{teller.email}}</a>
+                        </span>
+                    </p>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Tổng cân nặng</p>
+                    <p class="module-ct">
+                        <p class="normal">
+                            {{weight}} gram
+                        </p>
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Mã đơn hàng gốc</p>
+                    <p class="module-ct">
+                        {{#if show_link_site_root}}
+                        {{#each arrLinkSiteRoot}}
+                        <a href="{{link}}" target="_blank">{{order_invoice}}</a>
+                        {{#if last_index}} , {{/if}}
+                        {{/each}}
+                        {{/if}}
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Hóa đơn Alipay</p>
+                    <p class="module-ct">{{alipay}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">User mua hàng</p>
+                    <p class="module-ct">{{account_purchase_origin}}</p>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <p class="title">Thanh toán</p>
+                    {{#if payment}}
+                    <p class="module-ct">
+                        <span class="font-normal">
+                            <a href="{{payment.detail_link}}" target="_blank">{{payment.shorten_fullname}}</a>
+                            /
+                            <a href="{{payment.detail_link}}" target="_blank">{{payment.email}}</a>
+                        </span>
+                    </p>
+                    {{/if}}
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Mã vạch</p>
+                    <p class="module-ct">S/{{id}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title"></p>
+                    <p class="module-ct"></p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title"></p>
+                    <p class="module-ct"></p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title"></p>
+                    <p class="module-ct"></p>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <p class="title">Kiểm hàng</p>
+                    {{#if user_checked}}
+                    <p class="module-ct">
+                        <span class="font-normal">
+                            <a href="{{user_checked.detail_link}}" target="_blank">{{user_checked.shorten_fullname}}</a>
+                            /
+                            <a href="{{user_checked.detail_link}}" target="_blank">{{user_checked.email}}</a>
+                        </span>
+                    </p>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <p class="title">địa chỉ nhận hàng</p>
+                    {{#if address}}
+                    <div class="module-float address-user">
+                        {{#if address.error}}
+                        <p class="normal">{{address.error}}</p>
+                        {{else}}
+                        <div class="module_float left">
+                            <p>
+                                <span class="font-bold">{{address.reciver_name}}</span>
+                                <span class="arrow-add"></span>
+                                <span>{{address.detail}}, {{address.district.label}}, {{address.province.label}}</span>
+
+                                {{#if address.reciver_phone}}
+                                    <span class="arrow-add"></span>
+                                    <span>{{address.reciver_phone}}</span>
+                                {{/if}}
+                            </p>
+                            {{#if address.note}}
+                            <p class="font-gray">{{address.note}}</p>
+                            {{/if}}
+                        </div>
+                        <div class="module_float right">
+                            <p class="font-bold uppercase">{{address.province.label}}</p>
+                        </div>
+                        {{/if}}
+                    </div>
+                    {{else}}
+                    <p class="font-gray-dark">Không có quyền xem</p>
+                    {{/if}}
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <p class="title"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="display: none" class="module-float detai-tab-ct _detail-tab-ct">
+        <div class="module-float history">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Tạo đơn</p>
+                    <p class="module-ct">{{date created_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Đặt cọc</p>
+                    <p class="module-ct">{{date deposit_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Đã Pai</p>
+                    <p class="module-ct">{{date paid_staff_assigned_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Đàm phán</p>
+                    <p class="module-ct">{{date negotiated_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Mua hàng</p>
+                    <p class="module-ct">{{date bought_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Người bán giao</p>
+                    <p class="module-ct">{{date seller_delivered_time}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Nhận hàng</p>
+                    <p class="module-ct">{{date received_from_seller_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Kiểm hàng</p>
+                    <p class="module-ct">{{date checked_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Chờ giao</p>
+                    <p class="module-ct">{{date waiting_delivery_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Y/c giao</p>
+                    <p class="module-ct">{{date confirm_delivery_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Giao hàng</p>
+                    <p class="module-ct">{{date delivered_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Khách nhận hàng</p>
+                    <p class="module-ct">{{date received_time}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Hết hàng</p>
+                    <p class="module-ct">{{date out_of_stock_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Hủy</p>
+                    <p class="module-ct">{{date cancelled_time}}</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Khách thanh toán</p>
+                    <p class="module-ct">{{date real_payment_last_time}}</p>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title">Vận chuyển</p>
+                    <p class="module-ct">{{date transporting_time}}</p>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="title"></p>
+                    <p class="module-ct"></p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div style="display: none" class="module-float detai-tab-ct _detail-tab-ct">
+        <div class="module-float history detail-ctv3" style="padding-left: 0!important; padding-right: 0!important;">
+            <div class="module-float">
+                <p class="title" style="padding-left: 15px;">Khiếu nại dịch vụ (<span id="_total-complaint-service">0</span>)</p>
+                <input type="hidden" name="total-complaint-service" value="0" />
+            </div>
+            <div class="module-float " id="_tbl-complaint-service">
+                <div class="module-float header-top font-gray-dark">
+                    <div class="col-lg-1 col-md-1">id</div>
+                    <div class="col-lg-4 col-md-4">
+                        <p class="text-left">Tên khiếu nại</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p class="text-left">Lý do</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p>Tình trạng</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p>Hạn xử lý</p>
+                    </div>
+
+                    <div class="accout"><p class="text-left">Tiếp nhận</p></div>
+                </div>
+
+                <div class="module-float list" id="_list-complaints" style="border-left: 0; border-right: 0"></div>
+                <div class="module-float" id="_show-paging-complaint"></div>
+
+            </div>
+
+            <div class="module-float">
+                <p class="title" style="padding-left: 15px;">
+                    Khiếu nại người bán (<span id="_total-complaint-seller">0</span>)
+
+                    <?php if( $controller->isAllowed(PERMISSION_COMPLAINT_SELLER_CREATE_NEW) ){ ?>
+                        <button id="_btn-show-complaint-seller" class="button-default pull-right new-kn">Tạo khiếu nại người bán</button>
+                    <?php } ?>
+
+                    <?php if( ( $controller->isAllowed(PERMISSION_COMPLAINT_SELLER_CAN_ACCEPT)
+                                    || $controller->isAllowed(PERMISSION_COMPLAINT_SELLER_CAN_REJECT) )
+                                    && $order->getComplainSeller() == 1){ ?>
+                        <!-- <button id="_btn-doing-complaint-seller" class="button-default pull-right new-kn">Đang khiếu nại người bán</button> -->
+                    <?php } ?>
+                </p>
+                <input type="hidden" name="total-complaint-seller" value="0" />
+            </div>
+            <div class="module-float " id="_tbl-complaint-seller">
+                <div class="module-float header-top font-gray-dark">
+                    <div class="col-lg-1 col-md-1">id</div>
+                    <div class="col-lg-4 col-md-4">
+                        <p class="text-left">Lý do</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p class="text-left">Tình trạng</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p>Hạn xư lý</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p>Đã đòi được</p>
+                    </div>
+
+                    <div class="accout"><p class="text-left">Phụ trách</p></div>
+                </div>
+
+                <div class="module-float list" id="_list-complaint-sellers"></div>
+                <div class="module-float" id="_show-paging-complaint-seller"></div>
+
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+    </div>
+    </section>
+
+    <section class="order-detai-package">
+        <div class="container">
+            <div class="module-float">
+                <div class="module-float module-title">
+                    <p>Danh sách kiện của đơn</p>
+                </div>
+                <div class="module-float main-ct" id="_main-list-package-by-order">
+                    <div class="module-float header-top">
+                        <div class="col-lg-2 col-md-2 left">
+                            <div class="module-float">
+                                <div class="key-id">id</div>
+                                <p>Kiện</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">mã vc</p>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Kho hiện tại</p>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2">
+                            <p>Tình trạng</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">SLG <span style="display: none" class="font-normal font-red-new" id="_total-receive-quantity-package">(0)</span></p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p>cân nặng <span class="font-normal font-bold">(gram)</span></p>
+                        </div>
+                    </div>
+
+                    <div class="module-float content" id="_list-package-by-order"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="order-detai-content">
+        <div class="container">
+        <div class="module-float">
+            <div class="module-float conten-header">
+                <div class="col-md-6 col-lg-6 left">
+                    <div class="module-float">
+                        <input class="radio" type="checkbox" id="chkall" name="chkall" value="chkall" />
+                        <p>sản phẩm</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                    <div class="module-float">
+                        <p>mẫu</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                    <div class="module-float">
+                        <p>giá</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                    <div class="module-float">
+                        <p class="text-center">slg <span class="font-red-new font-normal" id="_total-quantity-current"></span></p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="module-float content-main" id="_list-item-placeholder"></div>
+
+            <div class="module-float content-bottom">
+                <div class="col-lg-5 col-md-5 check-all">
+                    <div class="module-float"></div>
+                    <span class="arrow"></span>
+                    Với những sản phẩm đã chọn
+                    <a href="javascript:" id="_btn_out_of_stock">Hết hàng</a> <span class="font-blue font-small">|</span>
+                    <a href="javascript:" id="_btn_receive_enough">Nhận đủ</a>
+                </div>
+
+                <div class="col-md-1 col-lg-1">
+                    <div class="module-float save-input">
+                        <?php if( $edit_weight ) { ?>
+
+                            <a class="input-append _change-weight" href="javascript:;">
+                                <i class="fa fa-save"></i>
+                            </a>
+
+                            <div class="append-right">
+                                <input data-a-sep="." data-a-dec="," type="text" placeholder="Trọng lượng" value="{{#if weight}}{{weight}}{{/if}}" name="weight_input" id="_order-weight-input" data-order-id="{{id}}">
+                            </div>
+
+                            <div class="dropdow-error">
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                <p class="font-small">Trọng Lượng (gram). Vd: 1,5 kg = 1500 gram</p>
+                            </div>
+
+                        <?php } else { ?>
+                            <p class="normal"><strong>{{weight}}</strong> gram</p>
+                        <?php } ?>
+                    </div>
+
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <div class="module-float button-submit">
+                        <div class="select" id="_select">
+                            <div class="module-float title">
+                                <i class="fa fa-cogs"></i> <span class="uppercase">Hành động</span><i class="fa fa-sort-down arrow"></i>
+                            </div>
+                            <div class="border"></div>
+                            <div class="module-dropdow" id="_module-dropdow">
+
+                                <!--
+                                <div class="item">
+                                    <a href="javascript:"><i class="fa fa-plus"></i> <span>Nhận thêm</span></a>
+                                </div>
+                                -->
+
+                                <?php if ( $controller->isAllowed(PERMISSION_ORDER_CHANGE_TRANSPORTING)
+                                    && \Order::STATUS_RECEIVED_FROM_SELLER == $order->getStatus()
+                                    && $order->getStatus() != \Order::STATUS_OUT_OF_STOCK ) :?>
+                                    <div class="item">
+                                        <a href="javascript:" id="_change-transporting">
+                                            <i class="fa fa-check"></i>
+                                            <span>Vận chuyển</span>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+
+                                <!-- Add change status @luuhieu -->
+                                <?php if ( $permission_change_to_waiting_for_delivery ) :?>
+                                    <div class="item">
+                                        <a href="javascript:" id="_change-wait-delivery">
+                                            <i class="fa fa-check"></i>
+                                            <span>Chờ giao</span>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if ($controller->isAllowed(PERMISSION_ORDER_CHANGE_REQUEST_DELIVERY)
+                                    && \Order::STATUS_WAITING_FOR_DELIVERY == $order->getStatus()
+                                    && $order->getStatus() != \Order::STATUS_OUT_OF_STOCK ) :?>
+                                    <div class="item">
+                                        <a href="javascript:" id="_change-request-delivery">
+                                            <i class="fa fa-check"></i>
+                                            <span>Y/C giao hàng</span>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+
+
+
+                                <?php if ($controller->isAllowed(PERMISSION_ORDER_CHANGE_DELIVERY)
+                                    && \Order::STATUS_CUSTOMER_CONFIRM_DELIVERY == $order->getStatus()
+                                    && $order->getStatus() != \Order::STATUS_OUT_OF_STOCK ) :?>
+                                    <div class="item">
+                                        <a href="javascript:" id="_change-delivery">
+                                            <i class="fa fa-check"></i>
+                                            <span>Đã giao hàng</span>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+
+
+
+                                <!-- change status @luuhieu -->
+
+                                <!-- write by @vanhs -->
+                                <?php if( $controller->isAllowed(PERMISSION_ORDER_TRANSITION_OUT_OF_STOCK)
+                                        && $order->getStatus() != \Order::STATUS_OUT_OF_STOCK ) { ?>
+                                    <div class="item">
+                                        <a id="_show-popup-refund-for-customer" href="javascript:"><i class="fa fa-times"></i> <span>Hết hàng</span></a>
+                                    </div>
+                                <?php } ?>
+
+                            </div>
+                        </div>
+
+                        <?php if ( $controller->isAllowed(PERMISSION_ORDER_EDIT_RECEIVED_QUANTITY)
+                                    && $order->getStatus() != \Order::STATUS_OUT_OF_STOCK ) : //Status for checking ?>
+                            {{#if need_checking}}
+                                {{#if checked}}
+                                    <!-- <button disabled="disabled" class="btn btn-red pull-right">ĐÃ KIỂM</button> -->
+                                {{else}}
+                                    <button id="_checked" class="btn btn-red pull-right">KIỂM XONG</button>
+                                {{/if}}
+                            {{/if}}
+                        <?php endif; ?>
+
+                        <button id="" class="btn print pull-right _print-barcode" value=""><i class="print fa fa-print"></i> in tem</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-float content-footer">
+                <div class="module-float top-footer">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="module-float">
+                            <div class="module-float title">
+                                <p>Lịch sử giao dịch</p>
+                            </div>
+                            <div class="module-float ct-left" id="_show-list-transaction-order"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-8">
+                        <div class="module-float">
+                            <div class="module-float title">
+                                <p>Các phí trên đơn</p>
+                            </div>
+                            <div class="module-float ct-right" id="_list-fee"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+</script>
+<!-- END ORDER TEMPLATE -->
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModalalert1" class="modal fade finish-poup _panel-complaint-seller">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                <h3 id="myModalLabel" class="modal-title"><p class="text-left normal-blod title">Khiếu nại người bán</p></h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="_complaint-seller-order_id" value="<?php echo $order->getId(); ?>" />
+
+                    <div class="col-lg-5 col-md-5 text-right">
+                        Lý do đòi tiền:
+                    </div>
+                    <div class="col-lg-7 col-md-7">
+                        <select class="cat" id="_complaint-seller-reason">
+                            <option value="">Vui lòng chọn một lý do đòi tiền</option>
+                            <?php
+                            $reasons = \ComplaintSeller::$reasonTitle;
+                            foreach((array)$reasons as $key => $value){
+                                echo "<option value='" . $key . "'>" . $value . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+
+                    <div class="col-lg-5 col-md-5 text-right">
+                        Hạn xử lý:
+                    </div>
+                    <div class="col-lg-7 col-md-7">
+                        <input style="margin-top: 10px;" id="_complaint-seller-refocus-time" type="text" value="<?php echo date("d-m-Y"); ?>" placeholder="" />
+                    </div>
+
+                    <div class="col-lg-5 col-md-5"></div>
+                    <div class="col-lg-7 col-md-7" id="_complaint-seller-message-error"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="_btn-save-complaint-seller" class="btn btn-blue" type="button">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModalalert2" class="modal fade finish-poup _panel-complaint-seller">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                <h3 id="myModalLabel" class="modal-title"><p class="text-left normal-blod title">Kết thúc khiếu nại</p></h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 text-right">
+                        Trạng thái hoàn thành:
+                    </div>
+                    <div class="col-lg-7 col-md-7">
+                        <select id="_complaint-seller-status" style="width: 50%">
+                            <?php if($controller->isAllowed(PERMISSION_COMPLAINT_SELLER_CAN_ACCEPT)){ ?>
+                                <option value="SUCCESS">Thành công</option>
+                            <?php } ?>
+                            <?php if($controller->isAllowed(PERMISSION_COMPLAINT_SELLER_CAN_REJECT)){ ?>
+                                <option value="FAILURE">Thất bại</option>
+                            <?php } ?>
+                        </select>
+                    </div>
+
+                    <?php if($controller->isAllowed(PERMISSION_COMPLAINT_SELLER_CAN_ACCEPT)){ ?>
+                        <div id="_complaint-seller-status-success">
+                            <div class="col-lg-5 col-md-5 text-right">
+                                Số tiền đòi được (NDT):
+                            </div>
+                            <div class="col-lg-7 col-md-7">
+                                <input data-a-sep="." data-a-dec="," style="margin-top: 10px; width: 100%" id="_complaint-seller-amount-seller-refund" type="text" value="0" placeholder="" />
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 text-right">
+                                Ghi chú:
+                            </div>
+                            <div class="col-lg-7 col-md-7">
+                                <textarea id="_complaint-seller-description" style="margin-top: 10px; width: 100%"></textarea>
+                            </div>
+                        </div>
+                    <?php } ?>
+
+                    <div class="col-lg-5 col-md-5"></div>
+                    <div class="col-lg-7 col-md-7" id="_complaint-seller-message-error"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-blue" type="button" id="_btn-save-complaint-seller-status">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--popup cho phí đóng gỗ-->
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="checkwood" class="modal fade finish-poup itemdetail" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                <h4 id="myModalLabel" class="modal-title"><p class="normal-blod title">Nhập phụ phí đóng gỗ</p></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="module-float">
+                        <div class="form-label col-lg-4 col-md-4 text-left">
+                            <label for="">
+                                Phí đóng gỗ :
+                            </label>
+                        </div>
+                        <div class="col-md-8 col-md-8">
+                            <input type="text" data-a-dec="," data-a-sep="." placeholder="Nhập phí đóng gỗ (VNĐ)..." class="form-control form-myinput col-md-8 col-md-8" id="_money_wood_crating">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-blue" type="button" id="add_fee_wood_crating" rel="{{order_id}}">Thêm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end popup them phi đóng gỗ-->
+
+
+<!--     modal box-->
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="_popup-refund-for-customer" class="modal fade popupbarcode" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                <h4 id="myModalLabel" class="modal-title"><p class="title">Hết hàng đơn hàng</p></h4>
+            </div>
+            <div class="modal-body">
+                <p>Số tiền sẽ trả lại cho khách hàng trong đơn này là : <span id="_refund-amount-for-customer">0</span> VNĐ</p>
+                <p style="display: none" class="font-red" id="_message-error-refund-for-customer">Nội dụng lỗi sẽ hiển thị tại đây</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                <button type="button" class="btn btn-blue" id="_click-out-of-stock">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--        end modal box-->
+
+

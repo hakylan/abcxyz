@@ -1,0 +1,67 @@
+<?php
+use \SeuDo\Main;
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = Main::getHomeUrl();
+//echo $publicHomePath;
+
+$jsPath = $publicHomePath.'assets/js/';
+$jsBackendPath = $publicHomePath.'backend/assets/js/';
+$cssPath = $publicHomePath.'assets/css/';
+$imgPath = $publicHomePath.'assets/images/';
+
+$document->addJs($jsPath.'jquery.scrollTo.min.js',"TOP");
+
+//$document->addJs($publicHomePath.'assets/js/handlebars-v1.3.0.js', 'TOP');
+//$document->addJs($jsBackendPath.'process/complaint_manage.js',"TOP");
+
+?>
+
+<script type="text/javascript" src="<?php echo $publicHomePath; ?>assets/js/handlebars-v1.3.0.js"></script>
+<script type="text/javascript" src="<?php echo $jsBackendPath; ?>process/complaint_manage.js"></script>
+
+<form id="_search" method="get" action="">
+
+    <h3>Chon trang thai</h3>
+    <ul>
+        <li class="_filter-status" data-type="ALL">Tat ca</li>
+        <li class="_filter-status" data-type="ALL">Tat ca</li>
+    </ul>
+
+    Ma don hang<br />
+    <input type="text" name="_filter-order-code" id="_filter-order-code" placeholder="Ma don hang" /><br />
+    Ma san pham<br />
+    <input type="text" name="_filter-item-code" id="_filter-item-code" placeholder="Ma san pham" /><br />
+
+    Tu<br />
+    <input type="text" id="_from" />
+
+    Toi<br />
+    <input type="text" id="_to" />
+
+    <input type="button" id="_btnFilter" value="Tim kiem">
+
+    <p>
+        Ket luan khieu nai:
+        <input type="checkbox" name="error" value="">Loi cua bo phan trong cong ty
+        <input type="checkbox" name="error" value="">Loi do toi tac
+        <input type="checkbox" name="error" value="">Loi do nguoi ban
+    </p>
+
+    <input type="checkbox" name="" value="" />Thiet hai cong ty
+
+    Nhan vien xy lu
+    <select id="">
+        <option value="0"></option>
+    </select>
+    Nhan vien hoan tien
+    <select id="">
+        <option value="0"></option>
+    </select>
+
+    <input id="_current-page" type="hidden" name="page" value="<?php echo $page; ?>" />
+</form>
+
+<div id="_list-complaints"></div>
+
+

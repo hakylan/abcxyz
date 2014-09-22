@@ -1,0 +1,110 @@
+@charset "UTF-8";
+/*
+ * jQuery File Upload Plugin CSS Example 8.8.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+body {
+    font: 16px/20px 'Roboto Slab',Helveticaworld,Helvetica,"Helvetica Neue",Arial;
+    background: #fff;
+    position: relative;
+    overflow-x: hidden;
+    line-height: 1.42857;
+}
+.text-shadow{
+	text-shadow: 0 0 1px #9da0a6;
+}
+a:focus{
+    outline: none !important;
+}
+a:hover{
+    cursor: pointer;
+}
+.btn:focus,
+.btn:before,
+a:focus{
+    outline: none;
+}
+.modal.fade.in{
+    overflow: hidden;
+}
+.disabled{
+    cursor: not-allowed !important;
+    pointer-events: inherit !important;
+}
+.uppercase{
+    text-transform: uppercase;
+}
+.font-bold{
+    font-weight: bold;
+}
+.font-normal{
+    font-weight: normal;
+}
+.font-small{
+    font-size: 11px;
+}
+.font-lag{
+    font-size: 14px;
+}
+.font-center{
+    text-align: center;
+}
+.font-white{
+	color: #fff;
+}
+.font-red{
+    color: #b41a1a;
+}
+.font-blue{
+    color: #0072ba;
+}
+.font-green{
+    color: #27ae60;
+}
+.font-red-new{
+    color: #ec0423;
+}
+
+.font-gray{
+	color: #ababac;
+}
+.font-user{
+    font-family: Georgia;
+}
+p{
+    margin-bottom: 5px;
+}
+img{
+	display: inline-block;
+	width: 100%;
+}
+.btn,
+.form-control{
+	border-radius: 0 !important;
+}
+.form-control:focus{
+	box-shadow: none !important;
+}
+.module-float{
+	float: left;
+	width: 100%;
+}
+.module-float5{
+    float: left;
+    width: 50%;
+}
+.module_float{
+    float: left;
+}
+.btn{
+    height: 34px;
+}
+.hidden{
+	display: none;
+}

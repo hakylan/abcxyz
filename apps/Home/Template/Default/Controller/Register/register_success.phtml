@@ -1,0 +1,35 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = Main::getHomeUrl();
+$document->title = t("Chúc mừng!");
+$cssPath = $publicPath . 'assets/css/';
+$imgPath = $publicPath.'assets/images/';
+$jsPathFront = $publicPath . 'assets/js/';
+$logger = \HomeAuth::getInstance()->getUser();
+?>
+<section class="page-register editavatar">
+    <nav class="container" >
+        <div class="row">
+            <div class=" col-lg-8 col-lg-offset-2">
+                            <div class="col-md-12">
+                                <h3><strong>Việc đăng ký chỉ còn một bước nữa thôi.</strong></h3>
+                                <p style="font-size: 14px;">Bạn đã đăng ký thành công, vui lòng thực hiện việc xác nhận địa chỉ email để hoàn tất.
+                                    Chúng tôi đã gửi một email tới địa chỉ <?php echo '<strong><i>'.$logger->getEmail().'</i></strong>';?>.
+                                    Vui lòng kiểm tra email và click vào nút "Xác nhận" như hình phía dưới.
+                                    <br>
+                                    <br>
+                                </p>
+                                <div class="col-lg-10 col-lg-offset-1">
+                                    <img class="_imgDemoVerify" src="<?php echo $imgPath;?>verify_demo.jpg">
+                                </div>
+                                <p class="_spamJunkMail">
+                                Có thể email xác nhận không nằm trong hòm thư <i><strong>Inbox</strong></i>, vui lòng kiểm tra thư mục <i><strong>Spam</strong></i>
+                                    hoặc <i><strong>Junkmail</strong></i> để thực hiện thao tác trên.
+                                </p>
+                            </div>
+        </div>
+        <!--        </div>-->
+    </nav>
+
+</section>

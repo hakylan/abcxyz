@@ -1,0 +1,67 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 5/7/14
+ * Time: 5:08 PM
+ */
+$array_transaction_error = isset($array_transaction_error) ? $array_transaction_error : array();
+if (!empty($array_transaction_error)){
+    ?>
+
+<table>
+    <tr>
+        <th>Transaction Code</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Ending Balance</th>
+        <th>Order code</th>
+        <th>User</th>
+        <th>Note</th>
+        <th>Time</th>
+    </tr>
+    <?php
+
+    foreach ($array_transaction_error as $transaction_error) {
+    ?>
+        <?php
+        foreach ($transaction_error as $key => $transaction) {
+            $transaction_detail = json_decode($transaction["detail"],true);
+            if($transaction_detail == ""){
+                $transaction_detail = $transaction["detail"];
+            }
+            ?>
+    <tr>
+
+        <td><?php echo $transaction["transaction_uid"] ?></td>
+        <td>
+            <?php if(isset($transaction_detail["type"])){ ?>
+                <?php echo $transaction_detail["type"] ?>
+            <?php } ?>
+        </td>
+        <td>
+            <?php echo $transaction["amount"] ?>
+        </td>
+        <td>
+            <?php echo $transaction["acc_balance"] ?>
+        </td>
+        <td>
+            <?php if(isset($transaction_detail["order_code"])){ ?>
+                <?php echo $transaction_detail["order_code"] ?>
+            <?php } ?>
+        </td>
+        <td>
+            <?php echo $transaction["username"] ?>
+        </td>
+        <td>
+            <?php echo $transaction["note"] ?>
+        </td>
+        <td><?php echo $transaction["completed_time"]["date"];
+             ?></td>
+    </tr>
+        <?php } ?>
+    <?php } ?>
+</table>
+<?php }else{ ?>
+    Không phát hiện giao dịch lỗi nào khi đối soát.
+<?php } ?>

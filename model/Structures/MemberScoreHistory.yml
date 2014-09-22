@@ -1,0 +1,15 @@
+comment:
+    - '#MemberScoreHistory'
+    - '#Schema for MemberScoreHistory OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: 'int(11) unsigned', length: 4, fixed: false, unsigned: true, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    user_id: { name: user_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    object_id: { name: object_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    object_type: { name: object_type, type: string, db_type: string, alltypes: [string], ntype: varchar(100), length: 100, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    level_id: { name: level_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    point: { name: point, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    total_point: { name: total_point, type: number, db_type: float, alltypes: [float], ntype: double, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    note: { name: note, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    created_time: { name: created_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: member_score_history

@@ -1,0 +1,138 @@
+@charset "UTF-8";
+/*
+ * jQuery File Upload Plugin CSS Example 8.8.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+body{
+    background: #fff;
+    font-family: "Times New Roman" !important;}
+p{
+    margin-bottom: 3px;
+}
+.top .border{
+    display: inline-block;
+    width: 100%;
+}
+.top .border span{
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    border-bottom: 1px solid #333;
+}
+.top{
+    margin-top: 10px;
+}
+
+._print_content{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.top .title{
+    font-weight: bold;
+    font-size: 21px;
+    text-align: center;
+    text-transform: uppercase;
+    padding-top: 5px;
+}
+.module_float{
+    position: relative;
+    height: 20px;
+}
+.module-float2{
+    float: left;
+    width: 50%;
+}
+.left{
+    width: 25%;
+}
+.right{
+    width: 75%;
+}
+.top2 .left{
+    width: 30%;
+}
+.top2 .right{
+    width: 70%;
+}
+.line-border{
+    position: absolute;
+    border-bottom: 1px dotted #333;
+    width: 100%;
+    bottom: 0px;
+    left: 0;
+}
+.top2{
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+.module-title{
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.top3 .module-left .left{
+    width: 15%;
+}
+.top3 .module-left .right{
+    width: 85%;
+}
+
+._top_list{
+    top: 10px;
+}
+
+.top3 .module-float2 .module-ct{
+    padding: 0px 8px 0px 0px;
+    min-height: 190px;
+}
+.top3 .module-float2 .module-ct .module-float{
+    margin-bottom: 6px;
+}
+.top3 .right-bottom .module-float{
+    margin-bottom: 10px;
+    position: relative;
+}
+.top3 .right-bottom .moduletitle {
+    margin-bottom: 5px;
+}
+.top3 .right-bottom .line-border{
+    bottom: 4px;
+}
+.top4{
+    margin-top: 15px;
+    margin-bottom: 90px;
+}
+.top3 .phone{
+    position: absolute;
+    background: #fff;
+    width: 35px;
+    padding-left: 8px;
+    top: 0;
+    right: 90px;
+}
+.top3 .phone-number{
+    position: absolute;
+    width: 100px;
+    top: 0;
+    right: -10px;
+}
+@media (max-width:979px) {
+    body {
+        min-width: 970px !important;
+        background: #fff;
+    }
+    /* Reset the container */
+    .container {
+        width: 970px !important;
+        max-width: none !important;
+        padding-left: inherit !important;
+        padding-right: inherit !important;
+    }
+}

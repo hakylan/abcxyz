@@ -1,0 +1,81 @@
+<div id="page-title">
+    <h3>
+        Sửa địa điểm <?php echo $data->getLabel(); ?>
+    </h3>
+    <div id="breadcrumb-right">
+        <div class="float-right">
+            <a class="btn medium bg-blue-alt" href="<?php echo $this->createUrl('location') ?>">&nbsp;<i
+                    class="glyph-icon icon-arrow-left"></i> Trở
+                lại&nbsp;</a>
+        </div>
+    </div>
+</div>
+<?php
+$html = '<select name="category" size="6" style="height:300px">';
+foreach ($menu as $key => $value) {
+    //if ($value['id']!=$data->getId() ) {
+    $string = '';
+    for ($i = 0; $i < $value['level']; $i++) {
+        $string.='----';
+    }
+    $row = '<option value="' . $value['id'] . '">' . $string . $value['label'] . '</option>';
+    $html.=$row;
+    //}
+}
+
+$html.='</select>';
+?>
+
+<?php
+//$form = new \Flywheel\Html\Form();
+$form = $this->createFrom('user_frm');
+$form->setHtmlOption(array(
+    'class' => 'form-horizontal',
+));
+$form->beginForm();
+?>
+
+
+<div class="col-md-8 form-label-right">
+    <div class="form-row">
+        <div class="form-label col-md-4">
+            <label for="" class="label-description">
+                Label:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <input type="name"  name="label" value ="<?php echo $data->getLabel(); ?>">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-4">
+            <label for="" class="label-description">
+                Ordering:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <input type="name"  name="ordering" value ="<?php echo $data->getOrdering(); ?>">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-4">
+            <label for="" class="label-description">
+                Category:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <?php echo $html; ?>
+        </div>
+    </div>
+    <div> 
+        <button class=" btn medium bg-blue-alt">  Submit  </button>
+    </div> 
+
+</div>      
+
+<?php
+$form->endForm();
+?>

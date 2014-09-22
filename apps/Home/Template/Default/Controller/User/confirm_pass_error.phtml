@@ -1,0 +1,29 @@
+<?php
+/** @var \Flywheel\View\Render $this */
+/** @var \Flywheel\Document\Html $document */
+$document = $this->document();
+$document->title = t("Quên mật khẩu");
+$document->addCss($document->getPublicPath() .'user/assets_v2/css/email.css');
+$error =  @$error;
+?>
+<section class="cart-header introbook">
+    <nav class="container" >
+        <div class="page-email">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 small-centered email-confirmation">
+                    <div class="alert icon-alert-alert col-md-12">
+                        <h4>CẢNH BÁO</h4>
+                        <?php if (!empty($error)) :?>
+                            <p class="re-error" style="color:red">
+                                <?php echo implode('<br />', $error); ?>
+                            </p>
+                            <p>Vui lòng liên hệ CSKH hoặc <a href="javascript:void($zopim.livechat.say('I need help with confirm password!'))">sử dụng công cụ chát</a> trên trang để được giúp đỡ.</p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</section>

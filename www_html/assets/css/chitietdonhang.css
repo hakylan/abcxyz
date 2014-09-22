@@ -1,0 +1,78 @@
+/*Chi tiết đơn hàng*/
+.item-delay .single .single-chat .mychat .module-ct{
+    overflow-x: hidden;
+    position: relative;
+}
+.item-delay .single .single-chat .add-chat{
+    padding-bottom: 0;
+}
+.item-delay .price-sevice .module-item{
+    float: left;
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+.item-delay .price-sevice .module-item .item-left{
+    float: left;
+    width: 20%;
+    text-align: right;
+}
+.item-delay .price-sevice .module-item .item-border{
+    float: left;
+    margin-left: 20px;
+}
+.item-delay .price-sevice .module-item .item-left.v2{
+    width: 135px;
+    color: #959595;
+    font-size: 13px;
+    padding-top: 3px;
+}
+.item-delay .price-sevice .module-item .item-right{
+    float: left;
+    /*width: 80%;*/
+    padding-left: 10px;
+}
+.item-delay .price-sevice .module-item .item-right.v2{
+    font-size: 16px;
+    color: #c1423d;
+    font-weight: bold;
+    padding-top: 3px;
+}
+.complaint-detail a{
+    padding: 5px 12px;
+    border: 1px solid #ddd;
+    color: #032D3E;
+}
+.item-delay .list-cart .edit-sl{
+    padding-top: 25px;
+}
+.list-cart .cart-list-content > li.note-price{
+    min-height: 120px;
+}
+.list-cart .cart-list-content > li.note-price .edit-price span{
+    color: #c1423d;
+    font-weight: bold;
+}
+.list-cart .cart-list-content > li.note-price .edit-price p{
+    margin-bottom: 3px;
+}
+.list-cart .cart-list-content > li.note-price .edit-price{
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 0px;
+}
+.list-cart .cart-list-content > li.note-price .edit-price > div{
+    border: 1px solid #faebcc;
+    background: #fcf8e3;
+    color: #8a6d3b;
+    padding-top: 3px;
+    border-radius: 2px;
+}
+
+/*End chi tiết đơn hàng*/
+
+
+
+
+
+

@@ -1,0 +1,735 @@
+<?php
+
+use SeuDo\Main;
+
+
+$document = $this->document();
+$publicPath = Main::getHomeUrl();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/';
+$imgPath = $publicPath . 'assets/images/';
+$iconPath = $publicPath . 'assets/img/';
+if($document instanceof \Flywheel\Document\Html) {
+    $document->addCss($cssPath . 'seudo.css');
+
+    $document->addJs($jsPath . 'ga.js', 'BOTTOM');
+    $document->addJs($jsPath . 'login.js', 'BOTTOM');
+    $document->addJs($jsPath.'check-browser.js','BOTTOM');
+    $document->addJs($jsPath . 'register.js', 'BOTTOM');
+    $document->addJs($jsPath . 'handlebars-v1.3.0.js', 'BOTTOM');
+    $document->addJs($jsPath . 'handlebars-v1.3.0.js', 'BOTTOM-USER');
+    $document->addJs($jsPath . 'seudo-frontend.js', 'BOTTOM');
+    $document->addJs($jsPath . '/process/include/handlebar_helper.js', 'BOTTOM');
+    $document->addJs($jsPath . 'jquery.wallform.min.js', 'TOP');
+    $document->addJs($jsPath . '/process/include/global.js', 'BOTTOM-USER');
+    $document->addJs($jsPath . '/process/include/global.js', 'BOTTOM');
+
+
+
+    $document->addJs($jsPath . 'process/login_facebook.js', 'BOTTOM');
+    $document->addJs($jsPath . 'process/login_facebook.js', 'BOTTOM-USER');
+    $document->addJs($jsPath . 'process/od_link.js', 'BOTTOM');
+    $document->addJs($jsPath . 'process/od_link.js', 'BOTTOM-USER');
+    $document->addJs($jsPath . 'jquery.password_strength.js', 'BOTTOM');
+    $document->addJs($jsPath . 'process/cart_base.js', 'BOTTOM');
+    $document->addJs($jsPath . 'process/cart_base.js', 'BOTTOM-USER');
+
+    $document->addJs($jsPath . 'jquery.slimscroll.js', 'BOTTOM');
+    $document->addJs($jsPath . 'jquery.slimscroll.js', 'BOTTOM-USER');
+    $document->addJs($jsPath . 'process/notification.js?t=1', 'BOTTOM');
+    $document->addJs($jsPath . 'process/notification.js?t=1', 'BOTTOM-USER');
+    $document->addJs($jsPath . 'zopim.js', 'BOTTOM');
+    $document->addJs($jsPath . 'zopim.js', 'BOTTOM-USER');
+    $document->addJsVar('LoginFacebookUrl',$controller->createUrl('ConnectFacebook'),'TOP');
+    $document->addJsVar('HomeUrl',$controller->createUrl('Home/default'),'TOP');
+}
+$link_facebook = $controller->createUrl('ConnectFacebook/connect_facebook');
+$router = \Flywheel\Factory::getRouter();
+$_controllerName    = $router->getController();
+
+$_actionName        = $router->getAction();
+$logged = @$logged;
+    //BEGIN: get user name and email show up zopim
+    if(isset($logged) && $logged instanceof \Users){
+        $document->addJsVar('zopim_username',$logged->getUsername(),'BOTTOM');
+        $document->addJsVar('zopim_email',$logged->getEmail(),'BOTTOM');
+        $document->addJs($jsPath . 'getUsernameEmailZopim.js', 'BOTTOM');
+    }
+    //END: get user name and email show up zopim
+$items = @$items;
+if ($logged instanceof \Users) {
+    $user_id = $logged->getId();
+} else {
+    $session = \Flywheel\Session\Session::getInstance();
+    $user_id = $session->id();
+}
+$userRouter = Main::getUserRouter();
+$is_header_slide = isset($is_header_slide) ? $is_header_slide : 1;
+$exchange = \ExchangeRate::getExchange();
+$total_notification = \mongodb\NotificationResource\Notification::getNewTotalNotificationByUser($user_id);
+?>
+
+
+<script src="<?php echo Main::getHomeUrl(); ?>assets/js/process/modal_box.js"></script>
+<script>
+    var url_load_order = '<?php echo $this->createUrl('OrderLink/load_order_content') ?>';
+    var cart_url = '<?php echo Main::getHomeRouter()->createUrl('Cart')?>';
+    var cart_load_price = '<?php echo Main::getHomeRouter()->createUrl('cart/count_cart_and_price')?>';
+    var OrderLinkUrl = '<?php echo Main::getHomeRouter()->createUrl('OrderLink/load_order_link') ?>'
+    var urlOrderLink = '<?php echo $urlOrderLink ?>'
+    var NotifyLinkUrl = '<?php echo Main::getUserRouter()->createUrl('NotificationController/ajaxGetNotify') ?>'
+    var NotifySetRead = '<?php echo Main::getUserRouter()->createUrl('NotificationController/ajaxSetReadNotify') ?>'
+    var LoadNotify = '<?php echo Main::getUserRouter()->createUrl('NotificationController/default') ?>'
+</script>
+
+<!--Check Browser-->
+    <div id="" class="_err_browser" style="" hidden="">
+    </div>
+    <div class="_box-check-browser">
+        <div class="_modal_browser modal-content">
+            <div class="modal-header _align-center">
+               <span>Trình duyệt của bạn không được hỗ trợ</span>
+            </div>
+            <div class="modal-body _align-center _text-body-brw">
+            </div>
+            <div class="modal-footer _align-center _text-footer-brw">
+            </div>
+        </div>
+    </div>
+<!--End check Browser-->
+
+<!--Modal Begin: alert-->
+<span class="remove _alert hidden" data-target="#_alert" data-toggle="modal"></span>
+<div style="display: none;" class="modal fade finish-poup" id="_alert" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                    <span class="toll-close">Nhấn Esc để đóng</span></button>
+                <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Thông báo</span></h4>
+            </div>
+            <div class="modal-body">
+                <p class="price-red1 _message text-center"></p>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-6 col-md-6 col-sm-6"  style="margin-left: 25%">
+                    <button type="button" class="btn btn-red btn-sm" data-dismiss="modal">Đồng ý</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="loading-data _loading" style="display: none">
+    <div class="content">
+        Đang tải dữ liệu <span>...</span>
+    </div>
+</div>
+
+<header id="header" class="header">
+<section class="container header-top">
+<div class="row">
+    <div class="pull-right top-header">
+    <div class="rate-tq">
+        <p class="normal">Tỉ giá:
+            <span class="red-bold">1 NDT</span> =
+            <span class="red-bold">
+                <?php echo Common::numberFormat($exchange); ?> VNĐ
+            </span></p>
+    </div>
+        <?php
+        if ($logged instanceof \Users) {
+        ?>
+            <div class="pull-right item-top-header accout dropdown my-dropdow" >
+                <div class="pull-right register login item-top-header cart-img">
+                    <a href="<?php echo $items['url']['cart']; ?>">
+                    <span class="arrow-header-cart" ></span>
+                    <span class="arow-count">
+                        <?php
+                        if ($logged instanceof \Users){echo \CartItem::getCartQuantity($logged->getId());}else{echo 0;}
+                        ?>
+                    </span>
+                    <span class="border"></span>
+                    </a>
+                </div>
+
+                <a id="drop1" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="">
+                    <span class="img-avatar"><img src="<?php echo \Users::getAvatar32x($logged);?>"></span>
+                    <span class="acc-usd"><?php echo $logged->getShortenFullName() ?></span>
+                    <span class="arow"></span>
+                </a>
+                <span class="border"></span>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                    <?php if(($logged instanceof \Users && $logged->getSection() == "CUSTOMER") || !$logged instanceof \Users){
+                    ?>
+                    <div class="acc-title">
+                        <span class="arow-tick"></span>
+                        <p class="italic"><span class="normal">Mã khách:</span> <span class="uppercase normal-blod"><?php echo $logged->getCode() ?></span></p>
+                    </div>
+                    <ul class="acc-gd">
+                        <li>
+                            <a title="Quản lý đơn hàng" href="<?php echo $userRouter->createUrl('OrderInit/default');?>">Quản lý đơn hàng</a>
+                        </li>
+                        <li>
+                            <a title="Lịch sử giao dịch" href="<?php echo $userRouter->createUrl('UserTransaction/default');?>">
+                                Lịch sử giao dịch
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="<?php echo Main::getHomeRouter()->createUrl('user/danh-sach-khieu-nai');?>">Danh sách khiếu nại</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo Main::getHomeRouter()->createUrl('user/diem-tich-luy');?>">Điểm thành viên</a>
+                        </li>
+
+                        <li>
+                            <a title="Nạp tiền"
+                               href="<?php echo Main::getUserRouter()->createUrl('user_transaction/transaction_form');?>">
+                                Nạp tiền</a>
+                        </li>
+                    </ul>
+                    <span class="border-hr"></span>
+                    <?php } ?>
+                    <ul class="acc-gd">
+                        <li>
+                            <a href="<?php
+
+                            if(($logged instanceof \Users && $logged->getSection() == "CUSTOMER") || !$logged instanceof \Users){
+
+                                echo Main::getUserRouter()->createUrl('user/detail');
+                            }else{
+                                echo Main::getBackendRouter()
+                                    ->createUrl("user/user_profile/edit");
+
+                            }
+                            ?>">Thông tin cá nhân</a>
+                        </li>
+                        <?php if(($logged instanceof \Users && $logged->getSection() == "CUSTOMER") || !$logged instanceof \Users){ ?>
+                            <li>
+                                <a href="<?php echo Main::getUserRouter()->createUrl('user/password_profile')?>">Đổi mật khẩu</a>
+                            </li>
+                        <?php } ?>
+
+                        <li>
+                            <a href="<?php echo Main::getHomeRouter()->createUrl('login/logout');?>">Thoát</a>
+                        </li>
+                    </ul>
+                </ul>
+            </div>
+        <?php }else{ ?>
+            <div class="pull-right register item-top-header" >
+                <a class="registerlink" href="<?php echo ($_controllerName == 'Home' && $_actionName == 'default')?$publicPath.'register/default':'';?>" data-target="<?php echo ($_controllerName == 'Home' && $_actionName == 'default')?'':'#myModalregister';?>" data-toggle="modal">Đăng ký</a>
+                <span class="border"></span>
+                <!-- Modal -->
+                <div class="modal fade" id="myModalregister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng ký</p></h4>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" id="frm-register-top">
+                                    <div class="regis-item">
+                                        <span class="normal name-label">Tài khoản<span class="red-normal"> * </span>:</span>
+                                        <input name="input[username]" id="username" class="inputregister form-control form-myinput" type="text" placeholder="Tài khoản" onblur="blurUsername('frm-register-top');">
+                                        <p class="red-normal" id="error-username"></p>
+                                        <div class="tooltipregister">
+                                            <div class="arrow_box">
+                                                <p class="normal">Sử dụng các ký tự latin (a-z) và ký tự gạch dưới</p>
+                                                <p class="normal">Từ 3 đến 15 ký tự</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="regis-item name">
+                                        <div class="regis-item name _margin-bot">
+                                            <span class="normal name-label">Họ &amp; tên<span class="red-normal"> * </span>:</span>
+                                            <input name="input[last_name]" id="last_name" class="form-control form-myinput pull-left f-name" type="text" placeholder="Họ" >
+                                            <span class="and">&</span>
+                                            <input name="input[first_name]" id="first_name" class="form-control form-myinput pull-right l-name" type="text" placeholder="Tên" >
+                                        </div>
+                                        <p class="red-normal" id="error-fullname"></p>
+                                    </div>
+                                    <div class="regis-item">
+                                        <span class="normal name-label">Email<span class="red-normal"> * </span>:</span>
+                                        <input name="input[email]" id="email" class="inputregister form-control form-myinput" type="text" placeholder="Email" >
+                                        <p class="red-normal" id="error-email"></p>
+                                        <div class="tooltipregister">
+                                            <div class="arrow_box">
+                                                <p class="normal">Seudo sẽ gửi các thông báo tới email này.</p>
+                                                <p class="normal">Vui lòng sử dụng email tồn tại.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="regis-item">
+                                        <span class="normal name-label">Mật khẩu<span class="red-normal"> * </span>:</span>
+                                        <input name="input[password]" id="password" class="form-control form-myinput" type="password" placeholder="Mật khẩu (tối thiểu 6 ký tự)" >
+                                        <p class="red-normal" id="error-password"></p>
+                                        <span class="password_strength"></span>
+                                    </div>
+                                    <input name="input[repassword]" id="repassword" class="form-control form-myinput" type="hidden" placeholder="Nhập lại mật khẩu" >
+                                    <p class="red-normal hidden" id="error-repassword"></p>
+                                    <div class="regis-item made hidden">
+                                        <span class="normal">Giới tính:</span>
+                                            <span class="radio">
+                                              <label>
+                                                  <input type="radio" checked="" value="2" id="gender" name="input[gender]">
+                                                  Khác
+                                              </label>
+                                            </span>
+                                    </div>
+                                    <p class="normal">Với việc đăng ký tài khoản, tôi đã đồng ý với các điều khoản của seudo.vn</p>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-blue _btnSubmitTop" type="button">Đăng ký</button>
+                                <button class="btn btn-blue btnShow _hide" type="button">Đang xử lý...</button>
+                            </div>
+
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+            <div class="pull-right register login item-top-header" >
+                <a class="registerlink" href="" data-target="#myModallogin" data-toggle="modal">Đăng nhập</a>
+                <span class="border"></span>
+                <!-- Modal -->
+                <div class="modal fade" id="myModallogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog reset-password-block">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng nhập</p>
+                                    <a href="<?php $register = Main::getHomeRouter()->createUrl('register/default');
+                                    echo ($_controllerName == 'Home' && $_actionName == 'default')?$register:'';?>" class="<?php echo ($_controllerName == 'Home' && $_actionName == 'default')?'':'_openModalRegis';?>">Đăng ký</a></h4>
+                            </div>
+                            <div class="modal-body">
+                                <form role="form" method="POST" class="fr-login" name="fr-login" id="frm-login-top">
+                                    <div class="regis-item">
+                                        <p class="red-normal re-error err-ajax"></p>
+                                        <span class="normal name-label">Tài khoản<span class="red-normal"> * </span></span>
+                                        <input name="credential" id="exampleInput" class="form-control form-myinput" type="text" placeholder="Tài khoản hoặc email đã kích hoạt" >
+                                        <p class="red-normal re-error err-cred"></p>
+                                    </div>
+
+                                    <div class="regis-item" style="padding: 0px; margin: 0px">
+                                        <span class="normal name-label">Mật khẩu<span class="red-normal"> * </span></span>
+                                        <input name="password" id="exampleInput" class="form-control form-myinput _inputPass" type="password" placeholder="Mật khẩu" >
+                                        <p class="red-normal re-error err-pass"></p>
+                                    </div>
+                                    <div class="regis-item made">
+                                        <p class="_normal">
+                                            <label class="normal">
+                                                <input type="checkbox" class="login-checkbox col-lg-2 col-md-2 col-sm-2" id="remember" name="remember" checked="true">
+                                                Ghi nhớ đăng nhập
+                                            </label>
+                                        </p>
+                                        <button id="bt-login-top" type="button" class="btn btn-blue btn-lg btn-login pull-right" type="submit" data-click="false">Đăng nhập</button>
+                                        <button id="btnShow" type="button" class="btn btn-blue btn-lg btn-login pull-right disable _hide" type="button" data-click="false">Đang xử lý...</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="pull-left click-resetpass">Quên mật khẩu?</a>
+                                <p class="normal facebook pull-right" style="cursor: pointer" onclick="fb_login()">Đăng nhập bằng facebook<span class="icon-facebook">login facebook</span></p>
+                                <br>
+                                <div class="reset-password _hide">
+                                    <p class="normal email-text">Nhập email hoặc tên đăng nhập của bạn</p>
+                                    <div id="submit_email_reset_pass">
+
+                                        <div class="">
+                                            <input id="_email_request" class="form-control form-myinput" type="text" placeholder="Vui lòng nhập email hoặc tên tài khoản trên SeuDo.vn" >
+
+                                        </div>
+                                        <br>
+                                        <input id="_csrf" name="_csrf" value="<?php echo $this->request()->getCsrfToken() ;?>" type="hidden">
+                                        <p class="reset-password-submit">
+                                            <button class="btn btn-blue btn-login _request" type="button" data-id-form="submit_email_reset_pass" data-toggle="modal">
+                                                Lấy lại mật khẩu
+                                            </button>
+                                            <button class="btn btn-blue btn-login _request_before disable hidden" type="button"  data-toggle="modal">
+                                                Lấy lại mật khẩu
+                                            </button>
+                                        </p>
+                                        <div class="alert alert-info col-md-12 _notifForgotPass _hide">
+                                            <p class="_notifForgot"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="loading-face" data-box="login" style="display: none">
+                                <div id="facebookG">
+                                    <div id="blockG_1" class="facebook_blockG">
+                                    </div>
+                                    <div id="blockG_2" class="facebook_blockG">
+                                    </div>
+                                    <div id="blockG_3" class="facebook_blockG">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+            </div>
+        <?php }?>
+        <!-- notification-->
+        <?php
+        if($logged instanceof \Users){
+        ?>
+            <div class="pull-right item-top-header accout dropdown notifi" id="div_header_notify" >
+                <a id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                    <span class="notealert" >Thông báo</span>
+                    <?php
+                    if($total_notification > 0){
+                    ?>
+                    <span class="total" id="span_notify"><?php echo $total_notification;?></span>
+                    <?php
+                    }
+                    ?>
+                </a>
+                <span class="border"></span>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                    <div class="acc-title">
+                        <span class="arow-tick"></span>
+                        <p class="normal-blod">Thông báo</p>
+                    </div>
+                    <div class="scrollbar-notifi" id="scrollbar-notifi">
+
+                        <div class="acc-gd viewport">
+                            <ul class="overview ">
+
+                                <li class="bottom-item v2" id="header_loading_notify">
+                                    <img src="<?php echo $iconPath;?>small/loading3.gif">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="module-bottom" id='div_notification_more'>
+                        <p class="normal-blod">
+                            <a id="a_notify_all" href="<?php echo Main::getUserRouter()->createUrl('thong-bao') ?>">Xem tất cả</a>
+                        </p>
+                    </div>
+                </ul>
+            </div>
+        <?php
+        }
+        ?>
+        <!-- end notification-->
+        <?php
+        if ($logged instanceof \Users && $logged instanceof \Users && $logged->getSection() == "CUSTOMER") {
+        ?>
+            <div class="pull-right register login item-top-header price">
+                <span >Số dư:</span><span class="blueprice"><?php echo Common::numberFormat($logged->getAccountBalance()) ?><sup>đ</sup></span>
+                <span class="border"></span>
+            </div>
+        <?php }?>
+        <div class="pull-right register login item-top-header hotline"><span> Hotline: <?php echo \SystemConfig::HOTLINE ?></span>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="logo">
+    <a href="<?php echo $publicPath;?>"><img src="<?php echo $imgPath;?>icon-footer/logoSeuDo.png"></a>
+</div>
+</section>
+
+<section class="container search-cart">
+
+    <div class="row">
+        <?php if(($logged instanceof \Users && $logged->getSection() == "CUSTOMER") || !$logged instanceof \Users){ ?>
+            <a href="<?php echo $items['url']['cart']; ?>" title="Vào giỏ hàng">
+            <div class="header-cart pull-right">
+                <span class="arrow-header-cart"></span>
+                <p class="normal">
+                    <span class="normal-blod _total_quantity_cart">
+                    0
+                    </span>
+                    <span class="_black">sản phẩm</p>
+                <p class="red-normal ">
+                    <span class="_total_price_cart">0</span>
+
+                    <sup>đ</sup></p>
+                <span class="arrow-next-header-cart"></span>
+            </div>
+            </a>
+        <?php }else{ ?>
+            <a href="<?php echo $this->createUrl('backend'); ?>">
+                <div class="header-cart pull-right">
+            <span class="glyphicon glyphicon-user" style="color: #666;font-size: 22px;margin-left:40px"></span>
+            <span class="normal" style="padding-top: -12px;margin-left: 6px;display: inline-block;">
+
+                <span class="_black">Quản trị</span><p></p></span>
+
+                </div>
+            </a>
+        <?php } ?>
+        <div class="header-search pull-right">
+            <input class="form-control form-myinput _link_detail_hd" type="text" placeholder="Nhập link sản phẩm bạn muốn đặt từ taobao.com, tmall.com, 1688.com và eely.com....">
+            <span class="uppercase normal-blod _order_link_hd">đặt hàng</span>
+        </div>
+    </div>
+</section>
+<?php
+    if($is_header_slide == 1){
+?>
+<section class="header-top scoll">
+    <div class="container">
+        <div class="row">
+            <div class="rate-scoll">
+                <p class="normal">
+                    <span class="red-bold">1 NDT</span> = <span class="red-bold">
+                        <?php echo Common::numberFormat($exchange); ?> VNĐ
+                    </span>
+                </p>
+            </div>
+
+            <div class="pull-right top-header">
+                <?php if(($logged instanceof \Users && $logged->getSection() == "CUSTOMER") || !$logged instanceof \Users){ ?>
+                <a href="<?php echo $items['url']['cart']; ?>">
+                <div class="pull-right register login item-top-header cart-img">
+                    <span class="arrow-header-cart" ></span>
+                    <span class="arow-count _total_quantity_cart">
+                        0
+                    </span>
+                    <span class="border"></span>
+                </div>
+                </a>
+                <?php }else{ ?>
+                    <a href="<?php echo Main::getBackendUrl() ?>">
+                        <div class="pull-right register login item-top-header cart-img">
+                            <span class="glyphicon glyphicon-user" style="color: #666;font-size: 22px;margin-left:40px"></span>
+                            <span class="border"></span>
+                        </div>
+                    </a>
+                <?php } ?>
+                <?php
+                if ($logged instanceof \Users) {
+                ?>
+                <div class="pull-right item-top-header accout dropdown my-dropdow" >
+                    <a id="drop1" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="">
+                        <span class="img-avatar"><img src="<?php echo \Users::getAvatar32x($logged);?>"></span>
+                        <span class="acc-usd"><?php echo $logged->getShortenFullName() ?></span>
+                        <span class="arow"></span>
+                    </a>
+<!--                    <span class="border"></span>-->
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                        <?php if(($logged instanceof \Users && $logged->getSection() == "CUSTOMER") || !$logged instanceof \Users){
+                            ?>
+                        <div class="acc-title">
+                            <span class="arow-tick"></span>
+                            <p class="italic"><span class="normal">Mã khách:</span> <span class="uppercase normal-blod"><?php echo $logged->getCode() ?></span></p>
+                        </div>
+                        <ul class="acc-gd">
+                            <li>
+                                <a href="<?php echo $userRouter->createUrl('order_active/default');?>">Quản lý đơn hàng</a>
+                            </li>
+                            <li>
+                                <a href="#">Lịch sử giao dịch</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo Main::getUserRouter()->createUrl('user_transaction/transaction_form');?>">Nạp tiền</a>
+                            </li>
+                        </ul>
+                        <span class="border-hr"></span>
+                        <?php } ?>
+                        <ul class="acc-gd">
+                            <li>
+                                <a href="<?php
+                                if(($logged instanceof \Users && $logged->getSection() == "CUSTOMER")
+                                    || !$logged instanceof \Users){
+
+                                    echo Main::getUserRouter()->createUrl('user/detail');
+                                }else{
+
+                                    echo Main::getBackendRouter()->createUrl("backend/user/user_profile/edit");
+
+                                }
+                                ?>">Thông tin cá nhân</a>
+                            </li>
+                            <?php if(($logged instanceof \Users && $logged->getSection() == "CUSTOMER") || !$logged instanceof \Users){ ?>
+                            <li>
+                                <a href="<?php echo Main::getUserRouter()->createUrl('user/password_profile')?>">Đổi mật khẩu</a>
+                            </li>
+                            <?php } ?>
+                            <li>
+                                <a href="<?php echo Main::getHomeRouter()->createUrl('login/logout');?>">Thoát</a>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+                <?php }else{?>
+                <div class="pull-right register item-top-header">
+                    <a class="registerlink" href="<?php echo ($_controllerName == 'Home' && $_actionName == 'default')?$publicPath.'register/default':'';?>" data-target="<?php echo ($_controllerName == 'Home' && $_actionName == 'default')?'':'#myModalregister';?>" data-toggle="modal">Đăng ký</a>
+                    <span class="border"></span>
+                </div>
+                <div class="pull-right register login item-top-header" >
+                    <a class="registerlink" href="" data-target="#myModallogin" data-toggle="modal">Đăng nhập</a>
+                </div>
+                <?php }?>
+            </div>
+
+            <div class="header-search pull-right">
+                <input class="form-control form-myinput _link_detail_scroll" type="text" placeholder="Nhập link sản phẩm bạn muốn đặt từ taobao.com, tmall.com, 1688.com và eely.com....">
+                <span class="uppercase normal-blod _order_link_scroll">đặt hàng</span>
+            </div>
+
+        </div>
+
+        <div class="logo">
+            <a href="<?php echo $publicPath;?>"><img src="<?php echo $imgPath;?>icon-footer/menu_mini.jpg"></a>
+        </div>
+    </div>
+
+</section>
+<?php } ?>
+
+</header>
+
+
+<section class="seudo-menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 seu-left">
+                <ul class="seudo-megamenu">
+                    <li class="item-megamenu <?php echo ($_controllerName == 'Home' && $_actionName == 'default')?'active':'';?>">
+                        <a href="<?php  echo Main::getHomeRouter()->createUrl('/');?>">
+                            <span class="uppercase home"><span class="icon">
+                            </span>trang chủ</span>
+                        </a>
+                    </li>
+                    <li class="item-megamenu <?php echo ($_controllerName == 'Home' && $_actionName == 'page_intro')?'active':'';?>">
+                        <a href="http://hotro.seudo.vn/gioi-thieu/" target="_blank"><span class="uppercase sevice"><span class="icon"></span> giới thiệu</span></a>
+                    </li>
+                    <li class="item-megamenu <?php echo ($_controllerName == 'Home' && $_actionName == 'service_table')?'active':'';?>">
+                        <a href="http://hotro.seudo.vn/bieu-phi/" target="_blank">
+                            <span class="uppercase"> Biểu phí</span>
+                        </a>
+                    </li>
+                    <!--<li class="item-megamenu <?php /*echo ($_controllerName == 'Home' && $_actionName == 'guide')?'active':'';*/?>">
+                        <a href="<?php /*echo Main::getHomeRouter()->createUrl('home/guide');*/?>"><span class="uppercase"> hướng dẫn</span></a>
+                    </li>-->
+                </ul>
+            </div>
+            <div class="seu-right pull-right">
+                <div class="seu-facemenu">
+                    <a href="<?php echo Main::getHomeRouter()->createUrl('home/page_bookmark');?>"><span class="icon"></span><span class="uppercase home">công cụ đặt hàng</span></a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="col-lg-2 col-md-2 col-sm-2 pull-right register facebook" >
+    <a class="registerlink _registerFacebook" href="" data-target="#registerFacebook" data-toggle="modal" style="display: none">Đăng ký facebook</a>
+    <!-- Modal -->
+    <div class="modal fade" id="registerFacebook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!-- /.modal-dialog -->
+
+    </div><!-- /.modal -->
+</div>
+
+<div class="col-lg-2 col-md-2 col-sm-2 pull-right register facebook loginface" >
+    <a class="registerlink _confirmPassFace" href="" style="display: none" data-target="#confirmPassword" data-toggle="modal">Đăng nhập facebook</a>
+    <!-- Modal -->
+    <div class="modal fade" id="confirmPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!-- /.modal-dialog -->
+
+    </div><!-- /.modal -->
+</div>
+
+
+<div style="display: none;" class="modal fade finish-poup" id="myModalfinishRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <span class="toll-close" style="z-index: 9999">Nhấn Esc để đóng</span>
+                <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Đã đăng ký thành công</span></h4>
+            </div>
+            <div class="modal-body">
+                <p class="normal _finishQuichRegister"></p>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--template notification header-->
+<script id="notify_header_order_status" type="text/x-handlebars-template">
+        {{#if is_new}}
+        <li class="new" >
+        {{else}}
+        <li>
+        {{/if}}
+            <a href="{{order_url}}" class="url_notify">
+                <div class="avatar">
+                    <img src="{{order_avatar}}">
+                </div>
+                <div class="module-ct">
+                    <p class="module-title">
+                        Đơn hàng <span class="normal-blod uppercase">{{order_name}}</span> {{order_status}}
+                    </p>
+                    <p class="md-note box">
+                        <span class="italic font-small">{{created_time}}</span>
+                    </p>
+                </div>
+            </a>
+        </li>
+</script>
+<script id="notify_header_confirm_order" type="text/x-handlebars-template">
+    {{#if is_new}}
+    <li class="new " >
+        {{else}}
+    <li>
+        {{/if}}
+        <a href="{{order_url}}" class="url_notify">
+            <div class="avatar">
+                <img src="{{order_avatar}}">
+            </div>
+            <div class="module-ct">
+                <p class="module-title">
+                    Đơn hàng <span class="normal-blod uppercase">{{order_name}}</span> {{confirm_msg}}
+                </p>
+                <p class="md-note box">
+                    <span class="italic font-small">{{created_time}}</span>
+
+                </p>
+            </div>
+        </a>
+    </li>
+</script>
+<script id="notify_header_chat_order" type="text/x-handlebars-template">
+    {{#if is_new}}
+    <li class="new "  >
+        {{else}}
+    <li>
+        {{/if}}
+        <a href="{{order_url}}" class="url_notify">
+            <div class="avatar">
+                <img src="{{order_avatar}}">
+            </div>
+            <div class="module-ct">
+                <p class="module-title">
+                    {{#if is_log}}
+                        Đơn hàng <span class="normal-blod uppercase">{{order_name}}</span>{{confirm_msg}}
+                    {{else}}
+                        {{confirm_msg}}<span class="normal-blod uppercase">{{order_name}}</span>
+                    {{/if}}
+
+                </p>
+                <p class="md-note box">
+                    <span class="italic font-small">{{created_time}}</span>
+
+                </p>
+            </div>
+        </a>
+    </li>
+</script>

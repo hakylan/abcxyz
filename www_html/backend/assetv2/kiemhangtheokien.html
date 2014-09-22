@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Chi tiết kiện hàng</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jqueryui.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <script type="text/javascript" src="js/process/menu.js"></script>
+    <script type="text/javascript" src="js/process/home.js"></script>
+    <script type="text/javascript" src="js/tooltip.js"></script>
+    <script type="text/javascript" src="js/jquery.textareaAutogrow.min.js"></script>
+    <script type="text/javascript" src="js/seudo-quantity.js"></script>
+    <script type="text/javascript" src="js/jquery.textareaAutogrow.js"></script>
+    <script type="text/javascript" src="js/keyevent.js"></script>
+    <script type="text/javascript" src="js/backendv2-frontend.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="css/cssloading.css" />
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/roboto/roboto.css" />
+
+    <link rel="stylesheet" type="text/css" href="css/style-typo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-header.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-menu-tab.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-kiemhangtheokien.css" />
+
+
+
+</head>
+<body>
+    <header class="header">
+        <nav class="note-page container">
+            <div class="module-float note-alert">
+                <p><i style="" class="fa fa-warning"></i>Số dư khách âm hoặc số tiền cần thu tối thiểu âm (&lt;0) là khách thiếu tiền</p>
+            </div>
+        </nav>
+        <nav role="navigation" class="container header-top">
+            <div class="row">
+                <div class="col-lg-1 col-md-1">
+                    <div class="module-float logo">
+                        <a href="#"></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="module-float input-search">
+                        <input type="text" id="exampleInput" class="form-control form-myinput" placeholder="Tìm đơn hàng nhanh theo mã đơn hàng hoặc ID...">
+                        <a href="#"><span class="arrow"></span></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 pull-right">
+
+                </div>
+            </div>
+        </nav>
+
+        <nav class="seu-menu" role="navigation">
+            <div class="container">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="col-lg-12 col-md-12 seu-main-menu" >
+                    <ul class="nav navbar-nav module-float">
+
+                        <li class="active">
+                            <a class="navbar-nav-a" href="#">Dashboard</a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Danh sách đơn hàng</a></li>
+                                <li><a href="#">Quản lý mua hàng</a></li>
+                                <li><a href="#">Mua hàng và thanh toán</a></li>
+                                <li><a href="#">Giao hàng</a></li>
+                            </ul>
+                        </li>
+
+                        <li class=" dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Người dùng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+
+            </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+
+    <section class="seu-breadcrumb">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <ul>
+                        <li><a href="#">Trang chủ</a><span class="arrow"></span></li>
+                        <li><a href="#">Danh sách đơn hàng</a><span class="arrow"></span></li>
+                        <li><a href="#">Đơn hàng HE88_050501</a><span class="arrow"></span></li>
+                        <li>Chi tiết kiện T1_090501_01</li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-4" style="padding-top: 10px;">
+                    <select class="pull-right selectpicker">
+                        <option value="">Chọn kiện khác</option>
+                        <option value="">Kiện 1</option>
+                        <option value="">Kiện 2</option>
+                        <option value="">Kiện 3</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="order-detai-title">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 left">
+                    <div class="module-float">
+                        <p>
+                            <span class="title">T1_090501_01</span>
+                        </p>
+                        <p>
+                            Đơn: <a href="javascript:" target="_blank">HE88_050501</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8 right">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 step3">
+                            <p class="font-bold uppercase font-black text-right">Nhận từ người bán</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="order-detai-subtitle">
+        <div class="container">
+            <div class="space"></div>
+
+            <div class="row">
+
+                <div class="col-lg-5 col-md-5 left">
+                    <div class="module-float font-gray">
+                        <div class="pull-left">VĐ: <span class="font-black">0978789798999</span>&nbsp;-&nbsp;</div>
+                        <div class="pull-left">Mã VC: <a href="javascript:" target="_blank">P/59321</a>&nbsp;-&nbsp;</div>
+                        <div class="pull-left">SLG Kiện: <span class="font-black">32</span></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 left">
+                    <div class="module-float">
+                        <div class="font-black">
+                            <i class="fa fa-check"></i>
+                            NV.Khiển kiểm lúc 15:12 17/12
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 left">
+
+                    <div class="module-float save-input pull-right">
+                        <a class="input-append " href="#">
+                            <i class="fa fa-save"></i>
+                        </a>
+                        <div class="append-right">
+                            <input type="text" placeholder="1200" value="" name="weight_input" />
+                        </div>
+                    </div>
+
+                    <div class="pull-right font-gray" style="padding-top: 5px;">Cân nặng (gram):&nbsp;&nbsp;&nbsp;</div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="order-detai-tab">
+        <div class="container">
+            <div class="module-float">
+
+                <div class="module-float detai-tab-ct">
+                    <div class="module-float history">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title">Tạo kiện</p>
+                                <p class="module-ct">8:21 05/05</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title">Người bán giao</p>
+                                <p class="module-ct">8:21 05/05</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title">Nhận từ người bán</p>
+                                <p class="module-ct">8:21 05/05</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title">Vận chuyển</p>
+                                <p class="module-ct">8:21 05/05</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title">Chờ giao</p>
+                                <p class="module-ct">8:21 05/05</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title">Yêu cầu giao</p>
+                                <p class="module-ct">---</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title">Đang giao</p>
+                                <p class="module-ct"><span class="font-gray">----</span></p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title">Đã nhận</p>
+                                <p class="module-ct">8:21 05/05</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title"></p>
+                                <p class="module-ct"></p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title"></p>
+                                <p class="module-ct"></p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title"></p>
+                                <p class="module-ct"></p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="title"></p>
+                                <p class="module-ct"></p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="order-detai-content">
+        <div class="container">
+            <div class="module-float">
+                <div class="module-float conten-header">
+                        <div class="col-md-5 col-lg-5 left">
+                            <div class="module-float">
+                                <input type="checkbox" class="radio">
+                                <p>sản phẩm</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7 col-lg-7">
+                            <div class="col-md-5 col-lg-5">
+                                <div class="module-float">
+                                    <p>giá</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 col-lg-2">
+                                <div class="module-float">
+                                    <p>SQL KIỆN</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-5 col-lg-5">
+                                <div class="module-float">
+                                    <p class="text-center">TỔNG SLQ</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                </div>
+
+                <div class="module-float content-main">
+
+                    <div class="module-float content-item">
+                        <div class="col-md-5 col-lg-5 left">
+                            <div class="module-float">
+                                <input type="checkbox" class="radio">
+                                <div class="module-float">
+                                    <div class="img">
+                                        <img src="images/dummy/image1.jpg">
+                                    </div>
+                                    <p>
+                                        <span class="font-gray font-small">ID: </span><span class="uppercase">54545454</span>
+                                        <span class="link-size"> - <a href="#">Link gốc</a></span>
+
+                                        <span class="font-red"> - Khiếu nại dịch vụ</span>
+                                    </p>
+
+                                    <p><span class="font-gray">Mẫu: </span>Xah lam lót, Free size - 兰色 兰色 兰色</p>
+
+                                    <p><span class="font-gray">Chú thích:</span> Chuyển hàng vào 12h đêm cho mình nhé xong ở lại với mình luôn mình đang buồn. Hãy giúp mình đêm nay.</p>
+                                    <div class="comment-item">
+                                        <div class="comment-title chat">
+                                            <input placeholder="Chát về sản phẩm..." name="msg_chat" data-type="EXTERNAL" class="input-chat " >
+                                        </div>
+                                        <div class="comment-title"><a href="#">Hương NT</a> Tìm thêm 234 sp<span class="pull-right font-gray">26/7</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-7 col-lg-7">
+                            <div class="col-md-5 col-lg-5 padd-top">
+                                <div class="module-float">
+                                    <p><span class="font-gray">Đơn giá:</span> 11,1K <span class="font-green">3.2<sup>¥</sup></span></p>
+                                    <p><span class="font-gray">Tổng:</span> 11,1K <span class="font-green">3.2<sup>¥</sup></span></p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 col-lg-2 padd-top">
+
+                                <div class="module-float text-center lbl-package-quantity">0</div>
+
+                                <div class="module-float frm-change-package-quantity hidden">
+                                    <button data-type="-" class="pull-left btn-one-unit">-</button>
+                                    <input class="pull-left input-package-quantity text-center" type="text" value="0">
+                                    <button data-type="+" class="pull-left btn-one-unit">+</button>
+                                </div>
+
+                                <div class="module-float">
+                                    <div class="lock-ac pull-left">
+                                        <a class="pull-left font-red-new border" href="#">Hết</a>
+                                        <a class="pull-right font-green" href="#">Đủ</a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-5 col-lg-5">
+                                <div class="module-float">
+                                    <div class="quantity">
+                                        <span class="font-red">5</span>
+                                        /
+                                        <span class="">5</span>
+                                        /
+                                        <span class="">5</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="module-float content-item">
+                        <div class="col-md-5 col-lg-5 left">
+                            <div class="module-float">
+                                <input type="checkbox" class="radio">
+                                <div class="module-float">
+                                    <div class="img">
+                                        <img src="images/dummy/image1.jpg">
+                                    </div>
+                                    <p><span class="font-gray font-small">ID: </span><span class="uppercase">54545454</span> <span class="link-size"> - <a href="#">Link gốc</a></span></p>
+                                    <p><span class="font-gray">Mẫu: </span>Xah lam lót, Free size - 兰色 兰色 兰色</p>
+                                    <p><span class="font-gray">Chú thích:</span> Chuyển hàng vào 12h đêm cho mình nhé xong ở lại với mình luôn mình đang buồn. Hãy giúp mình đêm nay.</p>
+                                    <div class="comment-item">
+                                        <div class="comment-title chat">
+                                            <input placeholder="Chát về sản phẩm..." name="msg_chat" data-type="EXTERNAL" class="input-chat " >
+                                        </div>
+                                        <div class="comment-title"><a href="#">Hương NT</a> Tìm thêm 234 sp dsds dsdjshd jsdshdjshd sjdhsjdhs djshdjsdhs jdhsdj sdhjshdsj dhsjdhsd jshdjshd jsdhsjdhs ds<span class="pull-right font-gray">26/7</span></div>
+                                        <div class="comment-title"><a href="#">Hương NT</a> Tìm thêm 2d jsdhsjdhs ds<span class="pull-right font-gray">10:30 26/7</span></div>
+                                        <div class="comment-title"><a href="#">Hương NT</a> Tìm thêm 234 sp sjdhs ds<span class="pull-right font-gray">11:20 26/7</span></div>
+                                        <div class="comment-title bottom">
+                                            <div class="border-link">
+                                                <p class="text-center"><a href="#">Xem thêm 12 trao đổi</a></p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-7 col-lg-7">
+                            <div class="col-md-5 col-lg-5 padd-top">
+                                <div class="module-float">
+                                    <p><span class="font-gray">Đơn giá:</span> 11,1K <span class="font-green">3.2<sup>¥</sup></span></p>
+                                    <p><span class="font-gray">Tổng:</span> 11,1K <span class="font-green">3.2<sup>¥</sup></span></p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 col-lg-2 padd-top">
+                                <div class="module-float text-center lbl-package-quantity">8</div>
+                            </div>
+
+                            <div class="col-md-5 col-lg-5">
+                                <div class="module-float">
+                                    <div class="quantity">
+                                        <span class="">5</span>
+                                        /
+                                        <span class="">5</span>
+                                        /
+                                        <span class="">5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="module-float content-bottom">
+                    <div class="col-lg-5 col-md-5 check-all">
+                        <div class="module-float"></div>
+                        <span class="arrow"></span>
+                        Với những sản phẩm đã chọn
+                        <a href="#">Hết hàng</a> <span class="font-blue font-small">|</span>
+                        <a href="#">Nhận đủ</a>
+                    </div>
+
+                    <div class="col-md-1 col-lg-1"></div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <div class="module-float button-submit">
+                                <div class="select">
+                                    <!--<div class="border"></div>-->
+                                    <!--<select class="selectpicker">-->
+                                        <!--<option data-icon="fa fa-cogs"> Hành động</option>-->
+                                        <!--<option data-icon="fa fa-plus"> Nhận thêm</option>-->
+                                        <!--<option data-icon="fa fa-check"> Chờ YC/giao</option>-->
+                                        <!--<option data-icon="fa fa-times"> Hết hàng</option>-->
+                                    <!--</select>-->
+                                    <div class="module-float title">
+                                        <i class="fa fa-cogs"></i> <span class="uppercase">Hành động</span><i class="fa fa-sort-down arrow"></i>
+                                    </div>
+                                    <div class="border"></div>
+                                    <div class="module-dropdow">
+
+                                        <div class="item">
+                                            <a href="#"><i class="fa fa-plus"></i> <span>Nhận thêm</span></a>
+                                        </div>
+                                        <div class="item">
+                                            <a href="#"><i class="fa fa-check"></i> <span>Chờ YC/giao</span></a>
+                                        </div>
+                                        <div class="item">
+                                            <a href="#"><i class="fa fa-times"></i> <span>Hết hàng</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button data-message="Chấp nhận" id="" class=" btn btn-red pull-right" value="Chấp nhận">Kiểm hàng</button>
+                                <button data-message="từ chối" id="" class=" btn print pull-right" value="từ chối"><i class="print fa fa-print"></i> in tem</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <div id="_order-detail-placeholder">
+        <div class="seu-page-content item-detail no-header">
+            <div class="container">
+                <div class="row">
+                    <div class="tab-content main-chat-v2">
+                        <div class="main-content">
+                            <div class="border-header-list">
+                                <div class="border"></div>
+                            </div>
+                            <div class="module-title"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- RIGHT CHAT -->
+        <div style="height: 686px; z-index: 1000; position: fixed; top: 0px; left: 1057.2px;" class="sidebar-left seubox-chat summaryv2 seu-chat-tab _order_comment user-chat none-chat" id="seu-chat-tab-1" data-order-id="1">
+
+            <div class="search-check">
+                <div class="module-float font-small font-gray">
+                    <div class="module_float title">
+                        <span class="font-bold">Lọc:</span>
+                    </div>
+                    <div class="module_float"><input type="checkbox" class="radio chatcheck user-chat" data-class="user-chat" checked> Chat</div>
+                    <div class="module_float"><input type="checkbox" class="radio chatcheck activiti-chat" data-class="activiti-chat"> H.Động</div>
+                    <div class="module_float"><input type="checkbox" class="radio chatcheck log-chat" data-class="log-chat"> Log</div>
+                </div>
+            </div>
+
+            <div class="item-side-left v2 top">
+                <div class="module-content">
+                    <div class="item-chat-main">
+                        <div class="chat-box" id="_box-external">
+                            <div class="module-item user-chat">
+                                <div class="position-avatar">
+                                    <img src="images/avatar-chat-seudo.png" alt="" class="img-rounded">
+                                </div>
+                                <p><span class="user-seudo">Sếu Đỏ</span><span class="font-gray pull-right">14:50 20/06</span></p>
+                                <p class="content-chat-item">Trọng Hiếu chấp nhận mức yêu cầu bồi thường 277,777đ của khách hàng</p>
+                            </div>
+                            <div class="module-item">
+                                <div class="position-avatar">
+                                    <img src="images/gravatar.jpg" alt="" class="img-rounded">
+                                </div>
+                                <p ><span class="user">Nguyễn Thị Mẹt</span> <span class="pull-right font-gray">16:15 18/06</span></p>
+                                <p class="content-chat-item">Đề xuất mức bồi thường là: 277,777đ</p>
+                            </div>
+                            <div class="module-item">
+                                <div class="position-avatar">
+                                    <img src="images/avatar-chat-seudo.png" alt="" class="img-rounded">
+                                </div>
+                                <p><span class="user-seudo">Sếu Đỏ</span><span class="font-gray pull-right">14:50 20/06</span></p>
+                                <p class="content-chat-item">Trọng Hiếu chấp nhận mức yêu cầu bồi thường 277,777đ của khách hàng</p>
+                            </div>
+                            <div class="module-item activiti-chat">
+                                <div class="position-avatar">
+                                    <img src="images/gravatar.jpg" alt="" class="img-rounded">
+                                </div>
+                                <p ><span class="user">Nguyễn Thị Mẹt</span> <span class="pull-right font-gray">16:15 18/06</span></p>
+                                <p class="content-chat-item">Đề xuất mức bồi thường là: 277,777đ</p>
+                            </div>
+                            <div class="module-item log-chat">
+                                <div class="position-avatar">
+                                    <img src="images/avatar-chat-seudo.png" alt="" class="img-rounded">
+                                </div>
+                                <p><span class="user-seudo">Sếu Đỏ</span><span class="font-gray pull-right">14:50 20/06</span></p>
+                                <p class="content-chat-item">Trọng Hiếu chấp nhận mức yêu cầu bồi thường 277,777đ của khách hàng</p>
+                            </div>
+                            <div class="module-item">
+                                <div class="position-avatar">
+                                    <img src="images/gravatar.jpg" alt="" class="img-rounded">
+                                </div>
+                                <p ><span class="user">Nguyễn Thị Mẹt</span> <span class="pull-right font-gray">16:15 18/06</span></p>
+                                <p class="content-chat-item">Đề xuất mức bồi thường là: 277,777đ</p>
+                            </div>
+                            <div class="module-item">
+                                <div class="position-avatar">
+                                    <img src="images/avatar-chat-seudo.png" alt="" class="img-rounded">
+                                </div>
+                                <p><span class="user-seudo">Sếu Đỏ</span><span class="font-gray pull-right">14:50 20/06</span></p>
+                                <p class="content-chat-item">Trọng Hiếu chấp nhận mức yêu cầu bồi thường 277,777đ của khách hàng</p>
+                            </div>
+                            <div class="module-item">
+                                <div class="position-avatar">
+                                    <img src="images/gravatar.jpg" alt="" class="img-rounded">
+                                </div>
+                                <p ><span class="user">Nguyễn Thị Mẹt</span> <span class="pull-right font-gray">16:15 18/06</span></p>
+                                <p class="content-chat-item">Đề xuất mức bồi thường là: 277,777đ</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="item-chat form-input">
+                        <input type="text"  id="_msg-chat-external" class="textarea-no-resize " data-type="EXTERNAL" name="msg_chat" placeholder="Chat với khách. Enter để gửi" />
+                    </div>
+                    <div class="border-chat-top">
+                        <div class="line_through"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-side-left v2 bottom">
+                <div class="module-content">
+                    <div class="item-chat-main">
+                        <div class="chat-box" id="_box-internal">
+                            <div class="module-item">
+                                <div class="position-avatar">
+                                    <img src="images/gravatar.jpg" alt="" class="img-rounded">
+                                </div>
+                                <p ><span class="user-seudo">Sếu Đỏ</span> <span class="pull-right font-gray">16:15 18/06</span></p>
+                                <p class="content-chat-item">Đề xuất mức bồi thường là: 277,777đ</p>
+                            </div>
+                            <div class="module-item">
+                                <div class="position-avatar">
+                                    <img src="images/avatar-chat-seudo.png" alt="" class="img-rounded">
+                                </div>
+                                <p><span class="user-seudo">Sếu Đỏ</span><span class="font-gray pull-right">14:50 20/06</span></p>
+                                <p class="content-chat-item">Trọng Hiếu chấp nhận mức yêu cầu bồi thường 277,777đ của khách hàng</p>
+                            </div>
+                            <div class="module-item">
+                                <div class="position-avatar">
+                                    <img src="images/gravatar.jpg" alt="" class="img-rounded">
+                                </div>
+                                <p ><span class="user-seudo">Sếu Đỏ</span> <span class="pull-right font-gray">16:15 18/06</span></p>
+                                <p class="content-chat-item">Đề xuất mức bồi thường là: 277,777đ</p>
+                            </div>
+                            <div class="module-item">
+                                <p class="activiti"><span class="font-bold">Le thi thu huyen</span> đã tiếp nhận khiếu nại - 10:10 23/10</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="item-chat form-input">
+                        <input type="text" class="_input-chat" data-type="INTERNAL" name="msg_chat" placeholder="Chát với nội bộ. Enter để gửi" />
+                    </div>
+                </div>
+            </div>
+            <div class="opacity-chatbottom"></div>
+            <div class="border-left-chat"></div>
+        </div>
+        <!--/right chat -->
+    </div>
+    <!--<script>-->
+        <!--$(document).ready(function(){-->
+
+            <!--$(".content-item").hover(function(){-->
+                <!--$(this).find('.input-chat').slideToggle();-->
+                <!--console.log($(this).find('.input-chat'));-->
+            <!--});-->
+        <!--})-->
+    <!--</script>-->
+
+    <script>
+        $(document).ready(function(){
+
+            //Ham tang, giam so luong
+            var $btnOneUnit = $('.btn-one-unit');
+            $btnOneUnit.click(function() {
+                var $this = $(this);
+                var $inputPackageQuantity = $this.parents('.content-item').find('.input-package-quantity');
+                var $lblPackageQuantity = $this.parents('.content-item').find('.lbl-package-quantity');
+                var operation = $this.data('type');
+                var value = $inputPackageQuantity.val();
+                var v = 0;
+
+                // Tang
+                if( !isNaN(value) && operation == '+' ) {
+                    v = 1;
+                    if( value != '' && value != null ) {
+                        v = parseInt( value ) +  1;
+                    }
+                }
+                // Giam
+                if( !isNaN(value) && operation == '-' && value > 0 ) {
+                    v = parseInt( value ) - 1;
+                }
+
+                $inputPackageQuantity.val(v);
+                $lblPackageQuantity.html(v);
+
+            });
+
+            $('.input-package-quantity').click(function() {
+               $(this).select();
+            });
+
+            var $contentItem = $('.content-item');
+            $contentItem.hover(function() {
+                $(this).css('border', '1px solid #999999');
+                $(this).css('box-shadow', '0 1px 2px 0 #ccc');
+
+                if ( $(this).find('.input-package-quantity').length > 0 ) {
+                    $(this).find('.frm-change-package-quantity').removeClass('hidden');
+                    $(this).find('.lbl-package-quantity').addClass('hidden');
+                }
+            });
+
+            $contentItem.mouseleave(function() {
+                $(this).css('border', '');
+                $(this).css('box-shadow', '');
+
+                if ( $(this).find('.input-package-quantity').length > 0 ) {
+                    $(this).find('.frm-change-package-quantity').addClass('hidden');
+                    $(this).find('.lbl-package-quantity').removeClass('hidden');
+                }
+            });
+
+
+            $( ".chatcheck" ).click(function() {
+                var addcl = $(this).data("class");
+                var nchat = $(this).is(":checked");
+                if(nchat == true){
+                    $( ".seubox-chat" ).addClass(addcl);
+                }
+                else{
+                    $( ".seubox-chat" ).removeClass(addcl);
+                }
+
+                var n = $( "input.chatcheck:checked" ).length;
+                if(n > 0 && n != null){
+                    $( ".seubox-chat" ).addClass("none-chat");
+                }
+                else{
+                    $( ".seubox-chat" ).removeClass("none-chat");
+                }
+            });
+
+            $(".button-submit .select").hover(function(){
+                $(this).find('.module-dropdow').slideToggle();
+            });
+
+//            $('.textarea-no-resize').textareaAutogrow();
+//            $('textarea').shiftenter();
+
+        })
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,668 @@
+<?php
+use \SeuDo\Main;
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = Main::getHomeUrl();
+//echo $publicHomePath;
+
+$jsPath = $publicHomePath.'assets/js/';
+$jsBackendPath = $publicHomePath.'backend/assets/js/';
+$jsBackendv2Path = $publicHomePath.'backend/assetv2/js/';
+//echo '$jsBackendPath: ' . $jsBackendPath;
+$cssPath = $publicHomePath.'assets/css/';
+$imgPath = $publicHomePath.'assets/images/';
+
+$document->addCss('css/style-typo.css',"TOP");
+$document->addCss('css/cssloading.css',"TOP");
+$document->addCss('css/bootstrap-select.min.css',"TOP");
+//$document->addCss('css/aui-production.min.css',"TOP");
+
+//$document->addCss('css/style-chitietkhieunai.css',"TOP");
+$document->addCss('css/style-chitietkhieunaiv2.css',"TOP");
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs('js/jqueryui.js',"TOP");
+$document->addJs('js/numeral.js',"TOP");
+$document->addJs('js/tooltip.js');
+
+$document->addJs('js/process/complaint_seller_detail.js?v=15',"TOP");
+$document->addJs('js/seudo-backendv2.js');
+$document->addJs('js/jquery-scrolltofixed.js', 'TOP');
+$document->addJs('js/autoNumeric.js',"TOP");
+$document->addJs('js/backendv2-frontend.js',"TOP");
+
+$this->document()->addJsVar("linkGetListComments", $this->createUrl('ComplaintSeller/ComplaintSellerComment/ListComplaintSellerComments'));
+$this->document()->addJsVar("linkAddComplaintSellerComment", $this->createUrl('ComplaintSeller/ComplaintSellerComment/AddMessage'));
+
+$order = isset($order) ? $order : array();
+if(!$order instanceof \Order){
+
+}
+
+$buyer = isset($buyer) ? $buyer : array();
+
+$buyer_username = '';
+$buyer_fullname = '';
+$buyer_code = '';
+$buyer_mobiles = array();
+$buyer_detail_address = '';
+$buyer_email = '';
+
+if($buyer instanceof \Users){
+    $buyer_username = $buyer->getUsername() ? $buyer->getUsername() : '';
+    $buyer_fullname = $buyer->getFullName() ? $buyer->getFullName() : '';
+    $buyer_code = $buyer->getCode() ? $buyer->getCode() : '';
+    $buyer_mobiles = $buyer->getMobiles() ? $buyer->getMobiles() : array();
+    $buyer_detail_address = $buyer->getDetailAddress() ? $buyer->getDetailAddress() : '';
+    $buyer_email = $buyer->getEmail() ? $buyer->getEmail() : '';
+}
+
+$processed = isset($processed) ? $processed : array();
+if(!$processed instanceof \Users){
+
+}
+$complaint_seller = isset($complaint_seller) ? $complaint_seller : array();
+if(!$complaint_seller instanceof \ComplaintSeller){
+
+}
+
+$total_pendding_quantity = isset($total_pendding_quantity) ? $total_pendding_quantity : 0;
+$total_receive_quantity = isset($total_receive_quantity) ? $total_receive_quantity : 0;
+$total_order_quantity = isset($total_order_quantity) ? $total_order_quantity : 0;
+$seller_favicon_site = isset($seller_favicon_site) ? $seller_favicon_site : "";
+$need_checking = isset($need_checking) ? $need_checking : false;
+$check_wood_crating = isset($check_wood_crating) ? $check_wood_crating : false;
+$check_fragile = isset($check_fragile) ? $check_fragile : false;
+$is_cpn = isset($is_cpn) ? $is_cpn : false;
+$buyer_detail_link = isset($buyer_detail_link) ? $buyer_detail_link : "";
+$buyer_avatar = isset($buyer_avatar) ? $buyer_avatar : "";
+
+$page = isset($page) ? $page : 1;
+$processed_detail_link = isset($processed_detail_link) ? $processed_detail_link : "";
+$processed_avatar = isset($processed_avatar) ? $processed_avatar : "";
+
+?>
+
+<section class="seu-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ul>
+                    <li><a href="<?php echo $this->createUrl('') ?>">Trang chủ</a><span class="arrow"></span></li>
+                    <li><a href="<?php echo $this->createUrl('ComplaintSeller/managerment') ?>">Danh sách khiếu nại người bán</a><span class="arrow"></span></li>
+                    <li><?php echo $complaint_seller->getId(); ?></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="detail-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="module-title">
+                    <p>
+                        <span class="title">Khiếu nại người bán của đơn hàng</span>
+                        <span class="arrow"></span>
+                        <span class="font-gray">Lý do: <?php echo \ComplaintSeller::$reasonTitle[$complaint_seller->getReason()] ?></span>
+                        <span class="active <?php echo \ComplaintSeller::getStatusColor($complaint_seller->getStatus()) ?>"><?php echo \ComplaintSeller::$statusTitle[$complaint_seller->getStatus()] ?></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="detail-ct detail">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 module-ct-center">
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Mã:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <p>
+                            <a href="<?php echo $this->createUrl('order/detail', array('id' => $order->getId())) ?>" title="<?php echo $order->getCode(); ?>" target="_blank">
+                                <?php echo $order->getCode(); ?>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Id:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <p class="uppercase"><?php echo $order->getId(); ?></p>
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Sản phẩm:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <p><?php echo $total_pendding_quantity ?>/ <?php echo $total_receive_quantity ?>/ <?php echo $total_order_quantity ?></p>
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Tiền hàng:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <p>
+                            <span><?php echo $order->total_amount ? \Common::numberFormat($order->total_amount) : 0; ?><sup>đ</sup></span>
+                            <!--                        <span class="font-gray font-normal font-small">(0 NDT)</span>-->
+                        </p>
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Acc mua hàng:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <p><?php echo $order->getAccountPurchaseOrigin() ?></p>
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Người bán:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <p class="tiny-title">
+                            <a target="_blank" rel="nofollow" href="http://<?php echo $order->getSellerName() ?>.<?php echo $order->getSellerHomeland() ?>.com">
+                                <img src="<?php echo $seller_favicon_site; ?>" />
+                            </a>
+                            <span><?php echo $order->getSellerName() ?></span>
+                        </p>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="col-lg-5 col-md-5 module-ct-center">
+
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Id đơn gốc:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <?php
+                            $dataSiteRoot = \ComplaintSeller::getLinkSiteRoot($order->getSellerHomeland(), $order->getInvoice());
+                            if($dataSiteRoot['show_link_site_root']){
+                                foreach($dataSiteRoot['arrLinkSiteRoot'] as $item){
+                                    echo '<p class="font-blue uppercase font-normal">';
+                                    echo '<a href="' . $item['link'] . '" target="_blank">' . $item['order_invoice'] . '</a>';
+                                    if($item['last_index']){
+                                        echo ',';
+                                    }
+                                    echo '</p>';
+                                }
+                            }
+                        ?>
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Vận đơn:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <p class="uppercase"><?php  ?></p>
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Mã hóa đơn Alipay:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <p><?php echo $order->getAlipay(); ?></p>
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="module-float5 left">
+                        <p>Tính chất:</p>
+                    </div>
+                    <div class="module-float5 right">
+                        <p class="font-normal">
+                            <?php
+                            $arrNature = array();
+                            if($need_checking){
+                                $arrNature[] = 'Kiểm hàng';
+                            }else{
+                                $arrNature[] = 'Không kiểm';
+                            }
+
+                            if($check_wood_crating){
+                                $arrNature[] = 'Đóng gỗ';
+                            }
+
+                            if($check_fragile){
+                                $arrNature[] = 'Dễ vỡ';
+                            }
+
+                            if($is_cpn){
+                                $arrNature[] = 'CPN';
+                            }
+                            ?>
+                            Tính chất:&nbsp;&nbsp;
+                            <?php echo sizeof($arrNature) > 0 ? rtrim(implode(", ", $arrNature), ",") : ""; ?>
+                        </p>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+            <div class="col-lg-3 col-md-3 right">
+                <div class="module-float user-avatar">
+                    <a href="<?php echo $buyer_detail_link ?>" target="_blank">
+                        <div class="avatar">
+                            <img src="<?php echo $buyer_avatar ?>">
+                        </div>
+                    </a>
+                    <p>
+                        <a class="font-gray" title="@<?php echo $buyer_username ?>" href="<?php echo $buyer_detail_link ?>" target="_blank">
+                            <span class="font-bold"><?php echo $buyer_fullname ?></span>
+                        </a>
+                        <?php if( $buyer_code ){ ?>
+                            <span class="arrow"></span>
+                            <span class="uppercase"><?php echo $buyer_code ?></span>
+                        <?php } ?>
+                    </p>
+                    <?php if($buyer_username) { ?>
+                        <p class="font-user">@<?php echo $buyer_username ?></p>
+                    <?php } ?>
+                </div>
+
+                <?php
+                $buyer_mobile = '';
+                if( sizeof($buyer_mobiles) > 0 ) {
+                    foreach($buyer_mobiles as $key => $m){
+                        if( $m instanceof \UserMobiles && $key == (sizeof($buyer->getMobiles()) - 1) ){
+                            $buyer_mobile = $m->getMobile();
+                        }
+                    }
+                }
+
+                ?>
+
+                <?php if( $buyer_mobile ){ ?>
+                    <div class="module-float"><i class="fa fa-phone"></i><?php echo $buyer_mobile ?></div>
+                <?php } ?>
+
+                <?php if( $buyer_email ){ ?>
+                    <div class="module-float"><i class="glyphicon glyphicon-envelope"></i><?php echo $buyer_email ?></div>
+                <?php } ?>
+
+                <?php if( $buyer_detail_address ){ ?>
+                    <div class="module-float"><i class="fa fa-map-marker"></i><?php echo $buyer_detail_address ?></div>
+                <?php } ?>
+            </div>
+
+        </div>
+
+
+    </div>
+</section>
+
+<section class="detail-ctv3">
+    <div class="container">
+        <div class="row" id="_show-table-complaints">
+            <div class="col-md-12 col-lg-12">
+                <p class="title">Khiếu nại dịch vụ của đơn hàng</p>
+
+                <form id="_search">
+                    <input type="hidden" name="order_id" value="<?php echo $order->getId(); ?>" />
+                    <input id="_current-page" type="hidden" name="page" value="<?php echo $page; ?>" />
+                </form>
+
+                <div class="module-float ">
+                    <div class="module-float header-top font-gray">
+                        <div class="col-lg-1 col-md-1">id</div>
+                        <div class="col-lg-4 col-md-4">
+                            <p class="text-left">Tên khiếu nại</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-left">Lý do</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p>Tình trạng</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p>Tiếp nhận</p>
+                        </div>
+
+                        <div class="accout"><p class="text-left">Tiếp nhận</p></div>
+                    </div>
+
+                    <div class="module-float list" id="_list-complaints"></div>
+
+                    <div id="_show-paging"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row bottom">
+            <div class="col-lg-6 col-md-6">
+                <?php if($complaint_seller->getProcessedBy() > 0){ ?>
+                    <div class="module-float">
+                        <p class="font-bold margin-bottom">Nhân viên tiếp nhận khiếu nại</p>
+                        <div class="module-float">
+                            <div class="user-v2">
+                                <div class="avatar-v2">
+                                    <a href="<?php echo $processed_detail_link ?>" target="_blank" title="<?php echo $processed->getFullName() ?>">
+                                        <img src="<?php echo $processed_avatar ?>">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="module_float">
+                                <a href="<?php echo $processed_detail_link ?>" target="_blank" title="<?php echo $processed->getFullName() ?>">
+                                    <?php echo $processed->getFullName() ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+
+                <?php
+                    $created_time = $processed_time = $accepted_time = "";
+                    if($complaint_seller->getCreatedTime() && $complaint_seller->getCreatedTime() != "0000-00-00 00:00:00"){
+                        $_created_time = new \DateTime($complaint_seller->getCreatedTime());
+                        $created_time = $_created_time->format("d/m/Y");
+                    }
+
+                    if($complaint_seller->getProcessedTime() && $complaint_seller->getProcessedTime() != "0000-00-00 00:00:00"){
+                        $_processed_time = new \DateTime($complaint_seller->getProcessedTime());
+                        $processed_time = $_processed_time->format("d/m/Y");
+                    }
+
+                    if($complaint_seller->getAcceptedTime() && $complaint_seller->getAcceptedTime() != "0000-00-00 00:00:00"){
+                        $_accepted_time = new \DateTime($complaint_seller->getAcceptedTime());
+                        $accepted_time = $_accepted_time->format("d/m/Y");
+                    }
+                ?>
+
+                <p>Tạo khiếu nại: <span class="font-bold"><?php echo $created_time ?></span></p>
+                <p>Tiếp nhận: <span class="font-bold"><?php echo $processed_time ?></span></p>
+                <p>Thành công: <span class="font-bold"><?php echo $accepted_time ?></span></p>
+
+            </div>
+
+            <div class="col-lg-6 col-md-6 search-bottom-v2">
+                <div class="module-float">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-7 v2-left">
+                            <div class="left">
+                                <p>Cấp khiếu nại:</p>
+                            </div>
+                            <div class="right">
+                                <select
+                                    id="_sel-level" class="selectpicker">
+                                    <?php
+                                        $arrLevels = \ComplaintSeller::$levelTitle;
+                                        foreach((array)$arrLevels as $key => $value){
+        //                                    if($value instanceof \ComplaintSeller){
+                                                $selected = ( $key == $complaint_seller->getLevel() ) ? " selected='selected' " : "";
+                                                echo "<option " . $selected . " value=" . $key . ">" . $value . "</option>";
+        //                                    }
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-md-5 v2-right">
+                            <div class="left">
+                                <p>Lí do: </p>
+                            </div>
+                            <div class="right">
+                                <select
+                                    id="_sel-reason" class="selectpicker">
+                                    <?php
+                                    $arrReasons = \ComplaintSeller::$reasonTitle;
+                                    foreach((array)$arrReasons as $key => $value){
+        //                                if($value instanceof \ComplaintSeller){
+                                            $selected_reason = ( $key == $complaint_seller->getReason() ) ? " selected='selected' " : "";
+                                            echo "<option " . $selected_reason . " value=" . $key . ">" . $value . "</option>";
+        //                                }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-7 v2-left">
+                            <div class="left">
+                                <p>Hạn xử lý:</p>
+                            </div>
+                            <div class="right">
+                                <div class="module-float date-input">
+                                    <?php
+                                    $refocus_time = "";
+                                    if($complaint_seller->getRefocusTime() && $complaint_seller->getRefocusTime() != "0000-00-00 00:00:00"){
+                                        $_refocus_time = new \DateTime($complaint_seller->getRefocusTime());
+                                        $refocus_time = $_refocus_time->format("d-m-Y");
+                                    }
+                                    ?>
+                                    <input
+                                        value="<?php echo $refocus_time ?>"
+                                        type="text" placeholder=""
+                                        class="form-control form-myinput select-input"
+                                        id="_txt-refocus-time">
+                                    <span><img src="<?php echo $imgPath; ?>calenda.png"></span>
+                                    <i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="module-float">
+                        <textarea
+                            rows="2" placeholder="Nhập chú thích"
+                            class="form-control form-mytextarea"
+                            id="_textarea-description"><?php echo $complaint_seller->getDescription() ?></textarea>
+                    </div>
+                    <div class="module-float button">
+                        <div class="module_float">
+                            <?php if($controller->isAllowed(PERMISSION_COMPLAINT_SELLER_CAN_REJECT) && $complaint_seller->getStatus() == \ComplaintSeller::STATUS_PROCESSING){ ?>
+                                <button data-status="<?php echo \ComplaintSeller::STATUS_FAILURE ?>" data-process="Đang xử lý" data-message="Đã thất bại" id="_btn-reject" class="_btn-public btn btn-default pull-right" value="">Thất bại</button>
+                            <?php } ?>
+
+                            <?php if($controller->isAllowed(PERMISSION_COMPLAINT_SELLER_CAN_ACCEPT) && $complaint_seller->getStatus() == \ComplaintSeller::STATUS_PROCESSING){ ?>
+                                <button data-status="<?php echo \ComplaintSeller::STATUS_SUCCESS ?>" data-process="Đang xử lý" data-message="Đã thành công" data-toggle="modal" data-target="#popupnewvc" class="_btn-public btn btn-red pull-right" value=""><i class="fa fa-check"></i>Thành công</button>
+                            <?php } ?>
+
+                            <?php if($controller->isAllowed(PERMISSION_COMPLAINT_SELLER_CAN_PROCESSING) && $complaint_seller->getStatus() == \ComplaintSeller::STATUS_PENDING){ ?>
+                                <button data-status="<?php echo \ComplaintSeller::STATUS_PROCESSING ?>" data-process="Đang xử lý" data-message="Đã tiếp nhận" id="_btn-process" class="_btn-public btn btn-red pull-right" value="">Tiếp nhận</button>
+                            <?php } ?>
+
+                            <?php if($complaint_seller->getStatus() == \ComplaintSeller::STATUS_SUCCESS){ ?>
+                                <button class="btn btn-red pull-right" value=""><i class="fa fa-check"></i>Đã thành công</button>
+                            <?php } ?>
+
+                            <?php if($complaint_seller->getStatus() == \ComplaintSeller::STATUS_FAILURE){ ?>
+                                <button class="btn btn-default pull-right">Đã thất bại</button>
+                            <?php } ?>
+
+                            <?php if($complaint_seller->getStatus() == \ComplaintSeller::STATUS_PROCESSING){ ?>
+<!--                                <button class="btn btn-red pull-right">Đã tiếp nhận</button>-->
+                            <?php } ?>
+
+                            <div class="modal fade popupnew" id="popupnewvc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                            <h4 class="modal-title"><p>Nhập số tiền đòi được</p></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="module-float">
+                                                <input data-a-sep="." data-a-dec="," id="_txt-amount-seller-refund" type="text" class="form-control form-myinput focusnew" placeholder="Nhập số tiền (NDT)">
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-gray" data-dismiss="modal">Hủy</button>
+                                            <button data-message="Đã đồng ý" data-status="<?php echo \ComplaintSeller::STATUS_SUCCESS ?>" data-process="Đang xử lý" id="_btn-success" type="button" class="btn btn-red">Đồng ý</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="_order-detail-placeholder">
+    <div class="seu-page-content item-detail no-header">
+        <div class="container">
+            <div class="row">
+                <div class="tab-content main-chat-v2">
+                    <div class="main-content">
+                        <div class="border-header-list">
+                            <div class="border"></div>
+                        </div>
+                        <div class="module-title"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- RIGHT CHAT -->
+    <div data-order-id="1" id="seu-chat-tab-1" class="sidebar-left seubox-chat summaryv2 seu-chat-tab _order_comment scroll-to-fixed-fixed" style="height: 610px; z-index: 1000; position: fixed; top: 0px; margin-left: 0px; width: 268px; left: 1079px;">
+
+        <form id="_filter-comment-by-type" action="" type="get">
+            <div class="search-check">
+                <div class="module-float font-small font-gray">
+                    <div class="module_float title">
+                        <span class="font-bold">Lọc:</span>
+                    </div>
+                    <div class="module_float">
+                        <input type="checkbox" data-value="CHAT" name="CHAT" class="radio _filter-comment"> Chat
+                    </div>
+                    <div class="module_float">
+                        <input type="checkbox" data-value="ACTIVITY" name="ACTIVITY" class="radio _filter-comment"> H.Động
+                    </div>
+                    <div class="module_float">
+                        <input type="checkbox" data-value="LOG" name="LOG" class="radio _filter-comment"> Log
+                    </div>
+                </div>
+            </div>
+        </form>
+
+<!--        <div class="item-side-left v2 top">-->
+<!--            <div class="module-content">-->
+<!--                <div class="item-chat-main">-->
+<!--                    <div id="_box-external" class="chat-box"></div>-->
+<!--                </div>-->
+<!--                <div class="item-chat form-input">-->
+<!--                    <input placeholder="Chat với khách. Enter để gửi" name="msg_chat" data-type="EXTERNAL" class="textarea-no-resize _input-chat" id="_msg-chat-external">-->
+<!--                    <span class="icon-chat font-gray"><i class="glyphicon glyphicon-comment"></i></span>-->
+<!--                </div>-->
+<!--                <div class="border-chat-top">-->
+<!--                    <div class="line_through"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="item-side-left v2 bottom" style="height: 100%;">
+            <div class="module-content">
+                <div class="item-chat-main">
+                    <div id="_box-internal" class="chat-box"></div>
+                </div>
+                <div class="item-chat form-input">
+                    <input placeholder="Chát với nội bộ. Enter để gửi" name="msg_chat" data-type="INTERNAL" class="textarea-no-resize _input-chat" id="_msg-chat-internal">
+                </div>
+            </div>
+        </div>
+
+        <div class="opacity-chatbottom"></div>
+    </div>
+    <!--/right chat -->
+</div>
+
+<script id="_item-chat-row" type="text/x-handlebars-template">
+    {{#if is_chat}}
+    <div class="module-item _item-view-comment CHAT">
+        <div class="position-avatar">
+            <a href="user/detail/{{user_id}}" target="_blank" class="user-img-tool" title="" rel="tooltipbottom" data-original-title="@{{account}}">
+                <img class="img-rounded" alt="" src="{{img_path}}">
+            </a>
+        </div>
+        <p class="normal">
+            <a class="font-black" href="user/detail/{{user_id}}" target="_blank">
+                <span class="normal-blod">{{first_name}}</span>
+            </a>
+            <span class="font-gray time pull-right">{{sub_time}}</span>
+        </p>
+        <p class="normal">{{{message}}}</p>
+    </div>
+    {{/if}}
+    {{#if is_log}}
+    <div class="module-item _item-view-comment LOG">
+        <p class="font-gray">{{{message}}} - {{sub_time}}</p>
+    </div>
+    {{/if}}
+    {{#if is_activity}}
+    <div class="module-item _item-view-comment ACTIVITY">
+        <p class="font-gray">
+            <a class="font-gray" href="user/detail/{{user_id}}" title="{{first_name}}" target="_blank"><strong>{{first_name}}</strong></a>
+            {{{message}}} - {{sub_time}}
+        </p>
+    </div>
+    {{/if}}
+</script>
+
+<script id="_item-row-complaint" type="text/x-handlebars-template">
+    <div class="module-float main-ct">
+        <div class="module-float">
+            <div class="col-lg-1 col-md-1">{{id}}</div>
+            <div class="col-lg-4 col-md-4">
+                <p class="text-left">
+                    {{title}}
+                </p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="text-left">{{type_title}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="font-bold uppercase">{{status_title}}</p>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p>{{recipient_time}}</p>
+            </div>
+            <a target="_blank" href="complaint/detail/{{id}}">
+                <div class="img-acc">
+                    <div class="avatar">
+                        {{#if show_info_recipient_by}}
+                        <img src="{{info_recipient_by.avatar}}">
+                        {{/if}}
+                    </div>
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+            </a>
+            <div class="border-left"></div>
+        </div>
+    </div>
+</script>

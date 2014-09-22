@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Quan ly giao hang</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jqueryui.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <script type="text/javascript" src="js/process/menu.js"></script>
+    <script type="text/javascript" src="js/process/home.js"></script>
+    <script type="text/javascript" src="js/logistic-frontend.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/roboto/roboto.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-typo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-header.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-menu-tab.css" />
+    <!--<link rel="stylesheet" type="text/css" href="css/custom.css" />-->
+    <!--<link rel="stylesheet" type="text/css" href="css/cssloading.css" />-->
+    <link rel="stylesheet" type="text/css" href="css/style-quanlygiaohang.css" />
+
+</head>
+<body>
+    <header class="header">
+        <nav role="navigation" class="container header-top">
+            <div class="row">
+                <div class="col-lg-1 col-md-1">
+                    <div class="module-float logo">
+                        <a href="#"></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="module-float input-search">
+                        <input type="text" id="exampleInput" class="form-control form-myinput" placeholder="Tìm đơn hàng nhanh theo mã đơn hàng hoặc ID...">
+                        <a href="#"><span class="arrow"></span></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 pull-right">
+
+                </div>
+            </div>
+        </nav>
+
+        <nav class="seu-menu" role="navigation">
+            <div class="container">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="col-lg-7 col-md-7 seu-main-menu" >
+                    <ul class="nav navbar-nav module-float ">
+
+                        <li class="active">
+                            <a class="navbar-nav-a" href="#">Dashboard</a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Danh sách đơn hàng</a></li>
+                                <li><a href="#">Quản lý mua hàng</a></li>
+                                <li><a href="#">Mua hàng và thanh toán</a></li>
+                                <li><a href="#">Giao hàng</a></li>
+                            </ul>
+                        </li>
+
+                        <li class=" dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Người dùng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+                <div class="col-lg-5">
+                    <div class="module-float note-alert">
+                        <p class="text-right"><i class="fa fa-warning" style=""></i>Số dư khách không âm hoặc số tiền cần thu tối thiểu (<0) là khách thiếu tiền</p>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+
+    <section class="container main-body" id="main-body">
+		<div class="menu-tab module-float">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="module-float v2-menu">
+                        <ul class="module-float">
+                            <li class="active">
+                                <a  href="#">Tất cả<span class="arrow"></span></a>
+                            </li>
+                            <li>
+                                <a  href="#">VNHN<span class="arrow"></span></a>
+                            </li>
+                            <li>
+                                <a  href="#">VNSG<span class="arrow"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 search">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3">
+                            <p class="font-gray">địa chỉ:</p>
+                        </div>
+                        <div class="col-lg-9 col-md-9">
+                            <input type="text" placeholder="Nhập tên quận huyện hoặc tỉnh thành phố..." class="form-control form-myinput" id="exampleInput">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 search">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2">
+                            <p class="font-gray">Khách:</p>
+                        </div>
+                        <div class="col-lg-10 col-md-10">
+                            <input type="text" placeholder="Nhập mã hoặc tên đăng nhập..." class="form-control form-myinput" id="exampleInput">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 col-md-1 search-submit">
+                        <div class="module-float">
+                            <a href="#" class="btn-red">Tìm kiếm</a>
+                        </div>
+                </div>
+            </div>
+
+		</div>
+		<div class="module-float link-bottom">
+			<div class="pull-right">
+				<div class="module-title">
+                    <div class="pull-right button-default"><i class="fa fa-file-excel-o"></i><span class="uppercase">Đính file xuất kho</span></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row main-content">
+			<div class="col-lg-12 col-md-12 main-item">
+                <div class="module-float ">
+                    <div class="module-float header-top">
+                        <div class="col-lg-3 col-md-3 left">
+                            <p >Đơn hàng</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Trạng thái</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center">Kho</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Tình trạng</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Tổng</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Y/c giao lúc</p>
+                        </div>
+                    </div>
+                </div>
+				<div class="module-float list">
+
+						<div class="module-float main-ct">
+							<div class="module-float item-ct">
+									<div class="col-lg-3 col-md-3 left">
+										<span><input type="checkbox" value="CHECKING"></span>
+                                        <p ><a href="#">2323ghhgh43</a></p>
+									</div>
+									<div class="col-lg-2 col-md-2">
+										<p class="font">yc giao</p>
+									</div>
+									<div class="col-lg-1 col-md-1">
+										<p class="text-center font">Nhập</p>
+									</div>
+									<div class="col-lg-2 col-md-2">
+										<p class="text-center uppercase">Xuất kho</p>
+									</div>
+									<div class="col-lg-2 col-md-2">
+										<p class="text-center">29 SP / 0.3kg</p>
+									</div>
+									<div class="col-lg-2 col-md-2">
+                                        <p class="text-center">10:30 12/12/2012</p>
+									</div>
+
+							</div>
+
+                            <div class="module-float item-ct">
+                                <div class="col-lg-3 col-md-3 left">
+                                    <span><input type="checkbox" value="CHECKING"></span>
+                                    <p ><a href="#">2323ghhgh43</a></p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="font">yc giao</p>
+                                </div>
+                                <div class="col-lg-1 col-md-1">
+                                    <p class="text-center font">Nhập</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center uppercase">Xuất kho</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center">29 SP / 0.3kg</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center">10:30 12/12/2012</p>
+                                </div>
+
+                            </div>
+
+                            <div class="module-float item-ct">
+                                <div class="col-lg-3 col-md-3 left">
+                                    <span><input type="checkbox" value="CHECKING"></span>
+                                    <p ><a href="#">2323ghhgh43</a></p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="font">yc giao</p>
+                                </div>
+                                <div class="col-lg-1 col-md-1">
+                                    <p class="text-center font">Nhập</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center uppercase">Xuất kho</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center">29 SP / 0.3kg</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center">10:30 12/12/2012</p>
+                                </div>
+
+                            </div>
+
+                            <div class="module-float item-ct">
+                                <div class="col-lg-3 col-md-3 left">
+                                    <span><input type="checkbox" value="CHECKING"></span>
+                                    <p ><a href="#">2323ghhgh43</a></p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="font">yc giao</p>
+                                </div>
+                                <div class="col-lg-1 col-md-1">
+                                    <p class="text-center font">Nhập</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center uppercase">Xuất kho</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center">29 SP / 0.3kg</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center">10:30 12/12/2012</p>
+                                </div>
+
+                            </div>
+
+                            <div class="module-float item-ct">
+                                <div class="col-lg-3 col-md-3 left">
+                                    <span><input type="checkbox" value="CHECKING"></span>
+                                    <p ><a href="#">2323ghhgh43</a></p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="font">yc giao</p>
+                                </div>
+                                <div class="col-lg-1 col-md-1">
+                                    <p class="text-center font">Nhập</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center uppercase">Xuất kho</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center">29 SP / 0.3kg</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center"><a href="#" class="refresh"><i class="fa fa-refresh"></i> Refresh</a></p>
+                                </div>
+
+                            </div>
+
+                            <div class="module-float item-ct">
+                                <div class="col-lg-3 col-md-3 left">
+                                    <span><input type="checkbox" value="CHECKING"></span>
+                                    <p ><a href="#">2323ghhgh43</a></p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="font">yc giao</p>
+                                </div>
+                                <div class="col-lg-1 col-md-1">
+                                    <p class="text-center font">Nhập</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center uppercase">Xuất kho</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center">29 SP / 0.3kg</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center"><span class="next-order">YC giao</span></p>
+                                </div>
+
+                            </div>
+
+                            <div class="module-float item-ct">
+                                <div class="col-lg-3 col-md-3 left">
+                                    <span><input type="checkbox" value="CHECKING"></span>
+                                    <p ><a href="#">2323ghhgh43</a></p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="font">yc giao</p>
+                                </div>
+                                <div class="col-lg-1 col-md-1">
+                                    <p class="text-center font">Nhập</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center uppercase">Xuất kho</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center">29 SP / 0.3kg</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <p class="text-center"><span class="next-order">YC giao</span></p>
+                                </div>
+
+                            </div>
+
+                            <div class="module-float bottom-list">
+                                <p class="text-center">Khách có 0 đơn chưa về tiền hàng chưa về: 0đ</p>
+                            </div>
+
+					    </div>
+                        <div class="accout">
+                            <div class="module-float">
+                                <div class="acc-title module-float">
+                                    <div class="avatar">
+                                        <img src="images/gravatar.jpg">
+                                    </div>
+                                    <p><span class="font-bold">Nguyễn Thị Phượng</span> <span class="uppercase">/ me79</span></p>
+                                    <p class="font-gray">@mebela</p>
+                                </div>
+                                <div class="acc-ct module-float">
+                                    <p class="font-bold"><i class="fa fa-map-marker"></i> Nguyễn Duy Hưng</p>
+                                    <p>Số 48 ngõ 50 ngách 52 đường 53 khu ô chợ dừa, Quận Đống Đa, Hà Nội / 0999999999</p>
+                                    <p class="font-gray">Có thể nhận hàng từ 6h đến 8h sáng </p>
+                                    <br>
+                                    <p class="margin-bottom"><span class="font-bold"><i class="fa fa-truck"></i>  Phí VC Nội Địa:</span> Không có - <a href="#" data-target="#popupnewvc" data-toggle="modal">Tạo</a></p>
+
+                                    <p class="margin-bottom"><span class="font-bold"><i class="fa fa-ticket"></i>  COD:</span> Không - <a href="#" data-target="#popupnewcod" data-toggle="modal">Tạo</a></p>
+                                    <div class="note"><p>tài chính khách chưa đủ</p></div>
+                                    <div class="submit"><button href="#" class="btn btn-red module-float uppercase font-small font-bold disabled" data-target="#popupnew" data-toggle="modal">Giao hàng các đơn đã chọn</button></div>
+                                </div>
+
+                                <!--     modal box tạo phí COD-->
+                                <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupnewcod" class="modal fade popupnew" >
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                                <h4  class="modal-title"><p class="title">Thu tiền khi giao hàng (cod)</p></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="item row">
+                                                    <div class="col-lg-4 col-md-4">
+                                                        <div class="module-float">
+                                                            <p>Khách:</p>
+                                                            <p class="font-bold">Nguyễn Thị Phượng</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4">
+                                                        <div class="module-float">
+                                                            <p>Số dư hiện tại:</p>
+                                                            <p >(Không có quyền xem)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4">
+                                                        <div class="module-float">
+                                                            <p>Tiền còn thiếu trong các đơn hàng:</p>
+                                                            <p class="font-red-new font-bold">-123.900đ</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="item row">
+                                                    <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                                                        <div class="module-float cod-note">
+                                                                <div class="col-lg-3 col-md-3 text-right">
+                                                                    <p>Số tiền COD:</p>
+                                                                    <p class="font-gray">VND</p>
+                                                                </div>
+                                                                <div class="col-lg-9 col-md-9">
+                                                                    <input type="text" placeholder="" class="form-control form-myinput" id="exampleInput">
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button class="btn btn-red" type="button">Lưu</button>
+                                                <button class="btn btn-gray" type="button" data-dismiss="modal">Hủy</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--        end modal box COD-->
+
+                                <!--     modal box tạo phí vận chuyển-->
+                                <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupnewvc" class="modal fade popupnew" >
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                                <h4  class="modal-title"><p class="title">Thu phí VC nội địa</p></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="item row">
+                                                    <div class="col-lg-5 col-md-5">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-4 col-md-4">
+                                                                <p class="text-right">Khách:</p>
+                                                            </div>
+                                                            <div class="col-lg-8 col-md-8">
+                                                                <p class="font-bold">Nguyễn Thị Phượng</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-7 col-md-7">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">Địa chỉ:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p >Nhà số 1, ngõ 2, đường Hoàng Hoa Thám, Quận Đống Đa, Hà Nội</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item row">
+                                                    <div class="col-lg-5 col-md-5">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-4 col-md-4">
+                                                                <p class="text-right">Điện thoại:</p>
+                                                            </div>
+                                                            <div class="col-lg-8 col-md-8">
+                                                                <p class="font-bold">099999999</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-7 col-md-7">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">Tỉnh:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p class="font-bold">Hà Nội</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="item row">
+                                                    <div class="col-lg-5 col-md-5">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-4 col-md-4">
+                                                                <p class="text-right margin-bottom">Phí VC:</p>
+                                                                <p class="text-right font-gray">VND</p>
+                                                            </div>
+                                                            <div class="col-lg-8 col-md-8">
+                                                                <input type="text" id="exampleInput" class="form-control form-myinput" placeholder="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-7 col-md-7">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">Mục đích thu:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <textarea rows="3" placeholder="" class="form-control form-mytextarea" ></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button class="btn btn-red" type="button">Lưu Phí</button>
+                                                <button class="btn btn-gray" type="button" data-dismiss="modal">Hủy</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--        end modal box-->
+
+                                <!--     modal box-->
+                                <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupnew" class="modal fade popupnew" >
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                                <h4  class="modal-title"><p class="title">Tạo phiếu giao hàng</p></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="item row">
+                                                    <div class="col-lg-5 col-md-5">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">Khách:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p class="font-bold">Nguyễn Thị Phượng</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-7 col-md-7">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">Người nhận:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p class="font-bold">Nguyễn Thị Phượng</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item row">
+                                                    <div class="col-lg-5 col-md-5">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">Mã:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p class="font-bold">ME79</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-7 col-md-7">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">Địa chỉ:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p >Nhà số 1, ngõ 2, đường Hoàng Hoa Thám, Quận Đống Đa, Hà Nội</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item row">
+                                                    <div class="col-lg-5 col-md-5">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">COD:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p class="font-bold">12.000.000đ</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-7 col-md-7">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">Tỉnh:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p class="font-bold">Hà Nội</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item row">
+                                                    <div class="col-lg-5 col-md-5">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">PHÍ VC:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p class="font-bold">12.000.000đ</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-7 col-md-7">
+                                                        <div class="module-float">
+                                                            <div class="col-lg-3 col-md-3">
+                                                                <p class="text-right">Điện thoại:</p>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9">
+                                                                <p class="font-bold">099999999</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="item row">
+                                                    <div class="item-bottom col-lg-12 col-md-12">
+                                                        <span>Đơn hàng:</span>
+                                                        <p class="font-bold uppercase">reir_34267362372, dhs_3267362, rrry_37287328,....</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button class="btn btn-red" type="button">Tạo phiếu</button>
+                                                <button class="btn btn-gray" type="button"><i class="fa fa-print"></i> In Phiếu</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--        end modal tạo phí vận chuyển-->
+
+                            </div>
+                        </div>
+				</div>
+				
+			</div>
+
+            <div class="col-lg-12 col-md-12 main-item">
+                <div class="module-float ">
+                    <div class="module-float header-top">
+                        <div class="col-lg-3 col-md-3 left">
+                            <span>Id</span>
+                            <p >Đơn hàng</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Trạng thái</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center">Kho</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Tình trạng</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Tổng</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">Y/c giao lúc</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="module-float list">
+
+                <div class="module-float main-ct">
+                    <div class="module-float item-ct">
+                        <div class="col-lg-3 col-md-3 left">
+                            <span><input type="checkbox" value="CHECKING">1234</span>
+                            <p ><a href="#">2323ghhgh43</a></p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 top">
+                            <p class="font">yc giao</p>
+                            <p class="font-gray font-small text-center">10/10/2010</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center font">Nhập</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center uppercase">Xuất kho</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">29 SP / 0.3kg</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">10:30 12/12/2012</p>
+                        </div>
+
+                    </div>
+
+                    <div class="module-float item-ct">
+                        <div class="col-lg-3 col-md-3 left">
+                            <span><input type="checkbox" value="CHECKING"></span>
+                            <p ><a href="#">2323ghhgh43</a></p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="font">yc giao</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center font">Nhập</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center uppercase">Xuất kho</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">29 SP / 0.3kg</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">10:30 12/12/2012</p>
+                        </div>
+
+                    </div>
+
+                    <div class="module-float item-ct">
+                        <div class="col-lg-3 col-md-3 left">
+                            <span><input type="checkbox" value="CHECKING"></span>
+                            <p ><a href="#">2323ghhgh43</a></p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="font">yc giao</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center font">Nhập</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center uppercase">Xuất kho</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">29 SP / 0.3kg</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">10:30 12/12/2012</p>
+                        </div>
+
+                    </div>
+
+                    <div class="module-float item-ct">
+                        <div class="col-lg-3 col-md-3 left">
+                            <span><input type="checkbox" value="CHECKING"></span>
+                            <p ><a href="#">2323ghhgh43</a></p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="font">yc giao</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center font">Nhập</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center uppercase">Xuất kho</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">29 SP / 0.3kg</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">10:30 12/12/2012</p>
+                        </div>
+
+                    </div>
+
+                    <div class="module-float item-ct">
+                        <div class="col-lg-3 col-md-3 left">
+                            <span><input type="checkbox" value="CHECKING"></span>
+                            <p ><a href="#">2323ghhgh43</a></p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="font">yc giao</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center font">Nhập</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center uppercase">Xuất kho</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">29 SP / 0.3kg</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center"><a href="#" class="refresh"><i class="fa fa-refresh"></i> Refresh</a></p>
+                        </div>
+
+                    </div>
+
+                    <div class="module-float item-ct">
+                        <div class="col-lg-3 col-md-3 left">
+                            <span><input type="checkbox" value="CHECKING"></span>
+                            <p ><a href="#">2323ghhgh43</a></p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="font">yc giao</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center font">Nhập</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center uppercase">Xuất kho</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">29 SP / 0.3kg</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center"><span class="next-order">YC giao</span></p>
+                        </div>
+
+                    </div>
+
+                    <div class="module-float item-ct opacity">
+                        <div class="col-lg-3 col-md-3 left">
+                            <span><input type="checkbox" value="CHECKING"></span>
+                            <p ><a href="#">2323ghhgh43</a></p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="font">yc giao</p>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <p class="text-center font">Nhập</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center uppercase">Xuất kho</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <p class="text-center">29 SP / 0.3kg</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 no-opacity">
+                            <p class="text-center"><span class="next-order">YC giao</span></p>
+                        </div>
+
+                    </div>
+
+                    <div class="module-float bottom-list">
+                        <p class="text-center">Khách có 0 đơn chưa về tiền hàng chưa về: 0đ</p>
+                    </div>
+
+                </div>
+                <div class="accout">
+                <div class="module-float">
+                    <div class="acc-title module-float">
+                        <div class="avatar">
+                            <img src="images/gravatar.jpg">
+                        </div>
+                        <p><span class="font-bold">Nguyễn Thị Phượng</span> <span class="uppercase">/ me79</span></p>
+                        <p class="font-gray">@mebela</p>
+                    </div>
+                    <div class="acc-ct module-float ">
+                        <p class="font-bold"><i class="fa fa-map-marker"></i> Nguyễn Duy Hưng</p>
+                        <p>Số 48 ngõ 50 ngách 52 đường 53 khu ô chợ dừa, Quận Đống Đa, Hà Nội / 0999999999</p>
+                        <p class="font-gray">Có thể nhận hàng từ 6h đến 8h sáng </p>
+                        <br>
+                        <p class="margin-bottom"><span class="font-bold"><i class="fa fa-truck"></i>  Phí VC Nội Địa:</span> <span class="font-blue font-bold">2000.000đ</span> - <a href="#" data-target="#popupnewvc" data-toggle="modal">Sửa</a></p>
+
+                        <p class="margin-bottom"><span class="font-bold"><i class="fa fa-ticket"></i>  COD:</span> <span class="font-bold font-blue">123.000đ</span> - <a href="#" data-target="#popupnewcod" data-toggle="modal">Sửa</a></p>
+                        <div class="note">
+                            <p>tài chính khách chưa đủ</p>
+                            <p>Số dư + COD - Phí VC = <span class="font-red-new">-123.000đ</span></p>
+                        </div>
+                        <div class="submit"><button href="#" class="btn btn-red module-float uppercase font-small font-bold" data-target="#popupnew" data-toggle="modal">Giao hàng các đơn đã chọn</button></div>
+                    </div>
+
+                    <!--     modal box tạo phí COD-->
+                    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupnewcod" class="modal fade popupnew" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                    <h4  class="modal-title"><p class="title">Thu tiền khi giao hàng (cod)</p></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="item row">
+                                        <div class="col-lg-4 col-md-4">
+                                            <div class="module-float">
+                                                <p>Khách:</p>
+                                                <p class="font-bold">Nguyễn Thị Phượng</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4">
+                                            <div class="module-float">
+                                                <p>Số dư hiện tại:</p>
+                                                <p >(Không có quyền xem)</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4">
+                                            <div class="module-float">
+                                                <p>Tiền còn thiếu trong các đơn hàng:</p>
+                                                <p class="font-red-new font-bold">-123.900đ</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="item row">
+                                        <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                                            <div class="module-float cod-note">
+                                                <div class="col-lg-3 col-md-3 text-right">
+                                                    <p>Số tiền COD:</p>
+                                                    <p class="font-gray">VND</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <input type="text" placeholder="" class="form-control form-myinput" id="exampleInput">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-red" type="button">Lưu</button>
+                                    <button class="btn btn-gray" type="button" data-dismiss="modal">Hủy</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--        end modal box COD-->
+
+                    <!--     modal box tạo phí vận chuyển-->
+                    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupnewvc" class="modal fade popupnew" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                    <h4  class="modal-title"><p class="title">Thu phí VC nội địa</p></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="item row">
+                                        <div class="col-lg-5 col-md-5">
+                                            <div class="module-float">
+                                                <div class="col-lg-4 col-md-4">
+                                                    <p class="text-right">Khách:</p>
+                                                </div>
+                                                <div class="col-lg-8 col-md-8">
+                                                    <p class="font-bold">Nguyễn Thị Phượng</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">Địa chỉ:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p >Nhà số 1, ngõ 2, đường Hoàng Hoa Thám, Quận Đống Đa, Hà Nội</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item row">
+                                        <div class="col-lg-5 col-md-5">
+                                            <div class="module-float">
+                                                <div class="col-lg-4 col-md-4">
+                                                    <p class="text-right">Điện thoại:</p>
+                                                </div>
+                                                <div class="col-lg-8 col-md-8">
+                                                    <p class="font-bold">099999999</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">Tỉnh:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p class="font-bold">Hà Nội</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="item row">
+                                        <div class="col-lg-5 col-md-5">
+                                            <div class="module-float">
+                                                <div class="col-lg-4 col-md-4">
+                                                    <p class="text-right margin-bottom">Phí VC:</p>
+                                                    <p class="text-right font-gray">VND</p>
+                                                </div>
+                                                <div class="col-lg-8 col-md-8">
+                                                    <input type="text" id="exampleInput" class="form-control form-myinput" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">Mục đích thu:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <textarea rows="3" placeholder="" class="form-control form-mytextarea" ></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-red" type="button">Lưu Phí</button>
+                                    <button class="btn btn-gray" type="button" data-dismiss="modal">Hủy</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--        end modal box-->
+
+                    <!--     modal box-->
+                    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="popupnew" class="modal fade popupnew" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                    <h4  class="modal-title"><p class="title">Tạo phiếu giao hàng</p></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="item row">
+                                        <div class="col-lg-5 col-md-5">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">Khách:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p class="font-bold">Nguyễn Thị Phượng</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">Người nhận:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p class="font-bold">Nguyễn Thị Phượng</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item row">
+                                        <div class="col-lg-5 col-md-5">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">Mã:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p class="font-bold">ME79</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">Địa chỉ:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p >Nhà số 1, ngõ 2, đường Hoàng Hoa Thám, Quận Đống Đa, Hà Nội</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item row">
+                                        <div class="col-lg-5 col-md-5">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">COD:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p class="font-bold">12.000.000đ</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">Tỉnh:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p class="font-bold">Hà Nội</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item row">
+                                        <div class="col-lg-5 col-md-5">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">PHÍ VC:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p class="font-bold">12.000.000đ</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7">
+                                            <div class="module-float">
+                                                <div class="col-lg-3 col-md-3">
+                                                    <p class="text-right">Điện thoại:</p>
+                                                </div>
+                                                <div class="col-lg-9 col-md-9">
+                                                    <p class="font-bold">099999999</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item row">
+                                        <div class="item-bottom col-lg-12 col-md-12">
+                                            <span>Đơn hàng:</span>
+                                            <p class="font-bold uppercase">reir_34267362372, dhs_3267362, rrry_37287328,....</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-red" type="button">Tạo phiếu</button>
+                                    <button class="btn btn-gray" type="button"><i class="fa fa-print"></i> In Phiếu</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--        end modal tạo phí vận chuyển-->
+
+                </div>
+                </div>
+                </div>
+
+            </div>
+		</div>
+
+        <div class="row note-main">
+            <div class="col-lg-12 col-md-12">
+                <div class="module-float note-main-top">
+                    <img src="images/icons/border-topgiaohang.png">
+                </div>
+                <div class="module-float note-main-ct text-center font-gray">
+                    <p>Các đơn hàng: <span class="font-bold">hj_3232, hdjsh_57847, hj_3232, hdjsh_57847, hj_3232, hdjsh_57847, hj_3232, hdjsh_57847, hj_3232, hdjsh_57847</span> </p>
+                    <p>đã được chuyển từ trạng thái "ĐANG GIAO", có thể xem danh sách các đơn trên <a href="#">tại đây</a></p>
+                </div>
+                <div class="module-float note-main-bottom">
+                    <img src="images/icons/border-bottomgiaohang.png">
+                </div>
+            </div>
+
+        </div>
+
+		<div class="row link-bottom">
+            <div class="col-lg-12 col-md-12">
+                <ul class="pagination">
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                </ul>
+            </div>
+
+		</div>
+	</section>
+
+</body>
+</html>

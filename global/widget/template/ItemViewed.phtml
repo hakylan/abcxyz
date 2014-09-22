@@ -1,0 +1,60 @@
+<?php
+$item_viewed = isset($item_viewed) ? $item_viewed : array();
+if($item_viewed){
+    return;
+    ?>
+    <div class="seu-module">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="normal-blod">Sản phẩm bạn đã xem</p>
+            </div>
+            <div class="module-ct">
+                <?php
+                foreach ($item_viewed as $item) {
+                    if(!$item){
+                        continue;
+                    }
+                    $class_site = 'ali';
+                    switch($item['site']){
+                        case "alibaba":
+                            $class_site = "ali";
+                            break;
+                        case "taobao":
+                            $class_site = "tbao";
+                            break;
+                        case "eelly":
+                            $class_site = "ely";
+                            break;
+                        case "nahuo":
+                            $class_site = "nhuo";
+                            break;
+                        default:
+                            $class_site = "ali";
+                            break;
+                    }
+
+                ?>
+                <div class="sidebar-ct">
+                    <p class="normal title">
+                        <span class="iconshop <?php echo $class_site ?>"><a class="_link_item" href="<?php echo $item['shop_url'] ?>">
+                                <?php echo @$item['shop_username'] ?></a>
+                        </span><span class="normal-blod"><a href="<?php $controller->createUrl("OrderLink/default",array("url"=>$item['url'])) ?>">
+                                <?php echo Common::subString($item['title'],50) ?></a></span>
+                    </p>
+                    <div class="sidebar-content">
+                        <div class="avatar-shop">
+                            <img  src="<?php echo $item['img'] ?>"  >
+                        </div>
+                        <span class="red-bold normal-blod uppercase">
+                            <?php
+                                echo Common::numberFormat($item['price']);
+                            ?>
+                            <sup>đ</sup></span>
+                    </div>
+
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+<?php } ?>

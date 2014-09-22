@@ -1,0 +1,154 @@
+@charset "UTF-8";
+/*
+ * jQuery File Upload Plugin CSS Example 8.8.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+.main-body{
+	padding-top: 30px;
+}
+.bootstrap-select{
+	width: 100% !important;
+}
+.bootstrap-select button.dropdown-toggle{
+    height: 34px;
+}
+.selectpicker{
+	border-radius: 2px;
+}
+.bootstrap-select .dropdown-menu > li > a{
+	padding: 6px 10px;
+}
+.search .submit{
+	padding-left: 0;
+}
+.search .date{
+	position: relative;
+	background: #fff;
+}
+.search .date span{
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	top: 3px;
+	right: 3px;
+	z-index: 1;
+}
+.search .date input{
+	padding-right: 20px;
+	position: relative;
+	z-index: 9;
+	background: none;
+}
+.search .margin-bottom input{
+    margin-left: 10px;
+}
+.search .item-search button.btn-blue{
+    float: right;
+    width: 80px;
+}
+
+.main-content .list{
+	box-shadow: 0 1px 1px 1px #DEDEDE;
+	border-radius: 2px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.main-content .list .main-ct{
+    background: #fff;
+    height: 65px;
+    padding-top: 13px;
+    padding-bottom: 10px;
+    position: relative;
+}
+.list .main-ct .module-float .right,
+.header-top .right {
+    padding-right: 60px;
+}
+.main-content .list .main-ct .print{
+    position: absolute;
+    top: 23px;
+    right: 10px;
+}
+.main-item{
+    margin-top: 30px;
+}
+.main-item .header-top{
+    font-weight: bold;
+    color: #b8b8b8;
+    text-transform: uppercase;
+    font-size: 11px;
+    text-align: center;
+}
+.main-item .header-top .left{
+    text-align: left;
+}
+.main-item .header-top .left{
+    position: relative;
+    padding-left: 55px;
+}
+.main-item .header-top .left span{
+    position: absolute;
+    width: 20px;
+    top: 0;
+    left: 20px;
+}
+.main-item .main-ct .left{
+    position: relative;
+    padding-left: 55px;
+}
+.main-item .main-ct .left span{
+    position: absolute;
+    width: 30px;
+    top: 10px;
+    left: 20px;
+}
+.main-item .main-ct .left .avatar{
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border: 1px solid #dfdfdf;
+    top: 3px;
+    left: 50px;
+}
+.main-item .main-ct p{
+    margin-bottom: 3px;
+    text-align: center;
+    padding-top: 10px;
+}
+.main-item .main-ct p sup{
+    text-transform: none;
+}
+.main-item .main-ct .left p{
+    text-align: left;
+    padding-top: 0;
+}
+.main-item .main-ct .text-left p{
+    text-align: left;
+}
+.total{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.main-item .main-ct:nth-child(2n){
+    background: #f6f7f8;
+}
+.none{
+    text-indent: -999em;
+}
+.margin-bottom{
+    padding-top: 8px;
+}
+.margin-bottom a{
+    margin-right: 20px;
+}
+.search .row{
+    margin-bottom: 10px;
+}

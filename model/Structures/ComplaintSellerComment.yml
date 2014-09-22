@@ -1,0 +1,16 @@
+comment:
+    - '#ComplaintSellerComment'
+    - '#Schema for ComplaintSellerComment OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    complaint_id: { name: complaint_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    complaint_code: { name: complaint_code, type: string, db_type: string, alltypes: [string], ntype: varchar(100), length: 100, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    item_id: { name: item_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    order_id: { name: order_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    content: { name: content, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    type: { name: type, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''INTERNAL'',''EXTERNAL'',''SYSTEM'')', length: 8, fixed: false, unsigned: false, values: [INTERNAL, EXTERNAL, SYSTEM], primary: false, unique: false, default: EXTERNAL, notnull: true, auto_increment: false, extra: '' }
+    parent_id: { name: parent_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    created_by: { name: created_by, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    created_time: { name: created_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: complaint_seller_comment

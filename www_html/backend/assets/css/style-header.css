@@ -1,0 +1,90 @@
+body{
+    font-size: 12px ;
+}
+#sidebar-menu li a{
+    font-size: 12px;
+}  
+.user-profile > a img{
+    border-radius: 15px;
+    float: left;
+    height: 25px;
+    margin: 16px 5px 0 0;
+    width: 25px;
+}
+.top-icon-bar .dropdown > a{
+    width: inherit;
+    background: none;
+    margin: 0;
+    padding: 8px 15px 12px 15px; 
+    display: inline-block;
+}
+.top-icon-bar .dropdown > a:hover{
+    border-radius: 0;
+}
+.top-icon-bar .dropdown,
+.top-icon-bar{
+    height: 100%;
+}
+#page-content-wrapper{
+    margin-left: 0;
+}
+.top-icon-bar .dropdown > a .arow-down-v2{
+    font-size: 12px;
+    margin-left: 5px;
+}
+.menubackend-v2 .dropdown.open > .dropdown-menu:after,
+.menubackend-v2 .dropdown.open > .dropdown-menu:before{
+    border-bottom : 0;
+    display: none;
+}
+.menubackend-v2 .dropdown.open > .dropdown-menu{
+    margin-top: 0;
+    border-radius: 0 0 2px 2px;
+    top: 100%;
+    left: 0;
+    background: #20242a;
+    box-shadow: none;
+}
+.menubackend-v2 .dropdown.open{
+    background: #20242a;
+}
+.menubackend-v2 {
+    margin: 0;
+}
+.menubackend-v2 .dropdown-menu > li a{
+    margin: 8px 15px;
+}
+.menubackend-v2 .dropdown-menu > li a:hover{
+    background: none;
+    color: #fff;
+}
+.list-order .order_item .change-quantity .icon-save{
+    height: 100% !important;
+    padding: 0 !important;
+    -moz-box-sizing: border-box;
+}
+#header-logo{
+    position: relative;
+}
+#header-logo .logo-seudo{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #d92026;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+#header-logo .logo-seudo a{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+#header-logo .logo-seudo a img{
+    display: inline-block;
+    height: 100%;
+}
+.icon-angle-down:before {
+    font-size: 12px;
+}
+

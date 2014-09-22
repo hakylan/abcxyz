@@ -1,0 +1,156 @@
+<section class="breadcrumb-category-social">
+    <nav class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-ct">
+                            <ol class="breadcrumb">
+                                <li><a href="#">Trang chủ</a></li>
+                                <li><a href="<?php echo $this->createUrl('') ?>">Cộng đồng</a></li>
+                                <li>
+                                    <a href="<?php echo $this->createUrl('category/' . $ca[$post->category_id]['slug']) ?>"><?php echo $ca[$post->category_id]['title'] ?></a>
+                                </li>
+
+                            </ol>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</section>
+
+
+<section class="homesocial itemsocial">
+    <nav class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 sidebar1">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <?php if ($images): ?>
+                            <div class="module-title">
+                                <div class="tab-content my-tab-content">
+                                    <?php $i = 0;
+                                    foreach ($images AS $img): ?>
+                                        <div class="tab-pane <?php if ($i == 0) {
+                                            echo "active";
+                                        } ?>" id="img<?php echo $i ?>">
+                                            <img src="<?php echo $img ?>"/>
+                                        </div>
+                                        <?php $i++; endforeach ?>
+                                </div>
+                                <ul id="myTab" class="nav nav-tabs my-tabs owl-carousel">
+                                    <?php $j = 0;
+                                    foreach ($images AS $img): ?>
+                                        <div><a data-toggle="tab" href="#img<?php echo $j ?>"><img class="post_img"
+                                                                                                   src="<?php echo $img ?>"/></a>
+                                        </div>
+                                        <?php $j++; endforeach ?>
+                                </ul>
+
+                            </div>
+                        <?php endif ?>
+                        <div class="module-ct">
+                            <div class="module-content">
+                                <p class="module-content-title"><?php echo $post->title ?></p>
+
+                                <div class="social">
+                                    <div class="raty rate" data-score="<?php echo $post->rate_avg ?>"
+                                         data-id="<?php echo $post->id ?>"></div>
+                                    &nbsp;
+                                    <div class="arrow-down show_data">&nbsp;</div>
+                                    &nbsp; <?php $uc = count(unserialize($post->rate_voters));
+                                    echo $uc ? $uc : 0; ?> người đã đánh giá -&nbsp;<a
+                                        href="<?php echo $this->createUrl('category/' . $ca[$post->category_id]['slug']) ?>"><?php echo $ca[$post->category_id]['title'] ?></a>
+                                    <span
+                                        class="italic">- <?php echo date('d-m-Y', strtotime($post->created_date)) ?></span>
+
+                                    <div class="rate_data">
+                                        <div class="rank_item">
+                                            <strong>Mức điểm <?php echo $post->rate_avg ?>/5 điểm</strong>
+                                        </div>
+                                        <?php
+                                        $ranks = unserialize($post->rate_data);
+                                        //var_dump($ranks);
+                                        foreach ($ranks AS $r => $v):?>
+                                            <div class="rank_item">
+                                                <div class="raty rv_only" data-score="<?php echo $r ?>"></div>
+                                                <div class="user_count"><?php echo $v ?></div>
+                                            </div>
+                                        <?php endforeach ?>
+
+                                    </div>
+                                </div>
+
+                                <div class="normal content-ct-none article"><?php echo $post->content ?></div>
+
+                            </div>
+                            <div class="link-like">
+
+                                <fb:like href="<?php echo $this->createUrl('post/' . $post->alias) ?>" width="80px"
+                                         layout="button_count" action="like" show_faces="false" share="false"></fb:like>
+
+                                <!-- Place this tag where you want the +1 button to render. -->
+                                <div class="g-plusone" data-size="small" data-annotation="inline"
+                                     data-width="120"></div>
+
+                                <!-- Place this tag after the last +1 button tag. -->
+                                <script type="text/javascript">
+                                    (function () {
+                                        var po = document.createElement('script');
+                                        po.type = 'text/javascript';
+                                        po.async = true;
+                                        po.src = 'https://apis.google.com/js/platform.js';
+                                        var s = document.getElementsByTagName('script')[0];
+                                        s.parentNode.insertBefore(po, s);
+                                    })();
+                                </script>
+                            </div>
+
+                            <div data-colorscheme="light" data-numposts="5"
+                                 data-href="https://www.facebook.com/plugins/comments.php?api_key=165522576848264&amp;channel_url=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D28%23cb%3Dff400ea18d67e2%26domain%3Dgetk2.org%26origin%3Dhttp%253A%252F%252Fgetk2.org%252Ff3aa1ea3d7e12da%26relation%3Dparent.parent&amp;href=<?php echo $this->createUrl('post/' . $post->alias) ?>&amp;locale=en_US&amp;numposts=20&amp;sdk=joey&amp;width=688"
+                                 class="fb-comments"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 sidebar2">
+
+                <?php $this->widget('app.widget.Leftcol', array('categories' => $cats, 'featured_posts' => $featured_posts)) ?>
+
+            </div>
+
+        </div>
+    </nav>
+</section>
+<script src="../assets/js/readmore.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myTab").owlCarousel({
+            itemsDesktop: [1599, 4],
+            itemsDesktopSmall: [980, 4],
+            itemsTablet: [768, 3],
+            itemsTabletSmall: false,
+            navigation: true,
+            pagination: false,
+            autoPlay: false,
+            slideSpeed: 300,
+            itemsMobile: [479, 2]
+        });
+
+        var fb_comment_callback = function (url, html_element) {
+            $.get(BASE_URL + 'community/updatecommentcount', {pid:<?php echo $post->id?>}, function (r) {
+                console.log('fb comment');
+            });
+        }
+
+        // In your onload handler add this call
+        FB.Event.subscribe('comments.create', fb_comment_callback);
+    });
+
+
+</script>

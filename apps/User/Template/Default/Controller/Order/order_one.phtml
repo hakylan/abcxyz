@@ -1,0 +1,80 @@
+<?php
+$status = isset($status) ? $status : '';
+$order_list = isset($order_list) ? $order_list : array();
+if(!empty($order_list)){
+    foreach ($order_list as $key=>$order) {
+        if(!($order instanceof \Order)){
+            continue;
+        }
+        $avatar = $order->getOrderAvatar();
+        $key = $key + 1;
+        ?>
+        <li class="_item-order-view">
+            <div class="col-lg-3 col-md-3 col-sm-3">
+
+                <div class="checkbox-deposit">
+                    <span class="uppercase"><?php echo $key ?></span>
+                </div>
+                <div class="detail-avatar">
+                    <img src="<?php echo $avatar ?>">
+                </div>
+                <p class="normal checkbox">
+                    <a target="_blank" href="<?php echo \SeuDo\Main::getUserRouter()->createUrl("order_detail/default",array("id"=>$order->getId())) ?>"><?php echo @$order->code ?></a>
+                </p>
+                <p class="normal-blod checkbox"><?php echo $order->seller_name ?></p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 right-top-deposit">
+                <p class="normal _status-title">
+
+                    <?php
+                    if($status === 'Deleted' || $order->getIsDeleted() == 1){
+                        echo "Hủy";
+                    }else{
+                        echo $order->getStatusTitle();
+                    }
+                    ?>
+                </p>
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7 right-top-deposit">
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <p class="normal"><?php echo $order->recive_quantity ?>/<?php echo $order->order_quantity ?></p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <p class="normal"><?php echo Common::numberFormat($order->total_amount) ?><sup>đ</sup></p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <p class="normal-blue">
+                        <?php
+                        $p = "";
+                        if($order->getRealRefundAmount() > 0){
+                            $p = "+";
+                        }else if($order->getRealRefundAmount() < 0){
+                            $p = "-";
+                        }
+                        echo $p.Common::numberFormat($order->getRealRefundAmount());
+                        ?><sup>đ</sup>
+                        <!--                                <span class="icon-cham"></span>-->
+                    </p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <p class="red-normal"><?php
+                        $payment_real = $order->getRealPaymentAmount();
+                        $payment_real = intval($payment_real)>0 ? intval($payment_real) : 0;
+                        echo Common::numberFormat($payment_real) ?><sup>đ</sup>
+                        <!--                                <span class="icon-cham"></span>-->
+                    </p>
+
+                    <?php if($order->getStatus() == \Order::STATUS_DELIVERING){ ?>
+                        <P>
+                            <a style="cursor: pointer;" data-order-id="<?php echo $order->getId() ?>" class="_confirm-delivery">Đã nhận</a>
+                        </P>
+                    <?php } ?>
+                </div>
+            </div>
+
+        </li>
+    <?php }}else{ ?>
+    <li style="text-align: center">
+        <h3>Không tồn tại đơn hàng nào</h3>
+    </li>
+<?php } ?>

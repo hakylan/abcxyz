@@ -1,0 +1,15 @@
+comment:
+    - '#FavoriteItem'
+    - '#Schema for FavoriteItem OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    user_id: { name: user_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    item_id: { name: item_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    homeland: { name: homeland, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''EELLY'',''TAOBAO'',''1688'','''')', length: 6, fixed: false, unsigned: false, values: [EELLY, TAOBAO, '1688', ''], primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    title: { name: title, type: string, db_type: string, alltypes: [string], ntype: char(150), length: 150, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    link: { name: link, type: string, db_type: string, alltypes: [string], ntype: varchar(150), length: 150, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    image: { name: image, type: string, db_type: string, alltypes: [string], ntype: char(150), length: 150, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    props: { name: props, type: string, db_type: string, alltypes: [string], ntype: char(255), length: 255, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    create_time: { name: create_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: favorite_item

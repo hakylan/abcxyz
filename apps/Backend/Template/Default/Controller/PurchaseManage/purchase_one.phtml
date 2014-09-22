@@ -1,0 +1,304 @@
+<?php
+
+
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$document->addJs($publicPath . '/assets/js/process/purchase_manage.js', "TOP");
+$images_url = \SeuDo\Main::getHomeUrl().'assets/images/';
+$order_list = @$order_list;
+$is_skips_purchasers = $controller->isAllowed(PERMISSION_PURCHASE_SKIPS_TELLERS);
+$is_select_purchasers = $controller->isAllowed(PERMISSION_PURCHASE_SELECT_TELLERS);
+$is_skips_paid_staff = $controller->isAllowed(PERMISSION_PURCHASE_SKIPS_PAID_STAFF);
+$order_maximum_time_to_payment = SystemConfig::retrieveByConfigKey(SystemConfig::ORDER_MAXIMUM_TIME_TO_PAYMENT);
+$order_maximum_to_place = SystemConfig::retrieveByConfigKey(SystemConfig::ORDER_MAXIMUM_TIME_TO_PLACE);
+$user_payment_staff = \UserRoles::getUserByRoles(Roles::RolesPurchasersId);
+$total_page = isset($total_page) ? $total_page : 1;
+$page = isset($page) ? $page : 1;
+$now = new DateTime();
+$now_time = $now->getTimestamp();
+$status_skip_purchase = \OrderPeer::getBeforeStatus(\Order::STATUS_NEGOTIATED);
+$status_skip_payment = \OrderPeer::getBeforeStatus(\Order::STATUS_BOUGHT);
+if (sizeof($order_list) > 0) {
+    foreach ($order_list as $order) {
+        if ($order && ($order instanceof Order)) {
+            $freight_bill = explode(';', $order->freight_bill);
+            $invoice = explode(';', $order->invoice);
+            $user = Users::retrieveById($order->buyer_id);
+            if (!$user || !($user instanceof Users)) return false;
+            if (!$user) {
+                continue;
+            }
+
+            $paid_staff = Users::retrieveById($order->paid_staff_id);
+
+            $tellers = Users::retrieveById($order->tellers_id);
+
+            $avatar_paid_staff = Users::getAvatar32x($paid_staff);
+
+            $avatar_paid_staff_128 = Users::getAvatar128x($paid_staff);
+
+            $avatar_teller_128 = Users::getAvatar128x($tellers);
+
+            $avatar_tellers = Users::getAvatar32x($tellers);
+
+            $avatar = Users::getAvatar128x($user); //::getAvatar32x($user);
+            ?>
+            <tr>
+                <td class="text-left">
+                    <div>
+                        <a href="<?php echo $controller->createUrl("order/detail",array("id"=>$order->getId())) ?>"><?php echo $order->code ?></a><br/>
+                        <?php
+                        echo $order->getStatusTitle();
+                        ?>
+                        <?php if ($order->status != 'INIT') {
+                            if(strtotime($order->deposit_time) > 0){
+                            ?>
+                            <br/> <span>Đặt cọc:
+                                <?php
+                                if(strtotime($order->deposit_time) > 0){
+                                    $deposit_time = new DateTime($order->deposit_time);
+                                    echo $deposit_time->format("H:i:s d:m:Y");
+                                ?>
+                    </span>
+                        <?php }}} ?>
+                    </div>
+                </td>
+                <td class="text-left">
+                    <div>
+                <span class="price_order" data-order-id="<?php echo $order->id ?>">
+                    <?php echo Common::numberFormat($order->total_amount) ?><sup>đ</sup>
+                </span><br/>
+                        SP: <?php echo $order->order_quantity ?>/<?php echo $order->recive_quantity ?>
+                    </div>
+                </td>
+                <td class="text-left">
+                    <?php
+                    $image = $images_url."icon-footer/1688.png";
+                    switch ($order->getSellerHomeland()){
+                        case "TAOBAO":
+                            $image = $images_url."icon-footer/taobao.png";
+                            break;
+                        case "TMALL":
+                            $image = $images_url."icon-footer/tmal.png";
+                            break;
+                        case "EELLY":
+                            $image = $images_url."icon-footer/elly.png";
+                            break;
+                        case "1688":
+                            $image = $images_url."icon-footer/1688.png";
+                            break;
+                        default :
+                            $image = $images_url."icon-footer/1688.png";
+                            break;
+                    }
+            ?>
+                    <a target="_blank" rel="nofollow" href="<?php echo "http://".$order->seller_name.'.'.$order->getSellerHomeland().".com" ?>"><img src="<?php echo $image ?>"></a>
+                    <?php echo $order->seller_name ?><br/>
+                    <a title="Chat Wangwang - <?php echo $order->seller_aliwang ?>" href="#">
+                        <img src="<?php echo \SeuDo\Main::getBackendUrl()."/assets/images/wangwang.png" ?>">
+                    </a>
+                </td>
+                <td class="text-left" style="width: 170px;">
+                    <div>
+
+                        <a href="javascript:void(0)" style="float: left" class="someClass"
+                           title="<img style='width:100px;height:100px;float:left' src='<?php echo $avatar ?>'>
+               <span >Tên Tk: <?php echo $user->username ?> <br/> Họ tên: <?php echo $user->last_name . $user->first_name ?>
+               <br/>Mã KH: <?php echo $user->getCode() ?> </span>">
+                            <img src="<?php echo $avatar ?>" style="width: 25px;height: 25px; float: left">
+                        </a>
+                <span class="span_left">@<?php echo $user->username ?><br/>
+                    Mã KH: <?php echo $user->getCode() ?>
+                </span>
+                    </div>
+                </td>
+                <td class="text-left">
+                    <div class="_div_tellers" data-order-id="<?php echo $order->id ?>">
+
+                        <?php if ($tellers) { ?>
+                            <div class="_div_tellers_detail" data-order-id="<?php echo $order->id ?>">
+                                <a href="javascript:void(0)" style="float: left" class="someClass"
+                                   title="<img style='width:100px;height:100px' src='<?php echo $avatar_teller_128 ?>'>">
+                                    <img src="<?php echo $avatar_teller_128 ?>" style="width: 25px;height:25px;float: left"">
+                                </a>
+                                <span class="span_left"><?php echo $tellers->last_name . ' ' . $tellers->first_name ?><br/>
+                                    @<?php echo $tellers->username ?>
+                                </span><br/>
+
+                                <p style="float: left;clear: both">Nhận đơn:
+                                    <?php
+                                    if ($order->getTellersAssignedTime() && strtotime($order->getTellersAssignedTime()) > 0) {
+                                        $assigned_time = new DateTime($order->getTellersAssignedTime());
+                                        echo $assigned_time->format("H:i:s d-m-Y");
+                                        $assigned = $assigned_time->getTimestamp();
+
+                                        $time_diff = $now_time - $assigned;
+
+                                        $time_diff = ceil($time_diff / 3600);
+
+                                        if($order_maximum_time_to_payment && $time_diff > intval($order_maximum_time_to_payment->getConfigValue())
+                                        && strtotime($order->getNegotiatedTime()) <= 0 ){
+                                            echo "<br/><span style='color: red'>{$time_diff} giờ chưa kết đơn</span>";
+                                        }
+                                    } else {
+                                        echo "---";
+                                    }
+                                    ?>
+                                </p>
+
+                                <?php if ($is_skips_purchasers && in_array($order->getStatus(),$status_skip_purchase)) { ?>
+                                    <p style="float: left;clear: both">
+                                        <a href="javascript:void(0)" class="skips_purchasers"
+                                           data-tellers-id="<?php echo $tellers->id ?>"
+                                           data-order-id="<?php echo $order->id ?>">Thu hồi</a>
+                                    </p>
+                                <?php } ?>
+                            </div>
+                        <?php
+                        } else {
+                            if (!$is_select_purchasers) {
+                                echo "...";
+                            }
+                        }
+                        ?>
+                    </div>
+                    <div style="text-align: center">
+                        <img style="display: none" src="<?php echo \SeuDo\Main::getHomeUrl().'/assets/img/small/loading1.gif' ?>" class="_img_loading"
+                             data-order-id="<?php echo $order->id ?>" >
+                    </div>
+
+                    <?php
+                    if ($is_select_purchasers) {
+                        if($order->getStatus() == \Order::STATUS_DEPOSITED){
+                        ?>
+                        <select name="" <?php if ($tellers) { ?> style="display: none" <?php } ?>
+                                class="_select_tellers" data-order-id="<?php echo $order->id ?>">
+                            <option value="0">Chọn người mua</option>
+                            <?php
+                            if (!empty($user_payment_staff)) {
+                                foreach ($user_payment_staff as $user_pur) {
+                                    if ($user_pur instanceof \Users) {
+                                        ?>
+                                        <option
+                                            value="<?php echo $user_pur->getId() ?>"><?php echo $user_pur->getUsername() ?>
+                                            -
+                                            <?php echo $user_pur->getFullName() ?></option>
+                                    <?php }
+                                }
+                            } ?>
+                        </select>
+                    <?php }else{?>
+                        <select name="" style="display: none"
+                                class="_select_tellers" data-order-id="<?php echo $order->id ?>">
+                            <option value="0">Chọn người mua</option>
+                            <?php
+                            if (!empty($user_payment_staff)) {
+                                foreach ($user_payment_staff as $user_pur) {
+                                    if ($user_pur instanceof \Users) {
+                                        ?>
+                                        <option
+                                            value="<?php echo $user_pur->getId() ?>"><?php echo $user_pur->getUsername() ?>
+                                            -
+                                            <?php echo $user_pur->getFullName() ?></option>
+                                    <?php }
+                                }
+                            } ?>
+                        </select>
+                    <?php }} ?>
+
+
+                </td>
+                <td class="text-left _td_paid_staff" data-order-id="<?php echo $order->id ?>">
+                    <?php if ($paid_staff) { ?>
+                        <a href="javascript:void(0)" class="someClass" style="float: left"
+                           title="<img style='width:100px;height:100px' src='<?php echo $avatar_paid_staff_128 ?>'>">
+                            <img src="<?php echo $avatar_paid_staff_128 ?>" style="width: 25px;height: 25px">
+                        </a>
+                        <span class="span_left"><?php echo $paid_staff->getFullName() ?><br/>
+                    @<?php echo $paid_staff->username ?>
+                </span>
+                        <p style="float: left;clear: both">
+                            <?php
+                            if ($order->getPaidStaffAssignedTime() && strtotime($order->getPaidStaffAssignedTime()) > 0) {
+                                $assigned_time = new DateTime($order->getPaidStaffAssignedTime());
+                                echo $assigned_time->format("H:i:s d-m-Y");
+                                $assigned = $assigned_time->getTimestamp();
+
+                                $time_diff = $now_time - $assigned;
+
+                                $time_diff = ceil($time_diff / 3600);
+
+                                if($order_maximum_to_place && $time_diff > intval($order_maximum_to_place->getConfigValue())
+                                && strtotime($order->getBoughtTime()) <= 0){
+                                    echo "<br/><span style='color: red'>{$time_diff} giờ chưa thanh toán</span>";
+                                }
+                            } else {
+                                echo "---";
+                            }
+                            ?>
+                        </p>
+                        <?php if ($is_skips_paid_staff && in_array($order->getStatus(),$status_skip_payment)) { ?>
+                            <p style="float: left;clear: both">
+                                <a href="javascript:void(0)" class="_skips_paid_staff"
+                                   data-paid-id="<?php echo $paid_staff->id ?>"
+                                   data-order-id="<?php echo $order->id ?>">Thu hồi</a>
+                            </p>
+                        <?php } ?>
+                    <?php
+                    } else {
+                        ?>
+                        ...
+                    <?php
+                    } ?>
+                </td>
+
+            </tr>
+        <?php }
+    }?>
+    <?php if($total_page > 1){ ?>
+    <tr>
+        <td colspan="6">
+                <div class="col-md-12">
+                    <div class="button-group center-div">
+                        <?php if($page > 1){ ?>
+                            <a class="btn medium primary-bg _page_order" href="javascript:void(0)"
+                               data-page-id="<?php echo $page - 1 ?>">
+                                <i class="glyph-icon icon-chevron-left"></i>
+                            </a>
+
+                        <?php } ?>
+                        <?php for($i = 1 ; $i <= $total_page;$i++){ ?>
+                        <a class="btn medium primary-bg _page_order <?php if($page == $i){ ?>disabled<?php } ?>"
+                           data-page-id="<?php echo $i  ?>" href="javascript:;">
+                            <?php echo $i ?>
+                        </a>
+                        <?php } ?>
+                        <?php if($page < $total_page){ ?>
+                            <a class="btn medium primary-bg _page_order" href="javascript:;" data-page-id="<?php echo $page + 1  ?>">
+                                <i class="glyph-icon icon-chevron-right"></i>
+                            </a>
+                        <?php } ?>
+
+                    </div>
+                </div>
+
+        </td>
+    </tr>
+    <?php } ?>
+
+<?php
+}else{ ?>
+    <tr>
+        <td colspan=6">
+            <h1 style="margin-bottom: 20px">
+                Không tồn tại đơn hàng nào trong mục này
+            </h1>
+        </td>
+    </tr>
+<?php } ?>
+<script src="<?php echo $publicPath . '/assets/js/process/purchase_one.js' ?>"></script>
+<script>
+    $(function () {
+        $(".someClass").tipTip();
+    });
+</script>

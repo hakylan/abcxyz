@@ -1,0 +1,23 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = Main::getHomeUrl();
+$document->title = t("Thành công!");
+$document->addCss($document->getPublicPath() .'user/assets_v2/css/email.css');
+?>
+
+<section class="page-register editavatar">
+    <nav class="container">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <div class="alert icon-alert-info col-md-12">
+                    <h4>Mật khẩu của bạn đã được tạo thành công.</h4>
+                    <p>Bạn có thể đăng nhập với mật khẩu vừa tạo, trong trường hợp bạn không đăng nhập được vui lòng liên hệ với CSKH của chúng tôi. </p><br>
+                    <a href="<?php echo Main::getHomeRouter()->createUrl("login/login");?>" class="btn btn-blue btn left">Đăng nhập</a>
+                    <a href="<?php echo $publicPath?>" class="btn btn-blue btn left">Trang chủ</a>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div></nav>
+
+</section>

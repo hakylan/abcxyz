@@ -1,0 +1,49 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = Main::getHomeUrl();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/';
+$imgPath = $publicPath . 'assets/images/';
+
+$router = Main::getHomeRouter();
+$_controllerName    = $router->getCamelControllerName();
+$_actionName        = $router->getAction();
+?>
+
+<section class="container step">
+    <div class="row">
+        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12 col-lg-offset-1">
+            <div class="module-step row">
+                <div class="col-xs-3 step1 <?php if($_controllerName === 'Cart' || $_controllerName === 'ChooseService' || $_controllerName === 'OrderDeposit') { echo 'finish' ; } ?>">
+                    <div class="step-ct">
+                        <span class="arow"></span>
+                        <p class="normal step-title">Giỏ hàng</p>
+                    </div>
+                    <span class="next-step"></span>
+                </div>
+                <div class="col-xs-3 step2 <?php if($_controllerName === 'ChooseService' || $_controllerName === 'OrderDeposit') { echo 'finish' ; } ?>">
+                    <div class="step-ct">
+                        <span class="arow"></span>
+                        <p class="normal step-title">Chọn dịch vụ</p>
+                    </div>
+                    <span class="next-step "></span>
+                </div>
+                <div class="col-xs-3 step3 <?php if($_controllerName === 'OrderDeposit') { echo 'finish' ; } ?>">
+                    <div class="step-ct">
+                        <span class="arow"></span>
+                        <p class="normal step-title">Đặt cọc</p>
+                    </div>
+                    <span class="next-step"></span>
+                </div>
+                <div class="col-xs-3 step4 <?php if($_controllerName === 'OrderDeposit' && $_actionName === 'finish') { echo 'finish' ; } ?>">
+                    <div class="step-ct">
+                        <span class="arow"></span>
+                        <p class="normal step-title">Thành công</p>
+                    </div>
+                    <span class="next-step"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

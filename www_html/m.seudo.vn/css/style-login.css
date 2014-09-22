@@ -1,0 +1,90 @@
+.page-login{
+	background: url("../img/main/2048.jpg") no-repeat;
+	background-position: center center;
+}
+.page-login .s-logo a img,
+.page-login .s-logo a{
+	display: inline-block;
+	width: 100%;
+}
+.page-login .s-logo a{
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.page-login .s-logo {
+	padding-bottom: 40px;
+	margin-top: 15px;
+}
+.main-body .form-login input{
+	float: left;
+	width: 100%;
+	height: 60px;
+	padding-left: 70px;
+    box-shadow: none;
+}
+.main-body .form-login .module-float{
+	position: relative;
+}
+.main-body .form-login .module-float.top input,
+.main-body .form-login .module-float.top{
+	border-radius: 2px;
+}
+.main-body .form-login .module-float.top{
+   margin-bottom: 10px;
+}
+.main-body .form-login .module-float.bottom input,
+.main-body .form-login .module-float.bottom{
+	border-radius: 2px;
+}
+.main-body .module-body{
+	float: left;
+	width: 100%;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+.main-body .form-login .module-float span.arow{
+    background: none repeat scroll 0 0 #DDDDDD;
+    color: #FFFFFF;
+    font-size: 2em;
+    height: 58px;
+    left: 1px;
+    padding-left: 14px;
+    padding-top: 8px;
+    position: absolute;
+    top: 1px;
+    width: 58px;
+    border-radius: 2px 0 0 2px;
+}
+.main-body .form-login .module-float span.arow i{
+    top: 3px
+}
+.main-body .form-login .module-float.submit button.button-red{
+	floaf: left;
+	width: 100%;
+	height: 53px;
+	color: #fff;
+	text-transform: uppercase;
+	text-align: center;
+	border: none;
+	font-weight: bold;
+	margin-bottom: 40px;
+    box-shadow: none;
+    border: 1px solid #b41a1a;
+    background: #b41a1a;
+    border-radius: 2px;
+}
+.main-body .form-login .module-float.submit button.button-red:hover,
+.main-body .form-login .module-float.submit button.button-red:focus{
+    border: 1px solid #731010;
+    height: 53px;
+    background: #731010;
+    border-radius: 2px;
+    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.6) inset;
+}
+.main-body .form-login .module-float.submit{
+    margin-top: 30px;
+}
+.note-alert{
+    text-align: center;
+    color: #b41a1a;
+}

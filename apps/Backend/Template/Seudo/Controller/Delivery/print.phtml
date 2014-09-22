@@ -1,0 +1,378 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 5/21/14
+ * Time: 12:50 AM
+ */
+$publicPath = \SeuDo\Main::getBackendUrl();
+$domestic_shipping = isset($domestic_shipping) ? $domestic_shipping : array();
+$domestic_order = isset($domestic_order) ? $domestic_order : array();
+
+/**
+ * @var \Users
+ */
+$user = isset($user) ? $user : array();
+$address = isset($address) ? $address : array();
+
+/**
+ * @var \Users
+ */
+$create_by = isset($create_by) ? $create_by : array();
+?>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<?php if($domestic_shipping instanceof \DomesticShipping && !empty($domestic_order)
+    && $user instanceof \Users && $address instanceof \UserAddress){ ?>
+<section class="container main-body" id="main-body" <?php if($domestic_shipping->getCod() <= 0){ ?>style="background: #fff;"<?php }else{ ?>style="background: #fff;padding-right: 30px !important; padding-left: 30px !important;"<?php } ?>>
+
+    <div class="row main-content">
+        <div class="col-lg-12 col-md-12 col-lg-offset-1 col-md-offset-1 col-sm-offset-1
+        col-xs-offset-1 col-sm-12 col-xs-12 _print_content" style="font-size: 16px;margin-left: 0px">
+        <script src="<?php echo $publicPath; ?>assetv2/js/jquery.printElement.min.js"></script>
+        <script src="<?php echo $publicPath; ?>assetv2/js/process/delivery_print.js"></script>
+        <!-- Favicons -->
+        <link rel="stylesheet" type="text/css" href="<?php echo $publicPath; ?>assetv2/css/style-phieugiaohang.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $publicPath; ?>assetv2/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $publicPath; ?>assetv2/css/style-typo.css" />
+
+            <div class="module-float top">
+                <div class="<?php if(floatval($domestic_shipping->getCod()) <= 0
+                    && floatval($domestic_shipping->getDomesticShippingFee()) <=0){ ?>col-lg-5 col-md-5 col-sm-5 col-xs-5<?php }else{ ?>col-lg-4 col-md-4 col-sm-4 col-xs-4<?php } ?> text-center" style="font-size: 80%">
+                    <?php if(floatval($domestic_shipping->getCod()) <= 0
+                        && floatval($domestic_shipping->getDomesticShippingFee()) <=0){ ?>
+                    <p class="font-bold uppercase">công ty cổ phần truyền thông alimama</p>
+                    <p>Đ/c: 34 ngách 55/64 Kim Giang, Thanh Xuân, HN</p>
+                    <div class="border"><span></span></div>
+                    <p class="font-bold">www.seudo.vn</p>
+                    <?php }else{ ?>
+                        <p class="text-center font-bold">Seudo.vn</p>
+                    <?php } ?>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                     <?php if(floatval($domestic_shipping->getCod()) > 0 || floatval($domestic_shipping->getDomesticShippingFee()) > 0){ ?>style="margin-top: 125px"<?php } ?>>
+                    <div class="module-float">
+                        <?php if(floatval($domestic_shipping->getCod()) <= 0
+                        && floatval($domestic_shipping->getDomesticShippingFee()) <= 0 ){ ?>
+                        <p class="title">phiếu giao hàng</p>
+                        <?php } ?>
+                        <p class="text-center" <?php if(floatval($domestic_shipping->getCod()) > 0
+                        || floatval($domestic_shipping->getDomesticShippingFee()) > 0){ ?>style="margin-left: 80px"<?php } ?>> Phiếu giao hàng số: <?php echo $domestic_shipping->getDomesticBarcode() ?></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-float top2">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="module-float">
+                        <div class="left module_float">
+                            <p>Tên đăng nhập</p>
+                        </div>
+                        <div class="right module_float">
+                            <p><?php echo $user->getUsername(); ?></p>
+                            <div class="line-border"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
+                    <div class="module-float">
+                        <div class="left module_float" style="width: 55%;">
+                            <p>Mã khách hàng</p>
+                        </div>
+                        <div class="right module_float" style="width: 45%;">
+                            <p><?php echo $user->getCode(); ?></p>
+                            <div class="line-border"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="module-float">
+                        <div class="left module_float" style="width: 50%;">
+                            <p>Trọng lượng:</p>
+                        </div>
+                        <div class="right module_float" style="width: 50%;">
+                            <p> <?php
+                                if(floatval($domestic_shipping->getWeight()) > 0){
+                                    echo $domestic_shipping->getWeight()."Kg";
+                                }
+                                ?></p>
+                            <div class="line-border"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="module-float top3">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 module-left _top_list">
+                <div class="module-float">
+                    <p class="module-title">Danh sách đơn hàng</p>
+                </div>
+                <div class="module-float">
+                    <div class="module-float2" style="padding-right: 10px">
+                        <div class="module-float module-ct">
+                            <?php foreach ($domestic_order as $key=>$order) {
+                                $k = $key + 1;
+                                if($key >= 10){
+                                    break;
+                                }
+                                if($order instanceof \DomesticShippingOrder){
+                                ?>
+                            <div class="module-float" >
+                                <div class="left module_float">
+                                    <p><?php echo $k ?></p>
+                                </div>
+                                <div class="right module_float">
+                                    <p><?php echo $order->getOrderCode() ?></p>
+                                    <div class="line-border"></div>
+                                </div>
+                            </div>
+                            <?php }
+                            } ?>
+                        </div>
+                    </div>
+                    <div class="module-float2" style="padding-left: 10px">
+                        <div class="module-float module-ct">
+                            <?php foreach ($domestic_order as $key=>$order) {
+                                $k = $key + 1;
+                                if($key < 10){
+                                    continue;
+                                }
+                                if($order instanceof \DomesticShippingOrder){
+                                    ?>
+                                    <div class="module-float" >
+                                        <div class="left module_float">
+                                            <p><?php echo $k ?></p>
+                                        </div>
+                                        <div class="right module_float">
+                                            <p><?php echo $order->getOrderCode() ?></p>
+                                            <div class="line-border"></div>
+                                        </div>
+                                    </div>
+                                <?php }
+                            } ?>
+<!--                            <div class="module-float" >-->
+<!--                                <div class="left module_float">-->
+<!--                                    <p>1</p>-->
+<!--                                </div>-->
+<!--                                <div class="right module_float">-->
+<!--                                    <p>mebela_12133233</p>-->
+<!--                                    <div class="line-border"></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 _top_list">
+                <div class="module-float">
+                    <p class="module-title">Thông tin nhận hàng</p>
+                </div>
+                <div class="module-float" style="position: relative">
+                    <div class="left module_float">
+                        <p>Người nhận</p>
+                    </div>
+                    <div class="right module_float">
+                        <p><?php echo $address->getReciverName() ?></p>
+                        <div class="line-border"></div>
+                    </div>
+                    <span class="phone">ĐT:</span>
+                    <span class="phone-number"><?php
+                        if($address->getReciverPhone() != ""){
+                            echo $user->getOneMobileUsing();
+                        }else{
+                            echo $address->getReciverPhone();
+                        }
+                         ?></span>
+                </div>
+                <div class="module-float">
+                    <div class="left module_float">
+                        <p>Địa chỉ</p>
+                    </div>
+                    <div class="right module_float">
+                        <p><?php echo $address->getDetail() . "" ?> <?php echo "{$address->getDistrictLabel()} / {$address->getProvinceLabel()}" ?></p>
+                        <div class="line-border"></div>
+                    </div>
+                </div>
+                <div class="module-float" style="margin-top:10px">
+                    <div class="left module_float">
+                        <p></p>
+                    </div>
+                    <div class="right module_float">
+                        <p></p>
+                        <div class="line-border"></div>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="left module_float">
+                        <p>Số tiền cần thu</p>
+                    </div>
+                    <div class="right module_float">
+                        <p><?php
+                            echo floatval($domestic_shipping->getCod()) > 0 ?
+                                Common::numberFormat($domestic_shipping->getCod())."<sup>đ</sup>" : "0<sup>đ</sup>"
+                            ?></p>
+                        <div class="line-border"></div>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="left module_float">
+                        <p></p>
+                    </div>
+                    <div class="right module_float">
+                        <p></p>
+                        <div class="line-border"></div>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="left module_float">
+                        <p>Thực thu</p>
+                    </div>
+                    <div class="right module_float">
+                        <p></p>
+                        <div class="line-border"></div>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="left module_float">
+                        <p></p>
+                    </div>
+                    <div class="right module_float">
+                        <p></p>
+                        <div class="line-border"></div>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="left module_float">
+                        <p>Phí VC nội địa VN</p>
+                    </div>
+                    <div class="right module_float">
+                        <p><?php
+                            if(floatval($domestic_shipping->getDomesticShippingFee()) > 0){
+                                echo Common::numberFormat($domestic_shipping->getDomesticShippingFee()) . "<sup>đ</sup>";
+                            }else{
+                                echo "0<sup>đ</sup>";
+                            }
+                            ?>
+                        </p>
+                        <div class="line-border"></div>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="left module_float">
+                        <p></p>
+                    </div>
+                    <div class="right module_float">
+                        <p></p>
+                        <div class="line-border"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            </div>
+            <?php if(floatval($domestic_shipping->getCod()) <= 0
+                && floatval($domestic_shipping->getDomesticShippingFee()) <=0){ ?>
+            <div class="module-float top4">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <div class="module-float">
+                        <p>Ngày &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tháng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     năm <?php echo date("Y") ?> </p>
+                        <p>Người giao hàng</p>
+                        <p>(Ký, họ tên)</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <div class="module-float">
+                        <p>Ngày &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tháng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     năm <?php echo date("Y") ?> </p>
+                        <p>Người nhận hàng</p>
+                        <p>(Ký, họ tên)</p>
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <div class="module-float">
+                        <p>Ngày &nbsp;<?php echo date("d") ?>&nbsp; tháng &nbsp;<?php echo date("m") ?>&nbsp;     năm <?php echo date("Y") ?> </p>
+                        <p>Người lập phiếu</p>
+                        <p>(Ký, họ tên)</p>
+                        <br/>
+                        <br/>
+                        <p style="font-weight: bold"><?php echo $create_by->getFullName() ?></p>
+                    </div>
+                </div>
+
+            </div>
+            <?php }else{ ?>
+                <div class="module-float top4">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <div class="module-float">
+                            <p>Ngày &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tháng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     năm <?php echo date("Y") ?> </p>
+                            <p>Người giao hàng</p>
+                            <p>(Ký, họ tên)</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <div class="module-float">
+                            <p>Ngày &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tháng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     năm <?php echo date("Y") ?> </p>
+                            <p>Người nhận hàng</p>
+                            <p>(Ký, họ tên)</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <div class="module-float">
+                            <p>Ngày &nbsp;&nbsp;<?php echo date("d") ?>&nbsp;&nbsp; tháng &nbsp;&nbsp;<?php echo date("m") ?>&nbsp;&nbsp;     năm <?php echo date("Y") ?> </p>
+                            <p>Người lập phiếu</p>
+                            <p>(Ký, họ tên)</p>
+                            <br/>
+                            <br/>
+                            <p style="font-weight: bold"><?php echo $create_by->getFullName() ?></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <div class="module-float">
+                            <p>Ngày &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tháng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     năm <?php echo date("Y") ?> </p>
+                            <p>Thủ quỹ</p>
+                            <p>(Ký, họ tên)</p>
+                        </div>
+                    </div>
+
+                </div>
+            <?php } ?>
+
+
+
+        </div>
+
+    </div>
+<!--    <div class="module-float top">-->
+<!--        <div class="col-lg-4 col-md-4 col-sm-4">-->
+<!--        </div>-->
+<!--        <div class="col-lg-4 col-md-4 col-sm-4 text-center">-->
+<!--            <button type="button" data-address-id="108" class="btn btn-gray _print_bill"><i class="fa fa-print"></i> In Phiếu</button>-->
+<!--        </div>-->
+<!--        <div class="col-lg-4 col-md-4 col-sm-4">-->
+<!--        </div>-->
+<!--        <br/>-->
+<!--        <br/>-->
+<!--        <br/>-->
+<!--        <br/>-->
+<!--        <br/>-->
+<!--    </div>-->
+</section>
+<?php }else{ ?>
+    <div class="module-float top"><div class="col-lg-4">
+
+        </div><div class="col-lg-4">
+            <div class="module-float">
+                <p class="title">Không tồn tại phiếu</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+
+        </div>
+
+    </div>
+<?php } ?>
+

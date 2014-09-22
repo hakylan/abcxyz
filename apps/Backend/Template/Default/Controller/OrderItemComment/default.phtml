@@ -1,0 +1,29 @@
+<?php
+/* use \Flywheel\View\Render; */
+$document = $controller->document();
+$document->addJs('js/process/chat_item_comment.js');
+$document->addJsVar("linkPost", $controller->createUrl('order_item_comment/add_message'));
+$orderId = 1;
+$itemId = 2;
+$document->addJsVar("orderId", $orderId);
+$document->addJsVar("itemId", $itemId);
+?>
+<div class="seu-chat-item-order-<?php echo $orderId ?>-<?php echo $itemId ?> form-input">
+    <div class="input-append-wrapper input-append-right">
+        <div class="append-right">
+            <input type="text" placeholder="Chát nội bộ về sản phẩm..." name="" class="_input_chat">
+        </div>
+        <div class="content-chat-item font-gray">
+            <?php
+            $html = "";
+            foreach ($comments as $comment) {
+                $html .= '<div><span class="font-gray normal-blod">'.@$comment['username'].'</span>'.@$comment['message'].'</div>';
+            }
+            echo $html;
+            ?>
+        </div>
+    </div>
+    <div class="show-chat-item">
+        <span class="font-blue">Xem thêm 3 chát nữa <i class="glyph-icon font-blue icon-caret-down"></i></span>
+    </div>
+</div>

@@ -1,0 +1,354 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 1/13/14
+ * Time: 3:40 PM
+ */
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+$document->addJs($jsPath.'cart.js',"TOP");
+$document->addJs($jsPath.'checkout_address.js',"TOP");
+$document->addJs($jsPathFront.'jquery.loadingbar.min.js',"TOP");
+$document->addJs($jsPathFront.'jquery.loadingbar.js',"TOP");
+$document->addCss($cssPath.'loadingbar.css',"TOP");
+$cart_list = isset($cart_list) ? $cart_list : "";
+?>
+
+<a id="load_address" href="javascript:void(0)" data-cart-id="" data-shop-id="" data-href="#" style="display:none" class="reload a_loading">loading</a>
+<a id="load_district" href="javascript:void(0)" data-address-id="" data-href="#" style="display:none" class="reload a_loading">loading</a>
+<a id="load_cart" href="javascript:void(0)" data-cart-id="" data-href="#" style="display:none" class="reload a_loading">cart</a>
+<a id="payment_shop" href="javascript:void(0)" data-cart-id="" data-shop-id="" data-href="#" style="display:none" class="reload a_loading">cart</a>
+<!-- End header -->
+
+<?php
+if(intval($user_id)  > 0 && is_numeric($user_id)){  ?>
+    <section class="container adress-cart">
+        <div class="row item-list">
+            <div>
+                <div class="module ">
+                    <div class="module-title">
+                        <div class="title-left">
+                            <p class="title">Chọn địa chỉ nhận hàng</p>
+                            <p class="normal">Chọn địa chỉ nhận hàng của đơn hàng này. Trước khi chuyển hàng nhân viên của <strong>SếuĐỏ</strong>  sẽ liên lạc với bạn theo thông tin trên địa chỉ này.</p>
+                        </div>
+                        <div class="title-right pull-right">
+                            <button class="btn btn-blue pull-right" type="button" data-target="#myModaladdadress" data-toggle="modal"><span class="normal-blod"> + Thêm địa chỉ</span></button>
+                            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModaladdadress" class="modal fade editadresscart" style="display: none;">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                            <h4 id="myModalLabel" class="modal-title uppercase">Thêm địa chỉ nhận hàng</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="module-popup">
+                                                <div class="module-modal">
+                                                    <div class="left">
+                                                        <div class="name">
+                                                            <p>Tên người liên hệ: <span class="red-normal">*</span></p>
+                                                        </div>
+                                                        <input id="contact_name0" class="form-control form-myinput _text" type="text" placeholder="Tên người liên hệ">
+                                                        <p class="note red-normal _error_name" data-address-id="0"></p>
+                                                    </div>
+                                                    <div class="right">
+                                                        <div class="name">
+                                                            <p>Số điện thoại: <span class="red-normal">*</span></p>
+                                                        </div>
+                                                        <input id="contact_phone0" class="form-control form-myinput pull-right _text" type="text" placeholder="Số điện thoại">
+                                                        <p class="note red-normal _error_phone" data-address-id="0"></p>
+
+                                                    </div>
+                                                </div>
+                                                <div class="module-modal">
+                                                    <div class="left">
+                                                        <div class="name">
+                                                            <p>Tỉnh/ Thành phố: <span class="red-normal">*</span></p>
+                                                        </div>
+                                                        <select class="_select_ _select_province" data-address-id="0" id="select_province0">
+                                                            <option value="-1">Tỉnh/thành phố</option>
+                                                            <?php if($province_list){
+                                                                foreach($province_list as $pro){
+                                                                    ?>
+                                                                    <option value="<?php  echo $pro->id ?>" >
+                                                                        <?php  echo $pro->label ?>
+                                                                    </option>
+                                                                <?php }} ?>
+                                                        </select>
+                                                        <p class="note red-normal _error_province" data-address-id="0"></p>
+                                                    </div>
+                                                    <div class="right">
+                                                        <div class="name">
+                                                            <p>Quận/ Huyện: <span class="red-normal">*</span></p>
+                                                        </div>
+                                                        <select class="pull-right _select_ _select_district" disabled="disabled" id="select_district0">
+                                                            <option value="-1">Quận/huyện</option>
+                                                        </select>
+                                                        <p class="note red-normal _error_district" data-address-id="0"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="module-modal home">
+                                                    <div class="module-modal-ct">
+                                                        <div class="name">
+                                                            <p>Số nhà: <span class="red-normal">*</span></p>
+                                                        </div>
+                                                        <input id="home_number0" class="form-control form-myinput _text" type="text"
+                                                               placeholder="Số nhà" >
+                                                        <p class="note red-normal _error_home" style="padding-left:0px !important;" data-address-id="0"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="module-popup">
+                                                <div class="module-modal home">
+                                                    <div class="module-modal-ct">
+                                                        <div class="name">
+                                                            <p><b>Chú thích:</b></p>
+                                                        </div>
+                                                        <textarea class="form-control form-mytextarea _text" id="note0"
+                                                                  placeholder="Vd:Chuyển hàng cho mình vào 9h sáng nhé..." rows="3"></textarea>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button data-dismiss="modal" class="btn btn-gray uppercase _cancel_popup" data-address-id="0" type="button">hủy</button>
+                                            <button class="btn btn-blue uppercase _save_address"  data-address-id="0" type="button">Lưu địa chỉ</button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="cart-list-content _checkoutAddress">
+
+                    </ul>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 address-bottom">
+                        <div class="module">
+                            <div><a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl("UserAddress/default") ?>"><span>QL địa chỉ nhận hàng của bạn</span></a></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+<?php } ?>
+<!--    list cart-->
+<section class="cart-header">
+    <nav class="container" >
+        <div class="row">
+            <div class="">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-title">
+                            <p class="title"><span class="title-page">Giỏ hàng</span></p>
+                        </div>
+                        <div class="module-ct">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+</section>
+
+<section class="cartaddress-alert">
+    <nav class="container" >
+        <div class="row">
+            <!--            Nếu muốn lưu sản phẩm này, vui lòng sử dụng chức năng "Lưu trữ".-->
+            <?php if($cart_list){ ?>
+                <p class="alert alert-alert"> <b>Sản phẩm sẽ tự động xóa sau 30 ngày nếu bạn không kết đơn.  </b></p>
+            <?php }else{ ?>
+                <p class="alert alert-alert"> <b>Bạn không có sản phẩm nào trong giỏ.  </b></p>
+            <?php } ?>
+        </div>
+    </nav>
+</section>
+<form id="cart">
+    <?php if($cart_list){
+        foreach ($cart_list as $cart) {
+            if(!$cart){
+                continue;
+            }
+            if(empty($cart[0])){
+                continue;
+            }
+            $site = $cart[0]->site;
+            $cart_shop = $cart[0];
+            $business_model = "Đại lý bán sỉ";
+            switch($site){
+                case "taobao" :
+                    $business_model = "Nhà bán lẻ";
+                    break;
+                case "tmall" :
+                    $business_model = "Nhà bán lẻ";
+                    break;
+                default :
+                    $business_model = "Đại lý bán sỉ";
+                    break;
+            }
+            $shop_link = "http://{$cart_shop->shop_id}.{$site}.com";
+            if($cart_shop->data != ''){
+                $data_shop = json_decode($cart_shop->data,true);
+            }
+            ?>
+            <input type="hidden" class="_info_shop" data-shop-id="<?php echo $cart_shop->shop_id ?>">
+            <section class="container adress-cart list-cart _cart_shop" data-shop-id="<?php echo $cart_shop->shop_id ?>">
+                <div class="row">
+                    <div class="module">
+                        <div class="header-listcart ">
+                            <div class="col-lg-6 col-md-6 col-sm-6 left">
+                                <div class="name-shop saoshop1">
+                                    <p class="made"><a href="<?php echo $shop_link ?>" target="_blank" rel="nofollow"><?php echo $cart_shop->shop_username ?></a></p>
+                                    <p class="factory"><?php echo $business_model ?> </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <p class="normal">Tổng</p>
+                                <p class="normal">
+                        <span class="normal-blod price _total_item"
+                              data-shop-id="<?php echo $cart_shop->shop_id ?>">
+                    </span> sản phẩm</p>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1">
+                                <p class="normal">Thành tiền</p>
+                                <p class="normal">
+                        <span class="normal-blod price _total_shop_price"
+                              data-shop-id="<?php echo $cart_shop->shop_id ?>">
+                            <sup>đ</sup></span></p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <button class="btn btn-blue btn-sm pull-right _payment_button"
+                                        data-shop-id="<?php echo $cart_shop->shop_id ?>"
+                                        type="button">
+                                    <span class="uppercase normal-blod">Chọn dịch vụ</span></button>
+                            </div>
+                        </div>
+                        <p class="alert alert-error _warning_require_min" style="display: none"
+                           data-shop-id="<?php echo $cart_shop->shop_id ?>">Số lượng tối thiểu của sản phẩm
+                <span class="_item_title_error" data-shop-id="<?php echo $cart_shop->shop_id ?>" style="font-weight: bold;">
+                </span> là <span class="_item_require_error" data-shop-id="<?php echo $cart_shop->shop_id ?>" style="font-weight: bold;"></span>.
+                        </p>
+                        <div class="top-main ">
+                            <div class="col-lg-6 col-md-6 col-sm-6 left">
+                                <p class="normal-blod uppercase">
+
+                                <div class="squaredFour">
+                                    <input type="checkbox" checked="checked" class="_select_shop" data-shop-id="<?php echo $cart_shop->shop_id ?>"
+                                           name="check<?php echo $cart_shop->shop_id ?>" id="selectShop<?php echo $cart_shop->shop_id ?>"
+                                           value="<?php echo $cart_shop->shop_id ?>">
+                                    <!--                            <label for="selectShop--><?php ////echo $cart_shop->shop_id ?><!--" class="_checkbox_shop"-->
+                                    <!--                                   data-shop-id="--><?php ////echo $cart_shop->shop_id ?><!--"></label>-->
+
+                                </div>
+                                Sản phẩm
+                                </p>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1">
+                                <p class="normal-blod uppercase">Số lượng</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <p class="normal-blod uppercase">Đơn giá</p>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-sm-1">
+                                <p class="normal-blod uppercase">Tổng tiền</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                            </div>
+                        </div>
+                        <ul class="cart-list-content" data-shop-id="<?php echo $cart_shop->shop_id ?>">
+                            <?php
+                            //Logic
+                            foreach ($cart as $it) {
+                                $this->widget('app.Widget.CartWidget', array(
+                                    'cart_item' => $it
+                                ));
+                            }
+                            ?>
+
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        <?php }
+    }
+    ?>
+</form>
+<?php if($cart_list){ ?>
+    <section class="cart-bottom">
+        <nav class="container" >
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-7 next">
+                    <div class="seu-module">
+                        <div class="module-inner">
+                            <button class="btn btn-gray btn-sm"
+                                    onclick="window.location.href='<?php echo \SeuDo\Main::getHomeRouter()->createUrl('OrderLink') ?>'"
+                                    type="button">Tiếp tục mua hàng</button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2 total-pro">
+                    <div class="seu-module">
+                        <div class="module-inner">
+                            <p class="normal">Tổng sản phẩm</p>
+                            <p class="normal-blod price "> <span class="_total_item_all">0</span> Sản phẩm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 total-money">
+                    <div class="seu-module">
+                        <div class="module-inner">
+                            <p class="normal">Tổng tiền</p>
+                            <p class="normal-blod price _total_price_all">0<sup>đ</sup></p>
+                            <button class="btn btn-blue btn-lg _send_cart_all _button_top" type="button"><span class="uppercase normal-blod">Chọn dịch vụ</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </section>
+<?php } ?>
+<?php if($cart_list){ ?>
+    <section class="scol-bottom-cart">
+        <nav class="container">
+            <div class="row">
+                <div class="scol-cart-left">
+                    <div class="squaredFour">
+                        <input id="selectAllCart" checked="checked" class="_select_all_cart" type="checkbox" value="None" name="selectAllCart">
+                    </div>
+                    <span class="normal">Chọn tất cả</span> <span class="arrow-scol-left"></span><span class="delete-scol-cart"></span>
+                </div>
+                <div class="scol-cart-right pull-right">
+                    <div class="right1">
+                        <p class="normal">Tổng</p>
+                        <p class="price"><span class="_total_item_all">0</span> sản phẩm</p>
+                    </div>
+                    <div class="right2">
+                        <p class="normal">Tổng tiền</p>
+                        <p class="price"><span class="_total_price_all">0<sup>đ</sup></span></p>
+                    </div>
+                    <div class="right3">
+                        <button class="btn btn-blue btn-sm pull-right _send_cart_all _button_buttom" type="button">
+                            <span class="uppercase normal-blod">Bước tiếp</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </section>
+<?php } ?>
+<input type="hidden" id="click_num" value="0">
+<input type="hidden" id="check_timeout" value="0">

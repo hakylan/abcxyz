@@ -1,0 +1,913 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+ 
+<!-- Website Title --> 
+<title>SeuDo</title>
+
+<!-- Meta data for SEO -->
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+
+
+<!-- Template stylesheet -->                                                           
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+<link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" media="all">
+<link href="bootstrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css" media="all">
+<link href="bootstrap/css/bootstrap-theme.min.min.css" rel="stylesheet" type="text/css" media="all">  
+<link href="css/mytypo.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/header.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/owl.carousel.css" rel="stylesheet" type="text/css" media="all"> 
+<link href="js/rate/rateit.css" rel="stylesheet" type="text/css" media="all"> 
+<link href="css/owl.theme.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/cssloading.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all"> 
+<link href="css/footer.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/stylenote.css" rel="stylesheet" type="text/css" media="all">  
+<link href="css/linkorder.css" rel="stylesheet" type="text/css" media="all"> 
+<link href="css/bieuphi.css" rel="stylesheet" type="text/css" media="all"> 
+ 
+  
+
+
+<link rel="icon" href="images/icon-footer/LogoSeuDo1_ICO.ico">
+ 
+
+
+
+
+<!-- Jquery and plugins -->               
+<script type="text/javascript" src="js/jquery1.10.2.js"></script>
+ 
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script> 
+<script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script> 
+ 
+<!--<script type="text/javascript" src="js/owl.carousel.min.js"></script> -->
+<script type="text/javascript" src="js/rate/jquery.rateit.min.js"></script> 
+<script type="text/javascript" src="js/jqueryui.js"></script>
+<script type="text/javascript" src="js/owl.carousel.min.js"></script>  
+<script type="text/javascript" src="js/masonry.pkgd.js"></script>
+<script type="text/javascript" src="js/jquery.nicescroll.js"></script> 
+<script type="text/javascript" src="js/lazy-load.js"></script> 
+<!--<script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script> -->
+<script type="text/javascript" src="js/jquery.carouFredSel-6.0.4-packed.js"></script>
+<script type="text/javascript" src="js/seudo-frontend.js"></script> 
+<script type="text/javascript" src="js/seudo-frontendv2.js"></script> 
+<script type="text/javascript" src="js/slide-show.js"></script> 
+ <script>
+$(document).ready(function(){
+  $(".click-block").click(function(){
+    $(".content-ct-none").addClass("block"); 
+    $(".click-block").addClass("none"); 
+  }); 
+  
+});
+
+</script>
+
+<style>
+      .lazy-load, .lazy-loaded {
+        -webkit-transition: opacity 0.3s;
+        -moz-transition: opacity 0.3s;
+        -ms-transition: opacity 0.3s;
+        -o-transition: opacity 0.3s;
+        transition: opacity 0.3s;
+        opacity: 0;
+      }
+
+      .lazy-loaded { opacity: 1; }
+
+      .demo img { display: block; margin: 10px 0; }
+    </style>
+</head>
+<body >
+
+    <!-- Begin header -->
+    <header id="header" class="header">
+        <section class="container header-top">
+            <div class="row">
+                    <div class="pull-right top-header">
+                        <div class="rate-tq">
+                            <p class="normal">Tỉ giá: <span class="red-bold">1 Nhân dân tệ</span> = <span class="red-bold">3.500<sup>đ</sup></span></p>
+                        </div>
+                        <div class="pull-right register login item-top-header cart-img" >
+                            <span class="arrow-header-cart"></span>
+                            <span class="arow-count">12</span>
+                            <span class="border"></span>
+                        </div>
+                        <div class="pull-right item-top-header accout dropdown my-dropdow" >
+                            <a id="drop1" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                            <span class="img-avatar"><img src="images/imgdemo/itemcart.jpg"></span> 
+                            <span class="acc-usd">Luu Trong</span>
+                            <span class="arow"></span>
+                          </a>
+                          <span class="border"></span>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="drop1"> 
+                                <div class="acc-title">
+                                    <span class="arow-tick"></span>
+                                    <p class="italic"><span class="normal">Mã khách: </span> <span class="uppercase normal-blod"> Ha1234</span></p>
+                                </div>
+                                <ul class="acc-gd">
+                                    <li> 
+                                        <a href="#">Quản lý đơn hàng</a> 
+                                    </li>
+                                    <li>
+                                        <a href="#">Lịch sử giao dịch</a>
+                                        
+                                    </li>
+                                    
+                                    <li>                                
+                                        <a href="#">Nạp tiền</a>
+                                    </li> 
+                                </ul>
+                                <span class="border-hr"></span>
+                                <ul class="acc-gd">
+                                    <li>
+                                        <a href="#">Thông tin cá nhân</a>
+                                    </li> 
+                                    <li> 
+                                        <a href="#">Đổi mật khẩu</a> 
+                                    </li>
+                                    <li>                                
+                                        <a href="#">Thoát</a>
+                                    </li> 
+                                </ul> 
+                                
+                          </ul>
+                        </div>
+                        
+                        <div class="pull-right register item-top-header" >
+                            <a class="registerlink" href="#" data-target="#myModalregister" data-toggle="modal">Đăng ký</a>
+                            <span class="border"></span>
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModalregister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng ký</p></h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="#">
+                                        <div class="regis-item">
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Tài khoản<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput_name" class="inputregister form-control form-myinput pull-right" type="text" placeholder="Tài khoản" >
+                                            <p class="red-normal">Tên đăng nhập đã được sư dụng vui lòng điền tên đăng nhập khác.</p>
+                                            <div class="tooltipregister">
+                                                <div class="arrow_box">
+                                                <p class="normal">Sử dụng các ký tự latin (a-z) và ký tự gạch dưới</p>
+                                                <p class="normal">Từ 3 đến 15 ký tự</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="regis-item name"> 
+                                                <span class="normal name-label">Họ & tên</span>
+                                                <input id="exampleInput" class="form-control form-myinput f-name" type="text" placeholder="Họ" >
+                                                <span class="and">&</span>
+                                                <input id="exampleInput" class="form-control form-myinput pull-right l-name" type="text" placeholder="Tên" >
+                                            
+                                             
+                                        </div>
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Email<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="inputregister form-control form-myinput" type="text" placeholder="Email" >
+                                            <div class="tooltipregister">
+                                                <div class="arrow_box">
+                                                <p class="normal">Seudo sẽ gửi các thông báo tới email này.</p>
+                                                <p class="normal">Vui lòng sử dụng email tồn tại.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Mật khẩu<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="form-control form-myinput" type="password" placeholder="Mật khẩu (tối thiểu 6 ký tự)" >
+                                            
+                                        </div>
+                                        
+                                        <p class="normal">Với việc đăng ký tài khoản, tôi đã đồng ý với các điều khoản của seudo.vn</p> 
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button class="btn btn-gray disable " type="button">Hủy </button>
+                                    <button class="btn btn-blue" type="button">Đăng ký</button>
+                                  </div>
+                                  
+                                </div><!-- /.modal-content -->
+                              </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->  
+                        </div>
+                        <div class="pull-right register login item-top-header" >
+                            <a class="registerlink" href="#" data-target="#myModallogin" data-toggle="modal">Đăng nhập</a>
+                            <span class="border"></span>
+                            <!-- Modal -->
+                            <div class="modal login fade" id="myModallogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                              <div class="modal-dialog reset-password-block">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng nhập</p><a href="#">Đăng ký</a></h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="#">
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Tài khoản<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="Tài khoản hoặc email đã kích hoạt" >
+                                            <p class="red-normal">Tên đăng nhập sai vui lòng nhập lại tên đăng nhập khác.</p>
+                                        </div>
+                                        
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Mật khẩu<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="form-control form-myinput" type="password" placeholder="Mật khẩu" >
+                                            
+                                        </div>
+                                        
+                                        <div class="regis-item made">
+                                            <p class="normal">
+                                                <label>
+                                                    <input type="checkbox" value="">
+                                                    Ghi nhớ đăng nhập
+                                                </label>
+                                            </p>
+                                            <button class="btn btn-blue btn-lg btn-login pull-right" type="button">Đăng nhập</button>
+                                        </div>
+                                        
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <a class="pull-left click-resetpass" href="#">Quên mật khẩu ?</a>
+                                    <p class="normal facebook pull-right">Đăng nhập bằng facebook<span class="icon-facebook">login facebook</span></p> 
+                                    <div class="reset-password">
+                                        <p class="normal email-text">Nhập mail bạn đăng ký</p>
+                                        
+                                        <div class="regis-item ">  
+                                                <input id="exampleInput" class="form-control form-myinput inputregister" type="text" placeholder="Email" >
+                                                <p class="red-normal">Địa chỉ mail chưa đúng.</p>
+                                                <div class="tooltipregister">
+                                                            <div class="arrow_box">
+                                                            <p class="normal">Vui lòng nhập địa chỉ email đăng ký tài khoản SeuDo.vn của bạn.</p>
+                                                            </div>
+                                                </div> 
+                                        </div>
+                                        <button class="btn btn-blue" type="button">Lấy lại mật khẩu</button>
+                                        <p class="normal loading-resetpass"><span class="alert alert-error"> Đang gửi..... </span></p>
+                                        <p class="alert alert-info"> Email sent! If the email address you entered is registered at Freelancer.com, you'll receive an email with instructions on how to set a new password.  </p>
+                                    </div>
+                                  </div>
+                                  
+                                </div><!-- /.modal-content -->
+        <!--                        loading-->
+                                 <!--<div class="loading-face">
+                                    <div id="facebookG">
+                                        <div id="blockG_1" class="facebook_blockG">
+                                        </div>
+                                        <div id="blockG_2" class="facebook_blockG">
+                                        </div>
+                                        <div id="blockG_3" class="facebook_blockG">
+                                        </div>
+                                        </div>
+                                 </div>-->
+        <!--                        end loading-->
+                              </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->    
+                        </div>
+                        <div class="pull-right register login item-top-header" >
+                            <a href="#">Hướng dẫn</a>
+                            <span class="border"></span>
+                        </div>
+                        <div class="pull-right register login item-top-header price" >
+                            <span >Số dư:</span><span class="blueprice">+2.000.000<sup>đ</sup></span>
+                            <span class="border"></span>
+                        </div>
+                        <div class="pull-right register login item-top-header hotline" >
+                            <span >Hotline: 09999999</span>
+                        </div>
+                        
+                    </div>       
+                     
+            </div>
+            <div class="logo">
+                <a href="#"><img src="images/icon-footer/logoSeuDo.png"></a>
+            </div>
+        </section>
+        
+        <section class="container search-cart">
+            <div class="row">
+                <div class="header-cart pull-right">
+                    <span class="arrow-header-cart"></span>
+                    <p class="normal"><span class="normal-blod">0</span> sản phẩm</p>
+                    <p class="red-normal">123.000.000<sup>đ</sup></p>
+                    <span class="arrow-next-header-cart"></span>
+                </div>
+                <div class="header-search pull-right">
+                    <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="Nhập link sản phẩm bạn muốn đặt từ taobao.com, tmall.com, 1688.com và eely.com....">
+                    <span class="uppercase normal-blod">đặt hàng</span>
+                </div>
+            </div>
+        </section>
+        
+        <section class=" header-top scoll">
+            <div class="container">
+                <div class="row">
+                    <div class="rate-scoll">
+                        <p class="normal"><span class="red-bold">1<sup>ndt</sup></span> = <span class="red-bold">3.500<sup>đ</sup></span></p>
+                    </div>
+                    
+                    <div class="pull-right top-header">
+                        <div class="pull-right register login item-top-header cart-img" >
+                            <span class="arrow-header-cart"></span>
+                            <span class="arow-count">12</span>
+                            <span class="border"></span>
+                        </div>
+                        <div class="pull-right item-top-header accout dropdown my-dropdow" >
+                            <a id="drop1" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                            <span class="img-avatar"><img src="images/imgdemo/itemcart.jpg"></span> 
+                            <span class="acc-usd">Luu Trong</span>
+                            <span class="arow"></span>
+                          </a>
+                          <span class="border"></span>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="drop1"> 
+                                <div class="acc-title">
+                                    <span class="arow-tick"></span>
+                                    <p class="italic"><span class="normal">Mã khách: </span> <span class="uppercase normal-blod"> Ha1234</span></p>
+                                </div>
+                                <ul class="acc-gd">
+                                    <li> 
+                                        <a href="#">Quản lý đơn hàng</a> 
+                                    </li>
+                                    <li>
+                                        <a href="#">Lịch sử giao dịch</a>
+                                        
+                                    </li>
+                                    
+                                    <li>                                
+                                        <a href="#">Nạp tiền</a>
+                                    </li> 
+                                </ul>
+                                <span class="border-hr"></span>
+                                <ul class="acc-gd">
+                                    <li>
+                                        <a href="#">Thông tin cá nhân</a>
+                                    </li> 
+                                    <li> 
+                                        <a href="#">Đổi mật khẩu</a> 
+                                    </li>
+                                    <li>                                
+                                        <a href="#">Thoát</a>
+                                    </li> 
+                                </ul> 
+                                
+                          </ul>
+                        </div>
+                        
+                        <div class="pull-right register item-top-header" >
+                            <a class="registerlink" href="#" data-target="#myModalregister" data-toggle="modal">Đăng ký</a>
+                            <span class="border"></span>
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModalregister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng ký</p></h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="#">
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Tài khoản<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput_name" class="inputregister form-control form-myinput pull-right" type="text" placeholder="Tài khoản" >
+                                            <p class="red-normal">Tên đăng nhập đã được sư dụng vui lòng điền tên đăng nhập khác.</p>
+                                            <div class="tooltipregister">
+                                                <div class="arrow_box">
+                                                <p class="normal">Sử dụng các ký tự latin (a-z) và ký tự gạch dưới</p>
+                                                <p class="normal">Từ 3 đến 15 ký tự</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="regis-item name"> 
+                                                <span class="normal name-label">Họ & tên</span>
+                                                <input id="exampleInput" class="form-control form-myinput f-name" type="text" placeholder="Họ" >
+                                                <span class="and">&</span>
+                                                <input id="exampleInput" class="form-control form-myinput pull-right l-name" type="text" placeholder="Tên" >
+                                            
+                                             
+                                        </div>
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Email<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="inputregister form-control form-myinput" type="text" placeholder="Email" >
+                                            <div class="tooltipregister">
+                                                <div class="arrow_box">
+                                                <p class="normal">Seudo sẽ gửi các thông báo tới email này.</p>
+                                                <p class="normal">Vui lòng sử dụng email tồn tại.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Mật khẩu<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="form-control form-myinput" type="password" placeholder="Mật khẩu (tối thiểu 6 ký tự)" >
+                                            
+                                        </div>
+                                        
+                                        <p class="normal">Với việc đăng ký tài khoản, tôi đã đồng ý với các điều khoản của seudo.vn</p> 
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button class="btn btn-gray disable " type="button">Hủy </button>
+                                    <button class="btn btn-blue" type="button">Đăng ký</button>
+                                  </div>
+                                  
+                                </div><!-- /.modal-content -->
+                              </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->  
+                        </div>
+                        <div class="pull-right register login item-top-header" >
+                            <a class="registerlink" href="#" data-target="#myModallogin" data-toggle="modal">Đăng nhập</a>
+<!--                            <span class="border"></span>-->
+                            <!-- Modal -->
+                            <div class="modal login fade" id="myModallogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                              <div class="modal-dialog reset-password-block">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng nhập</p><a href="#">Đăng ký</a></h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="#">
+                                        <div class="regis-item">
+                                            <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="Tài khoản hoặc email đã kích hoạt" >
+                                            <p class="red-normal">Tên đăng nhập sai vui lòng nhập lại tên đăng nhập khác.</p>
+                                        </div>
+                                        
+                                        <div class="regis-item">
+                                            <input id="exampleInput" class="form-control form-myinput" type="password" placeholder="Mật khẩu" >
+                                            
+                                        </div>
+                                        
+                                        <div class="regis-item made">
+                                            <p class="normal">
+                                                <label>
+                                                    <input type="checkbox" value="">
+                                                    Ghi nhớ đăng nhập
+                                                </label>
+                                            </p>
+                                            <button class="btn btn-blue btn-lg btn-login pull-right" type="button">Đăng nhập</button>
+                                        </div>
+                                        
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <a class="pull-left click-resetpass" href="#">Quên mật khẩu ?</a>
+                                    <p class="normal facebook pull-right">Đăng nhập bằng facebook<span class="icon-facebook">login facebook</span></p> 
+                                    <div class="reset-password">
+                                        <p class="normal email-text">Nhập mail bạn đăng ký</p>
+                                        
+                                        <div class="regis-item ">  
+                                                <input id="exampleInput" class="form-control form-myinput inputregister" type="text" placeholder="Email" >
+                                                <p class="red-normal">Địa chỉ mail chưa đúng.</p>
+                                                <div class="tooltipregister">
+                                                            <div class="arrow_box">
+                                                            <p class="normal">Vui lòng nhập địa chỉ email đăng ký tài khoản SeuDo.vn của bạn.</p>
+                                                            </div>
+                                                </div> 
+                                        </div>
+                                        <button class="btn btn-blue" type="button">Lấy lại mật khẩu</button>
+                                        <p class="normal loading-resetpass"><span class="alert alert-error"> Đang gửi..... </span></p>
+                                        <p class="alert alert-info"> Email sent! If the email address you entered is registered at Freelancer.com, you'll receive an email with instructions on how to set a new password.  </p>
+                                    </div>
+                                  </div>
+                                  
+                                </div><!-- /.modal-content -->
+        <!--                        loading-->
+                                 <!--<div class="loading-face">
+                                    <div id="facebookG">
+                                        <div id="blockG_1" class="facebook_blockG">
+                                        </div>
+                                        <div id="blockG_2" class="facebook_blockG">
+                                        </div>
+                                        <div id="blockG_3" class="facebook_blockG">
+                                        </div>
+                                        </div>
+                                 </div>-->
+        <!--                        end loading-->
+                              </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->    
+                        </div>
+                        
+                        
+                    </div> 
+                    
+                    <div class="header-search pull-right">
+                        <input type="text" placeholder="Nhập link sản phẩm bạn muốn đặt từ taobao.com, tmall.com, 1688.com và eely.com...." class="form-control form-myinput" id="exampleInput">
+                        <span class="uppercase normal-blod">đặt hàng</span>
+                    </div>      
+                </div>
+                
+                <div class="logo">
+                    <a href="#"><img src="images/icon-footer/menu_mini.jpg"></a>
+                </div>    
+            </div>
+            
+        </section>
+        
+    </header>
+    <!--<section class="seu-menu">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 megamenu-left">
+                        <ul class="seu-megamenu">
+                            <li class="item-megamenu active">
+                                <a href="#"><span class="uppercase home"><span class="icon"></span>trang chủ</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase sevice"><span class="icon"></span> giới thiệu</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase"> biểu phí</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase"> hướng dẫn</span></a>
+                            </li> 
+                        </ul>
+                    </div>
+                    <div class="megamenu-right pull-right">
+                        <div class="seu-facemenu">
+                                <a href="#"><span class="uppercase home"><span class="icon"></span>cộng đồng</span></a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>-->
+    
+    <section class="seudo-menu">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 seu-left">
+                        <ul class="seudo-megamenu">
+                            <li class="item-megamenu active">
+                                <a href="#"><span class="uppercase home"><span class="icon"></span>trang chủ</span></a>
+                            </li>
+                            <li class="item-megamenu ">
+                                <a href="#"><span class="uppercase sevice"><span class="icon"></span> giới thiệu</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase"> biểu phí</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase"> hướng dẫn</span></a>
+                            </li> 
+                        </ul>
+                    </div>
+                    <div class="seu-right pull-right">
+                        <div class="seu-facemenu">
+                                <a href="#"><span class="icon"></span><span class="uppercase home">công cụ đặt hàng</span></a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section> 
+
+    <!-- End header -->
+
+<!-- Begin header -->
+
+    <?php include_once('tpl/inc_header.php'); ?>
+
+<!-- End header -->
+<!--main typo -->
+    <section id="typography" class="container">
+          <div class="page-header">
+            <h1>Typo</h1>
+          </div>
+          <div class="bs-docs-section">
+              <h1 id="headings">Headings</h1> 
+              <div class="bs-example bs-example-type">
+                <h1>h1. "Helvetica Neue", Helvetica, Arial, sans-serif  <span>Bright-color</span> <a href="#">Link</a>  <span>24px</span></h1>
+                <h2>h2. "Helvetica Neue", Helvetica, Arial, sans-serif  <span>Bright-color</span> <a href="#">Link</a>  <span>18px</span></h2>
+                <h3>h3. "Helvetica Neue", Helvetica, Arial, sans-serif  <span>Bright-color</span> <a href="#">Link</a>  <span>16px</span></h3>
+                <h4>h4. "Helvetica Neue", Helvetica, Arial, sans-serif  <span>Bright-color</span> <a href="#">Link</a>  <span>14px</span></h4>
+                <h5>h5. "Helvetica Neue", Helvetica, Arial, sans-serif  <span>Bright-color</span> <a href="#">Link</a>  <span>12px</span></h5>
+                <h6>h6. "Helvetica Neue", Helvetica, Arial, sans-serif  <span>Bright-color</span> <a href="#">Link</a>  <span>11px</span></h6>
+              </div>
+           </div>
+           
+           <div class="bs-docs-section">
+              <h1 id="headings">Buntton</h1> 
+              <div class="bs-example bs-example-type">
+                <h2 id="headings">Normal</h2> 
+                <p>
+                    <button class="btn btn-red btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-orange btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-blue btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-gray btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-default btn-sm" type="button">.small.button</button>  
+                    <button class="btn btn-green btn-sm" type="button">.small.button</button>  
+                </p> 
+                
+                <p>
+                    <button class="btn btn-red" type="button">.normal.button</button>
+                    <button class="btn btn-orange" type="button">.normal.button</button>
+                    <button class="btn btn-blue" type="button">.normal.button</button>
+                    <button class="btn btn-gray" type="button">.normal.button</button>
+                    <button class="btn btn-default" type="button">.normal.button</button>
+                    <button class="btn btn-green" type="button">.normal.button</button>
+                </p>
+                <p>
+                    <button class="btn btn-red btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-orange btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-blue btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-gray btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-default btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-green btn-lg" type="button">.large.button</button>
+                </p>
+              </div>
+              
+              <div class="bs-example bs-example-type">
+                <h2 id="headings">Hover</h2> 
+                <p>
+                    <button class="btn btn-red-hover btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-orange-hover btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-blue-hover btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-gray-hover btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-default-hover btn-sm" type="button">.small.button</button>
+                </p> 
+                <p>
+                    <button class="btn btn-red-hover" type="button">.normal.button</button>
+                    <button class="btn btn-orange-hover" type="button">.normal.button</button>
+                    <button class="btn btn-blue-hover" type="button">.normal.button</button>
+                    <button class="btn btn-gray-hover" type="button">.normal.button</button>
+                    <button class="btn btn-default-hover" type="button">.normal.button</button>
+                </p>
+                <p>
+                    <button class="btn btn-red-hover btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-orange-hover btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-blue-hover btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-gray-hover btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-default-hover btn-lg" type="button">.large.button</button>
+                </p>
+              </div>
+              <div class="bs-example bs-example-type">
+                <h2 id="headings">Active</h2> 
+                <p>
+                    <button class="btn btn-red-active btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-orange-active btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-blue-active btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-gray-active btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-default-active btn-sm" type="button">.small.button</button>
+                </p> 
+                <p>
+                    <button class="btn btn-red-active" type="button">.normal.button</button>
+                    <button class="btn btn-orange-active" type="button">.normal.button</button>
+                    <button class="btn btn-blue-active" type="button">.normal.button</button>
+                    <button class="btn btn-gray-active" type="button">.normal.button</button>
+                    <button class="btn btn-default-active" type="button">.normal.button</button>
+                </p>
+                <p>
+                    <button class="btn btn-red-active btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-orange-active btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-blue-active btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-gray-active btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-default-active btn-lg" type="button">.large.button</button>
+                </p>
+              </div>
+              <div class="bs-example bs-example-type">
+                <h2 id="headings">Disable</h2> 
+                <p>
+                    <button class="btn btn-red disable btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-orange disable btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-blue disable btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-gray disable btn-sm" type="button">.small.button</button>
+                    <button class="btn btn-default disable btn-sm" type="button">.small.button</button>  
+                </p>      
+                <p>
+                    <button class="btn btn-red disable" type="button">.normal.button</button>
+                    <button class="btn btn-orange disable" type="button">.normal.button</button>
+                    <button class="btn btn-blue disable" type="button">.normal.button</button>
+                    <button class="btn btn-gray disable" type="button">.normal.button</button>
+                    <button class="btn btn-default disable" type="button">.normal.button</button>
+                </p>
+                <p>
+                    <button class="btn btn-red disable btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-orange disable btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-blue disable btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-gray disable btn-lg" type="button">.large.button</button>
+                    <button class="btn btn-default disable btn-lg" type="button">.large.button</button>
+                </p>
+              </div> 
+            </div>
+            
+            <div class="bs-docs-section">
+              <h1 id="headings">Report</h1> 
+              <div class="bs-example bs-example-type">
+                <p class="alert alert-error">
+                    Đã có lỗi xảy ra, xin kiểm tra lại 
+                </p> 
+                <p class="alert alert-alert">
+                    Cảnh báo bạn đã thao tác sai ở vị trí
+                </p>   
+                <p class="alert alert-success">
+                    Bạn đã giao dịch thành công
+                </p> 
+                <p class="alert alert-info">
+                    Tuyệt vời! Đơn hàng của bạn đã về đến nơi, hãy liên hệ lấy hàng ngay
+                </p> 
+              </div> 
+              <div class="bs-example bs-example-type " style="float: left; width: 100%;">
+                <div class="alert icon-alert-error col-md-5">
+                    <h4>CẢNH BÁO</h4>
+                    <p>Bạn nhìn thấy thông báo này nghĩa là có lỗi xảy ra! Hãy tìm hiểu <a href="#">tại đây</a> hoặc <a href="#">chát trực tiếp</a> </p>
+                </div> 
+                <div class="alert icon-alert-alert col-md-5">
+                    <h4>CẢNH BÁO</h4>
+                    <p>Bạn nhìn thấy thông báo này nghĩa là có lỗi xảy ra! Hãy tìm hiểu <a href="#">tại đây</a> hoặc <a href="#">chát trực tiếp</a> </p>
+                </div>   
+                <div class="alert icon-alert-success col-md-5">
+                    <h4>GIAO DỊCH THÀNH CÔNG</h4>
+                    <p>Chúc mừng bạn đã thực hiện thành công </p>
+                </div> 
+                <div class="alert icon-alert-info col-md-5">
+                    <h4>GIAO DỊCH QUÝ KHÁCH</h4>
+                    <p>Đơn hàng của bạn đã về đến nơi </p>
+                </div> 
+              </div>
+           </div> 
+           
+           <div class="bs-docs-section">
+              <h1 id="headings">Form</h1>
+              <form role="form" class="row">
+                  <div class="form-group col-md-6">
+                    <label for="exampleInput" class="myinput">Input Label</label>
+                    <input type="text" class="form-control form-myinput" id="exampleInput" placeholder="Normal input">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="exampleInput" class="myinput">Input label <span>*</span></label>
+                    <input type="text" class="form-control form-myinput" id="exampleInput" placeholder="Normal input">
+                  </div>
+                  
+                  <div class="form-group col-md-6">
+                    <label for="exampleInput" class="myinput">Typing Label</label>
+                    <input type="text" class="form-control form-myinput-typing" id="exampleInput" placeholder="Typing input">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="exampleInput" class="myinput">Input warning <span>*</span></label>
+                    <input type="text" class="form-control form-myinput-warning" id="exampleInput" placeholder="Normal input">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="exampleInput" class="myinput">Textarea </label>
+                    <textarea class="form-control form-mytextarea" rows="3" placeholder="Normal input"></textarea>  
+                  </div>  
+              </form>
+
+           </div> 
+           
+           <div class="bs-docs-section">
+              <h1 id="headings">Popup</h1> 
+                  <!-- Button trigger modal -->
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                  Launch demo modal popup
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->   
+           </div>
+           
+           <div class="bs-docs-section">
+              <h1 id="headings">Tab</h1>
+                  <ul class="nav nav-tabs my-tabs" id="myTab">
+                      <li class="active"><a href="#home" data-toggle="tab">Top tuần</a></li>
+                      <li><a href="#profile" data-toggle="tab">Top tháng</a></li>
+                      <li><a href="#messages" data-toggle="tab">Top năm</a></li>
+                      <li><a href="#settings" data-toggle="tab">Top 10 năm</a></li>
+                  </ul>
+
+                    <div class="tab-content my-tab-content">
+                      <div class="tab-pane active" id="home">Home tab Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</div>
+                      <div class="tab-pane" id="profile">Profile tab Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</div>
+                      <div class="tab-pane" id="messages">Messages tab Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</div>
+                      <div class="tab-pane" id="settings">Settings tab Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</div>
+                    </div> 
+           </div>    
+           
+           <div class="bs-docs-section">
+              <h1 id="headings">Dropdow</h1>
+                <ul>
+                  <li class="dropdown my-dropdow">
+                      <a id="drop1" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                        Danh Mục <span class="caret"></span>
+                      </a>  
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                        <li><a href="#">Sản phẩm 1</a></li>
+                        <li><a href="#">Sản phẩm 2</a></li>
+                        <li><a href="#">Sản phẩm 3</a></li>
+                        <li><a href="#">Sản phẩm 4</a></li>
+                        <li><a href="#">Sản phẩm 5</a></li>
+                        <li><a href="#">Sản phẩm 6</a></li>
+                        <li><a href="#">Sản phẩm 7</a></li>
+                        <li><a href="#">Sản phẩm 8</a></li>
+                        <li><a href="#">Sản phẩm 9</a></li>
+                        <li><a href="#">Sản phẩm 10</a></li>
+                        <li><a href="#">Sản phẩm 11</a></li>
+                        
+                      </ul>
+                  </li>
+                  <li class="dropdown my-dropdow">
+                      <a id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                        Danh Mục 2 <span class="caret"></span>
+                      </a>  
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                        <li><a href="#">Sản phẩm 22</a></li>
+                        <li><a href="#">Sản phẩm 23</a></li>
+                        <li><a href="#">Sản phẩm 34</a></li>
+                        <li><a href="#">Sản phẩm 4</a></li>
+                        <li><a href="#">Sản phẩm 5</a></li>
+                        <li><a href="#">Sản phẩm 6</a></li>
+                        <li><a href="#">Sản phẩm 7</a></li>
+                        <li><a href="#">Sản phẩm 8</a></li>
+                        <li><a href="#">Sản phẩm 9</a></li>
+                        <li><a href="#">Sản phẩm 10</a></li>
+                        <li><a href="#">Sản phẩm 11</a></li>
+                        
+                      </ul>
+                  </li>
+                 </ul> 
+                   
+
+        
+           </div>
+           <div class="bs-docs-section">
+              <h1 id="headings">Pagination</h1> 
+           
+               <ul class="pagination my-pagination">
+                <li><a href="#">«</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#" class="active">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">»</a></li>
+              </ul>
+           </div>
+    </section>
+<!-- End main typo-->
+
+
+
+<!-- Begin footer -->
+    <?php include_once('tpl/inc_footer.php'); ?>
+<!-- end Footer  -->
+
+    
+
+        <section class="seu-copyright"> 
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-7">
+                    <div class="custom left">
+                        <a href="#" class="uppercase">Trang chủ <span class="arow"></span></a>
+                        <a href="#" class="uppercase">giới thiệu<span class="arow"></span></a>
+                        <a href="#" class="uppercase">biểu phí<span class="arow"></span></a>
+                        <a href="#" class="uppercase">hướng dẫn<span class="arow"></span></a>
+                        <a href="#" class="uppercase">công cụ đặt hàng</a> 
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5">
+                    <div class="custom right">
+                        <p class="normal">Bản quyền thuộc về Công Ty Cổ Phần Công Nghệ Và Truyền Thông Alimam Việt Nam</p> 
+                        <p class="normal">Email cskh@seudo.vn - Hotline: 0988 388 324</p> 
+                    </div>
+                </div>
+              </div>
+            </div>
+  </section>
+
+</footer>
+<script>
+$('.dropdown-toggle').dropdown()
+</script>
+<link href="css/responsive.css" rel="stylesheet" type="text/css" media="all">
+</body>
+</html>
+
+
+ 

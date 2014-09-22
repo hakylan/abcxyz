@@ -1,0 +1,92 @@
+<table style="width: 100%">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ten khieu nai</th>
+        <th>Ma</th>
+        <th>Don hang</th>
+        <th>Trang thai</th>
+        <th>Muc khach yeu cau</th>
+        <th>Muc tu de xuat</th>
+    </tr>
+    </thead>
+    <tbody>
+        <?php
+        $page = isset($page) ? $page : 1;
+        $status = isset($status) ? $status : '';
+        if(sizeof($complaints) > 0){
+            $count = 0;
+            foreach ($complaints as $key=>$complaint) {
+                $count++;
+                $order = \Order::retrieveById($complaint->getOrderId());
+                $item = \OrderItem::retrieveById($complaint->getItemId());
+
+                ?>
+
+                <tr>
+                    <td><?php echo $complaint->getId(); ?></td>
+                    <td>
+                        <a target="_blank" href="<?php echo $item->getLink(); ?>" title="<?php echo $item->getImage(); ?>">
+                            <img width="100px" height="100px" src="<?php echo $item->getImage(); ?>" />
+                        </a>
+
+                        <a href="khieu-nai-san-pham/<?php echo $complaint->getOrderId(); ?>/<?php echo $complaint->getItemId(); ?>" target="_blank" title="<?php echo $complaint->getTitle(); ?>">
+                            <span><?php echo $complaint->getTitle(); ?></span>
+                        </a>
+                    </td>
+                    <td>~~~</td>
+                    <td>
+                        <a href="<?php echo $root . 'chi-tiet-don-hang/' . $order->getId(); ?>" target="_blank" title="<?php echo $order->getCode(); ?>"><?php echo $order->getCode(); ?></a>
+                    </td>
+                    <td><?php echo \Complaints::getStatusTitle($complaint->getStatus()); ?></td>
+                    <td><?php echo number_format($complaint->getCustomerAmountReimbursement()); ?>đ</td>
+                    <td><?php echo number_format($complaint->getRecipientAmountReimbursement()); ?>đ</td>
+                </tr>
+
+            <?php } ?>
+        <?php } else { ?>
+            <h3 class="text-center">Không tồn tại đơn hàng khiếu nại nào</h3>
+        <?php } ?>
+    </tbody>
+</table>
+
+<?php if($total_page > 1){ ?>
+    <?php $j = 1; ?>
+    <div class="pagination-bottom">
+        <div class="pagination-page">
+            <ul class="paginationv2">
+                <?php if($current_page > 1){ ?>
+                    <li class="pre">
+                        <a id="_page-prev"> &lt; </a>
+                    </li>
+                <?php } ?>
+
+                <?php for($i = $j; $i > 0; $i--){ ?>
+                    <?php if($current_page - $i > 0){ ?>
+                        <li>
+                            <a class="_paging" data-page="<?php echo $current_page - $i; ?>"><?php echo $current_page - $i; ?></a>
+                        </li>
+                    <?php } ?>
+                <?php } ?>
+
+                <li class="active">
+                    <a><?php echo $current_page; ?></a>
+                </li>
+
+                <?php for($i = 1; $i <= $j; $i++){ ?>
+                    <?php if($current_page + $i <= $total_page){ ?>
+                        <li>
+                            <a class="_paging" data-page="<?php echo $current_page + $i; ?>"><?php echo $current_page + $i; ?></a>
+                        </li>
+                    <?php } ?>
+                <?php } ?>
+
+                <?php if($current_page < $total_page){ ?>
+                    <li class="next">
+                        <a id="_page-next"> &gt; </a>
+                    </li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+<?php } ?>

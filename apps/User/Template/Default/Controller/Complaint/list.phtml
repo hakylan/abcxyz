@@ -1,0 +1,152 @@
+<?php
+use \SeuDo\Main;
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = Main::getHomeUrl();
+//echo $publicHomePath;
+
+$jsPath = $publicHomePath.'assets/js/';
+$jsBackendPath = $publicHomePath.'backend/assets/js/';
+$cssPath = $publicHomePath.'assets/css/';
+$imgPath = $publicHomePath.'assets/images/';
+//echo '$jsPath: ' . $jsPath;
+
+$document->addJs(Main::getUserUrl().'assets/js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs($jsPath.'process/list_complaints.js',"TOP");
+$document->addJs($jsPath.'jquery.scrollTo.min.js',"TOP");
+
+$keyword = isset($keyword) ? $keyword : '';
+$status = isset($status) ? $status : "0";
+$from_time = isset($from_time) ? $from_time : 0;
+$to_time = isset($to_time) ? $to_time : 0;
+$page = isset($page) ? $page : 0;
+
+?>
+
+
+<link href="<?php echo $cssPath; ?>danhsachkhieunai.css" rel="stylesheet" type="text/css" media="all">
+
+<div class="module-content">
+    <section class="order-title">
+        <div class="seu-module-ct">
+            <div class="module-inner">
+                <div class="module-title">
+                    <p class="title"><span class="title-page">Đơn hàng khiếu nại</span></p>
+                    <div class="dateday pull-right">
+                        <div class="link left">
+                            <a href="javascript:void(0)" data-time="0" class="_time_before" class="today">Hôm nay </a>
+                            <span class="arow"></span>
+                        </div>
+                        <div class="link">
+                            <a href="javascript:void(0)" data-time="7" class="_time_before">7 ngày trước </a>
+                            <span class="arow"></span>
+                        </div>
+                        <div class="link">
+                            <a href="javascript:void(0)" data-time="30" class="_time_before">30 ngày trước </a>
+                            <span class="arow"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="search-order">
+        <div class="seu-module-ct">
+            <div class="s-title">
+                <p class="uppercase normal-blod">Tìm kiếm đơn hàng khiếu nại</p>
+            </div>
+            <div class="s-content">
+                <div class="row">
+                    <input type="hidden" class="_is_delete" value="1"/>
+                    <form id="_search" method="get" action="">
+                        <input id="_current-page" type="hidden" name="page" value="<?php echo $page; ?>" />
+
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="item-search">
+                                <input name="keyword" value="<?php echo $keyword ?>" class="form-control form-myinput _keyword" type="text" placeholder="Tìm mã đơn hoặc tên khiếu nại">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <select class="selectpicker" id="_sel-status" name="status">
+                                <option value="">Trạng thái</option>
+                                <?php
+                                    $arrStatus = \Complaints::$statusTitle;
+                                    if(sizeof($arrStatus) > 0){
+                                        foreach((array)$arrStatus as $key => $value){
+                                            $selected = $key == $status ? ' selected="selected" ' : '';
+                                            echo '<option ' . $selected . ' value="'. $key .'">' . $value . '</option>';
+                                        }
+                                    }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="item-search date">
+                                <span>Từ</span>
+                                <input id="datepicker" name="from_time" value="<?php echo $from_time ?>"
+                                       class="form-control form-myinput pull-right _from" type="text" placeholder="01-01-2014">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="item-search date">
+                                <span>Đến</span>
+                                <input id="datepicker2" name="to_time" value="<?php echo $to_time ?>"
+                                       class="form-control form-myinput pull-right _to" type="text" placeholder="02-01-2014">
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <div class="item-search">
+                            <button class="btn btn-blue pull-right _btn_filter" type="button"><span class="uppercase normal-blod">Tìm</span></button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="item-search">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="normal">Tìm thấy <span class="normal-blod _total_filter">0</span> khiếu nại.</p>
+        </div>
+    </section>
+
+    <div class="module-float top-list">
+        <div class="module-float">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                    <div class="module-float left">
+                        <div class="left-id"><span>#</span></div>
+                        <div class="module-float">
+                            <p>Khiếu nại</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-2">
+                    <p class="text-center">Yêu cầu bồi thường</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-2">
+                    <p class="text-center">Sếu đỏ đề xuất</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-2">
+                    <p class="text-center">Trạng thái</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-xs-2">
+                    <p class="text-center">Kết quả</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="module-float top-list main-ct _list-complaints">
+    </div>
+</div>
+
+
+

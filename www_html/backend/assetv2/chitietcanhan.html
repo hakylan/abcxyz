@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Thông tin user</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/process/menu.js"></script>
+    <script type="text/javascript" src="js/tooltip.js"></script>
+    <script type="text/javascript" src="js/backendv2-frontend.js"></script>
+    <script type="text/javascript" src="js/jquery.simplePagination.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />-->
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-typo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-header.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-menu-tab.css" />
+    <link rel="stylesheet" type="text/css" href="css/user.css" />
+    <link rel="stylesheet" type="text/css" href="css/simplePagination.css" />
+    <!--<link rel="stylesheet" type="text/css" href="fonts/roboto/roboto.css" />-->
+
+</head>
+<body>
+
+    <header class="header">
+    <nav class="note-page container">
+        <div class="module-float note-alert">
+            <p><i class="fa fa-warning" style=""></i>Số dư khách âm hoặc số tiền cần thu tối thiểu âm (&lt;0) là khách thiếu tiền</p>
+        </div>
+    </nav>
+    <nav class="container header-top" role="navigation">
+        <div class="row">
+            <div class="col-lg-1 col-md-1">
+                <div class="module-float logo">
+                    <a href="#"></a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4">
+                <div class="module-float input-search">
+                    <input type="text" placeholder="Tìm đơn hàng nhanh theo mã đơn hàng hoặc ID..." class="form-control form-myinput" id="exampleInput">
+                    <a href="#"><span class="arrow"></span></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 pull-right">
+
+            </div>
+        </div>
+    </nav>
+
+    <nav role="navigation" class="seu-menu">
+        <div class="container">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="col-lg-12 col-md-12 seu-main-menu">
+                <ul class="nav navbar-nav module-float">
+
+                    <li class="active">
+                        <a href="#" class="navbar-nav-a">Dashboard</a>
+                    </li>
+
+                    <li class="dropdown dropdown-toggle open">
+                        <a data-toggle="dropdown" class="navbar-nav-a dropdown-toggle" href="#">Đơn hàng <b class="caret"></b></a>
+                        <i class="fa fa-sort-asc dropdown-menu-item-arrow hidden"></i>
+                        <ul class="dropdown-menu custom-nav-dropdown" style="display: none;">
+                            <li><a href="#">Danh sách đơn hàng</a></li>
+                            <li><a href="#">Quản lý mua hàng</a></li>
+                            <li><a href="#">Mua hàng và thanh toán</a></li>
+                            <li><a href="#">Giao hàng</a></li>
+                        </ul>
+                    </li>
+
+                    <li class=" dropdown">
+                        <a data-toggle="dropdown" class="navbar-nav-a dropdown-toggle" href="#">Người dùng <b class="caret"></b></a>
+                        <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                        <ul class="dropdown-menu custom-nav-dropdown" style="display: none;">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+            </div><!-- /.navbar-collapse -->
+
+        </div><!-- /.container-fluid -->
+    </nav>
+</header>
+
+    <section class="container main-body" id="main-body">
+        <div class="module-float detail-user">
+            <div class="row seu-breadcrumb">
+                <div class="col-lg-12 col-md-12">
+                    <ul>
+                        <li><a href="http://seudo.vn/backend">Trang chủ</a><span class="arrow"></span></li>
+                        <li><a href="http://seudo.vn/backend/complaint/managerment">Danh sách khiếu nại</a><span class="arrow"></span></li>
+                        <li>Khiếu nại sản phẩm 25325, đơn hàng M776_0130801</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row header-title">
+                <div class="col-md-6">
+                    <h3 class="title">Thành viên @137nguyenxien</h3>
+                </div>
+                <div class="col-md-2 link-list-user">
+                    <a href="#"><button class="btn btn-blue  pull-right" type="button"><span class="uppercase font-white"><i class="fa fa-list"></i> Danh sách</span></button></a>
+                </div>
+            </div>
+
+            <div class="row module-ct-user">
+                <div class="col-md-3 ct-user-left">
+                    <div class="module-float">
+                        <div class="content-box profile-box">
+                            <div class="content-box-header clearfix bg-blue">
+                                <div class="avatar">
+                                    <img src="images/gravatar.jpg">
+                                </div>
+                                <div class="user-details module-float">
+                                    <p class="title">Nguyễn Văn Giang</p>
+                                    <p>Mã: <span class="font-bold uppercase">LI36RE</span></p>
+                                </div>
+                            </div>
+
+                            <div class="content-box-wrapper">
+                                <div class="item">
+                                    <div class="left">
+                                        <p>Đối tượng:</p>
+                                    </div>
+                                    <div class="right">
+                                        <p>Khách hàng</p>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="left">
+                                        <p>Trạng thái:</p>
+                                    </div>
+                                    <div class="right">
+                                        <p>Kích hoạt</p>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="left">
+                                        <p>Email:</p>
+                                    </div>
+                                    <div class="right">
+                                        <p>nguyenvangiang@alimama.vn</p>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="left">
+                                        <p class="note-warning"><i class="fa fa-warning"></i></p>
+                                    </div>
+                                    <div class="right">
+                                        <p>nguyenvangiang@alimama.vn</p>
+                                        <p><a href="#">demo</a></p>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                 </div>
+
+                <div class="col-md-9 ct-user-right">
+                    <div class="module-float header-top">
+                        <div class="module-float">
+                            <a data-toggle="modal" data-target="#popupbarcode" type="button" class="user-reset pull-right" href="#">
+                                <i class="fa fa-refresh"></i> Reset secret key
+                            </a>
+                            <div class="modal fade popupbarcode" id="popupbarcode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                            <h4 class="modal-title" id="myModalLabel"><p class="title">Reset secret key: 5560a4b1dcc4b1b45c8bc28836283cf4</p></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Reset secret key sẽ khiến User phải đăng nhập lại, bạn có chắc là muốn thực hiện hành động này không? </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-blue" data-dismiss="modal" type="button">Hủy</button>
+                                            <button class="btn btn-red" type="button">Xác nhận</button>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a data-toggle="modal" data-target="#editpass" type="button" class="user-reset pull-right" href="#">
+                                <i class="fa fa-refresh"></i> Edit Pass &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </a>
+
+                            <div class="modal fade popupbarcode" id="editpass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                            <h4 class="modal-title" id="myModalLabel"><p class="title">Đổi pass</p></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table align="center" >
+                                                <tr>
+                                                    <td valign="middle" align="center" >
+                                                        <p class="text-center" ><a value="Generate" onClick="javascript:formSubmit()" href="#">Random Password</a> Generator</p>
+                                                        <form name="passform">
+                                                            <div class="item">
+                                                                <span>Password:</span> <input name="passbox" type="text" size="50" tabindex="1" style="height: 28px">
+                                                            </div>
+
+                                                            <div class="item">
+                                                                <span>Password confirm:</span> <input name="cfpassbox" type="text" size="50" tabindex="1" style="height: 28px">
+                                                            </div>
+
+                                                                <!--<input  type="button" value="Generate" onClick="javascript:formSubmit()" tabindex="2">-->
+                                                                <!--<input type="reset" value="Clear" tabindex="3"></p>-->
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-blue" data-dismiss="modal" type="button">Hủy</button>
+                                            <button class="btn btn-red" type="button">Xác nhận</button>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row module-content">
+                        <div class="col-md-4">
+                            <div class="module-float">
+                                <div class="module-float title">
+                                    <h4>Thông tin cá nhân</h4>
+                                </div>
+                                <div class="module-float module-custom">
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Họ & tên:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>Nguyễn Văn GIang</p>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Giới tính:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>Nam</p>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Quốc tịch:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>Việt Nam</p>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Ngày sinh:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>Chưa có</p>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Địa chỉ:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>137 Nguyễn Xiển - Thanh Xuân - Hà Nội</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+
+                        <div class="col-md-4">
+                            <div class="module-float">
+                                <div class="module-float title">
+                                    <h4>Diện thoại</h4>
+                                </div>
+                                <div class="module-float module-custom">
+                                    <div class="module-float">
+                                        <p>- Hệ thống quy định mỗi tài khoản cho phép tối đa <span class="font-bold">3</span> số điện thoại.</p>
+
+                                        <p>- Khách hàng nhắn tin để xác nhận điện thoại của mình.</p>
+
+                                        <p>- Có thể nhắn xác nhận nhiều hơn <span class="font-bold">3</span> số, hệ thống sẽ lưu <span class="font-bold">3</span> số gần nhất .</p>
+
+                                        <p>- <span class="font-bold">0988999999</span></p>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="module-float">
+                                <div class="module-float title">
+                                    <h4>Thông tin hệ thống</h4>
+                                </div>
+                                <div class="module-float module-custom">
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Gia nhập:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>20:20 22/12/2012</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Cập nhât:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>20:20 22/12/2012</p>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Đăng nhập:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>20:20 22/12/2012</p>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Ip:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>27.76.114.58, 66.249.80.24 </p>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="left">
+                                            <p>Id:</p>
+                                        </div>
+                                        <div class="right">
+                                            <p>123456789 </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            </div>
+
+            <div class="row module-group-user">
+                <div class="col-md-3">
+                    <div class="content-box content-gray fade in" role="alert">
+                        <button data-target="#remove-group" data-toggle="modal" data-original-title="Bạn muốn xóa quyền nhóm này" rel="tooltiptop" type="button" class="close step1"  ><span aria-hidden="true"><i class="fa fa-times"></i></span><span class="sr-only">Close</span></button>
+                        <button type="button" class="up-down step2"><i class="fa fa-chevron-down"></i><span class="sr-only">Toggle</span></button>
+
+                        <h3 class="title-ct-box">
+                            <span class="float-left">Tiêu đề nhóm quyền</span>
+                        </h3>
+                        <div style="display: block;" class="content-box-wrapper">
+                            <div class="module-float">
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade popupbarcode" id="remove-group" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                <h4 class="modal-title" id="myModalLabel"><p class="title">Xóa nhóm</p></h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Bạ chắc chắn muốn xóa nhóm quyền này đối với user <span class="font-bold font-blue">@nguyenvangiang</span> ? </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-blue" data-dismiss="modal" type="button">Hủy</button>
+                                <button class="btn btn-red" type="button">Xác nhận</button>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="content-box content-gray fade in" role="alert">
+                        <button rel="tooltiptop" data-original-title="Bạn muốn xóa quyền nhóm này" type="button" class="close step1" data-dismiss="alert"><span aria-hidden="true"><i class="fa fa-times"></i></span><span class="sr-only">Close</span></button>
+                        <button type="button" class="up-down step2"><i class="fa fa-chevron-down"></i><span class="sr-only">Toggle</span></button>
+                        <h3 class="title-ct-box">
+                            <span class="float-left">Tiêu đề nhóm quyền</span>
+                        </h3>
+                        <div style="display: block;" class="content-box-wrapper">
+                            <div class="module-float">
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="content-box content-gray fade in" role="alert">
+                        <button type="button" class="close step1" data-dismiss="alert"><span aria-hidden="true"><i class="fa fa-times"></i></span><span class="sr-only">Close</span></button>
+                        <button type="button" class="up-down step2"><i class="fa fa-chevron-down"></i><span class="sr-only">Toggle</span></button>
+                        <h3 class="title-ct-box">
+                            <span class="float-left">Tiêu đề nhóm quyền</span>
+                        </h3>
+                        <div style="display: block;" class="content-box-wrapper">
+                            <div class="module-float">
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="content-box content-gray fade in" role="alert">
+                        <button type="button" class="close step1" data-dismiss="alert"><span aria-hidden="true"><i class="fa fa-times"></i></span><span class="sr-only">Close</span></button>
+                        <button type="button" class="up-down step2"><i class="fa fa-chevron-down"></i><span class="sr-only">Toggle</span></button>
+                        <h3 class="title-ct-box">
+                            <span class="float-left">Tiêu đề nhóm quyền</span>
+                        </h3>
+                        <div style="display: block;" class="content-box-wrapper">
+                            <div class="module-float">
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="content-box content-gray fade in" role="alert">
+                        <button type="button" class="close step1" data-dismiss="alert"><span aria-hidden="true"><i class="fa fa-times"></i></span><span class="sr-only">Close</span></button>
+                        <button type="button" class="up-down step2"><i class="fa fa-chevron-down"></i><span class="sr-only">Toggle</span></button>
+                        <h3 class="title-ct-box">
+                            <span class="float-left">Tiêu đề nhóm quyền</span>
+                        </h3>
+                        <div style="display: block;" class="content-box-wrapper">
+                            <div class="module-float">
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="content-box content-gray fade in" role="alert">
+                        <button type="button" class="close step1" data-dismiss="alert"><span aria-hidden="true"><i class="fa fa-times"></i></span><span class="sr-only">Close</span></button>
+                        <button type="button" class="up-down step2"><i class="fa fa-chevron-down"></i><span class="sr-only">Toggle</span></button>
+                        <h3 class="title-ct-box">
+                            <span class="float-left">Tiêu đề nhóm quyền</span>
+                        </h3>
+                        <div style="display: block;" class="content-box-wrapper">
+                            <div class="module-float">
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                                <p>- Các quyền tương ứng với nhóm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-tab module-float">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="module-float v2-menu">
+                            <ul class="module-float">
+                                <li class="active">
+                                    <a href="#">All tab<span class="arrow"></span></a>
+                                </li>
+                                <li>
+                                    <a href="#">Tab 2<span class="arrow"></span></a>
+                                </li>
+                                <li>
+                                    <a href="#">Tab 3<span class="arrow"></span></a>
+                                </li>
+                                <li>
+                                    <a href="#">Tab 4<span class="arrow"></span></a>
+                                </li>
+                                <li>
+                                    <a href="#">Tab 5<span class="arrow"></span></a>
+                                </li>
+                                <li>
+                                    <a href="#">Tab 6<span class="arrow"></span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row ">
+                <div class="col-lg-12 col-md-12">
+                    <ul class="pagination">
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div  class="row">
+                <div class="module-float text-center">
+                    <ul class="pagination v2">
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pagination-holder clearfix">
+                <div class="pagination light-theme simple-pagination" id="light-pagination">
+                    <ul>
+                        <li class="active"><span class="current prev">Prev</span></li>
+                        <li class="active"><span class="current">1</span></li>
+                        <li><a class="page-link" href="#page-2">2</a></li>
+                        <li><a class="page-link" href="#page-3">3</a></li>
+                        <li><a class="page-link" href="#page-4">4</a></li>
+                        <li><a class="page-link" href="#page-5">5</a></li>
+                        <li class="disabled"><span class="ellipse">…</span></li>
+                        <li><a class="page-link" href="#page-19">19</a></li>
+                        <li><a class="page-link" href="#page-20">20</a></li>
+                        <li><a class="page-link next" href="#page-2">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+
+	</section>
+
+    <script>
+        $(document).ready(function(){
+
+            $(function() {
+                $(selector).pagination({
+                    items: 100,
+                    itemsOnPage: 10,
+                    cssStyle: 'light-theme'
+                });
+            });
+
+        })
+    </script>
+    <script>
+        var length = 8;
+        function randomPassword(length)
+        {
+//            alert(length1);
+            chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            pass = "";
+            for(x=0;x<length;x++)
+            {
+            i = Math.floor(Math.random() * 62);
+            pass += chars.charAt(i);
+            }
+            return pass;
+        }
+        function formSubmit()
+        {
+            passform.passbox.value = randomPassword(length);
+            return false;
+        }
+    </script>
+
+</body>
+</html>

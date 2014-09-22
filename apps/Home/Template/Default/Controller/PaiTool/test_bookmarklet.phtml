@@ -1,0 +1,35 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 3/22/14
+ * Time: 11:01 AM
+ */
+//echo $data_translate;
+$home_url = \SeuDo\Main::getHomeUrl();
+?>
+<a class="btn btn-red-b btn-lg pull-right _grab"
+   href="javascript:
+   (function() {
+        var file_js = document.createElement('script');
+        file_js.setAttribute('src', '<?php echo $home_url;?>assets/js/bookmarklet.js?t=' + Math.random());
+        document.body.appendChild(file_js);
+        }()
+    );">
+   Bookmarklet
+</a>
+
+<a class="btn btn-red-b btn-lg pull-right _grab" href="javascript:(function() {if(document.getElementById('seudo_script') != null) { return; }
+                                var jsCode = document.createElement('script');jsCode.setAttribute('id', 'seudo_script');
+                                jsCode.setAttribute('src', '<?php echo $home_url?>assets/js/bookmarklet.js?t=' + Math.random());
+                                document.body.appendChild(jsCode); }());">ĐẶT HÀNG SẾU ĐỎ
+    <span class="arow"></span>
+</a>
+
+<a href="javascript:
+   (function() {
+        var file_js = document.createElement('script');
+        file_js.setAttribute('src', '<?php echo $home_url;?>assets/js/process/orderhang.js?t=' + Math.random());
+        document.body.appendChild(file_js);
+        }()
+    );">Order Hang</a>

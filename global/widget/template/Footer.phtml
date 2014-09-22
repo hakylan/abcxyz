@@ -1,0 +1,25 @@
+<footer>
+    <section class="seu-copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-7">
+                    <div class="custom left">
+                        <?php $homeRouter = SeuDo\Main::getHomeRouter();?>
+
+                        <a href="<?php echo $homeRouter->createUrl('home/default');?>" class="uppercase">Trang chủ <span class="arow"></span></a>
+                        <a href="http://hotro.seudo.vn/gioi-thieu/" class="uppercase" target="_blank">giới thiệu<span class="arow"></span></a>
+                        <a href="http://hotro.seudo.vn/bieu-phi/" class="uppercase" target="_blank">biểu phí<span class="arow"></span></a>
+<!--                        <a href="--><?php //echo $homeRouter->createUrl('home/guide');?><!--" class="uppercase">hướng dẫn<span class="arow"></span></a>-->
+                        <a href="<?php echo $homeRouter->createUrl('home/page_bookmark')?>" class="uppercase">công cụ đặt hàng</a>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5">
+                    <div class="custom right">
+                        <p class="normal">Bản quyền thuộc về Công Ty Cổ Phần Công Nghệ Và Truyền Thông Alimama Việt Nam</p>
+                        <p class="normal">Email: <?php echo \SystemConfig::EMAIL_CSKH ?> - Hotline: <?php echo \SystemConfig::HOTLINE ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>

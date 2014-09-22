@@ -1,0 +1,18 @@
+<?php
+/**
+ * Created by QUYENMINH.
+ * User: Admin
+ * Date: 1/2/14
+ * Time: 11:15 AM
+ */
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+$link_facebook = \SeuDo\Main::getHomeRouter()->createUrl('ConnectFacebook/connect_facebook');
+$document->addJsVar('LoginFacebookUrl',\SeuDo\Main::getHomeRouter()->createUrl('ConnectFacebook'),'TOP');
+$document->addJsVar('HomeUrl',\SeuDo\Main::getHomeRouter()->createUrl('Home/default'),'TOP');
+//$document->addJs($jsPath . 'user.js', 'TOP');
+$document->addJs($jsPath . 'login_facebook.js', 'TOP');
+?>

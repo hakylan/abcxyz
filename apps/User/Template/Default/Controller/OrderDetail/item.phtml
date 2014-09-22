@@ -1,0 +1,133 @@
+<?php
+$order = isset($order) ? $order : array();
+
+if(isset($orderItems)):?>
+<?php foreach ($orderItems as $orderItem):
+        if(($orderItem instanceof \OrderItem) && ($order instanceof \Order)){?>
+
+            <li>
+                <ul>
+                    <li class="col-lg-1 col-md-1 col-sm-1 module-custom"><?php echo $orderItem->getId();?></li>
+                    <li class="col-lg-5 col-md-5 col-sm-5 module-left-ct">
+                        <div class="img-item">
+                            <div class="module-avatar-img">
+                                <img src="<?php echo $orderItem->getImage();?>" style="height: 100%;">
+                            </div>
+                        </div>
+                        <div class="content">
+                            <p><a href="<?php echo $orderItem->getLink();?>" target="_blank" class="normal-blod" title="<?php echo $orderItem->getTitle() ?>">
+                                    <?php echo Common::subString($orderItem->getTitle(),110);?></a><span class="italic">(<span class="_order_item_weight"><?php echo $orderItem->getWeight();?></span> kg)</span>
+                            </p>
+
+                            <div class="comment-kd _note_item" data-item-id="<?php echo $orderItem->getId();?>">
+                                <p class="note normal _edit_comment" data-item-id="<?php echo $orderItem->getId();?>">
+                                    <?php
+                                    if($orderItem->getNote() == ''){
+                                        echo 'Chú thích: Vui lòng để lại lời nhắn';
+                                    }else{
+                                        echo strip_tags($orderItem->getNote());
+                                    }
+                                    ?>
+                                </p>
+                                <div class="note-submit _info_comment">
+                                    <input  class="form-control form-myinput _input_comment" type="text"
+                                            placeholder="<?php if($orderItem->getNote() == ''){
+                                                echo 'Để lại lời nhắn, Enter đã gửi ';
+                                            }else{
+                                                echo $orderItem->getNote();
+                                            }?>">
+                                    <div class="note-submit-button">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col-lg-2 col-md-2 col-sm-2 module-custom">
+                        <?php
+                        if($orderItem->getPropertyTranslated()!=''){
+                            $property = $orderItem->getPropertyTranslated();
+                        }else{
+                            $property = $orderItem->getProperty();
+                        }
+                        if(strpos($property,';') && $orderItem->getPropertyTranslated()!='') {
+                            $propertyArray = explode(';',$property);
+                        }
+                        if(strpos($property,'-') && $orderItem->getProperty()!='') {
+                            $propertyArray = explode('-',$property);
+                        }
+                        ?>
+                        <?php if(isset($propertyArray[0])){ ?>
+                            <p class="normal"><?php echo $propertyArray[0];?></p>
+                        <?php }else{ ?>
+                            <p class="normal"><?php echo $orderItem->getProperty();?></p>
+                        <?php } ?>
+
+                        <?php if(isset($propertyArray[1])){?>
+                            <p class="italic-mau"><?php echo $propertyArray[1];?></p>
+                        <?php }?>
+                    </li>
+                    <li class="col-lg-2 col-md-2 col-sm-2 module-custom ">
+                        <div class="input-sl dropdown">
+                            <?php if($order->getStatus() == Order::STATUS_INIT) {?>
+                            <input type="text" value="<?php echo $orderItem->getOrderQuantity();?>" data-stock="<?php echo $orderItem->getStock();?>"
+                                   class="form-control form-myinput _item_quantity_input" data-item-id="<?php echo $orderItem->getId();?>">
+                                <div data-cart-id="<?php echo $orderItem->getId();?>" style="display: none;" class="tooltip1 dropdown-menu _div_error _div_error<?php echo $orderItem->getId();?>" role="menu" aria-labelledby="dLabel">
+                                    <p data-cart-id="<?php echo $orderItem->getId();?>" class="_message_error _message_error<?php echo $orderItem->getId();?>"><?php echo $orderItem->getRequireMin()?></p>
+                                </div>
+                            <div class="arowsl">
+                                <div class="arowsl-left-right">
+                                    <a href="#" data-step="<?php echo $orderItem->getStep();?>" class="left _up_quantity" data-item-id="<?php echo $orderItem->getId();?>"></a>
+                                    <a href="#" data-step="<?php echo $orderItem->getStep();?>" class="right _down_quantity" data-item-id="<?php echo $orderItem->getId();?>"></a>
+                                    <input type="hidden" data-stock="<?php echo $orderItem->getStock();?>">
+                                </div>
+                            </div>
+
+                            <!--<span class="remove" id="myModaldeleteitemBtn"  data-toggle="modal"><a href="#">Xóa</a></span>-->
+                            <?php }else{
+                                $status_before_checking = \OrderPeer::getBeforeStatus(\Order::STATUS_CHECKING);
+                                if(in_array($order->getStatus(),$status_before_checking)){
+                                    echo $orderItem->getPendingQuantity() . "/". $orderItem->getOrderQuantity();
+                                }else{
+                                    echo $orderItem->getReciveQuantity() . "/". $orderItem->getPendingQuantity();
+                                }
+                                ?>
+                                <input type="hidden" class="_item_quantity_input" data-item-id="<?php echo $orderItem->getId();?>" value="<?php echo $orderItem->getOrderQuantity();?>">
+                            <?php } ?>
+                        </div>
+
+                    </li>
+                    <li class="col-lg-2 col-md-2 col-sm-2 module-custom">
+                        <input type="hidden" class="_order_item_type" data-item-id="<?php echo $orderItem->getId();?>" data-type="<?php if($orderItem->getPrice()<35000){echo 'access';}else{echo 'normal';}?>">
+                        <p class="red-normal _order_link_price" data-item-id="<?php echo $orderItem->getId();?>" data-link-price="<?php echo $orderItem->getOrderQuantity()*$orderItem->getPrice();?>">
+                            <b class="_amount<?php echo $orderItem->getId();?>">
+                                <?php echo Common::numberFormat($orderItem->getOrderQuantity()*$orderItem->getPrice());?>
+                                <sup>đ</sup></b></p>
+                        <p class="italic">(
+                            <span class="_order_item_quantity" data-item-id="<?php echo $orderItem->getId();?>">
+                                <?php echo $orderItem->getOrderQuantity();?>
+                            </span>
+                            x
+                            <span class="_order_item_price" data-item-price="<?php echo $orderItem->getPrice();?>" data-item-id="<?php echo $orderItem->getId();?>">
+                            <?php echo Common::numberFormat($orderItem->getPrice());?><sup>đ</sup>
+                            </span>
+                            )
+                        </p>
+
+                        <?php
+                            $complaint_text = \Complaints::checkItemComplaint($order->getId(), $orderItem->getId()) ? 'Đã khiếu nại' : 'Khiếu nại';
+                        ?>
+                        <p class="complaint-detail">
+                            <a target="_blank" href="<?php echo $root; ?>user/khieu-nai-san-pham/<?php echo $orderItem->getOrderId(); ?>/<?php echo $orderItem->getId(); ?>"><?php echo $complaint_text; ?></a>
+                        </p>
+
+                    </li>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 border">
+                        <div class="border-bottom"></div>
+                    </div>
+                </ul>
+            </li>
+<?php
+        }
+    endforeach;?>
+<?php endif;?>

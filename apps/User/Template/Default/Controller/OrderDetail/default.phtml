@@ -1,0 +1,527 @@
+<?php
+use \SeuDo\Main;
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = Main::getHomeUrl();
+$document->title = t("Chi tiết đơn hàng");
+$jsPath = $publicHomePath.'assets/js/';
+$cssPath = $publicHomePath.'assets/css/';
+$imgPath = $publicHomePath.'assets/images/';
+
+// dau's cope file => fronend (check file js, two location same content, title)
+$document->addJs(Main::getUserUrl().'assets/js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs($jsPath.'seudo-frontendv2.js',"TOP");
+$document->addCss(Main::getHomeUrl().'assets/css/chitietdonhang.css');
+
+$orderServices = isset($orderServices) ? $orderServices : array();
+$order = isset($order) ? $order : array();
+$orderAddress = isset($orderAddress) ? $orderAddress : array();
+$user_address = isset($user_address) ? $user_address : array();
+
+if($order instanceof \Order && ($order->getBuyer() instanceof \Users)):
+?>
+
+<input type="text" style="display: none;" id="orderId" value="<?php echo $order->getId();?>">
+<input type="text" style="display: none;" id="base_url" value="<?php echo \SeuDo\Main::getUserUrl();?>">
+<input type="text" style="display: none;" id="home_url" value="<?php echo \SeuDo\Main::getHomeUrl();?>">
+<div class="seu-module">
+
+<div class="module-content">
+<section class="order-title">
+    <div class="seu-module-ct">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title"><span class="title-page uppercase normal-blod">Đơn hàng <?php echo $order->getCode();?></span></p>
+                <div class="dateday">
+                    <div class="link">
+                        <p>
+                            <?php
+                            if($order->getIsDeleted()==1){
+                                echo 'Đơn hàng tạm hủy';
+                            }elseif($order->getCustomerConfirm()=='WAIT'){
+                                echo 'Chờ khách xác nhận';
+                            }else{
+                                echo $order->getStatusTitle();
+                            }
+                            ?>
+                        </p>
+                    </div>
+                </div>
+                <div class="dateday pull-right">
+                    <?php if($order->getStatus() == \Order::STATUS_INIT) {?>
+                        <div class="link">
+                            <!--<span class="arow-remove"></span>
+                            <a href="#" class="_delete_order" data-order-id="<?php /*echo $order->getId();*/?>">Hủy đơn </a>-->
+                        </div>
+                    <?php } ?>
+                </div>
+                <div class="navi-menuacc">
+                    <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('order_init/default');?>">
+                        <span class="normal name-acc">Quay lại danh sách đơn hàng</span>
+                    </a>
+                    <span class="arow"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="module-item-delay-body">
+<section class="modul-item-delay">
+    <div class="seu-module-ct">
+        <div class="col-lg-7 col-md-7 col-sm-7">
+            <div class="left1">
+                <p class="italic">Người bán</p>
+                <p class="normal"><span class="normal-blod"><?php echo $order->getSellerName();?></span> <img src="<?php echo \Common::getFaviconSite($order->getSellerHomeland());?>"></p>
+            </div>
+            <div class="left2">
+                <p class="italic">Người mua</p>
+                <p class="normal"><span class="normal-blod"><?php echo $buyer->getFullName();;?></span></p>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-5">
+            <div class="right">
+                <p class="italic">Số sản phẩm</p>
+                <p class="normal"><span class="normal-blod _order_quantity"><?php echo $order->getOrderQuantity();?></span> </p>
+            </div>
+            <div class="right">
+                <p class="italic">Trọng lượng</p>
+                <p class="normal"><span class="normal-blod"><?php echo $order->getWeight();?> </span> </p>
+            </div>
+            <div class="right">
+                <p class="italic">Tiền hàng</p>
+                <p class="normal"><span class="normal-blod _order_money"><?php echo Common::numberFormat($order->getRealAmount());?><sup>đ</sup></span> </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="seu-module-ct">
+        <div class="col-lg-7 col-md-7 col-sm-7">
+            <div class="left">
+                <?php if($order->getStatus() == \Order::STATUS_INIT){?>
+                <p class="italic">Địa chỉ:<a data-target="#myModaladdadress" data-toggle="modal" class="poiter"> Thay đổi địa chỉ</a></p>
+                <?php }?>
+                <?php
+                if(isset($orderAddress) && ($orderAddress instanceof \UserAddress)){?>
+                    <p class="normal"><span class="normal-blod"><?php echo $orderAddress->getReciverName();?></span> / <?php echo $orderAddress->getReciverPhone();?></p>
+                    <p class="normal"><?php echo $orderAddress->getDetail().' / '.\Locations::getLocationLabel($orderAddress->getDistrictId()).' / '.\Locations::getLocationLabel($orderAddress->getProvinceId());?></p>
+                    <input type="hidden" id="targetCode" value="<?php echo \Locations::getLocationKeyCode($orderAddress->getProvinceId());?>">
+                <?php }?>
+            </div>
+
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-5">
+            <div class="right">
+                <p class="italic">Tất toán</p>
+                <p class="normal"><span class="normal-blod">...</span> </p>
+            </div>
+            <div class="right">
+                <p class="italic">Đã thanh toán</p>
+                <p class="normal"><span class="red-bold"><?php echo number_format($order->getRealPaymentAmount(),0,',','.');?><sup>đ</sup></span> </p>
+            </div>
+
+        </div>
+    </div>
+
+    <p class="normal his-bottom pull-right">
+            <?php
+            $this->widget('app.Widget.TransactionModalBox', array(
+                'order_code' => $order->getCode(),
+                'text_link' => "Xem lịch sử giao dịch liên quan đến đơn hàng này",
+                'type_button' => 'a'
+            ));
+            ?>
+
+    </p>
+
+</section>
+<?php if($order->getIsDeleted() != 1) { ?>
+<section class="item-delay-step">
+    <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
+        <div class="step-module">
+            <?php $stateClass = isset($stateClass) ? $stateClass : "";?>
+            <div class="step-one item-step
+            <?php if($order->isAfterStatus(\Order::STATUS_INIT) || $order->getStatus() == \Order::STATUS_INIT) echo "finish _finish_step"?>">
+                <span class="arow"></span>
+                <span class="note-arow"></span>
+                <div class="note-step">
+                    <p>Tạo đơn</p>
+                    <p>
+                        <?php
+                            $dateTime = new \Flywheel\Db\Type\DateTime($order->getCreatedTime());
+                            echo $dateTime->format('d-m-Y');
+                        ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="item-step <?php if($order->isAfterStatus(\Order::STATUS_INIT)) echo "finish _finish_step"?>">
+                <span class="arow"></span>
+                <span class="note-arow"></span>
+                <div class="note-step bottom">
+                    <p>Thanh toán</p>
+                    <p>
+                        <?php
+                        $dateTime = new \Flywheel\Db\Type\DateTime($order->getDepositTime());
+                        if($dateTime->isEmpty() == false) {
+                            echo $dateTime->format('d-m-Y');
+                        }
+                        ?>
+                    </p>
+                </div>
+                <p class="opacity">-</p>
+            </div>
+            <div class="item-step
+            <?php
+
+//          ||  in_array($order->getStatus(),\OrderPeer::getBetweenStatus(\Order::STATUS_DEPOSITED,\Order::STATUS_BOUGHT))
+            if($order->isAfterStatus(\Order::STATUS_DEPOSITED)) echo "finish _finish_step"?>">
+                <span class="arow"></span>
+                <span class="note-arow"></span>
+                <div class="note-step">
+                    <p>Đang mua hàng</p>
+                    <p></p>
+                </div>
+                <p class="opacity">-</p>
+            </div>
+            <div class="item-step <?php if($order->isAfterStatus(\Order::STATUS_NEGOTIATED)) echo "finish _finish_step"?>">
+                <span class="arow"></span>
+                <span class="note-arow"></span>
+                <div class="note-step bottom">
+                    <p>Ngày bàn giao</p>
+                    <p></p>
+                </div>
+                <p class="opacity">-</p>
+            </div>
+            <div class="item-step <?php if($order->isAfterStatus(\Order::STATUS_BOUGHT)) echo "finish _finish_step"?>">
+                <span class="arow"></span>
+                <span class="note-arow"></span>
+                <div class="note-step">
+                    <p>Kiểm hàng</p>
+                    <p>(đang kiểm)</p>
+                </div>
+                <p class="opacity">-</p>
+            </div>
+            <div class="item-step <?php if($order->isAfterStatus(\Order::STATUS_CHECKING)) echo "finish _finish_step"?>">
+                <span class="arow"></span>
+                <span class="note-arow"></span>
+                <div class="note-step bottom">
+                    <p>Kiểm hàng</p>
+                    <p>(đã kiểm)</p>
+                </div>
+                <p class="opacity">-</p>
+            </div>
+            <div class="item-step <?php if($order->isAfterStatus(\Order::STATUS_CHECKED)) echo "finish _finish_step"?>">
+                <span class="arow"></span>
+                <span class="note-arow"></span>
+                <div class="note-step">
+                    <p>Chờ giao</p>
+                </div>
+                <p class="opacity">-</p>
+            </div>
+            <div class="item-step <?php if($order->isAfterStatus(\Order::STATUS_CUSTOMER_CONFIRM_DELIVERY)) echo "finish _finish_step"?>">
+                <span class="arow"></span>
+                <span class="note-arow"></span>
+                <div class="note-step bottom">
+                    <p>Đang giao</p>
+                </div>
+                <p class="opacity">-</p>
+            </div>
+            <div class="item-step <?php if($order->isAfterStatus(\Order::STATUS_DELIVERING)) echo "finish _finish_step"?>">
+                <span class="arow"></span>
+                <span class="note-arow"></span>
+                <div class="note-step">
+                    <p>Nhận hàng</p>
+                </div>
+                <p class="opacity">-</p>
+            </div>
+        </div>
+    </div>
+</section>
+<?php }?>
+<!--    list cart-->
+
+<section class="adress-cart list-cart single">
+<div class="col-lg-9 col-md-9 col-sm-9">
+<div class="row">
+<div class="module module-body">
+<div class="top-main ">
+    <div class="col-lg-1 col-md-1 col-sm-1 left"><p class="normal-blod uppercase">MãSP</p></div>
+    <div class="col-lg-5 col-md-5 col-sm-5">
+        <p class="normal-blod uppercase">Sản phẩm(<span class="_order_quantity"><?php echo $order->getOrderQuantity();?></span>)</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="normal-blod uppercase">Mẫu</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="normal-blod uppercase">Số lượng</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="normal-blod uppercase">Giá</p>
+    </div>
+
+</div>
+<ul class="cart-list-content _items">
+
+</ul>
+
+    <?php
+    $_services = array();
+    if(isset($services) && !empty($services)){
+        foreach ($services as $s) {
+            if($s instanceof \OrderService){
+                $_services[$s->getServiceCode()] = $s->getMoney();
+            }
+        }
+    }
+    ?>
+<div class="single-chat">
+    <div class="chat-bottom">
+        <div class="module">
+            <div class="seu-module tick-sevice v2">
+                <div class="normal">
+                <div class="check-exp ">
+                    <input class="_choose_services_express"  type="checkbox"
+                        <?php
+                        if($order->mappingToService(\Services::TYPE_EXPRESS_CHINA_VIETNAM)){
+                            echo 'checked="checked"';
+
+                        }
+
+                        if(!$order->isBeforeStatus(\Order::STATUS_RECEIVED_FROM_SELLER)) {
+                            echo 'disabled="true"';
+                        }
+
+                        ?>
+                           value="<?php echo \Services::TYPE_EXPRESS_CHINA_VIETNAM ?>">
+                    <span class="normal-blod">Chuyển phát nhanh </span>
+                    <div class="dropdow-error">
+                        <span class="close-exp">x</span>
+                        <p class="font-small">Áp dụng đồng nhất mức phí CPN là  45.000đ/kg về HN & 60.000đ/kg về SG </p>
+                        <p class="font-small">Quảng Châu &ndash;&gt; Hà Nội : từ 2-3 ngày ( Thông thường là 2 ngày )</p>
+                        <p class="font-small">Quảng Châu &ndash;&gt; Sài Gòn : từ 2-4 ngày ( Thông thường là 3 ngày )</p>
+                    </div>
+                </div>
+                <p class="normal" >
+                    <input class="_choose_services_express"  type="checkbox"
+                            <?php
+                            if(isset($_services[\Services::TYPE_CHECKING])){
+                                echo 'checked="checked"';
+                            }
+                            if($order->getStatus() != \Order::STATUS_INIT) {
+                                echo 'disabled="true"';
+                            }
+                            ?>
+                           value="CHECKING"><span>Kiểm hàng</span>
+                    <input class="_choose_services_express" type="checkbox"
+                            <?php
+                            if(isset($_services[\Services::TYPE_WOOD_CRATING])){
+                                echo 'checked="checked"';
+                            }
+                            if($order->getStatus() != \Order::STATUS_INIT) {
+                                echo 'disabled="true"';
+                            }
+                            ?>
+                           value="PACKING"><span>Đóng gỗ</span>
+                </p>
+            </div>
+            </div>
+        </div>
+        <div class="module">
+            <div class="price-sevice">
+                <div class="seu-module ">
+                    <div class="col-lg-9 col-md-9 col-sm-9">
+                        <div class="module-item">
+                            <span class="item-left">Tiền hàng:</span>
+                            <span class="item-right  red-bold _order_money"><?php echo Common::numberFormat($order->getRealAmount());?><sup>đ</sup></span>
+                        </div>
+                        <?php
+
+                        foreach ($orderServices as $services) {
+                        ?>
+                        <div class="module-item">
+                            <span class="item-left"><?php echo "Phí {$services["description"]}" ?>:</span>
+                            <span class="item-right  red-bold _order_money <?php if(isset($services["service_code"])){ echo "_".$services["service_code"];}?>">
+                                <?php if((isset($services["discounted_money"]) && $services["money"] == $services["discounted_money"] )
+                                    || !isset($services["discounted_money"])){
+                                    echo Common::numberFormat($services["money"]);
+                                }else{
+                                    echo Common::numberFormat($services["discounted_money"]);
+                                }?><sup>đ</sup>
+                            </span>
+                            <span style="margin-left: 15px;font-size: 11px;
+                            color: #808080;<?php if(($services["money"] == $services["discounted_money"] && isset($services["discounted_money"])) || !isset($services["discounted_money"])){ ?>display: none<?php } ?>"
+                                  class="<?php if(isset($services["service_code"])){ echo "_".$services["service_code"];}?>_NOT_DISCOUNT">
+                                (Chưa chiết khấu: <?php echo Common::numberFormat($services["money"]);?><sup>đ</sup>)</span>
+                        </div>
+                        <?php
+                        }
+                        ?>
+                        <div class="module-item">
+                            <span class="item-left">Trả lại:</span>
+                            <span class="item-right  red-bold"><?php echo Common::numberFormat($order->getRealRefundAmount());?><sup>đ</sup></span>
+                        </div>
+                        <div class="module-item">
+                            <span class="item-left">Đã thanh toán:</span>
+                            <span class="item-right  red-bold"><?php echo Common::numberFormat($order->getRealPaymentAmount());?><sup>đ</sup></span>
+                        </div>
+
+                        <div class="module-item font-lag">
+                            <span class="item-left normal-blod">Tổng giá trị:</span>
+                            <span class="item-right font-lags red-bold _order_money _total_money"><?php echo Common::numberFormat($order->getTotalAmount());?><sup>đ</sup></span>
+
+                            <span class="item-border">-</span>
+                            <span class="item-left v2">Tiền hàng còn thiếu:</span>
+                            <span class="item-right font-lags red-bold _order_money _total_money"><?php echo Common::numberFormat($order->getTotalAmount() - $order->getRealPaymentAmount() );?><sup>đ</sup></span>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <?php if($order->getStatus() == \Order::STATUS_INIT && $order->getCustomerConfirm() == \Order::CUSTOMER_CONFIRM_NONE && $order->getIsDeleted() != 1){?>
+                            <button type="button" data-deposit-link="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('OrderDeposit', array('cid' => base64_encode(json_encode(array($order->getId())))));?>" data-toggle="modal" class="btn btn-blue btn-lg pull-right _change_status" data-status="<?php echo $order->getStatus();?>">
+                                <p class="uppercase normal-blod">đặt cọc</p>
+                                <p class=" normal _deposit_money"><?php echo number_format(\OrderPeer::calculateDepositAmount($order->getOrderAmount()),0,',','.');?></p>
+                            </button>
+                        <?php }?>
+                        <?php if($order->getCustomerConfirm() == \Order::CUSTOMER_CONFIRM_WAIT && $order->getIsDeleted() != 1){?>
+                            <button type="button" class="btn btn-blue btn-lg pull-right _submit_buy_confirm" data-id="<?php echo $order->getId();?>" data-status="<?php echo $order->getCustomerConfirm();?>">
+                                <p class="uppercase">xác nhận</p>
+                                <div class="arow-alert">
+                                    <p style="font-size: 11px;"><?php echo $order->getNoteCustomerConfirm(); ?></p>
+                                </div>
+                            </button>
+                        <?php }?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-md-3 col-sm-3 scol-chat">
+    <div class="single-chat">
+        <div class="add-chat">
+            <div class="seu-module mychat">
+                <div class="module-inner">
+                    <div class="module-chat">
+                        <div class="module-input-chat">
+                            <input id="_input_order_comment" type="text" placeholder="Trao đổi về đơn hàng, Enter để gửi" class="_input_order_comment form-control form-myinput" id="exampleInput">
+                            <span class="_submit_chat" class="arow-submit-chat"></span>
+                        </div>
+                    </div>
+                    <div class="module-ct _comments">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--    box chat right fix-->
+<div class="scol-chat-fix" style="height: 865px;">
+    <div class="single-chat">
+        <div class="add-chat">
+            <div class="seu-module mychat">
+                <div class="module-inner">
+                    <div class="module-chat">
+                        <div class="module-input-chat">
+                            <input id="_input_order_comment" type="text" placeholder="Trao đổi về đơn hàng, Enter để gửi" class="_input_order_comment form-control form-myinput" id="exampleInput">
+                            <span class="_submit_chat" class="arow-submit-chat"></span>
+                        </div>
+                    </div>
+                    <div class="module-ct _comments2">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end box chat right fix-->
+</section>
+</div>
+</div>
+</div>
+
+
+
+<?php endif;?>
+
+
+
+<?php if($order->getStatus() == \Order::STATUS_INIT){ ?>
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModaladdadress" class="modal fade editadresscart" style="display: none;">
+    <div class="modal-dialog check-address">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myModalLabel" class="modal-title uppercase normal-blod">Đổi địa chỉ nhận hàng <a class="pull-right poiter" href="<?php echo $controller->createUrl('UserAddress/default');?>">Quản lý địa chỉ</a></h4>
+            </div>
+            <div class="modal-body ">
+                <section class="adress-cart">
+                    <div class=" item-list">
+                        <div class="address-module">
+                            <div class="module ">
+
+                                <ul class="cart-list-content">
+                                    <?php foreach($user_address as $ua){
+                                    $district_list = \Locations::findByParentId($ua->province_id);
+                                    ?>
+                                    <li class="normal <?php if($ua->id == $orderAddress->getId()){ echo "active"; } ?>" data-address-id="<?php echo $ua->id ?>">
+                                        <span class="uppercase act">Chọn</span>
+                                        <span class="address-active"></span>
+                                        <div class="item-list-addresscart"><p><span class="uppercase normal-blod">
+                                                    <?php echo $ua->reciver_name;?></span>
+                                                <?php echo $ua->detail;?>, hà nội/ <?php echo $ua->reciver_phone; ?></p>
+                                            <p class="italic"><span class="italic"><?php echo $ua->note;?></p>
+                                        </div>
+                                    </li>
+                                    <?php }?>
+                                    <input type="hidden" class="_idAddress" value="<?php echo $orderAddress->getId();?>">
+                                    <input type="hidden" class="_idOder" value="<?php echo $order->getId();?>">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer hide">
+                <button class="btn btn-blue uppercase _submitAddress" type="button">Xác nhận</button>
+                <button data-dismiss="modal" class="btn btn-gray uppercase" type="button">Hủy</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div>
+<?php }?>
+
+<script id="_order_comment" type="text/x-handlebars-template">
+    {{#if external_comments}}
+    {{#each external_comments}}
+    {{> list_comments}}
+    {{/each}}
+    {{/if}}
+</script>
+<script id="_item_order_comment" type="text/x-handlebars-template">
+    <div class="mychat-item">
+        <div class="item-avatar">
+            {{#if img_path}}
+                 <img src="{{img_path}}">
+            {{/if}}
+        </div>
+        <div class="item-ct">
+            <p class="normal"><span class="normal-blod">{{username}}</span>  <span class="italic">{{time}}</span></p>
+            <p class="normal">{{{message}}}</p>
+        </div>
+    </div>
+</script>
+
+<!-- dau's hard code -->
+<script type="text/javascript">
+    var order_comment_template = Handlebars.compile($("#_order_comment").html());
+    var item_order_comment_template = Handlebars.compile($("#_item_order_comment").html());
+    Handlebars.registerPartial("list_comments", $("#_item_order_comment").html())
+</script>

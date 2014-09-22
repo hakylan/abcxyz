@@ -1,0 +1,163 @@
+<div id="page-title">
+    <h3>
+        Thêm bài viết mới
+    </h3>
+
+    <div id="breadcrumb-right">
+
+        <div class="float-right">
+            <a class="btn medium bg-blue-alt" href="<?php echo $this->createUrl('post') ?>">&nbsp;<i
+                    class="glyph-icon icon-arrow-left"></i> Trở
+                lại&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+<form class="form-horizontal" method="POST">
+    <?php
+    $msg = \Flywheel\Session\Session::getInstance()->getFlash('msg');
+    if ($msg):?>
+        <div class="infobox warning-bg"><?php echo $msg ?></div>
+    <?php endif ?>
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+                Title:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <input placeholder="Tiêu đề bài viết" type="name" name="label" id="title"/>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+                Category:
+                <span></span>
+            </label>
+        </div>
+
+
+        <div class="form-input col-md-8">
+
+            <?php
+            $html = '<select id="category" name="category">';
+            foreach ($categories as $key => $value) {
+                $row = '<option value="' . $value->id . '">' . $value->title . '</option>';
+                $html .= $row;
+            }
+
+            $html .= '</select>';
+            echo $html;
+            ?>
+        </div>
+
+    </div>
+
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+                Status:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <select name="status">
+                <option value="0">Ẩn</option>
+                <option value="1" selected>Bình thường</option>
+                <option value="2">Tiêu biểu</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+                Content:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <textarea id="editor" name="content"></textarea>
+        </div>
+
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label class="label-description">Images</label>
+        </div>
+        <div class="form-input col-md-8">
+            <input id="fileupload" type="file" name="files[]" multiple/>
+
+            <div id="display_upload" class="">
+
+
+            </div>
+            <input type="hidden" id="uploaded_imgs" name="images"/>
+        </div>
+    </div>
+    <div style="text-align: center ;">
+        <button type="submit" class=" btn medium bg-blue-alt">Tạo bài viết</button>
+    </div>
+
+
+</form>
+
+
+<?php
+$assets = new \Flywheel\Asset\Asset('backend');
+$assets->printTag('../assets/js/ckeditor/ckeditor.js', 'js');
+$assets->printTag('../assets/js/ckeditor/config.js', 'js');
+$assets->printTag('../assets/js/ckeditor/styles.js', 'js');
+$assets->printTag('../assets/js/multiupload/jquery.ui.widget.js', 'js');
+$assets->printTag('../assets/js/multiupload/jquery.fileupload.js', 'js');
+$assets->printTag('../assets/js/multiupload/jquery.iframe-transport.js', 'js');
+$assets->printTag('../assets/js/multiupload/jquery.fileupload-process.js', 'js');
+
+
+
+
+?>
+<script>
+    CKEDITOR.config.height = 300;
+    CKEDITOR.config.width = '100%';
+    CKEDITOR.replace('editor');
+    var $imgs =  $('#uploaded_imgs').val();
+
+    $(function () {
+
+        $('#fileupload').fileupload({
+            url: '<?php echo $this->createUrl('post/upload');?>',
+            autoUpload: true,
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            maxFileSize: 5000000, // 5 MB
+            dataType: 'json',
+            done: function (e, data) {
+
+                $.each(data.result.files, function (index, file) {
+                    var txt = '<div id="i-'+file.name+'">';
+                    txt += '<img src="' + file.thumbnailUrl + '">';
+                    txt += '<button class="delete_img" data-file="' + file.name + '">Xóa</button>';
+                    txt += '</div>';
+                    $('#display_upload').append(txt);
+                    $imgs = $imgs + ',' + file.name;
+
+                    $('#uploaded_imgs').val($imgs);
+                    console.log($('#uploaded_imgs').val());
+
+                });
+            }
+        });
+        $(document).on('click', '.delete_img', function (e) {
+            e.preventDefault();
+            $file = $(this).data('file');
+            $url = "<?php echo $this->createUrl('post/deletefile?file=');?>" + $file;
+            $.get($url);
+            var $str = $('#uploaded_imgs').val();
+            $str = $str.replace(',' + $file, '');
+            $("#i-'+$file+'").remove();
+            $('#uploaded_imgs').val($str);
+        });
+    });
+
+</script>

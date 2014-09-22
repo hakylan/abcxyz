@@ -1,0 +1,85 @@
+.menu-tab{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 0 #f2f2f2;
+    height: 52px;
+}
+.menu-tab .v2-menu ul{
+    padding-left: 0;
+    margin: 0;
+}
+.menu-tab .v2-menu{
+    height: 52px;
+}
+.menu-tab .v2-menu li{
+    list-style: none;
+    float: left;
+}
+.menu-tab .v2-menu li > a {
+    padding: 18px 17px;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    display: block;
+    position: relative;
+}
+.menu-tab .v2-menu li > a span.arrow{
+    position: absolute;
+    width: 1px;
+    height: 20px;
+    top: 16px;
+    right: 0;
+    background: url("../images/icons/border-right-menuv2.png") no-repeat  ;
+}
+.menu-tab .v2-menu li.active > a {
+    color: #d92026;
+    border-bottom: 2px solid #d92026;
+    padding-bottom: 16px;
+}
+.menu-tab .v2-menu li.active:hover > a {
+    text-decoration: none;
+}
+.menu-tab .v2-menu li:hover > a {
+    color: #d92026;
+    text-decoration: none;
+}
+.menu-tab .v2-menu li > a .caret{
+    margin-top: -1px;
+}
+.menu-tab .search{
+    padding-top: 12px;
+}
+.menu-tab .search input{
+    height: 30px;
+}
+.menu-tab .search p{
+    text-transform: uppercase;
+    padding-top: 7px;
+    text-align: right;
+}
+.menu-tab .search-submit .module-float{
+    margin-top: 12px;
+}
+.menu-tab .search-submit .module-float a{
+    display: block;
+    width: 100%;
+    margin-left: -15px;
+    border: 1px solid #d92228;
+    color: #fff;
+    text-transform: uppercase;
+    height: 30px;
+    background: -moz-linear-gradient(top,  #df454a 0%, #d92228 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#df454a), color-stop(100%,#d92228));
+    background: -webkit-linear-gradient(top,  #df454a 0%,#d92228 100%);
+    background: -o-linear-gradient(top,  #df454a 0%,#d92228 100%);
+    background: -ms-linear-gradient(top,  #df454a 0%,#d92228 100%);
+    background: linear-gradient(top,  #df454a 0%,#d92228 100%);
+    font-weight: bold;
+    padding-top: 6px;
+    text-align: center;
+}
+.menu-tab .search-submit .module-float a:hover,
+.menu-tab .search-submit .module-float a:focus{
+    text-decoration: none;
+}
+

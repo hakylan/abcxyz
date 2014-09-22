@@ -1,0 +1,23 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = Main::getHomeUrl();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/';
+$imgPath = $publicPath . 'assets/images/';
+
+$document->title = t("Quản lý địa chỉ nhận hàng");
+
+?>
+<div class="module-inner">
+    <div class="module-title">
+        <p class="title"><span class="title-page">Quản lý địa chỉ nhận hàng</span></p>
+    </div>
+    <div class="module-ct">
+    </div>
+    <div class="module-ct">
+    </div>
+</div>
+
+

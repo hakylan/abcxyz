@@ -1,0 +1,115 @@
+<?php
+$cart_list = @$cart_list;
+$user_id = @$user_id;
+$total_item = 0;
+$total_price = 0;
+$cart_link = \SeuDo\Main::getHomeRouter()->createUrl('Cart/default');
+?>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="show-cart">
+                <div class="show-cart-boddy">
+                    <div class="show-cart-module">
+                        <div class="show-cart-module-ct">
+                            <?php if($cart_list){
+                                foreach ($cart_list as $cart) {
+                                    if(sizeof($cart) == 0){
+                                        continue;
+                                    }
+                                    if(sizeof($cart[0]) == 0){
+                                        continue;
+                                    }
+                                    try{
+
+                                        $site = $cart[0]->site;
+                                        $cart_shop = $cart[0];
+                                        $business_model = "Đại lý bán sỉ";
+                                        switch($site){
+                                            case "TAOBAO" :
+                                                $business_model = "Nhà bán lẻ";
+                                                break;
+                                            case "TMALL" :
+                                                $business_model = "Nhà bán lẻ";
+                                                break;
+                                            case "EELLY" :
+                                                $business_model = "Nhà bán lẻ";
+                                                break;
+                                            default :
+                                                $business_model = "Đại lý bán sỉ";
+                                                break;
+                                        }
+                                        $shop_link = "http://{$cart_shop->shop_id}.{$site}.com"
+
+                                        ?>
+                                        <ul class="cart-module-bd">
+                                            <li class="cartmodule-title">
+                                                <p class="title uppercase">
+                                                    <?php echo $cart_shop->	shop_username ?>
+                                                </p>
+                                                <p class="normal">
+                                                    <?php //echo $business_model ?>
+                                                </p>
+                                            </li>
+                                            <?php
+                                            foreach ($cart as $it) {
+
+                                                if($it && ($it instanceof \CartItem)){
+
+
+                                                if($it->site != 'seudo'){
+                                                    $item_link = $it->link_origin;
+                                                }else{
+                                                    $item_link = "http://seudo.vn";
+                                                }
+
+                                                $price = $it->promotion_price != '' ? $it->promotion_price : $it->price;
+
+                                                $price_vn =  $price*ExchangeRate::getExchange();
+
+                                                $price_total = $price_vn*$it->amount;
+
+                                                $total_price += $price_total;
+
+                                                $total_item += $it->amount;
+
+                                                $style = isset($data['property_translate'][$it->properties]) ?  $data['property_translate'][$it->properties] : '';
+
+                                            ?>
+                                            <li>
+                                                <div class="item-cart">
+                                                    <div class="avatar-item">
+                                                        <img class="images" src="<?php echo $it->img_model ?>" >
+                                                    </div>
+                                                    <p class="normal-blod title">
+                                                        <a href="<?php echo $item_link ?>" target="_blank" rel="nofollow">
+                                                            <?php echo  Common::subString($it->title,50) ?></a></p>
+                                                    <p class="normal"><?php echo $style ?>
+    <!--                                                    (<span class="uppercase">M</span>)-->
+                                                        <span class="pricex"><?php echo Common::numberFormat($price_vn) ?><sup>đ</sup> x <?php echo $it->amount ?></span></p>
+                                                    <span class="red-normal"><?php echo Common::numberFormat($price_total) ?><sup>đ</sup> </span>
+                                                </div>
+                                            </li>
+                                                <?php }} ?>
+                                        </ul>
+                                <?php
+
+                                    }catch(\Exception $e){
+                                        continue;
+                                    }
+                                }
+                            } ?>
+                        </div>
+                        <div class="itemcart-bottom">
+                            <p class="title">Tổng <span class="red-normal _total_item"><?php echo $total_item ?></span> Sản phẩm</p>
+                            <p class="normal"><span class="red-bold"><?php echo Common::numberFormat($total_price) ?><sup>đ</sup></span></p>
+                            <a href="<?php echo $cart_link ?>" target="_blank">Vào giỏ hàng</a>
+                        </div>
+                    </div>
+                </div>
+                <span class="arow-bookcart"></span>
+            </div>
+        </div>
+
+    </div><!-- /.modal-content -->
+</div>

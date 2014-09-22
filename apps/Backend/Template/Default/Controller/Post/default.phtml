@@ -1,0 +1,64 @@
+<div id="page-title">
+    <h3>
+        Bài viết
+    </h3>
+
+    <div id="breadcrumb-right">
+
+        <div class="float-right">
+            <a  class="btn medium primary-bg" href="<?php echo $this->createUrl('post/add') ?>">&nbsp;<i class="glyph-icon icon-plus"></i> Thêm bài viết&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+<div>
+    <?php
+    $msg = \Flywheel\Session\Session::getInstance()->getFlash('msg');
+    if($msg):?>
+        <div class="infobox warning-bg"><?php echo $msg?></div>
+    <?php endif?>
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Stats</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        $html = '';
+        foreach ($posts as $post):
+            ?>
+            <tr>
+                <td><?php echo $post->id?></td>
+                <td class="font-bold text-left"><?php echo $post->title?></td>
+                <td><a><?php echo $cats[$post->category_id]?></a></td>
+                <td>
+
+                </td>
+                <td>
+                    <a title="" data-placement="top" class="btn small bg-yellow tooltip-button" href="<?php echo $this->createUrl('community/view/'.$post->id)?>;"
+                       data-original-title="View">
+                        <i class="glyph-icon icon-flag"></i>
+                    </a>
+                    <a title="" data-placement="top" class="btn small bg-blue-alt tooltip-button" href="<?php echo $this->createUrl('post/edit/'.$post->id)?>"
+                       data-original-title="Edit">
+                        <i class="glyph-icon icon-edit"></i>
+                    </a>
+                    <a title="" data-placement="top" class="btn small bg-red tooltip-button" href="<?php echo $this->createUrl('post/delete/'.$post->id)?>"
+                       data-original-title="Remove">
+                        <i class="glyph-icon icon-remove"></i>
+                    </a>
+                </td>
+            </tr>
+
+        <?php endforeach ?>
+
+
+        </tbody>
+    </table>
+    <?php $paging->render();?>
+</div>

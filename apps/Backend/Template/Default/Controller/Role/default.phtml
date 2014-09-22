@@ -1,0 +1,207 @@
+<?php
+use Flywheel\Document\Html;
+use Flywheel\View\Render;
+
+/* @var Render $this */
+/** @var \Backend\Controller\Role $controller */
+
+/* @var Html $document */
+$document = $this->document();
+$page_title = 'Quản lý nhóm nhân viên';
+$document->title .= t($page_title);
+
+$document->addJsVar('add_role_url', $this->createUrl('role/add'));
+$document->addJsVar('remove_role_url', $this->createUrl('role/remove'));
+
+$document->addJs('js/process/role.js');
+$this->document()->addJs('js/jquery.confirm.min.js', 'TOP');
+?>
+<div id="page-title">
+    <h3>
+        <?php echo $page_title ;?>
+        <small>
+        </small>
+    </h3>
+    <div id="breadcrumb-right">
+        <div class="float-right">
+            <?php if ($controller->isAllowed(PERMISSION_ROLE_EDIT)) : ?>
+            <a href="javascript:;" class="btn large primary-bg role-form-modal" data-toggle="modal" data-target="#_add-role-modal">
+                <span class="button-content">
+                    <i class="glyph-icon icon-plus"></i>
+                    <?php td('Thêm nhóm'); ?>
+                </span>
+            </a>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
+<div id="page-content">
+    <div class="row">
+        <!-- List roles -->
+        <div class="col-lg-9 col-md-8">
+
+            <h3>
+                <?php td('Danh sách nhóm'); ?>
+            </h3>
+            <p class="font-gray-dark"><?php td('Danh sách các nhóm nhân viên, click vào tên nhóm để tới chi tiết'); ?></p>
+            <div class="infobox bg-red hidden" id="_role-table-error-placeholder">
+                <div class="large btn bg-white info-icon">
+                    <i class="glyph-icon icon-remove"></i>
+                </div>
+                <h4 class="infobox-title"><?php td('Có lỗi xảy ra'); ?></h4>
+                <p></p>
+            </div>
+            <?php if (!empty($roles)) :?>
+                <table class="table table-striped text-center">
+                    <thead>
+                    <tr>
+                        <th class="text-center"><?php td('ID'); ?></th>
+                        <th><?php td('Nhóm'); ?></th>
+                        <th class="text-center"><?php td('Thành viên'); ?></th>
+                        <th class="text-center"><?php td('Thao tác'); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    /* @var \Roles[] $roles */
+                    foreach ($roles as $role) :
+                        ?>
+                        <tr id="role-row-<?php echo $role->getId(); ?>">
+                            <td><?php echo $role->getId(); ?></td>
+                            <td class="text-left">
+                                <strong>
+                                    <a href="<?php echo $this->createUrl('role/detail', array(
+                                        'id' => $role->getId(),
+                                    ))?>" title="<?php td("Chi tiết nhóm"); ?>">
+                                    <?php echo $role->getLabel(); ?>
+                                    </a>
+                                </strong>
+                                <p class="font-gray-dark">
+                                    <?php echo $role->getDescription(); ?>
+                                </p>
+                            </td>
+                            <td>
+                                <?php echo (isset($count[$role->getId()])? (int) $count[$role->getId()] : 0) ?>
+                            </td>
+                            <td>
+                                <a href="javascript:;"
+                                   class="btn small bg-red tooltip-button _remove-role"
+                                   data-placement="top"
+                                   title=""
+                                   data-role-id="<?php echo $role->getId() ?>"
+                                   data-original-title="Remove">
+                                    <i class="glyph-icon icon-remove"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else : ?>
+                <div class="col-sm-6">
+                    <div class="infobox infobox-close-wrapper warning-bg mrg0A">
+                        <a href="#" title="Close Message" class="glyph-icon infobox-close icon-remove"></a>
+                        <div class="bg-orange large btn info-icon">
+                            <i class="glyph-icon icon-warning-sign"></i>
+                        </div>
+                        <h4 class="infobox-title"><?php td("Không có nhóm nào!"); ?></h4>
+                        <p>
+                            <?php td('Hiện chưa có nhóm chức năng nào cho nhân viên. Sử dụng nút "Thêm nhóm" phía trên bên trái để thêm nhóm'); ?>
+                        </p>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+        <!--/ list roles -->
+
+        <!-- List permissions -->
+        <div class="col-lg-3 col-md-4">
+            <h3>
+                <?php td('Danh sách quyền'); ?>
+            </h3>
+            <?php foreach($permissions as $group) :?>
+            <h5><?php echo $group['label'] ;?></h5>
+                <ul>
+                <?php foreach($group['permissions'] as $permission): ?>
+                    <li><?php echo $permission['label'] ?></li>
+                <?php endforeach; ?>
+                </ul>
+            <?php endforeach; ?>
+        </div>
+        <!--/ list permissions -->
+    </div>
+</div>
+
+<!-- Modal role form -->
+<?php if ($controller->isAllowed(PERMISSION_ROLE_EDIT)) :
+    $form = new \Flywheel\Html\Form('add-role-frm');
+?>
+<div id="_role-frm">
+    <div class="modal fade" id="_add-role-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"><?php td('Thêm nhóm mới'); ?></h4>
+                </div>
+                <div class="modal-body">
+                    <?php $form->beginForm(); ?>
+                    <div class="form-row">
+                        <div class="infobox bg-red hidden" id="_role-form-error-placeholder"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label col-lg-3 text-right">
+                            <label for="role-label">
+                                <?php td('Tên nhóm'); ?>
+                                <span class="required">*</span>
+                            </label>
+                        </div>
+                        <div class="form-input col-md-5">
+                            <input type="text" id="role-label" name="input[label]" value="">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-label col-md-3 text-right">
+                            <label for="role-description">
+                                <?php td('Mô tả'); ?>
+                            </label>
+                        </div>
+                        <div class="form-input col-md-7">
+                            <textarea name="input[description]" id="role-description" class="textarea-no-resize"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-label col-md-3 text-right">
+                            <label for="role-description">
+                                <?php td('Kích hoạt'); ?>
+                            </label>
+                        </div>
+                        <div class="form-checkbox-radio col-md-7">
+                            <?php
+                            $form->radioButton("input[state]", $role->getState())
+                                ->add('ACTIVE', t('Có'), array('style' => 'display:inline'))
+                                ->add('INACTIVE', t('Không'))
+                                ->display()
+                            ?>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-input col-lg-6 col-lg-offset-6">
+                            <button class="btn medium primary-bg float-right" id="_save-role-btn">
+                                <span class="button-content">
+                                    <?php td('Lưu nhóm'); ?>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <?php $form->endForm(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ modal role form -->
+<?php endif; ?>

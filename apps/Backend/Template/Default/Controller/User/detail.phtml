@@ -1,0 +1,532 @@
+<?php
+use Flywheel\View\Render;
+
+/** @var Render  $this */
+
+/** @var \Backend\Controller\User\Detail $controller */
+
+$document = $this->document();
+
+$document->addCss('css/user.css');
+
+$document->addJs('js/user.js?v=1.1', 'TOP');
+?>
+
+<?php
+if ($user) :
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$document->title .= t('Thông tin %username%', array(
+        '%username%' => $user->getUsername()
+    ));
+
+$mobiles = $user->getMobiles();
+$t = array();
+
+foreach($mobiles as $mobile) {
+    $t[$mobile->getId()] = $mobile->toArray();
+}
+
+$document->addJsVar('mobiles', $t);
+$document->addJsVar('add_mobile_url', $this->createUrl('user/detail/add_mobile'));
+$document->addJsVar('remove_mobile_url', $this->createUrl('user/detail/remove_mobile'));
+$document->addJsVar('sync_accountant_url', $this->createUrl('user/detail/sync_accountant'));
+$document->addJsVar('get_transaction_history_url', $this->createUrl('user/transaction_history/get_transactions'));
+$document->addJsVar('transactions', []);
+$document->addJsVar('user_id', $user->getId());
+$this->document()->addJsCode('
+    if (mobiles.length == 0) {
+        mobiles = {};
+    }
+    var add_mobile_template = Handlebars.compile($("#_users-mobile").html());
+    $("#_user-mobile-list").html(add_mobile_template(mobiles));
+    user_detail_page_ini();
+    '
+    , 'BOTTOM', 'standard');
+
+if ($controller->isAllowed(PERMISSION_USER_VIEW_FINANCE)) {
+    $this->document()->addJsCode('
+    var user_transaction_history_template = Handlebars.compile($("#_user-transaction-history").html());
+    get_user_transactions(' .$user->getId() .', 1);', 'BOTTOM', 'standard');
+}
+?>
+
+<script id="_user-transaction-history" type="text/x-handlebars-template">
+    <h4>Lịch sử giao dịch</h4>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ngày</th>
+            <th>Mã</th>
+            <th>Loại</th>
+            <th>Đơn hàng</th>
+            <th>Giá trị giao dịch</th>
+            <th>Số dư cuối</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each transactions}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{date closed_time}}</td>
+            <td>
+                <strong>{{transaction_code}}</strong><br>
+                    <span class="font-gray">
+                        {{transaction_note}}
+                    </span>
+            </td>
+            <td>{{transaction_type}}</td>
+            <td>
+                {{#if object_link}}
+                <a href="{{object_link}}" target="_blank">{{object_id}}</a>
+                {{/if}}
+            </td>
+            <td><span class="_money-amount" data-amount="{{amount}}">{{amount}}</span></td>
+            <td>
+                <strong>
+                    <span class="_money-amount-black" data-amount="{{ending_balance}}">{{ending_balance}}</span>
+                </strong>
+            </td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</script>
+
+<script id="_users-mobile" type="text/x-handlebars-template">
+    {{#if this}}
+    <ul>
+        {{#each this}}
+        <li>
+            - <strong>{{mobile}}</strong> &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+            <?php if ($controller->isAllowed(PERMISSION_USER_MOBILE_EDIT)): ?>
+                <span><a href="javascript:;"  data-toggle="modal" data-target="#myModal{{id}}"><?php td('Xóa'); ?></a></span>
+                <div class="modal fade" id="myModal{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Xác nhận</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Bạn có chắc muốn xóa số điện thoại {{mobile}}?</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-primary _remove-user-mobile-btn" data-user-mobile="{{id}}">Xác nhận</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+</script>
+
+<div id="page-title">
+    <h3>
+        <?php td('Thành viên @%username%', array(
+            '%username%' => $user->getUsername()
+        )); ?>
+        <small>
+        </small>
+    </h3>
+
+    <div id="breadcrumb-right">
+        <div class="float-right">
+            <a href="<?php echo $this->createUrl('user/default') ?>" class="btn medium bg-white mrg5R">
+                <span class="button-content">
+                    <i class="glyph-icon icon-group"></i>
+                    <?php td('Danh sách'); ?>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="page-content">
+    <div class="row">
+        <!-- Profile box -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="profile-box content-box">
+                <div class="content-box-header clearfix ui-state-default">
+                    <img width="36" src="<?php echo \Users::getAvatar48x($user); ?>" alt="">
+                    <div class="user-details">
+                        <?php echo $user->getFullName(); ?>
+                        <span>
+                            <?php td('Mã'); ?>: <strong><?php echo $user->getCode(); ?></strong>
+                        </span><br>
+                    </div>
+                </div>
+                <div class="content-box-wrapper user-main-profile-box">
+                    <ul>
+                        <li>
+                            <strong><?php td('Đối tượng'); ?>:</strong>
+                            <?php echo (\Users::SECTION_CUSTOMER == $user->getSection())? t('Khách hàng') : t('Nhân viên'); ?><br>
+                        </li>
+
+                        <li>
+                            <strong><?php td('Trạng thái'); ?>:</strong>
+                            <?php echo (\Users::STATUS_ACTIVE == $user->getStatus())? t('Kích hoạt') : t('Chưa kích hoạt'); ?><br>
+                        </li>
+
+                        <?php if ($controller->isAllowed(PERMISSION_USER_VIEW_FINANCE)) :?>
+                        <li>
+                            <strong><?php td('Tiền còn thiếu trong các đơn chờ giao'); ?>:</strong><br>
+                            <strong><span class="_money-amount" data-amount="<?php echo (0-$order_wait_delivery_amount) ?>"><?php echo (0-$order_wait_delivery_amount) ?></span></strong><br>
+                            <span class="font-gray-dark"><?php td('Cần thu tối thiểu'); ?>:</span> <span class="_money-amount" data-amount="<?php echo (($user->getAccountBalance() - $order_wait_delivery_amount)) ?>"><?php echo ($user->getAccountBalance() - $order_wait_delivery_amount) ?></span>
+                        </li>
+
+                        <li>
+                            <div>
+                                <strong><?php td('Tài chính'); ?>:</strong>
+                                <a href="javascript:;" class="float-right" id="_user-sync-account" data-user-id="<?php echo $user->getId(); ?>">
+                                    <?php td('Đồng bộ'); ?>
+                                </a>
+                            </div>
+                            <div>
+                                - <?php td('Số tài khoản'); ?>: <span id="_user-account-no"><?php echo $user->getAccountNo(); ?></span><br />
+                                - <?php td('Số dư') ?>: <span id="_user-account-balance" class="_money-amount" data-amount="<?php echo $user->getAccountBalance(); ?>"><?php echo $user->getAccountBalance(); ?></span>
+                            </div>
+                        </li>
+                        <?php endif; ?>
+
+                        <li>
+                            <div>
+                                <strong><?php td('Email'); ?>:</strong>
+                                <?php if($user->getEmail()!='') {?>
+                                <a class="_email" href="mailto:<?php echo $user->getEmail(); ?>"><?php echo $user->getEmail() ?></a>
+                                <?php }else echo ' Chưa có tài khoản email';?>
+                            </div>
+                            <?php if(!$user->isVerifyEmail() && $user->getEmail()!='') :?>
+                            <div class="_notVerify infobox font-gray-dark">
+                                <div class="large btn font-black info-icon">
+                                    <i class="glyph-icon icon-warning"></i>
+                                </div>
+                                <?php td('Email này chưa được kích hoạt'); ?><br>
+                                <p>
+                                    <a href="javascript:;" class="font-gray-dark" data-user-id="<?php echo $user->getId(); ?>" id="_user-active-email"><?php td('Kích hoạt') ?></a> &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+                                    <a href="javascript:;" class="font-gray-dark"  data-toggle="modal" data-target="#myModalRemoveEmail"><?php td('Xóa') ?></a>
+                                </p>
+                            </div>
+                            <?php endif; ?>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/ profile box -->
+
+        <!-- Other info -->
+        <div class="col-lg-9 col-sm-6">
+
+            <!-- Edit link -->
+            <div class="col-lg-12 text-right">
+                <?php if ($controller->isAllowed(PERMISSION_USER_INFO_EDIT)) : ?>
+                <a href="<?php echo $this->createUrl('user/edit', array('id' => $user->getId())); ?>">
+                    <?php td('Sửa thông tin'); ?>
+                </a> &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+                <a href="javascript:;" class="_user-change-pass" data-toggle="modal" data-target="#myModal">
+                    <?php td('Đổi mật khẩu'); ?>
+                </a> &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+                <?php endif; ?>
+
+                <?php if ($controller->isAllowed(PERMISSION_SYSTEM_MANAGE)) : ?>
+                    <a href="javascript:;" class="_user-reset-recret" data-toggle="modal" data-target="#myModalRSK">
+                        <?php td('Reset secret key'); ?>
+                    </a>
+                <?php endif ;?>
+            </div>
+            <div class="divider"></div>
+            <!--/ edit link -->
+
+            <div class="row">
+                <div class="col-lg-5 col-sm-12">
+                    <h4><?php td('Thông tin cá nhân'); ?></h4>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('Họ/ Tên'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php echo $user->getLastName(); ?>/ <?php echo $user->getFirstName(); ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('Giới tính'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php
+                                switch($user->getGender()) {
+                                    case 1:
+                                        td('Nam');
+                                        break;
+                                    case 0:
+                                        td('Nữ');
+                                        break;
+                                    default:
+                                        td('Chưa xác định');
+                                }
+                                ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('Quốc tịch'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php echo $user->getNationality() ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('Ngày sinh'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php $time = new \Flywheel\Db\Type\DateTime($user->getBirthday());
+                                echo ($time->isEmpty()==true)?'Chưa có ngày sinh':$user->getBirthday()->format('d/m/Y'); ?>
+                                <?php
+                                //funny here
+                                $now = new DateTime();
+                                if ($now->format('d-m') == $user->getBirthday()->format('d-m')): ?><br>
+                                    <span class="font-gray-dark">
+                                        <?php td('Hôm nay là sinh nhật người dùng này'); ?>
+                                    </span>
+                                <?php endif;?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('Địa chỉ'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php
+                                    echo "{$user->getDetailAddress()}, {$user->getQhAddress()}, {$user->getTtAddress()}";
+                                ?>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-lg-4 col-sm-12">
+                    <h4><?php td('Điện thoại'); ?></h4>
+                    <p class="font-gray-dark">
+                        <?php td('- Hệ thống quy định mỗi tài khoản cho phép tối đa <strong>3</strong> số điện thoại.<br>- Khách hàng nhắn tin để xác nhận điện thoại của mình.<br>- Có thể nhắn xác nhận nhiều hơn <strong>3</strong> số, hệ thống sẽ lưu <strong>3</strong> số gần nhất'); ?>
+                    </p>
+
+                    <div id="_user-mobile-list" class="user-mobile-placeholder">
+                    </div>
+
+                    <?php if ($controller->isAllowed(PERMISSION_USER_MOBILE_EDIT)): ?>
+                    <div id="_add-user-mobile" class="form-input hide">
+                        <div class="input-append-wrapper input-append-right">
+                            <div class="input-append disabled primary-bg" id="_add-user-mobile-btn">
+                                <i class="glyph-icon icon-plus"></i>
+                            </div>
+                            <div class="append-right">
+                                <input type="text" placeholder="<?php td('Thêm số điện thoại'); ?>" name="add_mobile" id="_add-user-mobile-input" data-user-id="<?php echo $user->getId(); ?>" value="">
+                            </div>
+                        </div>
+
+                        <!-- Error -->
+                        <ul class="parsley-error-list" id="_add-mobile-error">
+                            <li class="required"></li>
+                        </ul>
+                        <!--/ error -->
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="col-lg-3 col-sm-12">
+                    <h4><?php td('Thông tin hệ thống'); ?></h4>
+
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('Gia nhập'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php echo $user->getJoinedTime()->format('H:i d/m/Y'); ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('Cập nhật'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php echo $user->getModifiedTime()->format('H:i d/m/Y'); ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('Đăng nhập'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php echo $user->getLastLoginTime()->format('H:i d/m/Y'); ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('IP'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php echo $user->getLastLoginIp(); ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <strong><?php td('ID'); ?>:</strong>
+                            </td>
+                            <td>
+                                <?php echo $user->getId(); ?>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--/ other info -->
+    </div>
+
+    <div class="row" id="_user-transaction-history-container"></div>
+    <div class="button-group center-div" id="_user-transaction-pagination"></div>
+</div>
+
+<?php
+else :
+    $document->title .= t('Thông tin người dùng');
+?>
+<div id="page-title">
+    <h3>
+        <?php td('Không tìm thấy người dùng'); ?>
+        <small>
+        </small>
+    </h3>
+
+    <div id="breadcrumb-right">
+        <div class="float-right">
+            <a href="<?php echo $this->createUrl('user/default') ?>" class="btn medium bg-white mrg5R">
+            <span class="button-content">
+                <i class="glyph-icon icon-group"></i>
+                <?php td('Danh sách'); ?>
+            </span>
+            </a>
+        </div>
+    </div>
+</div>
+<div id="page-content">
+    <div class="col-lg-12">
+        <div class="infobox bg-orange">
+            <div class="large btn bg-white info-icon">
+                <i class="glyph-icon icon-warning-sign"></i>
+            </div>
+            <h4 class="infobox-title"><?php td('Không tìm thấy người dùng'); ?></h4>
+            <p><?php td('Thông tin người dùng bạn yêu cầu không tồn tại. '); ?><a href="<?php echo $this->createUrl('user/default') ?>"><?php td('Trang danh sách người dùng'); ?></a></p>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+<!--modal: Reset pass-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="_reset-password">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Đổi mật khẩu</h4>
+            </div>
+            <div class="modal-body">
+                    <label>Mật khẩu mới</label>
+                    <input name="new_pass" type="password">
+                    <span class="_err-new_pass"></span>
+                    <label>Điền lại mật khẩu mới</label>
+                    <input name="confirm" type="password">
+                    <span  class="_err-confirm"></span>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="id" value="<?php echo $user->getId();?>">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button id="_btn-reset-password" type="button" class="btn btn-primary">Xác nhận</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--modal: Reset secret key-->
+<div class="modal fade" id="myModalRSK" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Reset secret key: <span class="_nameSRK"><?php echo $user->getSecretKey();?></span></h4>
+            </div>
+            <div class="modal-body">
+                Reset secret key sẽ khiến User phải đăng nhập lại, bạn có chắc là muốn thực hiện hành động này không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary _btnRSK" data-id="<?php echo $user->getId()?>" >Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modal: Remove mobile-->
+<div class="modal fade" id="myModal{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Xác nhận</h4>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc muốn xóa số điện thoại {{mobile}}?</p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary _remove-user-mobile-btn" data-user-mobile="{{id}}">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modal: Remove Email-->
+<div class="modal fade" id="myModalRemoveEmail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Xác nhận</h4>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc muốn xóa email <strong><?php echo $user->getEmail();?></strong></p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" data-user-id="<?php echo $user->getId(); ?>" id="_user-remove-email">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>

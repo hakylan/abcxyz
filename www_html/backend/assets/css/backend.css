@@ -1,0 +1,58 @@
+.password_strength{
+    float: right;
+    color: #BF362A;
+    font-weight: bold;
+}
+.password_strength.password_strength_2 {
+    color: #D84B37;
+}
+.password_strength.password_strength_3 {
+    color: #749619;
+}
+.password_strength.password_strength_4 {
+    color: #A0BA59;
+}
+.fg-toolbar.ui-toolbar.ui-widget-header.ui-corner-tl.ui-corner-tr.ui-helper-clearfix{
+    display: none;
+}
+h2 {
+    width: 200px;
+    border: 1px solid #000;
+    color:  #000;
+    line-height: 25px;
+    font-size: 14px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+ol.select {
+    display: none;
+}
+
+ol.select > li {
+    width: 200px;
+    background: #eee;
+    line-height: 25px;
+    font-size: 14px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+ol.select > li:hover {
+    background: #aaa;
+}
+.select-user {
+    width: 40%;
+    display: none;
+}
+.select-user > li {
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    width: 219px;
+}
+.select-user > li:hover {
+    background: #ebebeb;
+}
+.poiter{
+    cursor: pointer;
+}

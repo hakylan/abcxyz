@@ -1,0 +1,60 @@
+#page-title{
+    padding: 5px ;
+}
+.maincontent .module-ct-item{
+    border-bottom: 1px solid #ccc;
+    padding: 10px 15px;
+}
+.maincontent .module-ct-item .title{
+    margin: 0;
+    text-transform: uppercase;
+}
+.maincontent .module-ct-item .title span{
+    margin-left: 20px;
+    font-size: 10px;
+}
+.total{
+    margin-top: 15px;
+}
+.maincontent{
+    margin-top: 10px;
+}
+.barcode-search .input-append-wrapper,
+.barcode-search .input-append-wrapper a,
+.barcode-search .input-append-wrapper .append-right,
+.barcode-search .input-append-wrapper .append-right input{
+    height: 40px;
+    position: relative;
+}
+.barcode-search .input-append-wrapper a{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+}
+.barcode-search .input-append-wrapper a i{
+    font-size: 18px;
+    left: 11px;
+    position: absolute;
+    top: 4px;
+    width: 10px;
+}
+.barcode-search .input-append-wrapper .append-right input{
+    border: 2px solid #3DA6FF;
+    border-right: none;
+    font-size: 16px;
+    font-weight: normal;
+}
+.barcode-search .bootstrap-select .dropdown-toggle{
+    height: 40px;
+    border: 2px solid #3DA6FF;
+}
+.barcode-search .bootstrap-select .filter-option{
+    font-size: 14px;
+}
+.barcode-search .bootstrap-select .caret{
+    top: 17px;
+}
+.maincontent .module-ct-item:nth-child(2n){
+    background: #F7F8F9;
+}

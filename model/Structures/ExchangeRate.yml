@@ -1,0 +1,12 @@
+comment:
+    - '#ExchangeRate'
+    - '#Schema for ExchangeRate OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    yuan: { name: yuan, type: integer, db_type: integer, alltypes: [integer, boolean], ntype: tinyint(11), length: 1, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '1', notnull: false, auto_increment: false, extra: '' }
+    exchange_rate: { name: exchange_rate, type: number, db_type: float, alltypes: [float], ntype: float, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    status: { name: status, type: integer, db_type: integer, alltypes: [integer, boolean], ntype: tinyint(1), length: 1, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '1', notnull: true, auto_increment: false, extra: '' }
+    user_create_id: { name: user_create_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    create_time: { name: create_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: exchange_rate

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Quản lý mua hàng</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jqueryui.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <script type="text/javascript" src="js/process/menu.js"></script>
+    <script type="text/javascript" src="js/process/home.js"></script>
+    <script type="text/javascript" src="js/tooltip.js"></script>
+    <script type="text/javascript" src="js/backendv2-frontend.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/roboto/roboto.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-typo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-header.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-menu-tab.css" />
+    <link rel="stylesheet" type="text/css" href="css/cssloading.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-chitietdonhang.css" />
+
+</head>
+<body>
+    <header class="header">
+        <nav class="note-page container">
+            <div class="module-float note-alert">
+                <p><i style="" class="fa fa-warning"></i>Số dư khách âm hoặc số tiền cần thu tối thiểu âm (&lt;0) là khách thiếu tiền</p>
+            </div>
+        </nav>
+        <nav role="navigation" class="container header-top">
+            <div class="row">
+                <div class="col-lg-1 col-md-1">
+                    <div class="module-float logo">
+                        <a href="#"></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="module-float input-search">
+                        <input type="text" id="exampleInput" class="form-control form-myinput" placeholder="Tìm đơn hàng nhanh theo mã đơn hàng hoặc ID...">
+                        <a href="#"><span class="arrow"></span></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 pull-right">
+
+                </div>
+            </div>
+        </nav>
+
+        <nav class="seu-menu" role="navigation">
+            <div class="container">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="col-lg-12 col-md-12 seu-main-menu" >
+                    <ul class="nav navbar-nav module-float">
+
+                        <li class="active">
+                            <a class="navbar-nav-a" href="#">Dashboard</a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Danh sách đơn hàng</a></li>
+                                <li><a href="#">Quản lý mua hàng</a></li>
+                                <li><a href="#">Mua hàng và thanh toán</a></li>
+                                <li><a href="#">Giao hàng</a></li>
+                            </ul>
+                        </li>
+
+                        <li class=" dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Người dùng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+
+            </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+
+    <section class="list-order-title purchase">
+        <div class="container ">
+            <div class="module-float title">
+                <p class="font-bold uppercase">Quản lý mua hàng</p>
+            </div>
+            <div class="module-float module-total">
+                <div class="item">
+                    <p><span class="total">21</span>  đơn</p>
+                    <p>Chờ đặt cọc</p>
+                </div>
+                <div class="item">
+                    <p><span class="total">21</span>  đơn</p>
+                    <p>Đang pai</p>
+                </div>
+                <div class="item">
+                    <p><span class="total">21</span>  đơn</p>
+                    <p>Đã pai</p>
+                </div>
+                <div class="item">
+                    <p><span class="total">21</span>  đơn</p>
+                    <p>Chờ thanh toán</p>
+                </div>
+                <div class="item font-red-new">
+                    <p><span class="total">21</span>  đơn</p>
+                    <p>Quá hạn pai</p>
+                </div>
+                <div class="item font-red-new">
+                    <p><span class="total">21</span>  đơn</p>
+                    <p>Quá hạn thanh toán</p>
+                </div>
+                <div class="item">
+                    <p><span class="total">21</span>  đơn</p>
+                    <p>Giao dịch viên</p>
+                </div>
+                <div class="item">
+                    <p><span class="total">21</span>  đơn</p>
+                    <p>Thanh toán viên</p>
+                </div>
+                <div class="item pull-right">
+                    <p class="servicess"><a class="open-service" href="#"><i class="fa fa-cog"></i> Cấu hình <i class="fa fa-angle-down"></i><i class="fa fa-angle-up"></i></a></p>
+                </div>
+            </div>
+
+            <div class="module-float module-service-open">
+                <div class="col-md-4">
+                    <div class="item">
+                        <span>Số đơn tối đa 1 lần nhận:</span>
+                        <div class="save-input">
+                            <a href="#" class="input-append ">
+                                <i class="fa fa-save"></i>
+                            </a>
+                            <input type="text" data-order-id="784" id="" name="weight_input" value="" placeholder="1200">
+                        </div>
+                    </div>
+                    <div class="item">
+                        <span>Thời gian tối đa phải thanh toán:</span>
+                        <div class="save-input">
+                            <a href="#" class="input-append ">
+                                <i class="fa fa-save"></i>
+                            </a>
+                            <input type="text" data-order-id="784" id="" name="weight_input" value="" placeholder="1200">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+                    <div class="item">
+                        <span>Số đơn tối đa 1 ngày nhận:</span>
+                        <div class="save-input">
+                            <a href="#" class="input-append ">
+                                <i class="fa fa-save"></i>
+                            </a>
+                            <input type="text" data-order-id="784" id="" name="weight_input" value="" placeholder="1200">
+                        </div>
+                    </div>
+                    <div class="item">
+                        <span>Thời gian tối đa phải xủ lí đơn hàng:</span>
+                        <div class="save-input">
+                            <a href="#" class="input-append ">
+                                <i class="fa fa-save"></i>
+                            </a>
+                            <input type="text" data-order-id="784" id="" name="weight_input" value="" placeholder="1200">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+                    <div class="item">
+                        <span>Thời gian tối đa phải đặt hàng:</span>
+                        <div class="save-input">
+                            <a href="#" class="input-append ">
+                                <i class="fa fa-save"></i>
+                            </a>
+                            <input type="text" data-order-id="784" id="" name="weight_input" value="" placeholder="1200">
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="module-float tab-search">
+                <div class="item-tiny-tab"><a href="#">Chờ đặt hàng</a></div>
+                <div class="item-tiny-tab"><a href="#">Đã nhận hàng</a></div>
+                <div class="item-tiny-tab"><a href="#">Đã pai</a></div>
+                <div class="item-tiny-tab active"><a href="#">Đã mua hàng</a></div>
+                <div class="item-tiny-tab"><a href="#">Đã thanh toán</a></div>
+                <div class="item-tiny-tab"><a href="#">Hủy/ Hết hàng</a></div>
+                <div class="input-search">
+                    <input type="text" class="form-control form-myinput" placeholder="Nhập user, mã khách" value="">
+                </div>
+
+            </div>
+            <div class="module-float search-step1">
+                <div class="services">
+                    <div class="item-services"><input type="checkbox" class="radio"> <i class="fa fa-thumbs-o-up"></i> <a href="#">Kiểm</a></div>
+                    <div class="item-services"><input type="checkbox" class="radio"> <i class="fa fa-times"></i> <a href="#">Không kiểm</a></div>
+                    <div class="item-services"><input type="checkbox" class="radio"> <i class="fa fa-cube"></i> <a href="#">Đóng gỗ</a></div>
+                    <div class="item-services"><input type="checkbox" class="radio"> <span class="icon-cpn">icon-cpn</span> <a href="#">CPN</a></div>
+                    <div class="item-services w-search">
+                        <div class="module_float">
+                            <select class="selectpicker">
+                                <option value="0">Nhân viên mua hàng</option>
+                                <option>Hà Nội</option>
+                                <option>Sài Gòn</option>
+                                <option>Đà Nẵng</option>
+                            </select>
+                        </div>
+                        <div class="module_float">
+                            <select class="selectpicker">
+                                <option value="0">Nhân viên thanh toán</option>
+                                <option>Hà Nội</option>
+                                <option>Sài Gòn</option>
+                                <option>Đà Nẵng</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="module-float search-open">
+                <div class="module-absolute">
+                    <div class="arrow-open">
+                        <span class="up">Rút gọn <i class="fa fa-caret-up"></i></span>
+                        <span class="down">Thêm bộ lọc <i class="fa fa-caret-down"></i></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="container main-list-order">
+            <div class="module-float total">
+                <div class="module_float">
+                    <p>Có <span class="font-bold">125</span> kết quả</p>
+                </div>
+                <div class="total-tab">
+                    <div class="item active">Cũ trước</div>
+                    <div class="item">Mới trước</div>
+                </div>
+                <div class="total-datepic">
+                    <span class="module_float">Từ</span>
+                    <div class="module_float input-date">
+                        <input type="text" placeholder="" class="form-control form-myinput" id="datepicker">
+                        <span class="arrow-date"></span>
+                    </div>
+                    <span class="module_float">Đến</span>
+                    <div class="module_float input-date">
+                        <input type="text" placeholder="" class="form-control form-myinput" id="datepicker2">
+                        <span class="arrow-date"></span>
+                    </div>
+                </div>
+                <div class="total-select">
+                    <span class="font-gray module_float">Theo:</span>
+                    <div class="module_float select">
+                        <select class="selectpicker">
+                            <option value="0">Trạng thái đơn</option>
+                            <option>Tạo đơn</option>
+                            <option>Đặt cọc</option>
+                            <option>Chờ thanh toán</option>
+                            <option>Thanh toán</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="total-date">
+                    <span class="font-gray">Lâu hơn:</span>
+                    <a href="#">1 ngày <span class="arrow"></span></a>
+                    <a href="#">3 ngày <span class="arrow"></span></a>
+                    <a href="#">7 ngày <span class="arrow"></span></a>
+                    <a href="#">15 ngày </a>
+
+
+                </div>
+
+            </div>
+            <div class="module-float list-header">
+                <div class="col-md-3">Đơn hàng</div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-4">Trạng thái</div>
+                        <div class="col-md-4 ">Người bán</div>
+                        <div class="col-md-4 ">Giá trị</div>
+                    </div>
+                </div>
+                <div class="col-md-2">Giao dịch viên</div>
+                <div class="col-md-2">Thanh toán viên</div>
+            </div>
+            <div class="module-float main-list-ct">
+
+                    <div class="main-list-item">
+                        <div class="col-md-3 module-left">
+                            <div class="avatar">
+                                <img src="images/gravatar.jpg">
+                            </div>
+                            <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a></p>
+                            <p class="font-small">@hóivan</p>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="font-activiti">Đang mua hàng</p>
+                                    <p class="font-small">30/08</p>
+                                </div>
+                                <div class="col-md-4 ">
+                                    <p>
+                                        <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                        <span>zyhoa</span>
+                                    </p>
+                                    <p>Aliww <span class="aliww">专营店</span></p>
+                                </div>
+                                <div class="col-md-4 ">
+                                    <p>520.000<sup>đ</sup> - 34<sup>¥</sup></p>
+                                    <p class="font-small">Tổng: 420 sp / 12 link</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p>HS.Văn/ @hosivan</p>
+                            <p><span class="font-gray">Nhận đơn:</span> 31/08</p>
+                            <p class="font-small"><span class="font-red-new">30 giờ chưa kiểm</span> - <a href="#">Thu hồi</a></p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>HS.Văn/ @hosivan</p>
+                            <p>31/08</p>
+                        </div>
+
+
+                    </div>
+
+                <div class="main-list-item">
+                    <div class="col-md-3 module-left">
+                        <div class="avatar">
+                            <img src="images/gravatar.jpg">
+                        </div>
+                        <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a></p>
+                        <p class="font-small">@hóivan</p>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p class="font-activiti">Đang mua hàng</p>
+                                <p class="font-small">30/08</p>
+                            </div>
+                            <div class="col-md-4 ">
+                                <p>
+                                    <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                    <span>zyhoa</span>
+                                </p>
+                                <p>Aliww <span class="aliww">专营店</span></p>
+                            </div>
+                            <div class="col-md-4 ">
+                                <p>520.000<sup>đ</sup> - 34<sup>¥</sup></p>
+                                <p class="font-small">Tổng: 420 sp / 12 link</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <p>HS.Văn/ @hosivan</p>
+                        <p><span class="font-gray">Nhận đơn:</span> 31/08</p>
+                        <p class="font-small"><span class="font-red-new">30 giờ chưa kiểm</span> - <a href="#">Thu hồi</a></p>
+                    </div>
+                    <div class="col-md-2">
+                        <p>HS.Văn/ @hosivan</p>
+                        <p>31/08</p>
+                    </div>
+
+
+                </div>
+
+                <div class="main-list-item">
+                    <div class="col-md-3 module-left">
+                        <div class="avatar">
+                            <img src="images/gravatar.jpg">
+                        </div>
+                        <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a></p>
+                        <p class="font-small">@hóivan</p>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p class="font-activiti">Đang mua hàng</p>
+                                <p class="font-small">30/08</p>
+                            </div>
+                            <div class="col-md-4 ">
+                                <p>
+                                    <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                    <span>zyhoa</span>
+                                </p>
+                                <p>Aliww <span class="aliww">专营店</span></p>
+                            </div>
+                            <div class="col-md-4 ">
+                                <p>520.000<sup>đ</sup> - 34<sup>¥</sup></p>
+                                <p class="font-small">Tổng: 420 sp / 12 link</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <p>HS.Văn/ @hosivan</p>
+                        <p><span class="font-gray">Nhận đơn:</span> 31/08</p>
+                        <p class="font-small"><span class="font-red-new">30 giờ chưa kiểm</span> - <a href="#">Thu hồi</a></p>
+                    </div>
+                    <div class="col-md-2">
+                        <p>HS.Văn/ @hosivan</p>
+                        <p>31/08</p>
+                    </div>
+
+
+                </div>
+
+                <div class="main-list-item">
+                    <div class="col-md-3 module-left">
+                        <div class="avatar">
+                            <img src="images/gravatar.jpg">
+                        </div>
+                        <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a></p>
+                        <p class="font-small">@hóivan</p>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p class="font-activiti">Đang mua hàng</p>
+                                <p class="font-small">30/08</p>
+                            </div>
+                            <div class="col-md-4 ">
+                                <p>
+                                    <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                    <span>zyhoa</span>
+                                </p>
+                                <p>Aliww <span class="aliww">专营店</span></p>
+                            </div>
+                            <div class="col-md-4 ">
+                                <p>520.000<sup>đ</sup> - 34<sup>¥</sup></p>
+                                <p class="font-small">Tổng: 420 sp / 12 link</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <p>HS.Văn/ @hosivan</p>
+                        <p><span class="font-gray">Nhận đơn:</span> 31/08</p>
+                        <p class="font-small"><span class="font-red-new">30 giờ chưa kiểm</span> - <a href="#">Thu hồi</a></p>
+                    </div>
+                    <div class="col-md-2">
+                        <p>HS.Văn/ @hosivan</p>
+                        <p>31/08</p>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div class="module-float text-right">
+                <ul class="pagination v2">
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+    </section>
+
+        <!--<script>-->
+            <!--$(document).ready(function(){-->
+
+                <!--$(".content-item").hover(function(){-->
+                    <!--$(this).find('.input-chat').slideToggle();-->
+                    <!--console.log($(this).find('.input-chat'));-->
+                <!--});-->
+            <!--})-->
+        <!--</script>-->
+
+        <script>
+        $(document).ready(function(){
+
+            $(".search-open .arrow-open").click(function(){
+                $(".search-open .arrow-open").toggleClass("open");
+                $(".search-step1").slideToggle();
+            });
+
+            $(".main-list-item .click-open-item .arrow-item").click(function(){
+                var $root = $(this).parents('.main-list-item');
+                $root.toggleClass("open");
+            });
+
+            $(".servicess a.open-service").click(function(){
+                $(".servicess a.open-service").toggleClass("open");
+                $(".module-service-open").slideToggle();
+            });
+
+        })
+    </script>
+
+</body>
+</html>

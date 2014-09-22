@@ -1,0 +1,15 @@
+<?php
+    $user = isset($user) ? $user : array();
+?>
+<div class="item-profile row">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <span class="normal-blod">Facebook:</span>
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-10 avatar-face">
+        <div class="img-face">
+            <img src="<?php echo \Users::getAvatarFacebook($user);?>" >
+        </div>
+        <p>Liên kết tài khoản với <a class="poiter"><?php echo($user->getFirstName()!='')?($user->getFirstName().' '.$user->getLastName()):$user->getUsername();?></a></p>
+        <p><a id="disconectFacebook" class="poiter">Ngắt kết nối</a></p>
+    </div>
+</div>

@@ -1,0 +1,300 @@
+#user-table-list img.user-avatar {
+    width: 32px;
+    border-radius: 16px;
+}
+
+#user-table-list div.avatar-bock {
+    position: absolute;
+}
+
+#user-table-list div.name-bock {
+    display: inline-block;
+    width: 100%;
+    padding-left: 40px;
+}
+
+#user-table-list td.name-container {
+    position: relative;
+}
+
+.user-main-profile-box ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #E9ECF1;
+}
+
+.user-main-profile-box ul li:first-child {
+    padding-top: 0;
+}
+
+.user-main-profile-box ul li:last-child {
+    border-bottom: none;
+}
+
+.user-main-profile-box .infobox {
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.user-mobile-placeholder {
+    padding: 10px 0;
+}
+
+.input-append {
+    cursor: pointer;
+}
+#main-content #page-title h3{
+    margin: 0;
+    padding: 20px 30px;
+}
+#main-content{
+    background: #fff;
+}
+.content-box.profile-box{
+    border: 1px solid #e9ecf1;
+    margin-bottom: 20px;
+    border-radius: 2px;
+}
+.profile-box.content-box .content-box-header{
+    padding: 15px;
+    background: #5bccf6;
+    display: block;
+    margin-left: 0px;
+    margin-top: -1px;
+    margin-right: -1px;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 2px 2px 0 0;
+    margin-bottom: 0;
+}
+.profile-box.content-box .content-box-header .user-details{
+    color: #fff;
+    font-family: Lato,sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+}
+.profile-box.content-box .content-box-header .user-details .title{
+    font-size: 20px;
+}
+.profile-box.content-box .content-box-header .user-details p{
+    margin-bottom: 0;
+}
+.profile-box.content-box .content-box-wrapper input.group-name,
+.profile-box.content-box .content-box-wrapper textarea{
+    display: block;
+    width: 100%;
+    padding-left: 10px;
+}
+.profile-box.content-box .content-box-wrapper input.group-name{
+    height: 28px;
+}
+.profile-box.content-box .content-box-wrapper form .row{
+    margin-bottom: 15px;
+}
+.profile-box.content-box .user-table-list .name-container{
+    position: relative;
+}
+.profile-box.content-box .user-table-list .name-container .avatar-bock{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    border-radius: 25px;
+}
+.profile-box.content-box .user-table-list .name-container .avatar-bock img{
+    width: 100%;
+}
+.profile-box.content-box .user-table-list .name-container .name-bock{
+    padding-left: 40px;
+}
+.profile-box.content-box .user-table-list .name-container .name-bock p{
+    margin-bottom: 3px;
+}
+.profile-box.content-box .user-table-list .bg-red,
+.profile-box.content-box .user-table-list .bg-blue{
+    border-radius: 2px !important;
+    color: #fff;
+    float: left;
+    height: 22px;
+    position: relative;
+    line-height: 22px;
+    min-width: 22px;
+    padding-top: 0px;
+    opacity: 0.6;
+}
+.profile-box.content-box .user-table-list .bg-blue:hover,
+.profile-box.content-box .user-table-list .bg-red:hover{
+    opacity: 1;
+}
+.profile-box.content-box .user-table-list .bg-blue{
+    background: #5bccf6;
+}
+.profile-box.content-box .user-table-list .bg-red{
+    background: none repeat scroll 0 0 red;
+}
+.profile-box.content-box .form-checkbox-radio label{
+    margin-right: 10px;
+}
+.profile-box.content-box .form-checkbox-radio label input{
+    float: left;
+    margin-right: 3px;
+}
+#roles-management #accordion .title-accodion{
+    margin-top: 0;
+    background: #e9ecf1;
+    padding: 0;
+    margin-bottom: 0;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+    font-family: Lato,sans-serif;
+    margin: -1px -1px 0 -1px;
+}
+#roles-management #accordion .title-accodion a{
+    color: #909cae;
+    position: relative;
+    width: 100%;
+    display: block;
+    padding: 10px 15px 12px;
+}
+#roles-management #accordion .title-accodion a:hover,
+#roles-management #accordion .title-accodion a:focus,
+#roles-management #accordion .title-accodion a:before{
+    text-decoration: none;
+}
+#roles-management #accordion .title-accodion a button{
+    font-size: 12px;
+    margin-top: 2px;
+}
+#roles-management #accordion .item-accordion{
+    float: left;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+#roles-management #accordion .item-accordion ul.panel-collapse{
+    padding-left: 25px;
+    padding-top: 5px;
+}
+#roles-management #accordion .item-accordion ul.panel-collapse li{
+    list-style-type: none;
+    padding: 3px 0;
+}
+.detail-user .header-title .link-list-user{
+    padding-top: 20px;
+    float: right;
+}
+.detail-user .header-title{
+    margin-bottom: 20px;
+}
+.detail-user .header-title h3.title{
+    font-size: 30px;
+}
+.detail-user .profile-box.content-box .content-box-header{
+    text-align: left;
+}
+.detail-user .module-ct-user .avatar{
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    overflow: hidden;
+    border-radius: 40px;
+}
+.detail-user .module-ct-user .ct-user-left .user-details{
+    padding-left: 64px;
+}
+.detail-user .module-ct-user .ct-user-left .item{
+    float: left;
+    padding-bottom: 6px;
+    padding-top: 8px;
+    width: 100%;
+    border-bottom: 1px solid #ebebeb;
+}
+.detail-user .module-ct-user .ct-user-left .content-box-wrapper{
+    float: left;
+}
+.detail-user .module-ct-user .ct-user-left .content-box-wrapper .note-warning{
+    text-align: center;
+    font-size: 20px;
+    color: #d92026;
+    padding-top: 5px;
+}
+.detail-user .module-ct-user .ct-user-left .item:last-child{
+    border-bottom: none;
+}
+.detail-user .module-ct-user .ct-user-right .header-top{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+.detail-user .module-ct-user .ct-user-right .module-content .item{
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    padding-top: 9px;
+    padding-bottom: 6px;
+}
+.detail-user .module-ct-user .ct-user-right .module-content .item:last-child{
+    border-bottom: none;
+}
+.detail-user .module-ct-user .item .left{
+    float: left;
+    width: 30%;
+    font-weight: bold;
+}
+.detail-user .module-ct-user .item .right{
+    float: left;
+    width: 70%;
+}
+.detail-user .module-ct-user{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.seu-breadcrumb{
+    margin-top: 5px;
+}
+.module-group-user{
+    margin-bottom: 20px;
+}
+.module-group-user .content-box .content-box-wrapper{
+    padding-bottom: 10px;
+    float: left;
+    width: 100%;
+    padding-right: 0;
+    margin-bottom: 20px;
+}
+.module-group-user .content-box .content-box-wrapper .module-float{
+    position: relative;
+    overflow-x: hidden;
+    max-height: 150px;
+}
+.modal-header,
+.modal-body,
+.modal-content,
+.modal-footer{
+    border: none;
+    float: left;
+    width: 100%;
+}
+.modal#editpass .modal-dialog{
+    width: 400px;
+}
+.modal-footer{
+    background: #f3f3f3;
+}
+.modal#editpass form span{
+    float: left;
+    width: 30%;
+    text-align: left;
+    padding-top: 3px;
+}
+.modal#editpass form input{
+    float: left;
+    width: 70%;
+    padding-left: 5px;
+}
+.modal#editpass form .item{
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+}

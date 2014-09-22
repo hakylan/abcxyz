@@ -1,0 +1,126 @@
+<?php
+use Flywheel\View\Render;
+
+$document = $this->document();
+
+$document->addCss('css/order.css');
+$document->addCss('css/style-chitietdonhang.css');
+$document->addCss('css/extend/quyen_order_detail.css');
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+//$document->addJs('js/process/order.js');
+$document->addJs('js/autoNumeric.js');
+$document->addJs('js/process/order_detail.js');
+$document->addJs('js/seudo-backendv1.js');
+$document->addJs('js/jqueryui.js');
+
+$list_user_order_info = isset( $list_user_order_info ) ? $list_user_order_info : false;
+
+
+?>
+<div class="seu-main-header" id="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <h3 class="main-header-title uppercase pull-left">
+                    Lịch sử tích lũy điểm
+                </h3>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="page-content" class="seu-page-content delivering no-header">
+    <div class="container">
+
+        <div class="module-custom" id="_order_content">
+            <h1>Tổng tiền hoàn lại cho khách hàng: <?php echo $total_money_refund;?> VNĐ</h1>
+            <h2>Tổng số khách được nhận lại tiền: <?php echo count($list_user_order_info);?></h2>
+            <?php
+             foreach($list_customer_level as $level_name=>$count){
+                 ?>
+                 <h2>Tổng số khách <?php echo $level_name; ?>: <?php echo $count;?> khách</h2>
+            <?php
+             }
+            ?>
+            <?php
+            foreach($list_user_order_info as $user_order){
+                ?>
+                <h2 style="margin-top: 20px; border: 0px; font-size: 20px;">Khách hàng: <?php echo $user_order['username']?></h2>
+                <table width="100%" cellspacing="0" cellpadding="5" border="1" style="border-collapse:collapse;margin-top: 20px;margin-bottom: 20px">
+                    <tr>
+
+
+                        <th >Tiền Trả Lại</th>
+                        <th >Điểm Tích Lũy</th>
+                        <th >Level</th>
+
+
+                    </tr>
+                    <tr>
+
+
+                        <td><?php echo $user_order['money']?> VNĐ</td>
+                        <td><?php echo $user_order['point']?></td>
+                        <td><?php echo $user_order['level']?></td>
+
+
+                    </tr>
+                </table>
+
+                <p></p>
+                <table width="100%" cellspacing="0" cellpadding="5" border="1" style="border-collapse:collapse">
+                    <tr>
+                        <th >STT</th>
+                        <th >Order code</th>
+<!--                        <th >Order avatar</th>-->
+                        <th >Phí mua hàng (VNĐ)</th>
+                        <th >Phí kiểm hàng (VNĐ)</th>
+                        <th >Phí VC quốc tế (VNĐ)</th>
+                        <th >Phí cố định (VNĐ)</th>
+                        <th >Chiết khấu (VNĐ)</th>
+                        <th >Điểm tích lũy</th>
+                        <th >Tổng điểm tích lũy</th>
+                        <th >Level cũ</th>
+                        <th >Level mới</th>
+                    </tr>
+                    <?php
+                    $i=0;
+                    foreach($user_order['order'] as $order){
+                        $i++;
+
+                        ?>
+                        <tr>
+                            <td><?php echo $i;?></td>
+                            <td><?php echo $order['order_code']?></td>
+<!--                            <td><img width="60px" src="--><?php //echo $order['order_avatar']?><!--"></td>-->
+                            <td><?php echo $order['fee_buying']?> </td>
+                            <td><?php echo $order['fee_checking']?></td>
+                            <td><?php echo $order['fee_transport']?></td>
+                            <td><?php echo $order['fee_fix']?></td>
+                            <td><?php echo $order['money_refund']?></td>
+                            <td><?php echo $order['point']?></td>
+                            <td><?php echo $order['total_point']?></td>
+                            <td><?php echo $order['old_level']?></td>
+                            <td><?php echo $order['new_level']?></td>
+
+
+                        </tr>
+                    <?php
+                    }
+                    ?>
+
+
+                </table>
+            <?php
+            }
+            ?>
+        </div>
+    </div>
+</div>
+
+
+
+
+

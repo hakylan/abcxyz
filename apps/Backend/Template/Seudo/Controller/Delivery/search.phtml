@@ -1,0 +1,86 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 6/5/14
+ * Time: 2:27 PM
+ */
+$address_ids = isset($address_ids) ? $address_ids : array();
+?>
+<?php
+if(!empty($address_ids)){
+    foreach ($address_ids as $id) {
+        if($id == 0){
+            continue;
+        }
+        ?>
+        <div class="col-lg-12 col-md-12 main-item " data-address-id="<?php echo $id ?>" >
+            <div class="module-float ">
+                <div class="module-float header-top">
+                    <div class="col-lg-3 col-md-3 left">
+                        <p >Đơn hàng</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p class="text-center">Trạng thái</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1">
+                        <p class="text-center">Kho</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p class="text-center">Tình trạng</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p class="text-center">Tổng</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p class="text-center">Y/C GIAO LÚC</p>
+                    </div>
+                </div>
+            </div>
+            <div class="module-float list">
+
+                <div class="module-float main-ct"  >
+                    <div class="row note-main _notify_success" style="display: none" data-address-id="<?php echo $id ?>">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="module-float note-main-top">
+                                <img src="<?php echo $controller->createUrl("") ?>/assetv2/images/icons/border-topgiaohang.png">
+                            </div>
+                            <div class="module-float note-main-ct text-center font-gray">
+                                <p>Các đơn hàng: <span class="font-bold _list_order_check" data-address-id="<?php echo $id ?>">
+
+                                </span> </p>
+                                <p>đã được chuyển từ trạng thái "ĐANG GIAO"
+<!--                                    , có thể xem danh sách các đơn trên-->
+<!--                                    <a href="#">tại đây</a>-->
+                                </p>
+                            </div>
+                            <div class="module-float note-main-bottom">
+                                <img src="<?php echo $controller->createUrl("") ?>/assetv2/images/icons/border-bottomgiaohang.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_main_order" data-load="0" data-address-id="<?php echo $id ?>">
+                        <img src="<?php echo \SeuDo\Main::getBackendUrl() ?>assetv2/images/loading/loading31.gif" style="width: 120px; margin-top: 150px; margin-left: 45%;">
+                    </div>
+
+                </div>
+                <div class="accout">
+                    <div class="module-float" >
+                        <div class="acc-title module-float _main_user" data-address-id="<?php echo $id ?>" data-load="0">
+                            <img src="<?php echo \SeuDo\Main::getBackendUrl() ?>assetv2/images/loading/loading1.gif" style="width: 20px; margin-left: 35%;">
+                        </div>
+                        <div class="_main_address" data-load="0" data-address-id="<?php echo $id ?>">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    <?php
+    }
+}else{ ?>
+<div class="module-float header-top text-center">
+    <h3>Không tồn tại đơn hàng nào</h3>
+</div>
+<?php } ?>

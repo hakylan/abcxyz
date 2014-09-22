@@ -1,0 +1,21 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 5/20/14
+ * Time: 6:27 PM
+ */
+$document = $controller->document();
+$backend_url = $controller->createUrl("");
+$document->addJsVar('backend_url', $controller->createUrl('/'), 'TOP');
+$document->addJs("js/jquery.printElement.min.js","TOP");
+
+?>
+<script>
+    $(document).ready(function(){
+        $('#_seudo').printElement({});
+    });
+</script>
+<div id="_seudo">
+    Chu minh quyen
+</div>

@@ -1,0 +1,83 @@
+<?php
+use SeuDo\Main;
+$publicPath = Main::getHomeUrl();
+$document = $this->document();
+$document->title = ("Nạp tiền");
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/';
+$imgPath = $publicPath . 'assets/images/';
+$logger = \UserAuth::getInstance()->getUser();
+?>
+<div class="module-inner">
+    <div class="module-title">
+        <p class="title"><span class="title-page">Nạp tiền</span></p>
+    </div>
+
+    <div class="module-ct borrow rechar">
+        <section class="row">
+            <div class="module-tab">
+                <ul id="myTab" class="nav nav-tabs my-tabs">
+                    <li class="active"><a data-toggle="tab" href="#home">Chuyển khoản</a></li>
+                    <li ><a data-toggle="tab" href="#profile">Nạp tiền trực tiếp</a></li>
+                </ul>
+                <div class="tab-content my-tab-content">
+                    <div id="home" class="tab-pane active">
+                        <div class="main-left">
+                            <p class="title">Cách 1: Chuyển khoản qua ngân hàng</p>
+                            <p class="normal">Quý khách hàng chuyển khoản qua ngân hàng vào các tài khoản của SeuDo</p>
+                            <p class="tk"><span class="techcom"> </span>TK Techcombank: <?php echo \SystemConfig::ACCOUNT_TECHCOMBANK ?></p>
+                            <p class="tk"><span class="vietcom"> </span>TK Vietcombank: <?php echo \SystemConfig::ACCOUNT_VIETCOMBANK ?></p>
+                            <p class="tk"><span class="viettin"> </span>TK Vietinbank: <?php echo \SystemConfig::ACCOUNT_VIETINBANK ?></p>
+                            <p class="normal"><span class="normal-blod"></span>Nội dung chuyển khoản ghi rõ:</p>
+                            <div class="sms">
+                                <p class="normal"><span class="normal-blod">SEUDO NAP TIEN</span>
+                                    <strong> <?php echo $logger->getUsername();?></strong> "Số điện thoại của bạn (không bắt buộc, dùng để SếuĐỏ liên hệ khi gặp sự cố)"</p>
+                            </div>
+                            <p class="italic tk note">(VD: SEUDO NAP TIEN NguyenVanA 0912834567) </p>
+
+                        </div>
+                        <div class="main-left main-right">
+
+                            <p class="title">Cách 2: Chuyển khoản qua ATM hoặc các dịch vụ khác</p>
+                            <p class="normal">B1: Quý khách hàng thực hiện chuyển khoản qua ATM hoặc các dịch vụ không có ghi chú</p>
+                            <p class="normal">B2: <span class="normal-blod">Dùng điện thoại nhắn tin SMS </span> theo cú pháp:</p>
+                            <div class="sms">
+                                <span>
+                                    <span class="normal-blod">SNT</span>
+                                    &nbsp;"Mã ngân hàng (TCB | VCB | VIETIN)"&nbsp;"Số tiền" gửi
+                                    <span class="red-bold pull-right">6089</span>
+                                </span>
+                            </div>
+                            <span class="italic">&nbsp;Phí SMS 500<sup>đ</sup></span>
+                            <p class="italic tk note">
+                                <span class="text-black"> TCB: Techcombank, VCB: Vietcombank, VIETIN: Vietinbank</span>
+                            <br>
+                            <br>
+                                (VD: SNT TCB 20000000 gửi 6089)<br>
+                                (VD: SNT VCB 20000000 gửi 6089)<br>
+                                (VD:  SNT VIETIN 20000000 gửi 6089)
+                            </p>
+                        </div>
+                    </div>
+                    <div id="profile" class="tab-pane ">
+                        <p class="title-tab">Quý khách có thể nạp tiền trực tiếp ở 1 trong 2 địa chỉ dưới đây:</p>
+                        <div class="mapalimama">
+                            <p class="title-map"><span class="uppercase">Hà Nội:</span> 137 Nguyễn Xiển, Quận Thanh Xuân ( Ngã tữ Khuất Duy Tiến - Nguyễn Trãi)</p>
+                            <a href="http://goo.gl/maps/DxMr8" rel="nofollow" target="_blank">
+                                <img src="<?php echo $imgPath;?>maphanoi.jpg">
+                            </a>
+                        </div>
+                        <div class="mapalimama">
+                            <p class="title-map"><span class="uppercase">Hồ Chí Minh:</span> Khu C30 - Đường Thành Thái, Phường 14, Quận 10</p>
+                            <a href="https://goo.gl/maps/DbTU5" rel="nofollow" target="_blank">
+                                <img src="<?php echo $imgPath;?>mapsaigon1.jpg">
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>

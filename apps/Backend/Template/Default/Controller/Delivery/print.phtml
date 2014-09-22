@@ -1,0 +1,129 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 5/21/14
+ * Time: 12:50 AM
+ */
+$order_list = isset($order_list) ? $order_list : array();
+$address = isset($address) ? $address : array();
+$user = isset($user) ? $user : array();
+$error = isset($error) ? $error : 0;
+$message = isset($message) ? $message : "";
+?>
+<div class="_content_print">
+    <div class="col-lg-12 col-md-12 _body_print">
+        <?php if(!empty($order_list) && $address instanceof \UserAddress && $user instanceof \Users && $error == 0){?>
+        <div class="_table">
+            <table class="tg" style="table-layout: fixed;">
+                <colgroup>
+                    <col style="width: 320px">
+                    <col style="width: 60px">
+                    <col style="width: 160px">
+                    <col style="width: 160px">
+                    <col style="width: 80px">
+                </colgroup>
+                <tr>
+                    <th class="tg-uce2" style="text-align: left;">CÔNG TY CP,TRUYỀN THÔNG ALIMAMA</th>
+                    <th class="tg-s6z2">&nbsp;</th>
+                    <th class="tg-031e">&nbsp;</th>
+                    <th class="tg-031e">&nbsp;</th>
+                    <th class="tg-031e"></th>
+                </tr>
+                <tr>
+                    <td class="tg-031e">Đ/c: 34 ngách 55/64 Kim Giang, Thanh Xuân, HN</td>
+                    <td class="tg-2fkl" colspan="3" rowspan="3">&nbsp;Phiếu giao hàng</td>
+                    <td class="tg-031e"></td>
+                </tr>
+                <tr>
+                    <td class="tg-031e">Tel: 0987654321</td>
+                    <td class="tg-031e"></td>
+                </tr>
+                <tr>
+                    <td class="tg-031e">Website: http://seudo.vn</td>
+                    <td class="tg-031e"></td>
+                </tr>
+                <tr>
+                    <td class="tg-e3zv" colspan="5"></td>
+                </tr>
+                <tr>
+                    <td class="tg-07dj">Username:
+                        <span class="_text"><?php echo $user->getUsername() ?></span>
+                       </td>
+                    <td class="tg-07dj" colspan="2">Mã khách hàng: <span class="_text"><?php echo $user->getCode() ?></span></td>
+                    <td class="tg-07dj">Khối lượng:
+                        <input type="text" class="_input_weight" placeholder="..."/>
+                        <a href="javascript:void(0)" title="Sửa khối lượng" class="_span_weight" style="display: none" data-address-id="{{general.address_id}}">
+                    </td>
+                    <td class="tg-07dj">KG</td>
+                </tr>
+                <tr>
+                    <td class="tg-07dj" colspan="5">Địa chỉ:
+                        <span class="_text">
+                            <?php echo $address->getDetail().' - '.$address->getDistrictLabel().' - '.$address->getProvinceLabel() ?>
+                        </span></td>
+                </tr>
+                <tr>
+                    <td class="tg-07dj" colspan="5"></td>
+                </tr>
+                <tr>
+                    <td class="tg-by3v" colspan="5">Đơn hàng giao</td>
+                </tr>
+                <tr>
+                    <td class="tg-031e" colspan="5">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-row font-lag">
+                                <?php
+                                foreach ($order_list as $order) {
+                                    if($order instanceof \Order){
+                                        
+                                    ?>
+                                    <div class="col-lg-2 col-md-2">
+                                        <p class="uppercase"><?php echo $order->getCode() ?></p>
+                                    </div>
+                                <?php
+                                    }
+                                }
+                                ?>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tg-031e">Phí vận chuyển:</td>
+                    <td class="tg-s6z2" colspan="4"></td>
+                </tr>
+                <tr>
+                    <td colspan="5"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="text-center _div_name" >
+            <h3>Người giao hàng</h3>
+            <h5><i>(Ký,họ tên)</i></h5>
+
+        </div>
+        <div class="text-center _div_name" >
+            <h3>Người nhận hàng</h3>
+            <h5><i>(Ký,họ tên)</i></h5>
+        </div>
+        <div class="text-center _div_name" >
+            <h5>Ngày <?php echo date("d") ?> Tháng <?php echo date("m") ?> Năm <?php echo date("Y") ?></h5>
+            <h3>Người lập phiếu</h3>
+            <h5><i>(Ký,họ tên)</i></h5>
+        </div>
+        <?php }else{ ?>
+        <div class="col-lg-12 text-center">
+            <?php if($error == 0){ ?>
+            <h3>Không tồn tại địa chỉ, hoặc đơn hàng nào!</h3>
+            <?php }else{
+                echo "<h3>{$message}</h3>";
+            } ?>
+        </div>
+        <?php } ?>
+    </div>
+    <div class="col-lg-12 text-center">
+        <button type="button" class="seubtn _btn_delivery" type="button"><i class="fa fa-print"></i>In phiếu</button>
+    </div>
+</div>

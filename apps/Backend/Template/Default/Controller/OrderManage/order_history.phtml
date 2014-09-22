@@ -1,0 +1,54 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 3/10/14
+ * Time: 1:49 PM
+ */
+$order_history_list = isset($order_history_list) ? $order_history_list : array();
+if(!empty($order_history_list)){
+    foreach ($order_history_list as $order_history) {
+        if($order_history && ($order_history instanceof \OrderHistory)){
+
+?>
+<tr>
+    <td><?php echo $order_history->getId(); ?></td>
+    <td class="font-bold text-left"><?php echo $order_history->getOrderCode(); ?></td>
+    <td>
+        <?php echo $order_history->getQuantity(); ?>
+<!--        <div class="label bg-orange">+152</div>-->
+    </td>
+    <td>
+        <div class="label bg-blue-alt">+<?php echo Common::numberFormat($order_history->getMoney()) ?></div>
+    </td>
+    <td>
+        <?php if($order_history->getCurrentWarehouse() && $order_history->getCurrentWarehouse() != ''){
+            echo $order_history->getCurrentWarehouse();
+        }else{
+            echo "Không có thông tin";
+        }
+
+        ?>
+
+    </td>
+    <td>
+        <?php echo $order_history->getDetail(); ?>
+    </td>
+    <td>
+        <?php
+            $create_time = new DateTime($order_history->getCreatedTime());
+            if(strtotime($order_history->getCreatedTime()) > 0){
+                echo $create_time->format("H:i:s d:m:Y");
+            }
+        ?>
+    </td>
+</tr>
+<?php }}}else{ ?>
+    <tr>
+        <td colspan="7">
+            <h1>
+                Không có dữ liệu.
+            </h1>
+        </td>
+    </tr>
+<?php } ?>

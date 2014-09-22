@@ -1,0 +1,131 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$document->title = t("Đăng nhập Sếu Đỏ");
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+$link_facebook = \SeuDo\Main::getHomeRouter()->createUrl('LoginFacebook/login_facebook');
+$document->addJsVar('LoginFacebookUrl',\SeuDo\Main::getHomeRouter()->createUrl('LoginFacebook'),'TOP');
+$document->addJsVar('HomeUrl',\SeuDo\Main::getHomeRouter()->createUrl('Home/default'),'TOP');
+
+?>
+<!-- Begin header -->
+<section class="page-register register login">
+    <nav class="container" >
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-title">
+                            <p class="title"><span class="title-page">Đăng nhập</span><span class="pull-right">Bạn chưa có tài khoản? <a href="<?php echo $publicPath?>register/default">Đăng ký tại đây</a></span></p>
+                        </div>
+                        <div class="module-ct">
+                            <form role="form" method="POST" class="fr-login" name="fr-login" id="_frm-login">
+                            <div class="module-ct-item">
+                                <div class="left-ct">
+                                    <span class="normal-blod">Tài khoản:</span><span class="red-normal">*</span>
+                                </div>
+                                <div class="right-ct pull-right">
+                                    <p class="red-normal re-error err-cred err-ajax"></p>
+                                    <input name="credential" id="exampleInput" class="form-control form-myinput" type="text" placeholder="Tài khoản hoặc email đã kích hoat" >
+                                    <p class="normal">Sử dụng các ký tự latin (a-z) và ký tự gạch dưới. Từ 3 đến 15 ký tự</p>
+                                </div>
+                            </div>
+
+                            <div class="module-ct-item password">
+                                <div class="left-ct">
+                                    <span class="normal-blod">Mật khẩu:</span><span class="red-normal">*</span>
+                                </div>
+                                <div class="right-ct pull-right">
+                                    <p class="red-normal re-error err-pass"></p>
+                                    <input name="password" id="exampleInput" class="form-control form-myinput _inputPass" type="password" placeholder="Mật khẩu (tối thiểu 6 ký tự)" >
+
+
+                                </div>
+                                <div class="regis-item made">
+                                    <p class="normal"><label>
+                                            <input type="checkbox" class="login-checkbox" id="remember" name="remember" checked="true">
+                                            Ghi nhớ đăng nhập
+                                        </label>
+                                    </p>
+                                </div>
+                                <p class="normal facebook" onclick="fb_login()">Đăng nhập bằng facebook<span class="icon-facebook">login facebook</span></p>
+                                <p class="page-login submit full-right">
+                                    <button id="_bt-login" class="btn btn-blue btn-lg btn-login" type="button">Đăng nhập</button>
+                                    <button id="btnShow-login" class="btn btn-blue btn-lg btn-login disable _hide" type="button">Đang xử lý...</button></p>
+                            </div>
+                            </form>
+                            <div class="page-login-footer">
+
+                                <p class="normal-center">
+                                    <a class="click-resetpass-login">Quên mật khẩu <span class="arow"></span></a>
+                                </p>
+                                <br>
+                                <div class="_reset-password _hide">
+                                    <div id="_submit_email_reset_pass">
+                                        <div class="regis-item ">
+                                            <div class="module-ct-item">
+                                                <div class="left-ct">
+                                                    <span class="normal-blod">Tài khoản: </span>
+                                                </div>
+                                                <div class="right-ct pull-right">
+                                                    <input id="_email_request" class="form-control form-myinput" type="text" placeholder="Vui lòng nhập email hoặc tên tài khoản trên SeuDo.vn của bạn!" >
+                                                </div>
+                                            </div>
+                                            <input id="_csrf" name="_csrf" value="<?php echo $this->request()->getCsrfToken() ;?>" type="hidden">
+                                            <p class="reset-password-submit">
+                                                <button class="btn btn-blue btn-lg btn-login _request" data-id-form="_submit_email_reset_pass"
+                                                        type="button" data-target="" data-toggle="modal">
+                                                    Lấy lại mật khẩu
+                                                </button>
+                                                <button class="btn btn-blue btn-lg btn-login _request_before disable hidden"
+                                                        type="button" data-target="" data-toggle="modal">
+                                                    Lấy lại mật khẩu
+                                                </button>
+                                            </p>
+                                            <div class="tooltipregister">
+                                                <div class="arrow_box">
+                                                    <p class="normal">Vui lòng nhập địa chỉ email đăng ký để lấy lại mật khẩu.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="alert alert-info col-md-12 _notifForgotPass _hide">
+                                            <p class="_notifForgot"></p>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModalresetpas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="alert icon-alert-success ">
+                                                        <h4>GIAO DỊCH THÀNH CÔNG</h4>
+                                                        <p>Hệ thống sẽ gửi mail thống báo đến email của bạn<a href="#" class="red-normal"> Click vào đây để quay lại trang gì đó</a> form này load tầm 5s giây tụ động quay lai trang Login </p>
+                                                    </div>
+                                                </div>
+
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+</section>
+
+<!-- End header -->
+
+

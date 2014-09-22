@@ -1,0 +1,75 @@
+<div class="search-sidebar2">
+    <div class="seu-module">
+        <div class="module-inner">
+            <div class="module-ct">
+                <input type="text" placeholder="Tìm kiếm trong cộng đồng"
+                       class="form-control form-myinput" id="exampleInput">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="menu-sidebar2">
+    <div class="seu-module">
+        <ul>
+            <li>Các tỉnh thành</li>
+            <?php foreach($cats AS $c):?>
+                <li><a href="<?php echo $this->createUrl('category/'.$c->slug)?>"><?php echo $c->title?> (<?php echo $c->post_count?>)</a></li>
+            <?php endforeach?>
+        </ul>
+    </div>
+</div>
+<div class="tag-sidebar2">
+    <div class="seu-module">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title">Các chợ tiêu biểu</p>
+            </div>
+            <div class="module-ct">
+                <?php if($featured_posts):?>
+                <ul>
+                    <?php foreach($featured_posts as $p):
+                            $imgs = explode(',',$p);
+                            $thumb = $imgs[0];
+                        ?>
+                    <li class="item">
+                        <div class="img">
+                            <img src="<?php echo $thumb;?>">
+                        </div>
+                        <div class="item-ct">
+                            <p class="title">
+                                <a href="<?php echo $this->createUrl('post/'.$p->alias)?>"><?php echo $p->title?> </a>
+                            </p>
+
+                            <div class="item-ct-bottom">
+                                <div class="raty rv_only" data-score="<?php echo $p->rate_score?>"></div>
+
+                            </div>
+                        </div>
+                    </li>
+                    <?php endforeach?>
+
+                </ul>
+                    <?php else:?>
+                    <div class="alert alert-warning">
+                        Chưa có dữ liệu
+                    </div>
+                <?php endif?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="social-sidebar2">
+    <div class="seu-module">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title">Liên kết của chúng tôi</p>
+            </div>
+            <div class="module-ct">
+                <a class="google" href="#">google</a>
+                <a class="switer" href="#">switer</a>
+                <a class="face" href="#">face</a>
+                <a class="b" href="#">b</a>
+            </div>
+        </div>
+    </div>
+</div>

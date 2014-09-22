@@ -1,0 +1,55 @@
+
+.user-table-list img.user-avatar,
+#user-table-list img.user-avatar {
+    width: 32px;
+    border-radius: 16px;
+}
+
+.user-table-list div.avatar-bock,
+#user-table-list div.avatar-bock {
+    position: absolute;
+}
+
+.user-table-list div.name-bock,
+#user-table-list div.name-bock {
+    display: inline-block;
+    width: 100%;
+    padding-left: 40px;
+}
+
+
+#user-table-list td.name-container {
+    position: relative;
+}
+
+.user-main-profile-box ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #E9ECF1;
+}
+
+.user-main-profile-box ul li:first-child {
+    padding-top: 0;
+}
+
+.user-main-profile-box ul li:last-child {
+    border-bottom: none;
+}
+
+.user-main-profile-box .infobox {
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.user-mobile-placeholder {
+    padding: 10px 0;
+}
+
+.input-append {
+    cursor: pointer;
+}
+#page-content-wrapper{
+    z-index: inherit;
+}
+#page-header{
+    z-index: 1001;
+}

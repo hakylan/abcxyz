@@ -1,0 +1,144 @@
+<?php
+$transaction_list = isset($transaction_list) ? $transaction_list : array();
+$user = isset($user) ? $user : array();
+$stt=0;
+if(!empty($transaction_list) && !empty($user)){
+    foreach ($transaction_list as $key=>$transaction) {
+        if(empty($transaction)){
+            continue;
+        }
+        if(!($transaction instanceof \UserTransaction)){
+            continue;
+        }
+        $detail = $transaction->getDetail();
+        $key = $key + 1;
+       $stt++;
+    ?>
+        <li>
+            <span class="arow-up" data-transaction-id="<?php echo $transaction->getId() ?>" ></span>
+            <div class="module-listitem-ct" data-transaction-id="<?php echo $transaction->getId() ?>">
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <div class="checkbox-deposit">
+                        <span class="uppercase">
+                            <?php echo $stt; ?>
+                        </span>
+                    </div>
+                    <p class="normal-blod checkbox">
+                        <?php echo $transaction->getTransactionCode() ?>
+                    </p>
+                    <p class="italic checkbox">
+                        <?php
+                        if(strtotime($transaction->getClosedTime()) > 1){
+                            $time_transaction = new DateTime($transaction->getClosedTime());
+                            echo $time_transaction->format("H:i d-m-Y");
+                        }
+                        ?>
+                    </p>
+                </div>
+
+                <div class="col-lg-9 col-md-9 col-sm-9 right-top-deposit" style="padding-left: 0; padding-right: 25px;">
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <p class="normal">
+                            <?php echo $transaction->getTransactionTypeTitle() ?>
+                        </p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p class="normal">
+                            <?php
+                            $order = \Order::retrieveByCode($transaction->getObjectId());
+                            $order_id = 0;
+                            if($order instanceof \Order){
+                                $order_id = $order->getId();
+                            }
+                            ?>
+                            <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl("order_detail/default",array("id"=>$order_id)) ?>" class="order-item">
+                                <?php echo $transaction->getObjectId() ?>
+                            </a></p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <p class="normal">
+                            <?php echo Common::numberFormat(floatval($transaction->getEndingBalance() - $transaction->getAmount())) ?><sup>đ</sup>
+                        </p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <p class="normal">
+                            <?php
+                                echo Common::numberFormat($transaction->getAmount());
+                            ?><sup>đ</sup>
+                        </p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <?php
+                        $class = "normal-blue";
+                        $positive = "+";
+                        $ending_balance = $transaction->getEndingBalance();
+                        if($ending_balance < 0){
+                            $positive = "";
+                            $class = "red-bold";
+                        }
+                        ?>
+                        <p class="<?php echo $class ?>">
+                            <?php echo $positive.   Common::numberFormat($ending_balance) ?><sup>đ</sup>
+                            <span class="icon"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="block-item-ct" data-transaction-id="<?php echo $transaction->getId() ?>">
+                <div class="itemlisst">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <p class="normal">@<?php echo $user->getUsername() ?></p>
+                        <p class="normal-blod uppercase"><?php echo $user->getCode() ?></p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+
+                    </div>
+                </div>
+                <div class="itemlisst">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <p class="normal">Thời gian tạo:</p>
+                        <p class="normal-blod uppercase">
+                            <?php
+                            if(strtotime($transaction->getCreatedTime()) > 1){
+                                $time_create = new DateTime($transaction->getCreatedTime());
+                                echo $time_create->format("H:i:s d/m/Y");
+                            }
+                            ?>
+                        </p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                    <?php if(strtotime($transaction->getClosedTime()) > 1){ ?>
+                        <p class="normal">Thời gian hoàn thành:</p>
+                        <p class="normal-blod uppercase">
+                            <?php
+                                $time_closed = new DateTime($transaction->getClosedTime());
+                                echo $time_closed->format("H:i:s d/m/Y");
+                            ?>
+                        </p>
+                    <?php } ?>
+                    </div>
+                </div>
+                <div class="itemlisst">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <p class="normal">Chi tiết:</p>
+                        <p class="normal">
+                            <?php
+                                if($detail != ""){
+                                    echo $detail;
+                                }
+                            ?>
+                        </p>
+                    </div>
+                    <?php if($transaction->getTransactionNote()){ ?>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <p class="normal">Chú thích:</p>
+                        <p class="normal"><?php echo $transaction->getTransactionNote(); ?></p>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </li>
+<?php }}else{ ?>
+    <li style="text-align: center">
+        <h3>Không tồn tại giao dịch nào</h3>
+    </li>
+<?php } ?>

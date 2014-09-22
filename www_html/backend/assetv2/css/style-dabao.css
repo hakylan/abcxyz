@@ -1,0 +1,171 @@
+@charset "UTF-8";
+/*
+ * jQuery File Upload Plugin CSS Example 8.8.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+.link-popup > button{
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+.popupbarcode .modal-dialog{
+	width: 800px;
+}
+.popupbarcode .modal-body{
+	min-height: 350px;
+}
+.popupbarcode .modal-header{
+	border: none;
+	padding-left: 34px;
+}
+.popupbarcode .step1 .modal-body .main-ct-step1{
+	text-align: center;
+	margin-top: 100px;
+}
+.popupbarcode .step1 .modal-body .button-default{
+	display: inline-block;
+	padding-left: 15px;
+}
+.popupbarcode .step1 .modal-body .button-default i{
+	margin-right: 10px;
+}
+.popupbarcode .step1 .modal-body span.or{
+	display: inline-block;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+.popupbarcode .step1 .modal-body .select-boostrap{
+	display: inline-block;
+}
+.popupbarcode .step1 .modal-body .select-boostrap{
+	display: inline-block;
+	text-align: left;
+	
+}
+.popupbarcode .step1 .modal-body .select-boostrap span{
+	text-transform: uppercase;
+	font-size: 12px;
+}
+.popupbarcode .step1 .modal-body .select-boostrap li a{
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+.popupbarcode .step1 .modal-body .select-boostrap .bootstrap-select{
+	margin: 0;
+}
+.popupbarcode .step1 .modal-body .select-boostrap .bootstrap-select button{
+	height: 30px;
+	background: #ededed;
+	border: 1px solid #ccc;
+	font-size: 11px;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 5px;
+	position: relative;
+	cursor: pointer;
+	padding-left: 15px;
+	padding-right: 25px;
+}
+.popupbarcode .step1 .modal-body .select-boostrap .bootstrap-select button:hover{
+	background: #ededed;
+	background: -moz-linear-gradient(top,  #ededed 0%, #ddd 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ededed), color-stop(100%,#ddd));
+    background: -webkit-linear-gradient(top,  #ededed 0%,#ddd 100%);
+    background: -o-linear-gradient(top,  #ededed 0%,#ddd 100%);
+    background: -ms-linear-gradient(top,  #ededed 0%,#ddd 100%);
+    background: linear-gradient(top,  #ededed 0%,#ddd 100%);
+}
+.popupbarcode .step1 .modal-body .main-ct-step3 .select-boostrap .bootstrap-select button{
+	font-weight: normal;
+}
+.popupbarcode .step1 .modal-body button.next{
+	height: 30px;
+	padding-left: 15px;
+	padding-right: 30px;
+	padding-top: 5px;
+	position: relative;
+	margin-left: 10px;
+}
+.popupbarcode .step1 .modal-body   button.next span.arrow-next{
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	top: 9px;
+	right: 8px;
+	background: url("../images/next-step.png") no-repeat;
+}
+.popupbarcode .step1  .main-ct-step3{
+	display: none;
+}
+.popupbarcode .step1  .main-ct-step4{
+	display: none;
+}
+.popupbarcode .main-ct-step3{
+	margin-top: -20px;
+}
+.popupbarcode .main-ct-step3 .item{
+	min-height: 35px;
+	padding: 8px 10px;
+}
+.popupbarcode .main-ct-step3 .item p{
+	margin-bottom: 3px;
+}
+.popupbarcode .main-ct-step3 .item:nth-child(2n) {
+    background: #fafafb;
+}
+.popupbarcode .main-ct-step3 .item .title{
+	font-weight: bold;
+	float: left;
+	padding-top: 4px;
+}
+.popupbarcode .main-ct-step3 .right .title{
+	font-weight: bold;
+	float: left;
+	padding-top: 8px;
+	margin-bottom: 0px;
+}
+.popupbarcode .main-ct-step3 .right .module-float{
+	margin-bottom: 15px;
+}
+.popupbarcode .main-ct-step3 .right .module-float .form-mytextarea{
+	margin-top: 12px;
+	float: left;
+	width: 100%;
+}
+.popupbarcode .main-ct-step3 .item .title.one{
+	padding-top: 0px;
+}
+.popupbarcode .main-ct-step3 .item .radio{
+	float: left;
+	margin-right: 5px;
+	margin-top: -1px;
+}
+.popupbarcode .main-ct-step3 .item  form > div,
+.popupbarcode .main-ct-step3 .item > div{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.popupbarcode .main-ct-step3 .item .bootstrap-select{
+	width: 100%;
+}
+.popupbarcode .main-ct-step3 .right .next{
+	margin: 0;
+	float: right;
+}
+.popupbarcode .main-ct-step3.block{
+	display: block;
+}
+.popupbarcode .main-ct-step3.block .next{
+	padding-right: 15px !important;
+}
+.popupbarcode .link-item-bottom{
+	margin-top: -20px;
+}
+.select-boostrap .dropdown-menu{
+    max-height: 160px !important;
+}

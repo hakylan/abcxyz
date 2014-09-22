@@ -1,0 +1,251 @@
+<?php
+$document = $controller->document();
+$backend_url = $controller->createUrl("");
+$document->addCss("css/style-quanlygiaohang.css");
+$document->addCss("css/extend/quyen_delivery.css");
+$document->addJs("js/jquery.printElement.min.js");
+$document->addJs("js/process/delivery.js");
+$document->addJs("js/seudo-backendv1.js","TOP");
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$document->addCss('js/multiupload/fileupload.css');
+$document->addJs('js/multiupload/jquery.ui.widget.js');
+$document->addJs('js/multiupload/jquery.fileupload.js');
+$document->addJsCode('
+        var order_template = Handlebars.compile($("#_order_delivery").html());
+        Handlebars.registerPartial("list", $("#_order_partial").html());'
+    ,'BOTTOM'
+    ,'standard'
+);
+?>
+
+<script id="_order_delivery" type="text/x-handlebars-template">
+    {{#each orders}}
+    <div class="module-custom item-main _main_user" data-user-id="{{user.id}}">
+        <div class="module-custom custom-top" id="custom-top-delivering">
+            <div class="col-lg-12 col-md-12">
+                <h4 class="module-title">
+                    <p class="uppercase title">{{user.last_name}} {{user.first_name}}</p>
+                </h4>
+                <p class="font-gray-dark font-Georgia font-lag">@{{user.username}}</p>
+            </div>
+
+        </div>
+        <div class="maincontent module-custom _order_by_address" data-user-id="{{user.id}}">
+            {{#each order_list}}
+            {{>list}}
+            {{/each}}
+        </div>
+    </div>
+    {{/each}}
+</script>
+
+<script id="_order_partial" type="text/x-handlebars-template">
+    <div class="address">
+        <div class="col-lg-8 col-md-8">
+            <div class="map-add-detail">
+                <div class="icon-map">
+                    <i class="glyph-icon icon-map-marker"></i>
+                </div>
+                <p class="normal font-lag">{{address.reciver_name}} / {{address.reciver_phone}} - {{address.detail}} - {{address.district.label}} - {{address.province.label}}. </p>
+                <p class="font-gray-dark"><i>{{address.note}}</i></p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 ">
+            <div class="col-lg-6 col-md-6 text-right uploadfile-barcode">
+                <span>Đính kèm file mã vạch: </span>
+            </div>
+            <div class="col-lg-6 col-md-6 text-left uploadfile-barcode">
+                <div class="modulefloat">
+                    <form id="form_{{address.id}}" name="form_{{address.id}}">
+                        <input type="file" name="barcode_file" value="{{address.id}}" class="input-computer _upload_file" data-address-id="{{address.id}}">
+                        <input type="hidden" name="address_id" value="{{address.id}}" class="input-computer" data-address-id="{{address.id}}">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="top-main modulefloat ">
+        <div class="col-lg-3 col-md-3 title">
+            <span>Id</span>
+            <p>Mã đơn hàng</p>
+        </div>
+        <div class="col-lg-9">
+            <div class="col-lg-3 col-md-3">
+                <p class="text-center">Kho</p>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <p class="text-center">S.Lương/ Tr.Lượng</p>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <p class="text-center">Trạng thái kho</p>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <p class="text-center">Trạng thái đơn</p>
+            </div>
+        </div>
+
+        <div class="border-header-list">
+            <div class="border"></div>
+        </div>
+    </div>
+
+    <div class="list-main modulefloat ">
+        {{#each order}}
+        <div class="item-content modulefloat">
+            <div class="col-lg-3 col-md-3 title">
+                <span>{{id}}</span>
+                <div class="_div_link">
+                    <a href="{{backend_detail_link}}" target="_blank">
+                        <p class="uppercase">{{code}}</p>
+                    </a>
+                </div>
+
+                <p class="font-small font-gray-dark">{{confirm_delivery_time}}</p>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="col-lg-3 col-md-3">
+                    <p class="text-center">{{current_warehouse}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <p class="text-center">{{recive_quantity}}SP/ {{weight}}KG</p>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <p class="text-center _warehouse_status" data-delivered="{{general.is_delivered}}"
+                       data-order-id="{{id}}" data-address-id="{{user_address_id}}">{{warehouse_status_title}} <i data-order-id="{{id}}" class="_success_warehouse_status fa fa-check-square-o"></i></p>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <p class="text-center _status_title" data-order-id="{{id}}" data-address-id="{{user_address_id}}">{{status_title}}</p><i data-order-id="{{id}}" class="_success_change_status fa fa-check-square-o"></i>
+                </div>
+            </div>
+
+        </div>
+        {{/each}}
+
+        <div class="item-content modulefloat item-content-bottom">
+            <div class="col-lg-3 col-md-3 title">
+
+            </div>
+
+            <div class="col-lg-9">
+                <div class="col-lg-3 col-md-3">
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <p class="text-center">{{general.total_quantity}}SP / {{general.total_weight}}KG</p>
+                </div>
+
+                <div class="col-lg-3 col-md-3">
+                    {{#if general.is_cod}}
+                    <p class="text-center">COD: {{general.cod}}</p>
+                    {{/if}}
+                </div>
+                <div class="col-lg-3 col-md-3 manipulation text-center _div_btn" data-address-id="{{general.address_id}}">
+                    {{#if general.is_delivered}}
+                    <p class="text-center">Đã giao hàng</p>
+                    {{else}}
+                    <img style="display: none" src="<?php echo $backend_url.'/assets/images/loading/loading3.gif' ?>"
+                         class="_loading_delivery" data-address-id="{{general.address_id}}">
+                    {{#if general.is_delivery}}
+
+                    <a href="<?php echo $url_print."?address_id=" ?>{{general.address_id}}&order_list_id={{general.order_list_id}}" target="_blank" {{#if general.is_in_warehouse}}disabled="disabled"{{/if}}
+                            class="seubtn btn-blue _btn_delivery {{#if general.is_in_warehouse}}disabled{{/if}}" data-user-id={{general.user_id}}
+                            data-address-id="{{general.address_id}}">Giao hàng</a>
+
+                    <!--modal box xuất phiếu giao hàng-->
+                    <!--     modal box-->
+                    <!--        end modal box-->
+                    <!--end modal box xuất phiếu giao hàng-->
+                    {{else}}
+                    <p class="text-center">Không đủ điều kiện giao hàng</p>
+                    {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--<div class="modal fade finish-poup print myModalprint" id="myModalprint{{general.address_id}}" id="myModalprint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">-->
+        <!--<div class="modal-dialog">-->
+            <!--<div class="modal-content">-->
+                <!--<div class="modal-header">-->
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>-->
+
+                <!--</div>-->
+                <!--<div class="modal-body _body_print" data-address-id="{{general.address_id}}" >-->
+                    <!--<iframe src="http://loco.seudo.vn/backend/order/delivery_management/frame_print?address_id={{general.address_id}}" width="900px" height="700px" frameborder="0"></iframe>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</script>
+
+<div class="seu-main-header" id="page-title">
+    <div class="container">     
+        <div class="row">
+            <div class="col-lg-12 col-md-12"> 
+                <h3 class="main-header-title uppercase pull-left">
+                   Quản lý giao hàng 
+                </h3> 
+            </div>                        
+         </div>                         
+         
+    </div>
+</div>
+
+
+<div id="page-content" class="seu-page-content delivering no-header">
+    <div class="container">
+        <div class="row">
+            <form method="post" id="frm_search" name="frm_search">
+                <div class="delivering-search">
+                    <div class="module-custom">
+                        <div class="col-lg-2 col-md-2">
+                            <input name="order_code" class="form-control form-myinput _order_filter" type="text" placeholder="Đơn hàng">
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <input name="username" class="form-control form-myinput _user_filter" type="text" placeholder="Mã KH hoặc tên đăng nhập....">
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <div class="col-lg-12 col-md-6">
+                                <select name="status" class="selectpicker pull-right _warehouse_filter">
+                                    <option value="<?php echo \Order::STATUS_CUSTOMER_CONFIRM_DELIVERY ?>">Yêu cầu giao hàng</option>
+                                    <option value="<?php echo \Order::STATUS_DELIVERING ?>">Đang giao</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <div class="col-lg-12 col-md-6">
+                                <select name="warehouse" class="selectpicker pull-right _warehouse_filter">
+                                    <option value="">Kho</option>
+                                    <option value="VNHN">Hà Nội</option>
+                                    <option value="VNSG">Sài Gòn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <select name="time" class="selectpicker pull-right _time_filter">
+                                <option value="0">Thời Gian</option>
+                                <option value="1">Hôm Nay</option>
+                                <option value="3">3 ngày</option>
+                                <option value="5">5 ngày</option>
+                                <option value="7">7 ngày</option>
+                                <option value="30">1 tháng</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <button type="button" class="seubtn btn-blue pull-right _btn_filter">Tìm</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="module-custom" id="_order_content">
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,961 @@
+<?php
+//error_reporting(0);
+
+$result = isset($result) ? $result : null;
+$website = isset($website) ? $website : null;
+$user_id = isset($user_id) ? $user_id : 0;
+$cart_list = isset($cart_list) ? $cart_list : 0;
+$urlDetail = isset($urlDetail) ? $urlDetail : '';
+$rounding_config = \Flywheel\Config\ConfigHandler::get('money_rounding');
+try {
+    if (empty($result) || (isset($result['price']) && empty($result['price'])) ||
+        (isset($result['price'][0]) && empty($result['price'][0])) || !isset($result['price']) ) {
+        if((isset($result['price']) && empty($result['price'])) || (isset($result['price'][0]) && empty($result['price'][0])) || !isset($result['price'])){
+            $controller->dispatch('errorOrderLink', new \Flywheel\Event\Event("OrderLink",array(
+                    'link_error' => $urlDetail,
+                    "message"=> "Không lấy được giá của sản phẩm")
+            ));
+        }
+        ?>
+        <div class="col-lg-12 col-sm-12 col-md-12 bookmartlet-alert-error">
+            <div class="alert alert-alert">
+                <p>Đường dẫn bạn gửi không phải đường dẫn chi tiết sản phẩm mà chúng tôi biết. </p>
+
+                <p>Chúng tôi sẽ lưu lại và kiểm tra đường dẫn này, nếu website gốc có sự thay đổi cấu trúc chúng tôi sẽ
+                    xử lý và liên lạc với bạn. </p>
+            </div>
+        </div>
+        <?php
+        return;
+    }
+    $prices = $result['price'];
+    $img = $result['images'];
+    if (is_array($img)) {
+        $img = $img[0]['original'];
+    } else {
+        $img = '';
+    }
+
+    $exchange = ExchangeRate::getExchange() != 0 ? ExchangeRate::getExchange() : 3500;
+    $price_vnd = 0;
+
+    if (isset($result['price'][0]['price'])) {
+        $pri = intval($result['price'][0]['price']);
+        $price_vnd = @$pri * @$exchange;
+    } else if (isset($result['price']['price'])) {
+        $pri = intval($result['price']['price']);
+        $price_vnd = @$pri * @$exchange;
+    }
+
+    $seller_username = isset($result['supplier']['seller_username']) ? $result['supplier']['seller_username'] : '';
+    $homepage = isset($result['supplier']['homepage']) ? $result['supplier']['homepage'] : '';
+    $origin_url = isset($result['origin_url']) ? $result['origin_url'] : '';
+
+
+    $item_viewed = array("id" => $result['id'], "site" => $website, "shop_username" => $seller_username,
+        "url" => $origin_url, "shop_url" => $homepage,
+        "title" => $result['title'], "img" => $img, "price" => $price_vnd);
+    $item_viewed = json_encode($item_viewed);
+
+    $doc = $this->document();
+    $sku = isset($result['purchase']['sku']['skuProps']) ? $result['purchase']['sku']['skuProps'] : array();
+    $beginAmount = !empty($result['carriage']) ? $result['carriage']['beginAmount'] : $result['config']['beginAmount'];
+    $step = $result['purchase']['ordering_step_number'] ?
+        $result['purchase']['ordering_step_number'] : 1;
+    $skuMap = @$result['purchase']['sku']['skuMap'];
+
+    // detect size or color
+    $size = $color = array();
+    if (!empty($sku)) {
+        foreach ($sku as $s) {
+            if (is_array($s['value'])) {
+                foreach ($s['value'] as $v) {
+                    if ($s['prop'] == '颜色') { // Color
+                        $color[] = $v;
+                    } else // Size
+                        $size[] = $v;
+                }
+            }
+        }
+    }
+
+    $is_promotion  = isset($result['is_promotion']) ? $result['is_promotion'] : 0;
+
+    $wangwang = isset($result['wangwang']) ? $result['wangwang'] : '';
+
+    $promotion  = isset($result['promotion']) ? $result['promotion'] : 0;
+    $price_origin  = isset($result['price_origin']) ? $result['price_origin'] : $promotion;
+
+    /*echo '<meta charset="UTF-8"/> <style type="text/css"> body { background: #FFF; }</style><pre>';
+    print_r($result); die();*/
+
+    ?>
+    <script type="text/javascript">
+        var item_view = $.jStorage.get('item_view');
+        var data = new Array();
+        if (item_view != '' && item_view != null) {
+            var temp = $.unique(item_view.split(';'));
+            temp.push('<?php echo $item_viewed ?>');
+            data = temp;
+        } else {
+            data.push('<?php echo $item_viewed ?>');
+        }
+        /**/
+        $.jStorage.set('item_view', data.join(';'));
+    </script>
+
+    <span id="cookie_t"></span>
+
+    <section class="page-book">
+    <nav class="container">
+    <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 book-ct-top">
+        <div class="seu-module">
+            <div class="module-inner">
+                <div class="module-title">
+                    <p class="title">
+                        <span class="title-page _text_translate" data-type="title" data-source="<?php echo $result['title'] ?>">
+                            <?php echo $result['title'] ?>
+                        </span>
+                        <span
+                            class="pull-right">
+                        <a href="#" class="normal-blod" style="display: none;">Lưu lại đặt hàng sau </a>
+                    </span>
+                    </p>
+                </div>
+
+                <div class="module-ct alibaba">
+                    <div class="avatar">
+                        <?php
+                        $img = $result['images'];
+                        if (is_array($img)) {
+                            $img = $img[0]['original'];
+                        } else {
+                            $img = '';
+                        }
+                        ?>
+                        <img class="images _images" src="<?php echo $img ?>">
+                    </div>
+
+                    <div class="item-ct price">
+                        <span class="title-left">Giá bán</span>
+                        <?php
+
+                        $distancePrice = false;
+                        $begin = isset($prices[0]['begin']);
+                        $price_show = isset($prices[0]['price']) ? $prices[0]['price'] : 0;
+                        if (is_array($prices)) {
+                            if(count($prices) == 1 && $begin == 1) { // One price
+                                ?>
+                                <p class="normal">
+                                <span class="numbersp" style="width: auto">
+                                    <?php if($is_promotion == 1){ ?><del><?php } ?>
+                                        <span <?php if($is_promotion == 0){ ?>class="red-normal"<?php } ?>>
+                                        <?php
+                                        if($website == 'taobao' || $website == 'tmall'){
+                                            if(preg_match('/-/',$price_origin)){
+
+                                                $price_array = explode('-',$price_origin);
+                                                echo Common::numberFormat($price_array[0] * $exchange)."<sup>đ</sup> - ";
+                                                echo Common::numberFormat($price_array[1] * $exchange)."<sup>đ</sup>";
+                                            }else{
+                                                echo Common::numberFormat($price_origin * $exchange)."<sup>đ</sup>";
+                                            }
+                                        }else{
+                                            $price = '';
+
+                                            if(is_array($prices[0]['price'])) {
+                                                $slash = '';
+                                                foreach ($prices[0]['price'] as $p) {
+                                                    $price .= $slash .
+                                                        Common::numberFormat($p * $exchange) . ' <sup>đ</sup>';
+                                                    $slash = ' - ';
+                                                }
+
+                                                $distancePrice = true;
+                                            } else {
+                                                $price = Common::numberFormat($prices[0]['price'] * $exchange). ' <sup>đ</sup>';
+                                            }
+                                            echo $price;
+                                        }
+                                        ?>
+                                    </span>
+                                        <?php if(isset($result['is_promotion']) && $result['is_promotion'] == 1){ ?></del><?php } ?>
+                                </p>
+                            <?php
+                            } else
+                                if(!empty($prices)){
+                                    foreach ($prices as $k => $v) {
+                                        $begin = isset($v['begin']) ? $v['begin'] : 1;
+                                        $end = isset($v['end']) ? $v['end'] : null;
+                                        ?>
+                                        <p class="normal">
+                                <span
+                                    class="numbersp"><?php echo ($end != null ? '' : '≥ ') . $begin . ($end != null ? ' ~ ' . $end : '') ?>
+                                    sản phẩm </span>
+                                            <?php
+                                            $price = '';
+                                            if (isset($v['price']) && is_array($v['price'])) {
+                                                $slash = '';
+                                                foreach ($v['price'] as $p) {
+                                                    $price .= $slash .
+                                                        Common::numberFormat($p * $exchange) . ' <sup>đ</sup>';
+                                                    $slash = ' - ';
+                                                }
+                                                $distancePrice = true;
+                                            } else {
+                                                $price = Common::numberFormat($v['price'] * $exchange) . ' <sup>đ</sup>';
+                                            }
+                                            ?>
+                                            <span class="red-normal"><?php echo($price) ?></span>
+                                        </p>
+                                    <?php
+                                    }
+                                }
+                        }
+                        ?>
+                    </div>
+                    <?php if($is_promotion == 1){ ?>
+                        <div class="item-ct price-taobao item-price" style="display: block">
+                            <span class="title-left">Khuyến mại</span>
+                            <p class="red-bold">
+                                <?php
+                                if(preg_match('/-/',$result['promotion'])){
+
+                                    $promotion_array = explode('-',$result['promotion']);
+                                    echo Common::numberFormat($promotion_array[0] * $exchange)."<sup>đ</sup> - ";
+                                    echo Common::numberFormat($promotion_array[1] * $exchange)."<sup>đ</sup>";
+                                }else{
+                                    echo Common::numberFormat($result['promotion'] * $exchange)."<sup>đ</sup>";
+                                    ?>
+                                    <input type="hidden" value="<?php echo $result['promotion'] ?>" class="_promotion_price">
+                                <?php } ?>
+                            </p>
+
+                        </div>
+                    <?php } ?>
+
+                    <div class="item-ct ncc">
+                        <span class="title-left">Người bán:</span>
+                        <?php
+                        switch (strtolower($website)) {
+                            case 'taobao':
+                                $iconShop = 'tbao';
+                                break;
+                            case 'tmall':
+                                $iconShop = 'tmall';
+                                break;
+                            case 'eelly':
+                                $iconShop = 'ely';
+                                break;
+                            case 'nahuo':
+                                $iconShop = 'nhuo';
+                                break;
+                            default:
+                                $iconShop = 'ali';
+                                break;
+                        }
+                        ?>
+                        <p class="normal">
+                            <span class="iconshop <?php echo $iconShop ?>"></span>
+                        <span>
+                            <a href="<?php echo $result['supplier']['homepage'] ?>" target="_blank">
+                                <?php echo $result['supplier']['seller_username'] ?>
+                            </a>
+                        </span>
+                        </p>
+                    </div>
+
+                    <?php
+                    if (isset($result['proxy']) & !empty($result['proxy'])) {
+                        //$proxyTranslate = GlobalHelper::translate($result['proxy'], $resource);
+                        //if(!empty($proxyTranslate)) {
+                        ?>
+                        <div class="item-ct ">
+                            <span class="title-left">Chính sách</span>
+
+                            <div class="normal">
+                                <span class="normal-blod tol">
+                                    <?php
+                                    //echo GlobalHelper::translate($result['proxy'], $resource)
+                                    preg_match_all('/[0-9]+/', $result['proxy'], $num);
+                                    if (!empty($num)) {
+                                        if (count($num[0]) > 1) {
+                                            echo 'Số tiền mua tối thiểu của shop là '
+                                                . Common::numberFormat($num[0][0] * \ExchangeRate::getExchange())
+                                                . '<sup>đ</sup> hoặc tổng số sản phẩm phải trên ' . $num[0][1] . ' sp.';
+                                        } else {
+                                            echo 'Số sản phẩm tối thiểu trên shop là ' . $num[0][0] . ' sp.';
+                                        }
+                                    }
+                                    ?>
+                                </span>
+
+                                <div class="normal tooltipnote">
+                                    <div class="tooltipregister">
+                                        <div class="arrow_box">
+                                            <p class="normal">Trong trường hợp quý khách đặt số lượng thấp hơn quy định
+                                                này,
+                                                chúng tôi sẽ thương thảo với người bán, tuy nhiên việc đồng ý do người
+                                                bán quyết
+                                                định.</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    //}
+                    ?>
+
+                    <div class="item-ct ">
+                        <span class="title-left">Vận chuyển TQ</span>
+
+                        <div class="normal">
+                            <?php
+                            if ($website == 'taobao' || $website == 'tmall') {
+                                ?>
+                                <p class="normal">Sản phẩm này từ <?php echo $website ?>.com, chúng tôi sẽ đàm phán với
+                                    người bán trong trường hợp quý khách mua nhiều.</p>
+                            <?php
+                            } else {
+                                ?>
+                                <p class="normal-blod tol">CPN:
+                            <span class="red-bold">
+                                <?php
+                                $money = @$result['transfer_calculator']['costs'][0]['cost'] * $exchange;
+                                echo $money != 0 ?
+                                    Common::numberFormat($money) . '<sup>đ</sup>' : 'Chưa xác định' ?>
+                            </span>
+                                    <!--EMS: <span class="red-bold">32.000<sup>đ</sup></span></p>-->
+                                <div class="normal tooltipnote">
+                                    <div class="tooltipregister">
+                                        <div class="arrow_box">
+                                            <p class="normal">Phí vận chuyển nội địa TQ.</p>
+
+                                            <p class="normal">CPN: 3-5 ngày chúng tôi sẽ nhận được hàng.</p>
+
+                                            <p class="normal">EMS 1-3 ngày SeuDo sẽ nhận được hàng.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php
+                            }
+                            ?>
+
+                        </div>
+
+                    </div>
+                    <?php if($is_promotion && preg_match('/-/',$promotion) && ($website == "taobao" || $website == 'tmall')){ ?>
+                        <p class="alert alert-alert" style="width: 100%; margin-left: -15px; display: inline-block;">
+                            Sản phầm này Hệ thống chưa lấy được giá chính xác, hãy liên hệ bộ phận CSKH để được hỗ trợ
+                        </p>
+                    <?php } ?>
+                    <div class="item-ct note-taobao">
+                        <p class="italic">Sản phẩm này từ taobao.com. Chúng tôi sẽ đàm phán và....</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12 col-sm-12 col-md-12 note-cart">
+        <p class="normal">* Số lượng mua tối thiểu của sản phẩm là <b><?php echo $beginAmount ?></b>, số lượng đặt mỗi
+            mẫu
+            là bội số
+            của <b><?php echo $step ?></b>.</p>
+    </div>
+    <div class="col-lg-12 col-sm-12 col-md-12 bookmartlet-content">
+    <div class="book-ct-bottom">
+
+    <div class="ct-bottom-top">
+        <span class="title normal-blod"><?php echo (!empty($size)) ? 'Màu' : (!empty($color) ? 'Cỡ' : 'Màu') ?></span>
+        <ul id="myTab" class="nav nav-tabs my-tabs">
+            <?php
+            if ($color) { // Has color
+                if (!empty($size)) { // Has size
+                    foreach ($color as $inc => $c) {
+
+                        $type = isset($c['imageUrl']) ? 'images' : '';
+                        $img = '';
+                        if (!empty($type)) {
+                            if(preg_match('/30x30/',$c['imageUrl'])){
+                                $img = str_replace('30x30','100x100',$c['imageUrl']);
+                            }else{
+                                if($website == 'alibaba' || $website == '1688'){
+                                    $img = str_replace('.jpg','.100x100.jpg',$c['imageUrl']);
+                                }else{
+                                    $img = $c['imageUrl'];
+                                }
+                            }
+                        }else{
+                            $img = '';
+                        }
+                        $color_trans = GlobalHelper::translate($c['name'], $resource);
+                        ?>
+                        <li class="<?php echo $inc == 0 ? 'active' : '' ?>">
+                            <a data-toggle="tab" href="#color_<?php echo $inc ?>" class="<?php echo $type ?>"
+                               title="<?php echo $color_trans ?>">
+                                <?php echo $type ? "<img src='{$img}' style='height: 100%'>" : $color_trans ?>
+                            </a>
+                        </li>
+                    <?php
+                    }
+                } else { // No size
+                    ?>
+                    <li class="active"><a data-toggle="tab" title="Free size">Free size</a></li>
+                <?php
+                }
+            } else {
+                ?>
+                <li class="active">
+                    <a data-toggle="tab" href="#no-color">Đa màu</a>
+                </li>
+            <?php
+            }
+            ?>
+        </ul>
+    </div>
+    <div class="tab-content my-tab-content">
+    <?php // Show color or size ( has color)
+    $color_translate = $size_translate = '';
+    if (!empty($color)) {
+        $skuMap = $result['purchase']['sku']['skuMap'];
+        if (empty($size)) { // No size
+            echo '<div class="active">
+                <div class="item-tab-content">
+                <div class=" item-tab-content-title">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <p class="italic">Màu</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <p class="italic center">Giá / đv</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <p class="italic center">Tồn kho</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 item-tab-content-right"></div>
+                </div>
+                <ul class="_ul_price">';
+            foreach ($color as $k => $c) {
+                $retail = $k % 2 ? '' : ' retail';
+                $canBookCount = @array_key_exists('canBookCount', $skuMap[$c['name']]) ? $skuMap[$c['name']]['canBookCount'] : 0;
+                if (empty($canBookCount)) {
+                    $canBookCount = 0;
+                }
+                $color_translate = GlobalHelper::translate($c['name'], $resource);
+                $type = isset($c['imageUrl']) ? 'images' : '';
+                $img = '';
+                if (!empty($type)) {
+                    if(preg_match('/30x30/',$c['imageUrl'])){
+                        $img = str_replace('30x30','100x100',$c['imageUrl']);
+                    }else{
+                        if($website == 'alibaba' || $website == '1688'){
+                            $img = str_replace('.jpg','.100x100.jpg',$c['imageUrl']);
+                        }else{
+                            $img = $c['imageUrl'];
+                        }
+                    }
+                }else{
+                    $img = '';
+                }
+                ?>
+                <li class="row<?php echo $retail . (!$canBookCount ? ' opacity' : '') ?>"
+                    data-key="<?php echo $c['name'] ?>" data-color="<?php echo empty($type) ? '' : $img; ?>">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <?php
+                        if (!empty($type)) {
+                            ?>
+                            <div class="img-retail">
+                                <div class="img">
+                                    <img class="images" src="<?php echo $img ?>" alt="<?php echo $color_translate; ?>">
+                                </div>
+                            </div>
+                        <?php
+                        } else {
+                            echo '<p class="name-size">' . $color_translate . '</p>';
+                        }
+                        ?>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <?php
+                        $money = @array_key_exists('price', $skuMap[$c['name']]) ?
+                            (@$skuMap[$c['name']]['price']) : (@$result['price'][0]['price']);
+                        if (empty($money)) {
+                            $money = 0;
+                        }
+
+                        // Check promotion price
+                        if(isset($skuMap[$c['name']]['promotion'])) {
+                            $money = $skuMap[$c['name']]['promotion'];
+                        }
+                        /*if($promotionPrice != 0 & ($website == 'tmall' || $website == 'taobao')) {
+                            $money = $promotionPrice;
+                        }*/
+
+                        ?>
+                        <p class="price red-normal pricePerItem"
+                           data-money="<?php echo $money ?>"><?php echo Common::numberFormat($money * $exchange); ?><sup>đ</sup></p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <p class="price can-book">
+                            <?php echo Common::numberFormat($canBookCount); ?>
+                        </p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 titem-tab-content-right">
+                        <div class="arowsl-ct dropdown input-sl">
+                            <input name="input-amount" class="form-control form-myinput" type="text"
+                                   placeholder="0" data-canbook="<?php echo $canBookCount ?>"
+                                   data-price="<?php echo $money; ?>"
+                                   data-translate="<?php echo $color_translate ?>" data-toggle="dropdown"
+                                   data-outer-id="<?php echo isset($skuMap[$c['name']]) ? $skuMap[$c['name']]['outerId'] : '' ?>">
+
+                            <div class="tooltip1 dropdown-menu" role="menu" aria-labelledby="dLabel"
+                                 style="display: none;">
+                                <p></p>
+                            </div>
+                            <div class="arowsl">
+                                <div class="arowsl-left-right">
+                                    <a href="javascript:void(0);" class="left _left"></a>
+                                    <a href="javascript:void(0);" class="right _right"></a>
+                                </div>
+                            </div>
+                            <div class="opacity-input"></div>
+                        </div>
+                    </div>
+                </li>
+            <?php
+            }
+            echo '</ul></div></div>';
+        } else { // Has size
+            foreach ($color as $inc_color => $c) {
+
+                $color_translate = GlobalHelper::translate($c['name'], $resource);
+
+                echo "<div id='color_{$inc_color}' class='tab-pane " . ($inc_color == 0 ? 'active' : '') . "'>";
+                if (!empty($size)) {
+                    echo '<div class="item-tab-content">
+                <div class=" item-tab-content-title">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <p class="italic">Cỡ</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <p class="italic center">Giá / đv</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <p class="italic center">Tồn kho</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 item-tab-content-right"></div>
+                </div>
+                <ul class="_ul_price">';
+                    foreach ($size as $k => $s) {
+                        $retail = $k % 2 ? '' : ' retail';
+                        $sku_key = $c['name'] . '>' . $s['name'];
+                        if (!array_key_exists($sku_key, $skuMap)) {
+                            $sku_key = $s['name'] . '>' . $c['name'];
+                        }
+                        if (!array_key_exists($sku_key, $skuMap)) {
+                            continue;
+                        }
+
+                        $canBookCount = array_key_exists($sku_key, $skuMap) ?
+                            ($skuMap[$sku_key]['canBookCount']) : 0;
+                        //if(!$canBookCount) { continue; }
+                        $size_translate = GlobalHelper::translate($s['name'], $resource);
+                        $type = isset($c['imageUrl']) ? 'images' : '';
+                        $img = '';
+                        if (!empty($type)) {
+                            if(preg_match('/30x30/',$c['imageUrl'])){
+                                $img = str_replace('30x30','100x100',$c['imageUrl']);
+                            }else{
+                                if($website == 'alibaba' || $website == '1688'){
+                                    $img = str_replace('.jpg','.100x100.jpg',$c['imageUrl']);
+                                }else{
+                                    $img = $c['imageUrl'];
+                                }
+                            }
+                        }else{
+                            $img = '';
+                        }
+                        ?>
+                        <li class="row<?php echo $retail . (!$canBookCount ? ' opacity' : '') ?>"
+                            data-key="<?php echo $sku_key ?>" data-color="<?php echo empty($type) ? '' : $img; ?>">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <p class="name-size"><?php echo $size_translate ?></p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <?php
+                                $money = array_key_exists('price', $skuMap[$sku_key]) ?
+                                    ($skuMap[$sku_key]['price']) : ($result['price'][0]['price']);
+
+                                // Check promotion price
+                                if(isset($skuMap[$c['name']]['promotion'])) {
+                                    $money = $skuMap[$c['name']]['promotion'];
+                                }
+
+                                ?>
+                                <p class="price red-normal pricePerItem"
+                                   data-money="<?php echo $money ?>">
+                                    <?php echo Common::numberFormat($money * $exchange); ?><sup>đ</sup>
+                                </p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                <p class="price can-book">
+                                    <?php echo Common::numberFormat($canBookCount); ?>
+                                </p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 titem-tab-content-right">
+
+                                <div class="arowsl-ct dropdown input-sl">
+                                    <input name="input-amount" class="form-control form-myinput" type="text"
+                                           placeholder="0" data-canbook="<?php echo $canBookCount ?>"
+                                           data-toggle="dropdown"
+                                           data-price="<?php echo $money; ?>"
+                                           data-translate="<?php echo trim($color_translate) . '; ' . trim($size_translate) ?>"
+                                           data-outer-id="<?php echo isset($skuMap[$sku_key]['outerId']) ? $skuMap[$sku_key]['outerId'] : '' ?>">
+
+                                    <div class="tooltip1 dropdown-menu" role="menu" aria-labelledby="dLabel"
+                                         style="display: none;">
+                                        <p></p>
+                                    </div>
+                                    <div class="arowsl">
+                                        <div class="arowsl-left-right">
+                                            <a href="javascript:void(0);" class="left _left"></a>
+                                            <a href="javascript:void(0);" class="right _right"></a>
+                                        </div>
+                                    </div>
+                                    <div class="opacity-input"></div>
+                                </div>
+                            </div>
+                        </li>
+                    <?php
+                    }
+                    echo '</ul></div>';
+                }
+                echo '</div>';
+            }
+        }
+    } else {
+        // No color
+        echo "<div class='tab-pane active' id='no-color'>";
+        echo '<div class="item-tab-content">
+                <div class=" item-tab-content-title">
+                    <div class="col-lg-6 col-md-6 col-sm-6"><p class="italic">Cỡ</p></div>
+                    <div class="col-lg-2 col-md-2 col-sm-2"><p class="italic center">Giá / đv</p></div>
+                    <div class="col-lg-2 col-md-2 col-sm-2"><p class="italic center">Tồn kho</p></div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 item-tab-content-right"></div>
+                </div>
+                <ul clas="_ul_price">';
+        if (!empty($size)) {
+            foreach ($size as $k => $s) {
+                $retail = $k % 2 ? '' : ' retail';
+                $sku_key = $s['name'];
+                $canBookCount = array_key_exists($sku_key, $skuMap) ?
+                    Common::numberFormat($skuMap[$sku_key]['canBookCount']) : 0;
+                $size_translate = GlobalHelper::translate($s['name'], $resource);
+                ?>
+                <li class="row<?php echo $retail . (!$canBookCount ? ' opacity' : '') ?>"
+                    data-key="<?php echo $sku_key ?>">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <p class="name-size"><?php echo $size_translate ?></p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <?php
+                        $money = array_key_exists('price', $skuMap[$sku_key]) ?
+                            ($skuMap[$sku_key]['price']) : ($result['price'][0]['price']);
+                        if($promotionPrice != 0 & ($website == 'tmall' || $website == 'taobao')) {
+                            $money = $promotionPrice;
+                        }
+                        ?>
+                        <p class="price red-normal pricePerItem" data-money="<?php echo $money ?>">
+                            <?php echo Common::numberFormat($money * $exchange); ?><sup>đ</sup></p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <p class="price can-book"><?php echo Common::numberFormat($canBookCount); ?></p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 titem-tab-content-right">
+                        <div class="arowsl-ct dropdown input-sl">
+                            <input name="input-amount" class="form-control form-myinput" type="text" placeholder="0"
+                                   data-canbook="<?php echo preg_replace('/\./', '', $canBookCount) ?>"
+                                   data-price="<?php echo $money; ?>"
+                                   data-translate="<?php echo $size_translate ?>" data-toggle="dropdown"
+                                   data-outer-id="<?php echo isset($skuMap[$sku_key]['outerId']) ? $skuMap[$sku_key]['outerId'] : '' ?>">
+
+                            <div class="tooltip1 dropdown-menu" role="menu" aria-labelledby="dLabel"
+                                 style="display: none;">
+                                <p></p>
+                            </div>
+                            <div class="arowsl">
+                                <div class="arowsl-left-right">
+                                    <a href="javascript:void(0);" class="left _left"></a>
+                                    <a href="javascript:void(0);" class="right _right"></a>
+                                </div>
+                            </div>
+                            <div class="opacity-input"></div>
+                        </div>
+                    </div>
+                </li>
+            <?php
+            }
+        } else {
+            // Single mode: chưa gặp ở tmall hoặc taobao nên không có giá khuyến mại kiểu site này
+            $canBookCount = isset($result['purchase']['sku']['invetory']) ? $result['purchase']['sku']['invetory'] : 1;
+            ?>
+            <li data-key="free-size">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <p class="name-size">Free size</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <?php
+                    $money = $result['price'][0]['price'];
+                    ?>
+                    <p class="price red-normal pricePerItem" data-money="<?php echo $money ?>">
+                        <?php echo Common::numberFormat($money * $exchange); ?><sup>đ</sup></p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="price can-book"><?php echo $canBookCount; ?></p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 titem-tab-content-right">
+                    <div class="arowsl-ct dropdown input-sl">
+                        <input name="input-amount" class="form-control form-myinput" type="text" placeholder="0"
+                               data-canbook="<?php echo $canBookCount ?>"
+                               data-price="<?php echo $money; ?>"
+                               data-translate="Không màu; free size" data-toggle="dropdown"
+                               data-outer-id="<?php echo isset($skuMap[$sku_key]['outerId']) ? $skuMap[$sku_key]['outerId'] : '' ?>">
+
+                        <div class="tooltip1 dropdown-menu" role="menu" aria-labelledby="dLabel" style="display: none;">
+                            <p></p>
+                        </div>
+                        <div class="arowsl">
+                            <div class="arowsl-left-right">
+                                <a href="javascript:void(0);" class="left _left"></a>
+                                <a href="javascript:void(0);" class="right _right"></a>
+                            </div>
+                        </div>
+                        <div class="opacity-input"></div>
+                    </div>
+                </div>
+            </li>
+        <?php
+        }
+        echo '</ul></div>';
+        echo '</div>';
+    }
+    ?>
+    </div>
+
+    <div class="pagination-book">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="book-ct-footer">
+        <div class="row">
+            <div class="col-lg-7 col-md-7 col-sm-7">
+                <textarea class="form-control form-mytextarea" placeholder="Ghi chú cho sản phẩm này"
+                          rows="1"></textarea>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <p class="normal-blod"><span>0</span> sp</p>
+
+                <p class="red-bold"><span>0</span><sup>đ</sup></p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <button class="btn btn-blue btn-lg order disabled _order_add_cart" type="button">Đặt hàng</button>
+                <button class="notify-button" style="display: none;" data-target="#myModalfinish"
+                        data-toggle="modal"></button>
+                <button class="notify-button-err" style="display: none;" data-target="#myModalfinishErr"
+                        data-toggle="modal"></button>
+                <button class="myModalNoItem" style="display: none;" data-target="#myModalNoItem"
+                        data-toggle="modal"></button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="cart-alert" style="display: none;">
+        <p class="alert alert-info"> Đã thêm <span class="item-order"></span> sản phẩm vào giỏ hàng </p>
+    </div>
+    </div>
+    </nav>
+    <!-- Cart-->
+    <div class="menu-cart" style="height: 640px;">
+        <div class="menuitem close-book">
+            <div class="tooltipmenu">
+                <div class="arrow_box">
+                    <p class="normal">Đóng</p>
+                </div>
+            </div>
+        </div>
+        <div class="border-close-book"></div>
+        <div data-toggle="modal" data-target="#showcart-content" class="menuitem cart-menu-book _load_cart">
+            <div class="tooltipmenu">
+                <div class="arrow_box">
+                    <p class="normal">Xem giỏ hàng</p>
+                </div>
+            </div>
+            <div class="sl-arow "><span class="_total_cart_item">0</span></div>
+            <div class="border-arow"></div>
+
+        </div>
+        <div class="menuitem save-menu-book">
+            <div class="tooltipmenu">
+                <div class="arrow_box">
+                    <p class="normal">Lưu lại đặt hàng sau</p>
+                </div>
+            </div>
+            <div class="border-arow"></div>
+        </div>
+        <div class="menuitem home-menu-book">
+            <div class="tooltipmenu">
+                <div class="arrow_box">
+                    <p class="normal">seudo.vn</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end cart-->
+    </section>
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="showcart-content"
+         class="modal fade editadresscart" style="display: none;">
+        <?php
+        //Logic
+        $this->widget('app.Widget.CartBook', array(
+            'cart_list' => $cart_list
+        ));
+        ?>
+    </div>
+
+    <div style="display: none;" class="modal fade finish-poup" id="myModalfinish" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Hoàn thành</span></h4>
+                </div>
+                <div class="modal-body">
+                    <p class="normal">
+                        Bạn đã đặt sản phẩm thành công trên <span class="red-normal">Sếu đỏ</span>.
+                        <br/>
+                        Bạn có muốn vào giỏ hàng?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <button type="button" class="btn btn-gray" data-dismiss="modal">Không</button>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('cart') ?>" target="_blank">
+                            <button type="button" class="btn btn-blue">Có</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div style="display: none;" class="modal fade finish-poup" id="myModalfinishErr" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Đặt hàng lỗi</span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <p class="normal">
+                        &nbsp;&nbsp;Cố lỗi xảy ra khi đặt hàng. Hãy liên hệ nhân viên chăm sóc
+                        <br/>
+                        khách hàng để được trợ giúp.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-md-offset-3">
+                        <button type="button" class="btn btn-gray" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div style="display: none;" class="modal fade finish-poup" id="myModalNoItem" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Cảnh báo</span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <p class="normal">
+                        &nbsp;&nbsp;Bạn chưa chọn sản phẩm nào.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-md-offset-3">
+                        <button type="button" class="btn btn-gray" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <script type="text/javascript">
+        var step = '<?php echo $step ?>';
+        var beginAmount = '<?php echo $beginAmount ?>';
+        var price = <?php echo $promotionPrice ? json_encode(array(array('begin'=> 1, 'end' => 100000, 'price'=> $promotionPrice))) : json_encode($result['price']) ?>;
+        var exchange = <?php echo $exchange ?>;
+        var rounding_config = <?php echo json_encode($rounding_config) ?>;
+        var distancePrice = <?php echo $distancePrice ? 'true' : 'false' ?>;
+        var website = '<?php echo strtoupper($website) ?>';
+        var transfer_fee = <?php echo array_key_exists('transfer_calculator', $result) ?
+                                                    $result['transfer_calculator']['costs'][0]['cost'] : 0 ?>;
+        var wangwang = "<?php echo trim(strip_tags($wangwang)) ?>";
+        var item_id = '<?php echo $result['id'] ?>';
+        var link_origin = '<?php echo $result['origin_url'] ?>';
+        var shop = "<?php echo $result['supplier']['seller_username'] ?>";
+        var shop_id = '<?php echo $result['supplier']['member_id'] ?>';
+        var order_link = 0;
+        var totalItem = 0;
+        var root_url = "<?php echo $this->document()->getPublicPath() ?>";
+        var is_promotion = "<?php echo $is_promotion ?>";
+
+
+    </script>
+    <script type="text/javascript"
+            src="<?php echo $this->document()->getPublicPath() . '/assets/js/paiTool.js?t=' . rand(100, 9999) ?>"></script>
+    <?php
+
+    // Cache file
+    if (!file_exists($cache_file))
+        @file_put_contents($cache_file, $content_file);
+
+} catch (Exception $e) {
+        $controller->dispatch('errorOrderLink', new \Flywheel\Event\Event("OrderLink",array('link_error' => $urlDetail,"message"=> "Exception : {$e}")));
+    //var_dump($e);
+    ?>
+
+    <div class="col-lg-12 col-sm-12 col-md-12 bookmartlet-alert-error">
+        <div class="alert alert-alert">
+            <p>Đường dẫn bạn gửi không phải đường dẫn chi tiết sản phẩm mà chúng tôi biết. </p>
+
+            <p>Chúng tôi sẽ lưu lại và kiểm tra đường dẫn này, nếu website gốc có sự thay đổi cấu trúc chúng tôi sẽ xử
+                lý và liên lạc với bạn. <?php echo $e ?></p>
+        </div>
+    </div>
+
+<?php
+}

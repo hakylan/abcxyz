@@ -1,0 +1,681 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 2/15/14
+ * Time: 7:55 AM
+ */
+
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = \SeuDo\Main::getHomeUrl();
+$document->addJs(\SeuDo\Main::getUserUrl().'assets/js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs(\SeuDo\Main::getUserUrl().'assets/js/process/order_delivery.js', 'TOP');
+$document->addJs($publicHomePath.'assets/js/process/include/handlebar_helper.js', 'TOP');
+$document->addJs($publicHomePath.'/assets/js/process/order_active.js');
+$document->addCss($publicHomePath.'/assets/css/order.css');
+$document->addCss($publicHomePath.'/assets/css/donhangchogom.css');
+$document->addJsVar("OrderActiveUrl",\SeuDo\Main::getUserRouter()->createUrl('order_active/default'));
+
+$document->addJsCode('
+    var order_template = Handlebars.compile($("#_waiting_delivery").html());
+    Handlebars.registerPartial("list_order", $("#_item_delivery").html());', 'BOTTOM-USER', 'standard');
+$status_list = array(
+    0 => array(
+        "text" => "Tất cả",
+        "data_id" => "tab_all",
+        "data_status" => "OrderActive"
+    ),
+    1 => array(
+        "text" => "Đang mua hàng",
+        "data_id" => "tab_dgd",
+        "data_status" => "BEFORE_BOUGHT"
+    ),
+    2 => array(
+        "text" => "Đã mua hàng",
+        "data_id" => "tab_dmh",
+        "data_status" => \Order::STATUS_BOUGHT
+    ),
+    3 => array(
+        "text" => "Đang kiểm hàng",
+        "data_id" => "tab_dkh",
+        "data_status" => \Order::STATUS_CHECKING
+    ),
+    4 => array(
+        "text" => "Đang chờ giao",
+        "data_id" => "tab_dcg",
+        "data_status" => Order::STATUS_WAITING_FOR_DELIVERY
+    ),
+    5 => array(
+        "text" => "Yêu cầu giao hàng",
+        "data_id" => "tab_xngh",
+        "data_status" => \Order::STATUS_CUSTOMER_CONFIRM_DELIVERY
+    ),
+    6 => array(
+        "text" => "Đang giao",
+        "data_id" => "tab_dg",
+        "data_status" => \Order::STATUS_DELIVERING
+    ),
+);
+
+$document->addJsVar("TabOrderActive","OrderActive","TOP");
+$document->addJsVar("BEFORE_BOUGHT","BEFORE_BOUGHT","TOP");
+$document->addJsVar("STATUS_BOUGHT",\Order::STATUS_BOUGHT,"TOP");
+$document->addJsVar("STATUS_CHECKING",\Order::STATUS_CHECKING,"TOP");
+$document->addJsVar("STATUS_WAITING_FOR_DELIVERY",\Order::STATUS_WAITING_FOR_DELIVERY,"TOP");
+$document->addJsVar("STATUS_DELIVERING",\Order::STATUS_DELIVERING,"TOP");
+
+$keyword = isset($keyword) ? $keyword : '';
+$status = isset($status) ? $status : "0";
+$from_time = isset($from_time) ? $from_time : 0;
+$to_time = isset($to_time) ? $to_time : 0;
+$page = isset($page) ? $page : 1;
+$total_page = isset($total_page) ? $total_page : 1;
+
+?>
+
+<script id="_waiting_delivery" type="text/x-handlebars-template">
+<div class="note-tab">
+    <div class="module-content">
+        <p class="normal">- Những đơn hàng này có thể giao cho quý khách.</p>
+        <p class="normal">- Khi giao hàng hệ thống phí dịch vụ và tiền hàng còn thiếu sẽ bị trừ trong tài khoản quý khách. Các đơn hàng sẽ chuyển sang trạng thái "Đang Giao"</p>
+        <p class="normal">- Đơn hàng quá 5 ngày hoặc tổng khối lượng các đơn > 70kg sẽ tự động chuyển sang trạng thái giao cho quý khách.</p>
+        <p class="normal">- Quý khách sẽ nhận được hàng nếu tài khoản của quý khách trên <span class="red-normal">SeuDo.vn</span> không âm.</p>
+    </div>
+</div>
+{{#each order_list}}
+<div class="module _group_order" data-general-id="{{address.id}}" >
+<div class="addusser">
+    <span class="address-active"></span>
+    <p class="normal"><span class="normal-blod">{{address.reciver_name}}</span> / {{address.detail}} - {{address.district.label}} - {{address.province.label}}</p>
+</div>
+<div class="top-main header-deposit">
+    <div class="col-lg-3 col-md-3 col-xs-3">
+        <div class="checkbox-deposit">
+            <input type="checkbox" class="_check_general_order" value="all" checked="checked" data-general-id="{{address.id}}">
+            <span class="uppercase">STT</span>
+        </div>
+        <p class=" checkbox">Đơn hàng</p>
+    </div>
+
+    <div class="col-lg-8 col-md-8 col-xs-8 right">
+        <div class="col-lg-4 col-md-4 col-xs-4 to-right">
+            <div class="col-lg-4 col-md-4 col-xs-4">
+                <p class=" uppercase">T.gian</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-xs-4">
+                <p class=" uppercase">S.phẩm</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-xs-4">
+                <p class=" uppercase">T.lượng</p>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-xs-2">
+            <p class=" uppercase">Tiền mua hàng (1)</p>
+        </div>
+        <div class="col-lg-2 col-md-2 col-xs-2">
+            <p class=" uppercase">Phí dịch vụ (2)</p>
+        </div>
+        <div class="col-lg-2 col-md-2 col-xs-2">
+            <p class=" uppercase">Trả lại (3)</p>
+        </div>
+        <div class="col-lg-2 col-md-2 col-xs-2">
+            <p class=" uppercase">Đã thanh toán (4)</p>
+        </div>
+
+
+    </div>
+    <div class="col-lg-1 col-md-1 col-xs-1">
+        <p class=" uppercase">Còn thiếu (1+2+3-4)</p>
+    </div>
+
+</div>
+<div class="cart-list-content header-deposit">
+    {{#each order}}
+    {{>list_order}}
+    {{/each}}
+</div>
+
+<div class="bottom-list">
+<div class="col-lg-3 col-md-3 col-xs-3">
+    <p class="normal-blod font-lag bottom-total">Tổng</p>
+</div>
+<div class="col-lg-8 col-md-8 col-xs-8 right font-lag">
+    <div class="col-lg-4 col-md-4 col-xs-4 to-right">
+        <div class="col-lg-4 col-md-4 col-xs-4">
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-xs-4">
+            <p class="normal-blod">
+                    <span class="_total_receive_general" data-general-id="{{order_general.id}}">
+                    {{order_general.total_receive_quantity}}</span>
+                /
+                    <span class="_total_pending_general" data-general-id="{{order_general.id}}">
+                        {{order_general.total_pending_quantity}}
+                        </span>
+            </p>
+        </div>
+        <div class="col-lg-4 col-md-4 col-xs-4">
+            <p class="normal-blod">
+                    <span class="_total_weight_general" data-general-id="{{order_general.id}}">
+                    {{order_general.total_weight}}</span>Kg</p>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-2">
+        <p class="normal-blod">
+                <span class="_total_real_amount_general" data-general-id="{{order_general.id}}">
+                {{formatKCurrency order_general.total_real_amount}}
+        </p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-2">
+        <p class="normal-blod">
+                <span class="_total_services_general" data-general-id="{{order_general.id}}">
+                {{formatKCurrency order_general.total_services}}
+        </p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-2">
+        <p class="normal-blod">
+                    <span class="_total_real_refund" data-money="{{order_general.total_real_refund}}"
+                          data-general-id="{{order_general.id}}">
+                    {{formatKCurrency order_general.total_real_refund}}</span></p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-2">
+        <p class="normal-blod">
+                <span class="_total_payment_general" data-general-id="{{order_general.id}}">
+                {{formatKCurrency order_general.total_payment}}
+                </span></p>
+    </div>
+
+</div>
+<div class="col-lg-1 col-md-1 col-xs-1">
+    <p class="{{classPrice order_general.total_missing}}">
+        <span class="_total_missing" data-general-id="{{order_general.id}}">{{formatKCurrency order_general.total_missing}}</span>
+    </p>
+</div>
+<div class="bottom-list-footer">
+    <div class="pull-right submit">
+        <button class="btn btn-blue btn-lg _btn_confirm_pass" type="button" data-general-id="{{order_general.id}}"
+                data-target="#confirmPassword{{order_general.id}}" data-toggle="modal">
+            <span class="uppercase normal-blod">Giao những đơn này</span>
+        </button>
+        <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog"
+             tabindex="-1" id="confirmPassword{{order_general.id}}" class="modal fade finish-poup" >
+            <div class="modal-dialog" style="width: 500px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close _close_confirm_pass" data-general-id="{{order_general.id}}" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                        <h4 id="myModalLabel" class="modal-title"><span class="uppercase normal-blod">Xác nhận giao hàng</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="item">
+                            <div class="col-lg-4 col-md-4 col-xs-4">
+                                <p class="normal">Tiền hàng:</p>
+                                <p class="{{classPrice order_general.total_real_amount}}">
+                                        <span class="_total_real_amount_general" data-general-id="{{order_general.id}}">
+                {{formatKCurrency order_general.total_real_amount}}</p>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-4">
+                                <p class="normal">Đã thanh toán:</p>
+                                <p class="{{classPrice order_general.total_payment}}"><span class="_total_payment_general" data-general-id="{{order_general.id}}">
+                {{formatKCurrency order_general.total_payment}}</p>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-4">
+                                <p class="normal">Số dư sau tất toán</p>
+                                <p class="{{classPrice order_general.total_missing}}">
+                                        <span class="_total_balance" data-balance="" data-general-id="{{order_general.id}}">
+                                        {{formatKCurrency order_general.total_missing}}
+                                        </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <p>Nhập mật khẩu đăng nhập để gửi yêu cầu giao hàng</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <input class="form-control form-myinput _password" data-general-id="{{order_general.id}}" type="password" placeholder="Mật khẩu đăng nhập...">
+                            <p class="red-normal text-left _err_confirm_pass hidden" data-general-id="{{order_general.id}}" style="margin-top: 5px;">Mật khẩu không chính xác, xin thử lại</p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <button class="btn btn-blue _confirm_password" type="button" data-general-id="{{order_general.id}}">Xác nhận</button>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        <span class="_open_confirmed" data-target="#finishModal{{order_general.id}}" data-general-id="{{order_general.id}}" data-toggle="modal"></span>
+        <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="finishModal{{order_general.id}}" class="modal fade finish-poup" >
+            <div class="modal-dialog awaiting-popup" style="width: 600px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" style="display: none" class="close _close_confirmed_general" data-general-id="{{order_general.id}}" data-dismiss="modal"
+                                aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                        <h4 id="myModalLabel" class="modal-title"><span class="uppercase normal-blod">Thông báo giao hàng</span></h4>
+                    </div>
+                    <div class="modal-body _positive_money _positive" data-general-id="{{order_general.id}}">
+                        <div class="item">
+                            <div class="alert alert-alert">
+                                <p>Số dư sau tất toán của bạn là :
+                                        <span class="bold-blue">
+                                            <label class="_total_balance" data-general-id="{{order_general.id}}"></label>
+                                    </span>
+                                </p>
+                                <p>Chúng tôi đã nhận được yêu cầu giao hàng của bạn, nhân viên giao hàng sẽ liên hệ trực tiếp với bạn trước khi giao.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer _positive_money _positive" data-general-id="{{order_general.id}}">
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 pull-right">
+                            <button class="btn btn-blue _close_popup" data-general-id="{{order_general.id}}" data-dismiss="modal" aria-hidden="true" type="button">Đồng ý</button>
+                        </div>
+                    </div>
+                    <div class="modal-body awaiting-v2 _negative_money _negative" style="width: 100%" data-general-id="{{order_general.id}}">
+                        <div class="alert alert-alert">
+                            <p>Số tiền tối thiểu bạn cần phải nạp lên hệ thống để nhận hàng là
+                                        <span class="red-normal">
+                                            <label class="_total_balance_rounding" data-general-id="{{order_general.id}}"></label>
+                                        </span>
+                            </p>
+                        </div>
+                        <div class="item border block _block_recharge" data-general-id="{{order_general.id}}">
+                            <input type="radio" name="optionsRadios{{order_general.id}}" data-general-id="{{order_general.id}}"
+                                   value="nt" checked="checked" class="checkbox _checkbox_option" id="optionsRadios{{order_general.id}}">
+                            <div class="module-content">
+                                <p>Bạn hãy
+                                    <a title="Nạp tiền" target="_blank" href="<?php echo $controller->createUrl("user_transaction/transaction_form") ?>">Nạp Tiền</a>
+                                    lên hệ thống để chúng tôi giao hàng cho bạn</p>
+                            </div>
+                            <div class="opacity"></div>
+                        </div>
+                        {{#if order_general.is_cod}}
+                        <div class="item _block_cod" data-general-id="{{order_general.id}}">
+                            <input type="radio" name="optionsRadios{{order_general.id}}" value="cod"
+                                   class="checkbox _checkbox_option" data-general-id="{{order_general.id}}" id="optionsRadios{{order_general.id}}">
+                            <div class="module-content">
+                                <p>Hoặc nếu bạn muốn nạp tiền khi nhận hàng vui lòng nhập số tiền bạn muốn nạp vào ô bên bên dưới.</p>
+                            </div>
+                            <div class="row module-content">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <input type="text" class="form-control form-myinput _cod" data-general-id="{{order_general.id}}" placeholder="Số tiền bạn muốn nạp.....">
+                                </div>
+                            </div>
+                            <div class="opacity"></div>
+                        </div>
+                        {{/if}}
+                    </div>
+                    <div class="modal-footer _negative_money _negative" data-general-id="{{order_general.id}}">
+                        <div class="col-lg-4 col-md-4 col-sm-4 pull-right">
+                            {{#if order_general.is_cod}}
+                            <button class="btn btn-blue _confirmed_general" data-general-id="{{order_general.id}}" type="button">Đồng ý</button>
+                            {{else}}
+                            <button class="btn btn-blue _close_popup _confirmed_general" data-general-id="{{order_general.id}}" data-dismiss="modal" aria-hidden="true" type="button">Đồng ý</button>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        <!--<div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="finishModal{{order_general.id}}" class="modal fade finish-poup" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                        <h4 id="myModalLabel" class="modal-title"><span class="uppercase normal-blod">Thông báo giao hàng</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="item">
+                            <div class="col-lg-4 col-md-4 col-xs-4">
+                                <p class="normal">Tiền hàng:</p>
+                                <p class="{{classPrice order_general.total_real_amount}}">
+                                    <span class="_total_real_amount_general" data-general-id="{{order_general.id}}">
+            {{formatKCurrency order_general.total_real_amount}}</p>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-4">
+                                <p class="normal">Đã thanh toán:</p>
+                                <p class="{{classPrice order_general.total_payment}}"><span class="_total_payment_general" data-general-id="{{order_general.id}}">
+            {{formatKCurrency order_general.total_payment}}</p>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-4">
+                                <p class="normal">Số dư sau tất toán</p>
+                                <p class="{{classPrice order_general.total_missing}}">
+                                    <span class="_total_balance" data-general-id="{{order_general.id}}">
+                                    {{formatKCurrency order_general.total_missing}}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="item note _positive_money _positive" data-general-id="{{order_general.id}}">
+                            <p class="normal">Bấm xác nhận để hoàn tất quá trình yêu cầu giao hàng, nhân viên của chúng tôi sẽ liên hệ với bạn trước khi giao.</p>
+                        </div>
+                        <div class="item note _negative_money _negative" data-general-id="{{order_general.id}}">
+                            <p class="normal">Các đơn hàng sau tất toán còn thiếu số tiền
+                                <span class="_total_balance" data-general-id="{{order_general.id}}"></span> VND.</p>
+                            <p class="normal">Vui lòng
+                                <a href="<?php echo $controller->createUrl("user_transaction/transaction_form") ?>">
+                                    <span>Nạp Tiền</span>
+                                </a> lên hệ thống để chúng tôi giao hàng cho bạn.
+                            </p>
+                            {{#if order_general.is_cod}}
+                            <p class="normal">Hoặc bạn có muốn thanh toán khi nhận hàng?</p>
+                            {{/if}}
+                            <p class="normal">Bấm xác nhận để hoàn tất quá trình yêu cầu giao hàng</p>
+                        </div>
+
+                        {{#if order_general.is_cod}}
+                        <p class="normal-blod _p_negative_money _negative" data-general-id="{{order_general.id}}">
+                            Bạn cần nhập số tiền muốn thanh toán thêm khi nhận hàng(Số tiền bạn nhập phải lớn hơn số tiền thiếu).</p>
+                        {{/if}}
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            {{#if order_general.is_cod}}
+                            <input value="" placeholder="Nhập số tiền muốn thanh toán thêm" class="form-control form-myinput _cod _negative" data-general-id="{{order_general.id}}" type="text" placeholder="Tiền thanh toán thêm..">
+                            {{/if}}
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <button class="btn btn-blue _confirmed_general" style="padding: 5px"
+                                    data-dismiss="modal" data-general-id="{{order_general.id}}" type="button">Xác nhận</button>
+                        </div>
+                    </div>
+                </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+                </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+            </div>-->
+    </div>
+    <div class="pull-right note">
+        <p class="normal">Để giao hàng ấn nút bên cạnh.</p>
+        <p class="normal">Số tiền thiếu sẽ tự động trừ vào tài khoản của bạn.</p>
+        <p class="normal">Hàng sẽ được giao nếu tài khoản của bạn đủ tiền (không âm).</p>
+    </div>
+</div>
+</div>
+</div>
+{{/each}}
+</script>
+
+<script id="_item_delivery" type="text/x-handlebars-template">
+    <div class="item-list">
+        <div class="col-lg-3 col-md-3 col-xs-3">
+            <div class="checkbox-deposit">
+                <input type="checkbox" value="{{code}}" checked="checked" class="_check_order"
+                       data-order-id="{{id}}" data-general-id="{{user_address_id}}">
+                <span class="uppercase">{{id}}</span>
+            </div>
+            <p class="normal checkbox"><a href="{{detail_link}}">{{code}}</a></p>
+            <p class="normal-blod checkbox">{{seller_name}}</p>
+        </div>
+        <div class="col-lg-8 col-md-8 col-xs-8 right">
+            <div class="col-lg-4 col-md-4 col-xs-4 to-right">
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                    <p class="time">{{checked_time_format}}</p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                    <p class="">
+                        <span class="_receive_quantity_order" data-quantity="{{recive_quantity}}" data-order-id="{{id}}" data-general-id="{{user_address_id}}">
+                            {{recive_quantity}}
+                        </span>/<span class="_pending_quantity_order" data-quantity="{{pending_quantity}}" data-order-id="{{id}}"
+                                      data-general-id="{{user_address_id}}">
+                            {{pending_quantity}}
+                        </span>
+                    </p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                    <p class="">
+                        <span class="_weight_order" data-weight="{{weight}}" data-order-id="{{id}}"
+                              data-general-id="{{user_address_id}}">
+                        {{weight}}</span>kg</p>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-2">
+                <p">
+                    <span class="_real_amount_order" data-money="{{order_price_vnd}}" data-order-id="{{id}}"
+                          data-general-id="{{user_address_id}}">
+                        {{formatKCurrency order_price_vnd}}</span></p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-2">
+                <p>
+                    <span class="_services_fee_order" data-money="{{total_services_fee}}" data-order-id="{{id}}"
+                          data-general-id="{{user_address_id}}">
+                    {{formatKCurrency real_service_amount}}</span></p>
+                <p class="font-small">
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#servicesDetail{{id}}">Chi tiết</a>
+                </p>
+                <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="servicesDetail{{id}}"
+                     class="modal fade finish-poup myModalitem" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                                <h4 class="modal-title"><p class="normal-blod title">{{code}}</p></h4>
+                            </div>
+                            <div class="modal-body">
+                                {{#each order_services}}
+                                <div class="item">
+                                    <div class="left"><p>{{code_title}}:</p></div>
+                                    <div class="right"><p>{{formatKCurrency money}}</p></div>
+                                </div>
+                                {{/each}}
+                                <div class="item">
+                                    <div class="left"><p>PVC Nội địa TQ:</p></div>
+                                    <div class="right"><p>{{formatKCurrency domestic_shipping_fee_vnd}}</p></div>
+                                </div>
+                                <div class="item">
+                                    <div class="left"><p class="normal-blod font-lag">Tổng phí :</p></div>
+                                    <div class="right"><p class="{{classPrice total_services_fee}} font-lag">{{formatKCurrency real_service_amount}}</p></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-2">
+                <p>
+                    <span class="_real_refund_order" data-money="{{real_refund_amount}}" data-order-id="{{id}}"
+                          data-general-id="{{user_address_id}}">
+                    {{formatKCurrency real_refund_amount}}</span></p>
+            </div>
+            <div class="col-lg-1 col-md-1 col-xs-1">
+                <p class="normal-blod">
+                    <span class="_real_payment_order" data-money="{{real_payment_amount}}" data-order-id="{{id}}"
+                          data-general-id="{{user_address_id}}">
+                    {{formatKCurrency real_payment_amount}}</span></p>
+            </div>
+
+
+        </div>
+        <div class="col-lg-1 col-md-1 col-xs-1">
+            <p class="{{classPrice missing_amount}} _missing_order" data-general-id="{{user_address_id}}" data-order-id="{{id}}" data-missing="{{missing_amount}}" >
+                {{formatKCurrency missing_amount}}
+            </p>
+        </div>
+    </div>
+</script>
+
+
+<div class="module-content">
+    <section class="order-title">
+        <div class="seu-module-ct">
+            <div class="module-inner">
+                <div class="module-title">
+                    <p class="title"><span class="title-page">Đơn hàng hoạt động</span></p>
+                    <div class="dateday pull-right">
+                        <div class="link left">
+                            <a href="javascript:void(0)" data-time="0" class="_time_before" class="today">Hôm nay </a>
+                            <span class="arow"></span>
+                        </div>
+                        <div class="link">
+                            <a href="javascript:void(0)" data-time="7" class="_time_before">7 ngày trước </a>
+                            <span class="arow"></span>
+                        </div>
+                        <div class="link">
+                            <a href="javascript:void(0)" data-time="30" class="_time_before">30 ngày trước </a>
+                            <span class="arow"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="search-order">
+        <div class="seu-module-ct">
+            <div class="s-title">
+                <p class="uppercase normal-blod"> Tìm kiếm đơn </p>
+            </div>
+            <div class="s-content">
+                <div class="row">
+                    <form id="_search" method="get" action="">
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="item-search">
+                                <input name="keyword" value="<?php echo $keyword ?>" class="form-control form-myinput _keyword" type="text" placeholder="Tìm mã đơn hoặc tên người bán">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="item-search">
+                                <select class="pull-right _select_status _select_filter"
+                                        name="status">
+                                    <?php
+                                    foreach ($status_list as $tab) {
+                                        ?>
+                                        <option value="<?php echo $tab['data_status'] ?>"
+                                            <?php if($status == $tab['data_status']){ ?>
+
+                                                selected="selected"
+                                            <?php } ?>
+                                            >
+                                            <?php echo $tab['text'] ?>
+                                        </option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="item-search date">
+                                <span>Từ</span>
+                                <input id="datepicker" name="from_time" value="<?php echo $from_time ?>"
+                                       class="form-control form-myinput pull-right _from" type="text" placeholder="01/01/2014">
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="item-search date">
+                                <span>Đến</span>
+                                <input id="datepicker2" name="to_time" value="<?php echo $to_time ?>"
+                                       class="form-control form-myinput pull-right _to" type="text" placeholder="02/01/2014">
+                            </div>
+                        </div>
+                        <input type="hidden" class="_page" name="page" value="<?php echo $page ?>">
+                    </form>
+
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <div class="item-search">
+                            <button class="btn btn-blue pull-right _btn_filter" type="button"><span class="uppercase normal-blod">Tìm</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="normal">Tìm thấy <span class="normal-blod _total_filter">0</span> đơn hàng.</p>
+        </div>
+    </section>
+
+    <!--    list cart-->
+
+    <section class="adress-cart list-cart deposit ">
+        <div class="body-order">
+            <ul id="myTab" class="nav nav-tabs my-tabs">
+                <?php
+                foreach ($status_list as $sta) {
+                    ?>
+                    <li class="<?php if($sta['data_status'] == $status) { echo 'active'; } ?> _tab" data-id="<?php echo $sta["data_id"] ?>"
+                        data-status="<?php echo $sta["data_status"] ?>">
+                        <a data-toggle="tab" class="_order_count" data-status="<?php echo $sta["data_status"] ?>"
+                           href="#<?php echo $sta["data_id"] ?>" title="<?php echo $sta['text'] ?>">
+                            <?php echo $sta['text'] ?>
+                            <span class="_total_filter_status arow count" data-status="<?php echo $sta["data_status"] ?>">0</span>
+                        </a></li>
+                <?php } ?>
+            </ul>
+            <div class="tab-content my-tab-content">
+                <?php
+                foreach ($status_list as $sta) {
+                    if($sta['data_status'] != Order::STATUS_WAITING_FOR_DELIVERY){
+                        ?>
+                        <div id="<?php echo $sta["data_id"] ?>" data-status="<?php echo $sta["data_status"] ?>"
+                             class="tab-pane _order_active_main awaiting acti-img">
+                            <div class="module">
+                                <div class="top-main header-deposit">
+                                    <div class="col-lg-3 col-md-4 col-sm-4">
+                                        <div class="checkbox-deposit">
+                                            <span class="uppercase">#</span>
+                                        </div>
+                                        <p class="normal-blod checkbox">Đơn hàng</p>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 right-top-deposit">
+                                        <p class="normal-blod uppercase">Trạng thái</p>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 right-top-deposit">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <p class="normal-blod uppercase">Sản phẩm</p>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <p class="normal-blod uppercase">Tổng tiền hàng</p>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <p class="normal-blod uppercase">Trả lại</p>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <p class="normal-blod uppercase">Đã thanh toán</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <ul class="cart-list-content header-deposit _order_active"
+                                    data-status="<?php echo $sta["data_status"] ?>">
+                                    <li>
+                                        <div class="loading-data _loading_order" style="">
+                                            <img src="<?php echo $publicHomePath.'/assets/img/small/loading31.gif' ?>" style="width: 80px">
+                                        </div>
+                                    </li>
+                                </ul>
+                                <?php if($total_page > 1){ ?>
+                                    <div class="pagination-page">
+                                        <ul class="paginationv2">
+                                            <?php if($page > 1){ ?>
+                                                <li class="pre"><a href="javascript:void(0)" class="_page_order" data-page-id="<?php echo $page - 1 ?>">
+                                                        &lt; </a></li>
+                                            <?php } ?>
+                                            <?php for($i = 1 ; $i <= $total_page;$i++){ ?>
+                                                <li class="_li_page <?php if($page == $i){ ?>active<?php } ?>" data-page-id="<?php echo $i ?>" >
+                                                    <a href="javascript:void(0)" data-page-id="<?php echo $i ?>" class="_page_order"><?php echo $i ?>
+                                                    </a>
+                                                </li>
+                                            <?php } ?>
+                                            <?php if($page < $total_page){ ?>
+                                                <li class="next"><a href="javascript:void(0)" data-page-id="<?php echo $page + 1  ?>" class="_page_order"> &gt; </a></li>
+
+                                            <?php } ?>
+                                        </ul>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    <?php }else{ ?>
+                        <div id="tab_dcg" data-status="<?php echo $sta["data_status"] ?>" class="awaiting tab-pane _order_active_main" >
+                            <div class="loading-data _loading_order">
+                                <img src="<?php echo $publicHomePath.'/assets/img/small/loading31.gif' ?>" style="width: 80px">
+                            </div>
+                        </div>
+                    <?php
+                    }
+                } ?>
+
+            </div>
+
+        </div>
+    </section>
+</div>

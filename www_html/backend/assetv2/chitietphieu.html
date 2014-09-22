@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Chi tiết phiếu</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jqueryui.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <script type="text/javascript" src="js/process/menu.js"></script>
+    <script type="text/javascript" src="js/process/home.js"></script>
+    <script type="text/javascript" src="js/backendv2-frontend.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-typo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-header.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-chitietphieu.css" />
+
+</head>
+<body>
+<header class="header">
+    <nav role="navigation" class="container header-top">
+        <div class="row">
+            <div class="col-lg-1 col-md-1">
+                <div class="module-float logo">
+                    <a href="#"></a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4">
+                <div class="module-float input-search">
+                    <input type="text" id="exampleInput" class="form-control form-myinput" placeholder="Tìm đơn hàng nhanh theo mã đơn hàng hoặc ID...">
+                    <a href="#"><span class="arrow"></span></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 pull-right">
+
+            </div>
+        </div>
+    </nav>
+
+    <nav class="seu-menu" role="navigation">
+        <div class="container">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="col-lg-7 col-md-7 seu-main-menu" >
+                <ul class="nav navbar-nav module-float">
+
+                    <li class="active">
+                        <a class="navbar-nav-a" href="#">Dashboard</a>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                        <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                        <ul class="dropdown-menu custom-nav-dropdown">
+                            <li><a href="#">Danh sách đơn hàng</a></li>
+                            <li><a href="#">Quản lý mua hàng</a></li>
+                            <li><a href="#">Mua hàng và thanh toán</a></li>
+                            <li><a href="#">Giao hàng</a></li>
+                        </ul>
+                    </li>
+
+                    <li class=" dropdown">
+                        <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Người dùng <b class="caret"></b></a>
+                        <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                        <ul class="dropdown-menu custom-nav-dropdown">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+            </div><!-- /.navbar-collapse -->
+            <div class="col-lg-5">
+                <div class="module-float note-alert">
+                    <p class="text-right"><i class="fa fa-warning" style=""></i>Số dư khách không âm hoặc số tiền cần thu tối thiểu (<0) là khách thiếu tiền</p>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </nav>
+</header>
+
+<section class="container main-body" id="main-body">
+<div class="row search">
+    <div class="col-lg-9 col-md-9 col-xs-9">
+        <div class="module-float module-title">
+            <p><span class="title">Tên số phiếu giao hàng</span><span class="arrow"></span><span class="font-gray">Ngày tạo: 10/10/2010</span></p>
+        </div>
+    </div>
+
+    <div class="col-lg-2 col-md-2 pull-right">
+        <div class="print module-float">
+            <button type="button" class="btn btn-gray pull-right"><i class="fa fa-print"></i> In Phiếu</button>
+        </div>
+    </div>
+</div>
+
+<div class="row main-content">
+<div class="col-lg-4 col-md-4">
+    <div class="module-float module-ct-left">
+        <div class="item">
+            <div class="left">
+                <p>ID:</p>
+            </div>
+            <div class="right">
+                <p class="font-bold uppercase">hjh3232</p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="left">
+                <p>Khách hàng:</p>
+            </div>
+            <div class="right avatar">
+                <div class="img-avatar">
+                    <img src="images/gravatar.jpg">
+                </div>
+                <p class="font-bold">Mebela@mebela</p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="left">
+                <p>Người nhận:</p>
+            </div>
+            <div class="right">
+                <p class="font-bold uppercase">Nguyễn Thị Phượng - Số 48 ngõ 82, Nguyễn Phúc Lai phường Ô Chợ Dừa .... - 098899912</p>
+                <p class="font-gray">(Viết chú thích của địa chỉ vào đây. Cứ viết dài dài chút đừng ngại.....)</p>
+                <br>
+            </div>
+        </div>
+        <div class="item">
+            <div class="left">
+                <p>Phí VC nội địa:</p>
+            </div>
+            <div class="right">
+                <p class="font-bold">20.000<sup>đ</sup></p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="left">
+                <p>COD:</p>
+            </div>
+            <div class="right">
+                <p class="font-bold">20.000<sup>đ</sup></p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="left">
+                <p>Trọng lượng:</p>
+            </div>
+            <div class="right">
+                <p class="font-bold">2.4kg</p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="left">
+                <p>Người tạo:</p>
+            </div>
+            <div class="right avatar">
+                <div class="img-avatar">
+                    <img src="images/gravatar.jpg">
+                </div>
+                <p class="font-bold">Ngô Thị Anh Minh</p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="left">
+                <p>Thực thu:</p>
+            </div>
+            <div class="right">
+                <input type="text" value="" placeholder="Nhập thực thu...." class="form-control form-myinput input-dola">
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</div>
+<div class="col-lg-8 col-md-8">
+    <div class="module-float module-ct-right">
+        <div class="module-float ct-right-header">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 search">
+                    <p class="font-bold uppercase font-lag">Danh sách đơn hàng</p>
+                </div>
+            </div>
+            <div class="border"></div>
+        </div>
+        <div class="module-float ct-main">
+            <div class="col-lg-4 col-md-4">
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+                <div class="module-float item">
+                    <span class="arrow-left"></span>
+                    <p class="uppercase"><a href="#">ghghg212121</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</div>
+</section>
+
+</body>
+</html>

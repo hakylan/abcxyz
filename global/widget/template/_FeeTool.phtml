@@ -1,0 +1,135 @@
+<div class="col-lg-9 col-md-9 col-sm-9 sl2">
+    <div class="seu-module ">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title italic uppercase normal-blod">Tính phí nhập hàng</p>
+            </div>
+            <div class="module-ct" id="calcFeeTool">
+                <div class="col-lg-8 col-md-8 col-sm-8 sls1">
+                    <div class="sls-module">
+                        <div class="item-full">
+                            <span class="normal left">Tổng tiền hàng</span>
+                            <input id="exampleInput" class="form-control form-myinput totalAmount" type="text" placeholder="" >
+                        </div>
+                        <div class="item-2full">
+                            <div class="left">
+                                <div class="left-item">
+                                    <span class="normal left">Số sản phẩm thường</span>
+                                    <input id="exampleInput" class="form-control form-myinput normalItemCount" type="text" placeholder="0" >
+                                </div>
+                                <div class="left-item">
+                                    <span class="normal left">Tỉnh / Tp của bạn</span>
+                                    <select class="selectpicker targetCode">
+                                        <option value="-1">Chọn thành phố</option>
+                                        <?php
+                                        $locations = \Locations::findByType('STATE');
+                                        if($locations && !empty($locations)){
+                                            foreach ($locations as $location){
+                                                if($location instanceof \Locations):
+                                                    ?>
+                                                    <option value="<?php echo $location->getKeyCode();?>"><?php echo $location->getLabel();?></option>
+                                                <?php
+                                                endif;
+
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="right-item">
+                                    <div class="left">
+                                        <p class="normal">Số phụ kiện</p>
+                                        <p class="italic"><i>Giá dưới 34.000&nbsp;<sup>đ</sup></i></p>
+                                    </div>
+                                    <input id="exampleInput" class="form-control form-myinput accessItemCount" type="text" placeholder="0" >
+                                </div>
+                                <div class="right-item">
+                                    <div class="left">
+                                        <p class="normal">Trọng lượng</p>
+                                        <p class="italic"><i>kg</i></p>
+                                    </div>
+                                    <input id="exampleInput" class="form-control form-myinput totalWeight" type="text" placeholder="0" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-full bottom">
+                            <span class="normal left">Sử dụng dịch vụ ?</span>
+                            <div class="item-full-ct">
+                                <input type="checkbox" checked class="services" value="CHECKING"><span>Kiểm hàng</span>
+                                <input type="checkbox" class="services" value="PACKING"><span>Đóng gỗ</span>
+                            </div>
+                        </div>
+                        <div class="save-buton">
+
+                            <button class="btn btn-default btn-lg pull-right calcBtn" type="button"><span class="uppercase">tính thử</span></button>
+                            <span class="pull-right error_box" style="color:red;margin-top:10px;margin-right: 10px;font-size: 14px;"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4 sls2">
+                    <div class="item">
+
+                    </div>
+
+                    <div class="item">
+                        <div class="left">
+                            <p class="normal">Phí mua hàng</p>
+                        </div>
+                        <div class="right">
+                            <p class="red-normal" id="buying_fee">0<sup>đ</sup></p>
+                        </div>
+                    </div>
+
+                    <div class="item" style="color: #cccccc;font-size: 12px">
+
+                        <div class="left">
+                            <p class="normal">Bao gồm vận chuyển nội địa TQ</p>
+                        </div>
+                        <div class="right">
+                            <!--<p class="red-normal" id="inlandChina">0<sup>đ</sup></p>-->
+                            <p id="inlandChina">0<sup>đ</sup></p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="left">
+                            <p class="normal" >Phí kiểm hàng</p>
+                        </div>
+                        <div class="right">
+                            <p class="red-normal" id="checking_fee">0<sup>đ</sup></p>
+                        </div>
+                    </div>
+                    <div class="item">
+
+                    </div>
+                    <div class="item">
+
+                    </div>
+                    <div class="item">
+                        <div class="left">
+                            <p class="normal">Phí vận chuyển TQ-VN</p>
+                            <p class="italic">(gồm phí đóng gỗ nếu có)</p>
+                        </div>
+                        <div class="right">
+                            <p class="red-normal" id="chinaVietnam">0<sup>đ</sup></p>
+                        </div>
+                    </div>
+
+                    <div class="item bottom">
+                        <div class="left">
+                            <p class="normal">Tổng phí</p>
+                        </div>
+                        <div class="right">
+                            <p class="red-normal" id="totalServiceFee">0<sup>đ</sup></p>
+                        </div>
+                    </div>
+                    <div class="bg-bottom"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

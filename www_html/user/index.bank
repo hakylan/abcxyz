@@ -1,0 +1,31 @@
+<?php
+require __DIR__ .'/../../bootstrap.php';
+$globalCnf = require ROOT_PATH . '/config.cfg.php';
+$config = array_merge( $globalCnf, require __DIR__ . '/../../apps/User/Config/main.cfg.php');
+
+$env = \Flywheel\Base::ENV_PRO;
+
+if ($env == \Flywheel\Base::ENV_DEV) {
+    restore_error_handler();
+    restore_exception_handler();
+}
+
+try {
+    $app = \Flywheel\Base::createWebApp($config, $env, true);
+    $app->run();
+} catch (\Flywheel\Exception\NotFound404 $e404) {
+    header("HTTP/1.0 404 Not Found");
+    //make 404 page here
+    echo "
+        <h1>Not Found</h1>
+        <p>The requested URL was not found on this server.</p>
+    ";
+    exit;
+} catch (\Exception $e) {
+    if ($env == \Flywheel\Base::ENV_DEV) {
+        \Flywheel\Exception::printExceptionInfo($e);
+    } else {
+        \SeuDo\ErrorHandler::printError($e->getCode());
+    }
+    \SeuDo\ErrorHandler::exceptionHandling($e);
+}

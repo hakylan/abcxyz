@@ -1,0 +1,69 @@
+<?php
+/** @var \Backend\Controller\Login $controller */
+/** @var Render $this */
+
+use Flywheel\View\Render;
+use SeuDo\Main;
+
+$document = $this->document();
+$publicPath = Main::getBackendUrl();
+$user = @$user;
+
+$title = t('ĐĂNG NHẬP QUẢN TRỊ SEUDO.VN');
+$document->title = $title;
+
+$document->addCss('css/login.css');
+$form = new \Flywheel\Html\Form('login-form');
+$form->setHtmlOption(array('id' => 'login-form', 'role' => 'form'));
+?>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-4 login-container">
+        <h4 class="text-center"><?php echo $title ?></h4>
+        <div class="col-lg-12">
+            <?php $form->beginForm(); ?>
+            <div id="login-input" class="login-block">
+                <div class="form-group">
+                    <div class="form-input-icon">
+                        <i class="fa fa-user"></i>
+                        <input type="text" name="credential" class="form-control form-myinput" placeholder="<?php td('Tên đăng nhập'); ?>" value="<?php echo $display; ?>" autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-input-icon">
+                        <i class="fa fa-key"></i>
+                        <input type="password" name="password" class="form-control form-myinput" placeholder="<?php td('Mật khẩu'); ?>">
+                    </div>
+                </div>
+            </div>
+
+            <div id="login-captcha" class="login-block">
+                <div class="row">
+                    <div class="col-md-8 col-xs-12">
+                        <img id="captcha_image" src="<?php echo $this->document()->getBaseUrl() ?>captcha.php" alt="Captcha Image">
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <input type="text" name="captcha" class="form-control form-myinput" placeholder="<?php td('Kết quả=?'); ?>">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php if (!empty($error)) : ?>
+            <div id="login-error" class="login-block">
+                <div class="alert alert-danger">
+                    <?php echo implode('<br>', $error); ?>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <div id="login-button" class="login-block">
+                <button type="submit" class="btn btn-red"><span class="uppercase font-white normal-blod"><?php td('ĐĂNG NHẬP'); ?></span></button>
+            </div>
+            <!--<div id="login-warning" class="login-block">
+                <span class="font-gray">* Hệ thống tự động lưu trạng thái đăng nhập. Vui lòng thoát nếu không sử dụng máy tính cá nhân.</span>
+            </div>-->
+            <?php $form->endForm(); ?>
+        </div>
+    </div>
+</div>

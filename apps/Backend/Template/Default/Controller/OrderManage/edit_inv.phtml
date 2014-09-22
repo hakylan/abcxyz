@@ -1,0 +1,44 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 2/11/14
+ * Time: 2:54 PM
+ */
+?>
+<div data-id="<?php echo $order_id.$key ?>" class="_div_inv_one">
+<span data-text="<?php echo $inv ?>" data-id="<?php echo $order_id.$key ?>"
+      data-order-id="<?php echo $order_id ?>" class="_span_inv">
+                         <?php echo $inv ?>
+</span>
+    <a href="javascript:void(0)" data-id="<?php echo $order_id.$key ?>"
+       data-order-id="<?php echo $order_id ?>" data-text="<?php echo $inv ?>"
+       class="_edit_inv">
+        Sửa</a>
+
+    <input type="text" value="<?php echo $inv ?>" style="display: none" class="_input_edit_inv" data-text="<?php echo $inv ?>"
+           data-id="<?php echo $order_id.$key ?>"
+           data-order-id="<?php echo $order_id ?>" ><br/>
+</div>
+<script>
+    $(document).ready(function(){
+        $('._input_edit_inv').bind('keypress', function(e) {
+            if(e.keyCode==13){
+                var order_id = $(this).attr('data-order-id');
+                var data_id = $(this).attr('data-id');
+                var new_inv = $(this).val();
+                var old_inv = $(this).attr('data-text');
+
+                Order.updateInvoice(order_id,new_inv,old_inv,data_id);
+            }
+        });
+//        $('._input_edit_inv').focusout(function(){
+//            var order_id = $(this).attr('data-order-id');
+//            var data_id = $(this).attr('data-id');
+//            var new_inv = $(this).val();
+//            var old_inv = $(this).attr('data-text');
+//
+//            Order.updateinvightBill(order_id,new_inv,old_inv,data_id);
+//        })
+    });
+</script>

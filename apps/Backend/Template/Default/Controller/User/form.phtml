@@ -1,0 +1,214 @@
+<?php
+use Flywheel\View\Render;
+
+/** @var Render  $this */
+
+/** @var \Backend\Controller\User $controller */
+
+$document = $this->document();
+$document->addCss('css/user.css');
+$document->addJs('js/user.js', 'TOP');
+
+if (!isset($error['not_found']) || !$error['not_found']) :
+    $title = ($user->isNew())? t('Thêm người dùng') : t('Sửa @%username%', array('%username%' => $user->getUsername()));
+    $document->title .= $title;
+    $document->addJsVar('error', $error);
+
+    if ($user->isNew()) {
+        $user->setVerifyEmail(false);
+        $user->setVerifyMobile(false);
+    }
+
+    $this->document()->addJsCode('
+        user_form_display_error(error);'
+        , 'BOTTOM', 'standard');
+
+    $form = new \Flywheel\Html\Form('user-frm');
+    ?>
+    <div id="page-title">
+        <h3>
+            <?php echo $title; ?>
+        </h3>
+
+        <div id="breadcrumb-right">
+            <div class="float-right">
+                <a href="<?php echo $this->createUrl('user/detail', array('id' => $user->getId())) ?>" class="btn large bg-white">
+                    <span class="button-content">
+                        <i class="glyph-icon icon-user"></i>
+                        <?php td('Chi tiết'); ?>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-content">
+        <div id="user-form" class="col-lg-8 center-margin">
+            <?php $form->beginForm(); ?>
+            <h3><?php td('Thông tin đăng nhập tài khoản'); ?></h3>
+            <p class="font-gray-dark"><?php td('Tên đăng nhập, email, mật khẩu v.v...'); ?></p>
+            <div class="form-row">
+                <div class="form-label text-right col-lg-3">
+                    <label for="users-username" class="label-description"><?php td('Tên tài khoản'); ?>
+                        <span><?php td('Tối thiểu 3 ký tự, gồm chữ cái và số'); ?></span>
+                    </label>
+                </div>
+                <div class="form-input col-lg-9">
+                    <input name="user[username]" value="<?php echo $user->getUsername();?>" id="users-username" class="col-lg-6 <?php echo (!$user->isNew())? 'disabled': ''; ?>" <?php echo (!$user->isNew())? 'disabled=disabled': ''; ?>>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-label text-right col-lg-3">
+                    <label for="users-email"><?php td('Email'); ?></label>
+                </div>
+                <div class="form-input col-lg-9">
+                    <input name="user[email]" value="<?php echo $user->getEmail(); ?>" id="users-email" class="col-lg-6 <?php echo ($user->isVerifyEmail())? 'disabled': ''; ?>" <?php echo ($user->isVerifyEmail())? 'disabled=disabled': ''; ?>><br>
+                    <?php if ($user->isVerifyEmail()): ?>
+                        <p class="font-gray-dark">
+                            <?php td('Email này đã được kích hoạt.'); ?>
+                            <a href="javascript:;" id="_user-active-edit-email">
+                                <?php td('Sửa'); ?>
+                            </a>
+                        </p>
+
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <?php if ($user->isNew()) : ?>
+
+                <div class="form-row">
+                    <div class="form-label text-right col-lg-3">
+                        <label for="users-password" class="label-description"><?php td('Mật khẩu'); ?>
+                            <span><?php td('Tối thiểu 6 ký tự'); ?></span>
+                        </label>
+                    </div>
+                    <div class="form-input col-lg-9">
+                        <input name="user[password]" value="" id="users-password" type="password" class="col-lg-6">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label text-right col-lg-3">
+                        <label for="users-confirm-pass"><?php td('Nhập lại mật khẩu'); ?></label>
+                    </div>
+                    <div class="form-input col-lg-9">
+                        <input name="user[confirm_pass]" value="" id="users-confirm-pass" type="password" class="col-lg-6">
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if(!$user->isGod()) :?>
+                <div class="form-row">
+                    <div class="form-label text-right col-lg-3">
+                        <label for="users-"><?php td('Đối tượng'); ?></label>
+                    </div>
+                    <div class="form-checkbox-radio col-lg-9">
+                        <?php
+                        $form->radioButton('user[section]', $user->getSection())
+                            ->add('CRANE', t('Nhân viên'))
+                            ->add('CUSTOMER', t('Khách hàng'))
+                            ->display();
+                        ?>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label text-right col-lg-3">
+                        <label for="users-"><?php td('Trạng thái'); ?></label>
+                    </div>
+                    <div class="form-checkbox-radio col-lg-9">
+                        <?php
+                        $form->radioButton('user[status]', $user->getStatus())
+                            ->add('ACTIVE', t('Kích hoạt'))
+                            ->add('INACTIVE', t('Không kích hoạt'))
+                            ->display();
+                        ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <h3><?php td('Thông tin cá nhân'); ?></h3>
+            <p class="font-gray-dark"><?php td('Họ tên, địa chỉ v.v...'); ?></p>
+
+            <div class="form-row">
+                <div class="form-label text-right col-lg-3">
+                    <label for="users-last_name"><?php td('Họ & Tên'); ?></label>
+                </div>
+                <div class="form-input col-lg-3">
+                    <input name="user[last_name]" placeholder="<?php td('Họ'); ?>" value="<?php echo $user->getLastName(); ?>" id="users-last_name" class="">
+                </div>
+                <div class="form-input col-lg-6">
+                    <input name="user[first_name]"  placeholder="<?php td('Tên & Đệm'); ?>" value="<?php echo $user->getFirstName(); ?>" id="users-first_name" class="col-lg-10">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-label text-right col-lg-3">
+                    <label for="users-birthday"><?php td('Ngày sinh'); ?></label>
+                </div>
+                <div class="form-input col-lg-3">
+                    <input name="user[birthday]" placeholder="31/01/2005" value="<?php echo (strtotime($user->getBirthday())>0)?($user->getBirthday()->format('d/m/Y')):'00/00/0000';?>" id="users-birthday" class="">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-label text-right col-lg-3">
+                    <label for="users-"><?php td('Giới tính'); ?></label>
+                </div>
+                <div class="form-checkbox-radio col-lg-9">
+                    <?php
+                    $form->radioButton('user[gender]', $user->getGender())
+                        ->add(1, t('Nam'))
+                        ->add(0, t('Nữ'))
+                        ->add(2, t('Không xác định'))
+                        ->display();
+                    ?>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <button class="btn primary-bg medium">
+                        <span class="button-content"><?php td('LƯU NGƯỜI DÙNG'); ?></span>
+                    </button>
+                </div>
+            </div>
+            <?php $form->endForm(); ?>
+        </div>
+    </div>
+
+<?php else : ?>
+    <div id="page-title">
+        <h3>
+            <?php td('Không tìm thấy người dùng'); ?>
+            <small>
+            </small>
+        </h3>
+
+        <div id="breadcrumb-right">
+            <div class="float-right">
+                <a href="<?php echo $this->createUrl('user/default') ?>" class="btn medium bg-white mrg5R">
+            <span class="button-content">
+                <i class="glyph-icon icon-group"></i>
+                <?php td('Danh sách'); ?>
+            </span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="page-content">
+        <div class="col-lg-12">
+            <div class="infobox bg-orange">
+                <div class="large btn bg-white info-icon">
+                    <i class="glyph-icon icon-warning-sign"></i>
+                </div>
+                <h4 class="infobox-title"><?php td('Không tìm thấy người dùng'); ?></h4>
+                <p><?php td('Thông tin người dùng bạn yêu cầu không tồn tại. '); ?><a href="<?php echo $this->createUrl('user/default') ?>"><?php td('Trang danh sách người dùng'); ?></a></p>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

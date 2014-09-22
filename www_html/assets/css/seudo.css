@@ -1,0 +1,175 @@
+.selectCountry{
+    padding: 7px;
+    margin-bottom: 10px;
+    width: 46%;
+}
+.password_strength{
+    float: right;
+    color: #C00000;
+    font-weight: bold;
+}
+.password_strength.password_strength_2 {
+    color: #FF0000;
+}
+.password_strength.password_strength_3 {
+    color: #0099ff;
+}
+.password_strength.password_strength_4 {
+    color: #0000FF;
+}
+.password_strength.password_strength_5 {
+    color: #008000;
+}
+
+#preview {
+    display: inline-block;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+.regis-item.name._margin-bot {
+    margin: 0px;
+}
+._red_left{
+    color: red;
+    text-align: left;
+}
+.click-resetpass{
+    cursor: pointer;
+}
+.item-top-header.register.login .regis-item.made {
+    margin-bottom: 0;
+    padding-top: 30px;
+}
+._urlHome{
+    color: red;
+    font-weight: bold
+}
+.img-bookmarklet{
+    background: url("../images/imgdemo/chrome.png");
+}
+.introbook-content .seu-module.intro-bookbar a.btn-red-b{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #D92E1F;
+    border-color: #B4281C #B4281C #851F16;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 0 #BFBB89;
+    color: #FFFFFF;
+    margin: 0;
+    padding-left: 30px;
+    padding-right: 30px;
+    position: relative;
+}
+.introbook-content .seu-module.intro-bookbar a.btn-red-b:hover span.arow{
+    display: block;
+}
+.introbook-content .seu-module.intro-bookbar a span.arow{
+    background: url("../images/controbook.png") no-repeat ;
+    height: 320px;
+    position: absolute;
+    right: -130px;
+    top: -300px;
+    width: 160px;
+    display: none;
+}
+._grab{
+    cursor: all-scroll;
+}
+#_password{
+    margin-bottom: 0px;
+}
+._repassword{
+    margin-top: 10px;
+}
+._hide {
+    display: none;
+}
+.btn.btn-blue.btn-lg.btn-login.disable._hide {
+    display: none;
+}
+.arrow-header-cart {
+    cursor: pointer;
+}
+._total_quantity_cart{
+    color: #000000;
+}
+._black{
+    color:#000000;
+}
+.pull-right.register.login.item-top-header.cart-img > a {
+    width: 100%;
+}
+.register.login .modal-dialog.reset-password-block .reset-password {
+    height: auto;
+    transition: all 0.5s ease 0s;
+    width: 100%;
+}
+._notifForgotPass{
+    text-align: left;
+}
+.bt-login-top{
+    z-index: 100;
+}
+._normal{
+    width: 70% !important;
+}
+.blue-normal{
+    color: #27ae60;
+}
+._blueprice{
+    color: #BC8F8F;
+}
+.setByEmail{
+    position: absolute;
+    right: 356px;
+    top: 17px;
+    width: 96px;
+}
+.btn.btn-blue.btn-lg.btn-login._request {
+    width: 100% !important;
+}
+._blue{
+    background: #E61A23;
+    color: white;
+}
+.editavatar .editavatar-body {
+    width: 50% !important;
+}
+._spamJunkMail{
+    display: inline-block;
+    width: 100%;
+    margin-top: 20px;
+}
+._imgDemoVerify{
+    display: inline-block;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+._request_before{
+    width: 100% !important;
+}
+.step .module-step .step1, .step .module-step .step2, .step .module-step .step3, .step .module-step .step4 {
+    height: 100%;
+}
+.modal-dialog.reset-password-block.block {
+    margin-top: 0;
+}
+.header-top.scoll.block .container .header-search {
+    margin-right: 10px;
+}
+.uploadavatar .img-avatar .item-upload .img img.left {
+    top: 0 !important;
+}
+.uploadavatar .img-avatar .item-upload .img img.top {
+    left: 0 !important;
+}
+.uploadavatar #preview img{
+    cursor: move;
+}

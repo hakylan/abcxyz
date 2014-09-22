@@ -1,0 +1,31 @@
+<div id="page-title">
+    <h3>
+        Quản lý địa điểm
+    </h3>
+    <div id="breadcrumb-right">
+
+        <div class="float-right">                           
+            <a class="btn medium bg-blue-alt"  href="<?php echo $this->createUrl('location/add') ?>"><i class="glyph-icon icon-plus"></i> Thêm địa điểm</a>
+        </div>
+    </div>
+</div>
+<?php
+$html = '';
+foreach ($menu as $key => $value) {
+    $string = '';
+    for ($i = 0; $i < $value['level']; $i++) {
+        if ($i == 0) {
+            $string.='&nbsp;&nbsp;&nbsp;&nbsp;';
+        } else {
+            $string.='|----';
+        }
+    }
+
+    $linkedit = '<span class="pull-left"><a href="' . $this->createUrl('location/edit', array('id' => $value['id'])) . '" > <i class="glyph-icon icon-pencil"></i>  </a>
+    <a class="delete" data-href="' . $this->createUrl('location/delete', array('id' => $value['id'])) . '" > <i class="glyph-icon icon-minus"></i>  </a></span>';
+
+    $row = '<div class="row"><div class="col-md-3 col-md-offset-2">' . $string . $value['label'] . '</div>' . $linkedit . '</div>';
+    $html.=$row;
+}
+
+echo $html;

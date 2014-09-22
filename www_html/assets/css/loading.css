@@ -1,0 +1,47 @@
+._loading{
+    left: 40%;
+    position: fixed;
+    top: 10px;
+    width: 20%;
+    z-index: 2147483647;
+}
+._loading_order{
+    position: relative;
+    text-align: center;
+}
+._loading_order div.content{
+    background: none repeat scroll 0 0 rgba(255, 247, 153, 0.95);
+    border: 1px solid #E2D600;
+    border-radius: 0 0 3px 3px;
+    color: #111111;
+    font-size: 14px;
+    font-weight: bold;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+._loading div.content{
+    background: none repeat scroll 0 0 rgba(255, 247, 153, 0.95);
+    border: 1px solid #E2D600;
+    border-radius: 0 0 3px 3px;
+    color: #111111;
+    font-size: 14px;
+    font-weight: bold;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+._select_{
+    float: left;
+    height: 31px;
+    padding: 2%;
+    vertical-align: middle;
+    width: 257px;
+}
+

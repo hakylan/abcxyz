@@ -1,0 +1,328 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 2/15/14
+ * Time: 7:55 AM
+ */
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = \Flywheel\Config\ConfigHandler::get('url.home');
+$document->addCss($publicHomePath.'/assets/css/order.css');
+$document->addJs($publicHomePath.'/assets/js/process/transaction_history.js',"TOP");
+$status_list = array(
+    0 => array(
+        "text" => "Tất cả giao dịch",
+        "data_id" => "tab_all",
+        "data_status" => "0"
+    ),
+    1 => array(
+        "text" => "Đặt cọc",
+        "data_id" => "tab_nt",
+        "data_status" => \UserTransaction::TRANSACTION_TYPE_ORDER_DEPOSIT// "ORDER_DEPOSIT"
+    ),
+    2 => array(
+        "text" => "Nạp tiền",
+        "data_id" => "tab_dc",
+        "data_status" => \UserTransaction::TRANSACTION_TYPE_DEPOSIT// "DEPOSIT"
+    ),
+    3 => array(
+        "text" => "Thanh toán",
+        "data_id" => "tab_tt",
+        "data_status" => \UserTransaction::TRANSACTION_TYPE_ORDER_PAYMENT//"ORDER_PAYMENT"
+    ),
+    4 => array(
+        "text" => "Trả lại",
+        "data_id" => "tab_tl",
+        "data_status" => \UserTransaction::TRANSACTION_TYPE_REFUND//"REFUND"
+    ),
+    5 => array(
+        "text" => "Rút tiền",
+        "data_id" => "tab_rt",
+        "data_status" => \UserTransaction::TRANSACTION_TYPE_WITHDRAWAL//"WITHDRAWAL"
+    ),
+);
+$keyword = isset($keyword) ? $keyword : '';
+$from_time = isset($from_time) ? $from_time : '';
+$to_time = isset($to_time) ? $to_time : '';
+$transaction_type = isset($transaction_type) ? $transaction_type : 0;
+$page = isset($page) ? $page : 1;
+$user = isset($user) ? $user : 1;
+$total_page = isset($total_page) ? $total_page : 1;
+
+?>
+
+<div class="module-content">
+<section class="order-title">
+    <div class="seu-module-ct">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title"><span class="title-page">Lịch sử giao dịch</span></p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="search-order search-history">
+    <div class="seu-module-ct">
+        <div class="s-title">
+            <p class=" normal-blod"> <span class="uppercase">
+                <?php echo $user->getFullName() ?>
+                </span> (@<?php echo $user->getUsername() ?>) / Số tài khoản: <?php echo $user->getAccountNo() ?> </p>
+        </div>
+        <div class="s-content">
+            <div class="tkuser-history">
+                <div class="item-search">
+                    <p class="italic">Tổng nạp:</p>
+                    <?php
+                    $class = "normal-blue";
+                    $positive = "+";
+                    $total_amount_order_deposit = UserTransaction::getTotalAmount($user->getId(),\UserTransaction::TRANSACTION_TYPE_DEPOSIT);
+                    if($total_amount_order_deposit < 0){
+                        $positive = "-";
+                        $class = "red-bold";
+                    }
+                    ?>
+                    <?php echo $positive.Common::numberFormat($total_amount_order_deposit); ?><sup>đ</sup>
+                </div>
+            </div>
+            <div class="tkuser-history">
+                <div class="item-search">
+                    <p class="italic">Tổng rút:</p>
+                    <?php
+                    $class = "normal-blue";
+                    $total_amount_withdrawal = UserTransaction::getTotalAmount($user->getId(),\UserTransaction::TRANSACTION_TYPE_WITHDRAWAL);
+                    if($total_amount_withdrawal < 0){
+                        $class = "red-bold";
+                    }
+                    ?>
+                    <?php echo Common::numberFormat($total_amount_withdrawal); ?><sup>đ</sup>
+                </div>
+            </div>
+            <div class="tkuser-history">
+                <div class="item-search">
+                    <p class="italic">Tổng thanh toán:</p>
+                    <?php
+                    $class = "normal-blue";
+                    $total_amount_payment = UserTransaction::getTotalAmount($user->getId(),\UserTransaction::TRANSACTION_TYPE_ORDER_PAYMENT);
+                    $class = "red-bold";
+                    $order_deposit_amount = UserTransaction::getTotalAmount($user->getId(), \UserTransaction::TRANSACTION_TYPE_ORDER_DEPOSIT);
+                    $total_amount_payment += $order_deposit_amount;
+
+                    ?>
+                    <?php echo Common::numberFormat($total_amount_payment); ?><sup>đ</sup>
+                </div>
+            </div>
+            <div class="tkuser-history">
+                <div class="item-search">
+                    <p class="italic">Tổng trả lại:</p>
+                    <?php
+                    $class = "normal-blue";
+                    $total_amount_refund = UserTransaction::getTotalAmount($user->getId(),\UserTransaction::TRANSACTION_TYPE_REFUND);
+                    if($total_amount_refund < 0){
+                        $class = "red-bold";
+                    }
+                    ?>
+                    <?php echo Common::numberFormat($total_amount_refund); ?><sup>đ</sup>
+                </div>
+            </div>
+            <div class="tkuser-history">
+                <div class="item-search">
+                    <p class="italic">Số dư cuối kỳ:</p>
+                    <?php
+                    $class = "normal-blue";
+                    $positive = "+";
+                    $account_balance = $user->getAccountBalance();
+                    if($account_balance < 0){
+                        $positive = "-";
+                        $class = "red-bold";
+                    }
+                    ?>
+                    <p class="<?php echo $class ?>"><?php echo Common::numberFormat($account_balance); ?><sup>đ</sup></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="s-content">
+            <div class="tkuser-history" style="width: 40%">
+                <div class="item-search">
+                    <p class="italic" style="width: 400px;">Số tiền cần thanh toán của các đơn chờ giao:</p>
+                    <?php
+                    $class = "normal-blue";
+                    $positive = "+";
+                    $missing_waiting_delivery = isset($missing_waiting_delivery) ? $missing_waiting_delivery : 0;
+                    if($missing_waiting_delivery < 0){
+                        $positive = "-";
+                        $class = "red-bold";
+                    }
+                    ?>
+                    <?php echo $positive.Common::numberFormat($missing_waiting_delivery); ?><sup>đ</sup>
+                </div>
+            </div>
+            <div class="tkuser-history" style="width: 40%">
+                <div class="item-search">
+                    <p class="italic" style="width: 400px;">Số tiền hàng của các đơn chưa về:</p>
+                    <?php
+                    $class = "normal-blue";
+                    $positive = "+";
+                    $total_amount_before_delivery = isset($total_amount_before_delivery) ? $total_amount_before_delivery : 0;
+                    if($total_amount_before_delivery < 0){
+                        $positive = "-";
+                        $class = "red-bold";
+                    }
+                    ?>
+                    <?php echo $positive.Common::numberFormat($total_amount_before_delivery); ?><sup>đ</sup>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="search-order search-history date-history">
+    <div class="seu-module-ct">
+        <div class="s-title">
+            <p class="uppercase normal-blod"> Lọc Giao dịch </p>
+        </div>
+        <div class="s-content">
+            <div class="row">
+                <form id="_search" method="get" action="">
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="item-search">
+                            <input name="keyword" value="<?php echo $keyword ?>" class="form-control form-myinput" type="text" placeholder="Tìm mã đơn hoặc tên người bán">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="item-search">
+                            <select class="pull-right _select_filter" name="transaction_type">
+                                <?php
+                                foreach ($status_list as $tab) {
+                                ?>
+                                    <option value="<?php echo $tab['data_status'] ?>"
+                                        <?php if($transaction_type == $tab['data_status']){ ?>
+                                        selected="selected"
+                                        <?php } ?>
+                                        >
+                                        <?php echo $tab['text'] ?>
+                                    </option>
+                                <?php }?>
+                                <option >
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <div class="item-search date">
+                            <span>Từ</span>
+                            <input id="datepicker" name="from_time" value="<?php echo $from_time ?>"
+                                   class="form-control form-myinput pull-right _from" type="text" placeholder="01/01/2014">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <div class="item-search date">
+                            <span>Đến</span>
+                            <input id="datepicker2" name="to_time" value="<?php echo $to_time ?>"
+                                   class="form-control form-myinput pull-right _to" type="text" placeholder="02/01/2014">
+                        </div>
+                    </div>
+                    <input type="hidden" class="_page" name="page" value="<?php echo $page ?>">
+                </form>
+
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <div class="item-search">
+                        <button class="btn btn-blue pull-right _btn_filter_transuction" type="button">
+                            <span class="uppercase normal-blod">Tìm</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="search-order-bottom">
+            <div class="dateday pull-left">
+                <div class="link">
+                    <a href="javascript:void(0)" data-time="-1" class="_time_before" class="today">Tất cả</a>
+                    <span class="arow"></span>
+                </div>
+                <div class="link">
+                    <a href="javascript:void(0)" data-time="7" class="_time_before" class="today">7 ngày trước</a>
+                    <span class="arow"></span>
+                </div>
+                <div class="link">
+                    <a href="javascript:void(0)" data-time="30" class="_time_before" class="today">1 tháng trước</a>
+                    <span class="arow"></span>
+                </div>
+                <div class="link">
+                    <a href="javascript:void(0)" data-time="90" class="_time_before" class="today">3 tháng trước</a>
+                    <span class="arow"></span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<section class="search-order search-history total-order">
+    <div class="seu-module-ct">
+        <div class="s-content">
+            <p class="normal pull-right">Tìm thấy <span class="normal-blod _total_filter">0</span> giao dịch.</p>
+        </div>
+    </div>
+</section>
+
+<!--    list cart-->
+
+<section class="adress-cart list-cart deposit ">
+<div class="body-order">
+<div class="module">
+    <div class="top-main header-deposit">
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <p class="normal-blod checkbox">
+                <span class="uppercase normal-blod">id</span>Mã giao dịch
+            </p>
+        </div>
+
+        <div style="padding-left: 0; padding-right: 25px;" class="col-lg-9 col-md-9 col-sm-9 right-top-deposit">
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <p class="normal-blod uppercase">Loại giao dịch</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <p class="normal-blod uppercase">Đơn hàng</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <p class="normal-blod uppercase">Số dư trước</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <p class="normal-blod uppercase">Giá trị giao dịch</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <p class="normal-blod uppercase">Số dư cuối kỳ</p>
+            </div>
+        </div>
+
+    </div>
+<ul class="cart-list-content header-deposit _transaction_content">
+
+</ul>
+<?php if($total_page > 1){ ?>
+    <div class="pagination-page">
+        <ul class="pagination">
+            <?php if($page > 1){ ?>
+                <li><a href="javascript:void(0)" class="_page_order" data-page-id="<?php echo $page - 1 ?>">
+                        &lt; </a></li>
+            <?php } ?>
+            <?php for($i = 1 ; $i <= $total_page;$i++){ ?>
+                <li class="_li_page" data-page-id="<?php echo $i ?>" <?php if($page == $i){ ?>class="active"<?php } ?>>
+                    <a href="javascript:void(0)" data-page-id="<?php echo $i ?>" class="_page_order"><?php echo $i ?>
+                    </a>
+                </li>
+            <?php } ?>
+            <?php if($page < $total_page){ ?>
+                <li><a href="javascript:void(0)" data-page-id="<?php echo $page + 1  ?>" class="_page_order"> &gt; </a></li>
+
+            <?php } ?>
+        </ul>
+    </div>
+<?php } ?>
+</div>
+</div>
+</section>
+</div>

@@ -1,0 +1,382 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = Main::getUserUrl();
+$publicHomePath = Main::getHomeUrl();
+$document->title = t("Thông tin cá nhân");
+$cssPath = $publicPath . '/assets/css/';
+$jsPath = $publicPath . '/assets/js/';
+$imgPath = $publicPath . '/assets/images/';
+$document->addJs($jsPath . 'profile.js', 'TOP');
+$document->addJs($jsPath . 'avatar.js', 'BOTTOM-USER');
+$document->addJs($publicHomePath . 'assets/js/jquery.wallform.min.js', 'TOP');
+$document->addJs($publicHomePath.'/assets/js/process/transaction_history.js',"TOP");
+$document->addJs($publicHomePath.'/assets/js/register.js',"BOTTOM-USER");
+$document->addJsVar('url_updateUser', $controller->createUrl('user/update_profile'), 'TOP');
+
+$user = @$user;
+$states = @$states;
+?>
+<form id="frm-update-user" method="" onsubmit="return update_User();">
+<div class="module-inner">
+<div class="module-title">
+    <p class="title"><span class="title-page">Thông tin cá nhân</span></p>
+</div>
+<div class="module-ct">
+<p class="italic">Các trường dấu (*) là bắt buộc</p>
+<div class="item-profile row">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <span class="normal-blod">Họ & tên:<span class="red-bold">*</span></span>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 full_name">
+        <strong><?php echo $user->getFullName();?></strong>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 full_name hide">
+        <input id="last_name" name="input[last_name]" class="form-control form-myinput last_name" type="text" placeholder="Họ" value="<?php echo $user->getLastName();?>">
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 full_name hide">
+        <input id="first_name" name="input[first_name]" class="form-control form-myinput first_name" type="text" placeholder="Tên" value="<?php echo $user->getFirstName();?>">
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 _img-edit">
+        <p class="normal">
+            <span class="_edit-profile" data-edit="full_name" data-first="<?php echo $user->getFirstName();?>" data-last="<?php echo $user->getLastName();?>">Sửa</span>&nbsp;
+            <button type="button" class="btn btn-blue btnSubmitEdit full_name hide"><span class="uppercase normal-blod">Lưu</span></button></p>
+    </div>
+    <div class="col-xs-offset-2 col-lg-2 col-md-2 col-sm-2"><p id="error-fullname" class="red-normal"></p></div>
+</div>
+<div class="item-profile row">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <span class="normal-blod">Email:<span class="red-bold">*</span></span>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 email">
+        <?php if($user->getEmail()==''){ ?>
+            <input id="email" name="input[email]" class="form-control form-myinput email" type="text" placeholder="Email" value="">
+        <?php
+        }else{
+            if($user->getVerifyEmail()!= 1){ ?>
+                <input id="email" name="input[email]" class="form-control form-myinput email edit_noActive hide" type="text" placeholder="Email" value="<?php echo $user->getEmail(); ?>">
+                <div class="alert edit_noActive">
+                    <p class="normal"><span class="normal-blod"><?php echo $user->getEmail();?></span></p><br>
+                    <div class="_notif alert-alert _hide"></div>
+                    <p class="alert alert-error _returnVerify _hideEmailTow"> Địa chỉ mail này chưa được kích hoạt. Nếu bạn không nhận được mail kích hoạt, Click <a href="" id="_activeByEmail" data-id="<?php echo $user->getId();?>"> vào đây</a> để gửi lại. </p>
+                </div>
+            <?php }if($user->getVerifyEmail()== 1){ ?>
+                <input id="email" name="input[email]" class="form-control form-myinput email edit_active edit_Active hide" type="text" placeholder="Email" value="<?php echo $user->getEmail(); ?>">
+                <p class="normal edit_Active"><span class="normal-blod"><?php echo $user->getEmail();?></span></p>
+            <?php }} ?>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 email _img-edit">
+        <p class="normal">
+            <span class="_edit" id="edit_noActive" data-edit="email" data-value="<?php echo $user->getEmail();?>">Sửa</span>
+            <button type="button" class="btn btn-blue btnSubmitEdit edit_noActive hide" data-edit="email"><span class="uppercase normal-blod">Lưu</span></button>
+        </p>
+    </div>
+    <div class="col-lg-3 col-xs-offset-2 col-md-3 col-sm-3">
+        <p id="_error-email" class="_error red-normal"></p>
+    </div>
+</div>
+<div class="item-profile row">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <span class="normal-blod">Giới tính:<span class="red-bold">*</span></span>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 made">
+        <p class="normal gender"><strong><?php echo ($user->getGender() == 1)?'Nam':'Nữ';?></strong>
+        <p class="normal gender hide">
+                                            <span class="radio">
+                                              <label>
+                                                  <input class="_male" type="radio" <?php if($user->getGender() == 1){echo 'checked';}?> value="1" id="gender" name="input[gender]">
+                                                  Nam
+                                              </label>
+                                            </span>
+                                            <span class="radio">
+                                              <label>
+                                                  <input type="radio" <?php if($user->getGender() == 0){echo 'checked';}?> value="0" id="gender" name="input[gender]">
+                                                  Nữ
+                                              </label>
+                                            </span>
+        </p>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 made _img-edit">
+        <p class="normal">
+            <span class="_edit-profile" data-edit="gender" data-value="<?php echo $user->getGender();?>">Sửa</span>
+            <button type="button" class="btn btn-blue btnSubmitEdit gender hide"><span class="uppercase normal-blod">Lưu</span></button>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 made"></div>
+</div>
+<div class="item-profile row datetime no-margin-bot">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+                                    <span class="normal-blod titie-date">Ngày sinh:
+                                    </span>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+        <span class="birthday"><?php echo (strtotime($user->getBirthday())>0)?($user->getBirthday()->format('d/m/Y')):'';?></span>
+        <input type="text" value="<?php echo (strtotime($user->getBirthday())>0)?($user->getBirthday()->format('d/m/Y')):'';?>" placeholder="31/01/1985" class="form-control form-myinput birthday hide" name="input[birthday]" id="birthday" disabled="">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 _img _img-edit">
+        <span class="_edit-disabled" data-edit="birthday" data-value="">Sửa</span>
+        <a class="_no-edit-disabled hide" data-edit="birthday" data-value="<?php echo (strtotime($user->getBirthday())>0)?($user->getBirthday()->format('d/m/Y')):'';?>">Hủy</a>&nbsp;
+        <button type="button" class="btn btn-blue btnSubmitEdit birthday hide">
+            <span class="uppercase normal-blod">Lưu</span>
+        </button>
+    </div>
+</div>
+<div class="item-profile row">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-offset-2">
+        <p class="_error red-normal" id="_error-birthday"></p>
+    </div>
+</div>
+<div class="item-profile row hr">
+    <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
+</div>
+<div class="item-profile row">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <span class="normal-blod">Ảnh đại diện:</span>
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-10 avatar">
+        <div class="img">
+            <img src="<?php echo \Users::getAvatar128x($user);?>" >
+        </div>
+        <div class="submit-avatar">
+            <button id="_btnNewAvatar" class="btn btn-blue" type="button" data-toggle="modal">Chọn ảnh khác</button>
+        </div>
+    </div>
+</div>
+<div class="item-profile row hr">
+    <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
+</div>
+<div class="_cd_facebook">
+    <?php if($user->getFacebookId()>0){ ?>
+        <div class="item-profile row">
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <span class="normal-blod">Facebook:</span>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10 avatar-face">
+                <div class="img-face">
+                    <img src="<?php echo \Users::getAvatarFacebook($user);?>" >
+                </div>
+                <p>Liên kết tài khoản với <a class="poiter"><?php echo($user->getFirstName()!='')?($user->getFullName() ):$user->getUsername();?></a></p>
+                <p><a id="disconectFacebook" class="poiter">Ngắt kết nối</a></p>
+            </div>
+        </div>
+    <?php }else{?>
+        <div class="item-profile row">
+            <div class="col-lg-2 col-md-2 col-sm-2">
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <p onclick="fb_login()" data-app="user" style="cursor: pointer" class="normal facebook _connect_fb_profile">
+                    <span class="loadingface"></span>
+                    Kết nối tài khoản Facebook
+                    <span class="icon-facebook">login facebook</span></p>
+            </div>
+        </div>
+    <?php } ?>
+</div>
+<div class="item-profile row hr">
+    <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
+</div>
+<div class="item-profile row">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <span class="normal-blod">Số điện thoại:</span>
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-10 phone">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 left">
+
+                <?php if(isset($mobiles)){
+                    foreach($mobiles as $mobile){?>
+                        <p class="normal" id="<?php echo 'id_'.$mobile->getId();?>"><span class="normal-blod"><?php echo $mobile->getMobile();?></span><span class="remove" data-target="#myModaldeleteitem<?php echo $mobile->getId();?>" data-toggle="modal"></span></p>
+                    <?php } } ?>
+
+                <p class="italic">(Được sử dụng tối đa 3 số điện thoại)</p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8">
+                <div class="">
+                    <p class="normal">Để thêm mới số điện thoại,
+                        quý khách vui lòng nhắn tin theo cú pháp sau:</p>
+                    <div class="sms-phone _sms-phone">
+                        <span class="normal-blod uppercase">SMA</span>
+                        <span class="normal">&nbsp;<strong><?php echo ($user->getUsername() != '')?$user->getUsername():'< Tên tài khoản>'; ?></strong>&nbsp; <span class="nomal font-size-14">gửi</span></span>
+                        <span class="_redBold18">6589</span>
+                    </div>
+                    <span class="italic">&nbsp;(Phí SMS 5000<sup>đ</sup>)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="item-profile row hr">
+    <div class="col-lg-12 col-md-12 col-sm-12"><hr></div>
+</div>
+<div class="item-profile row datetime">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+                                    <span class="normal-blod titie-date">CMTND/ Hộ chiếu:
+                                        <?php
+                                        $cmtnd = \UserProfiles::getOneUserProfile($user, 'cmtnd');
+                                        if(isset($cmtnd)){
+                                            $cmtnd = (json_decode($cmtnd));
+                                        }
+                                        ?>
+                                    </span>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+        <input id="num_cmtnd" name="input[num_cmtnd]" class="form-control form-myinput cmtnd" type="text" placeholder="Số CMTNN/ Hộ chiếu" value="<?php echo (isset($cmtnd->num_cmtnd))?$cmtnd->num_cmtnd:'';?>" disabled="">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 datetime-right-ct">
+        <div class="item-search date">
+            <span>Ngày cấp: </span>
+            <input id="datepicker" name="input[date_cmtnd]" value="<?php echo (isset($cmtnd->date_cmtnd))?$cmtnd->date_cmtnd:''; ?>" class="form-control form-myinput pull-right _from cmtnd" type="text" placeholder="31/01/2014" disabled="">
+        </div>
+        <p>
+        </p>
+        <p>
+            <span class="normal from">Nơi cấp:</span>
+            <select id="city_cmtnd" name="input[city_cmtnd]" class="selectCountryCmt pull-right city cmtnd" disabled="">
+                <option value="-1">Tỉnh/Thành phố
+                </option>
+                <?php
+                foreach($states as $state){
+                    if($state instanceof \Locations){
+                        if(!empty($cmtnd) && is_object($cmtnd) && !empty($state) && isset($cmtnd->city_cmtnd)){
+                            ?>
+                            <option <?php  echo ($state->getId() == $cmtnd->city_cmtnd)?'selected':'';?> value="<?php echo $state->getId();?>">
+                                <?php echo $state->getLabel();?>
+                            </option>
+                        <?php
+                        }
+                    }
+                }
+                ?>
+            </select>
+        </p>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 _img _img-edit">
+        <span class="_edit-disabled" data-edit="cmtnd" data-value="">Sửa</span>
+        <a class="_no-edit-disabled hide" data-edit="cmtnd"
+           data-num-cmnd="<?php echo (isset($cmtnd->num_cmtnd))?$cmtnd->num_cmtnd:'';?>"
+           data-date-cmnd="<?php echo (isset($cmtnd->date_cmtnd))?$cmtnd->date_cmtnd:'';?>">Hủy</a>&nbsp;
+        <button type="button" class="btn btn-blue btnSubmitEdit cmtnd hide"><span class="uppercase normal-blod">Lưu</span></button>
+    </div>
+</div>
+<div class="item-profile row address">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <span class="normal-blod titie-date">Địa chỉ:</span>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-3">
+        <select id="tt_id" name="input[tt_id]" class="_ajaxState selectCountry pull-right tt_id address" disabled="disabled">
+            <option class="_selectState" value="-1">Tỉnh/Thành phố</option>
+            <?php
+            foreach($states as $state){
+                if($state instanceof \Locations){
+                    ?>
+                    <option <?php if($user->getTtId() == $state->getId()){echo 'selected';}?> class="_selectState" value="<?php echo $state->getId();?>"><?php echo $state->getLabel();?></option>
+                <?php
+                }
+            }
+            ?>
+        </select>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+        <select class="pull-right _afterDistrict selectCountry" disabled="disabled">
+            <option value="-1" class=""><?php echo ($user->getQhAddress()!='')?$user->getQhAddress():'Quận/huyện'?></option>
+        </select>
+        <select id="qh_id"name="input[qh_id]" class="pull-right _ajaxDistrict selectCountry qh_id hidden">
+            <option value="<?php echo ($user->getQhId()!='')?$user->getQhId():'-1'?>"><?php echo ($user->getQhAddress()!='')?$user->getQhAddress():'Quận/huyện'?></option>
+        </select>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 _img _img-edit">
+        <span class="_edit-disabled" data-edit="address" data-value="">Sửa</span>
+        <a class="_no-edit-disabled hide" data-edit="address">Hủy</a>&nbsp;
+        <button type="button" class="btn btn-blue btnSubmitEdit address hide"><span class="uppercase normal-blod">Lưu</span></button>
+        <p id="error-address" class="red-normal"></p>
+    </div>
+</div>
+<div class="item-profile row address-home">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-7">
+        <textarea id="detail_address" name="input[detail_address]" class="form-control form-mytextarea detail_address address" placeholder="Số nhà" rows="3"  disabled="disabled"><?php echo ($user->getDetailAddress()!='')?$user->getDetailAddress():''?></textarea>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-offset-2">
+        <p id="error-address" class="_error red-normal"></p>
+    </div>
+</div>
+<div class="item-profile row address-home">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <span class="normal-blod titie-date">Yahoo ID:</span>
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-7">
+        <input id="yahoo" name="input[yahoo]" class="form-control form-myinput pull-right yahoo" type="text" placeholder="Nhập tài khoản Yahoo của bạn..." value="<?php echo \UserProfiles::getOneUserProfile($user, 'yahoo');?>" disabled="">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 _img-edit">
+        <span class="_edit-disabled" data-edit="yahoo" data-value="">Sửa</span>
+        <a class="_no-edit-disabled hide" data-edit="yahoo">Hủy</a>&nbsp;
+        <button type="button" class="btn btn-blue btnSubmitEdit yahoo hide"><span class="uppercase normal-blod">Lưu</span></button>
+        <p id="error-address" class="red-normal"></p>
+    </div>
+</div>
+<div class="item-profile row address-home">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <span class="normal-blod titie-date">Skype:</span>
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-7">
+        <input id="skype" name="input[skype]" class="form-control form-myinput pull-right skype" type="text" placeholder="Nhập tài khoản Skyper của bạn..." value="<?php echo \UserProfiles::getOneUserProfile($user, 'skype');?>" disabled="">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 _img _img-edit">
+        <span class="_edit-disabled" data-edit="skype" data-value="">Sửa</span>
+        <a class="_no-edit-disabled hide" data-edit="skype">Hủy</a>&nbsp;
+        <button type="button" class="btn btn-blue btnSubmitEdit skype hide"><span class="uppercase normal-blod">Lưu</span></button>
+        <p id="error-address" class="red-normal"></p>
+    </div>
+</div>
+<div class="item-profile row form-submit">
+    <div class="col-lg-2 col-md-2 col-sm-2">
+    </div>
+    <!--                                <div class="col-lg-7 col-md-7 col-sm-7">-->
+    <!--                                    <button class="btn btn-blue btnSubmitEdit" type="button"><span class="uppercase normal-blod">Lưu</span></button>-->
+    <!--                                </div>-->
+</div>
+</div>
+</div>
+</form>
+
+
+<?php if(isset($mobiles)){
+    foreach($mobiles as $mobile){?>
+        <!-- Phone menu top    -->
+        <div style="display: none;" class="modal fade" id="myModaldeleteitem<?php echo $mobile->getId();?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="price-red1">Bạn có chắc chắn muốn xóa số điện thoại <b><?php echo '(+84)'.$mobile->getMobile();?></b> không?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-gray btn-sm" data-dismiss="modal">Hủy</button>&nbsp;
+                        <button type="button" class="btn btn-red btn-sm" id="_delMobile" data-modal="myModaldeleteitem<?php echo $mobile->getId();?>" data-mobile="<?php echo $mobile->getId();?>">Xác nhận</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    <?php } }?>
+
+
+<!-- Notification    -->
+<div style="display: none;" class="modal fade" id="myModalNotif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <p class="price-red1" id="_notif"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-gray btn-sm" data-dismiss="modal">OK</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

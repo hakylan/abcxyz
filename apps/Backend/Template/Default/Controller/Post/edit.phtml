@@ -1,0 +1,216 @@
+<div id="page-title">
+    <h3>
+        Sửa bài viết
+    </h3>
+
+    <div id="breadcrumb-right">
+        <div class="float-right">
+            <a class="btn medium bg-blue-alt" href="<?php echo $this->createUrl('post') ?>">&nbsp;<i
+                    class="glyph-icon icon-arrow-left"></i> Trở
+                lại&nbsp;</a>
+        </div>
+    </div>
+</div>
+
+
+<?php
+//$form = new \Flywheel\Html\Form();
+$form = $this->createFrom('user_frm');
+$form->setHtmlOption(array(
+    'class' => 'form-horizontal',
+));
+$form->beginForm();
+?>
+
+<?php
+$msg = \Flywheel\Session\Session::getInstance()->getFlash('msg');
+if ($msg):
+    ?>
+    <div class="infobox warning-bg"><?php echo $msg ?></div>
+<?php endif ?>
+<div class="form-label-right">
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+                Title:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <input type="text" name="title" value="<?php echo $post->getTitle(); ?>">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+                Alias:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <input type="text" name="alias" value="<?php echo $post->alias; ?>">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+                Category:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <select name="category">
+                <?php foreach ($categories AS $cat): ?>
+                    <option value="<?php echo $cat->id ?>" <?php if ($cat->id == $post->category_id) {
+                        echo "selected";
+                    } ?>><?php echo $cat->title ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+                Status:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <?php $hide = '';
+            $normal = '';
+            $featured = '';
+            switch ($post->status) {
+                case 0:
+                    $hide = 'selected';
+                    $normal = '';
+                    $featured = '';
+                    break;
+                case 1:
+                    $hide = '';
+                    $normal = 'selected';
+                    $featured = '';
+                    break;
+                case 2:
+                    $hide = '';
+                    $normal = '';
+                    $featured = 'selected';
+                    break;
+                default:
+                    break;
+            }?>
+            <select name="status">
+                <option value="0" <?php echo $hide; ?>>Ẩn</option>
+                <option value="1" <?php echo $normal; ?>>Bình thường</option>
+                <option value="2" <?php echo $featured; ?>>Tiêu biểu</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+                Content:
+                <span></span>
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <textarea class="" id="editor" name="content"><?php echo $post->content ?></textarea>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-label col-md-2">
+            <label class="label-description">Images</label>
+        </div>
+        <div class="form-input col-md-8">
+            <input id="fileupload" type="file" name="files[]" multiple/>
+
+            <div id="display_upload" class="">
+                <?php $images = explode(',', $post->images);
+                foreach ($images AS $img):
+                    ?>
+                    <div id="i-<?php echo $img ?>">
+                        <img src="<?php echo \Flywheel\Config\ConfigHandler::get('thumb_upload_url') . $img ?>">
+                        <button class="delete_img" data-file="<?php echo $img ?>">Xóa</button>
+                    </div>
+                <?php endforeach ?>
+
+            </div>
+            <input type="hidden" id="uploaded_imgs" name="images" value="<?php echo $post->images ?>"/>
+        </div>
+    </div>
+    <div>
+        <div class="form-label col-md-2">
+            <label for="" class="label-description">
+
+            </label>
+        </div>
+        <div class="form-input col-md-8">
+            <button class=" btn medium bg-blue-alt"> Sửa bài viết</button>
+        </div>
+
+    </div>
+
+</div>
+
+<?php
+$form->endForm();
+?>
+
+
+<?php
+$assets = new \Flywheel\Asset\Asset('backend');
+$assets->printTag('../../assets/js/ckeditor/ckeditor.js', 'js');
+$assets->printTag('../../assets/js/ckeditor/config.js', 'js');
+$assets->printTag('../../assets/js/ckeditor/styles.js', 'js');
+$assets->printTag('../../assets/js/multiupload/jquery.ui.widget.js', 'js');
+$assets->printTag('../../assets/js/multiupload/jquery.fileupload.js', 'js');
+$assets->printTag('../../assets/js/multiupload/jquery.iframe-transport.js', 'js');
+$assets->printTag('../../assets/js/multiupload/jquery.fileupload-process.js', 'js');
+
+
+
+
+?>
+<script>
+    CKEDITOR.config.height = 300;
+    CKEDITOR.config.width = '100%';
+    CKEDITOR.replace('editor');
+    var $imgs = $('#uploaded_imgs').val();
+
+    $(function () {
+
+        $('#fileupload').fileupload({
+            url: '<?php echo $this->createUrl('post/upload');?>',
+            autoUpload: true,
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            maxFileSize: 5000000, // 5 MB
+            dataType: 'json',
+            done: function (e, data) {
+
+                $.each(data.result.files, function (index, file) {
+                    var txt = '<div>';
+                    txt += '<img src="' + file.thumbnailUrl + '">';
+                    txt += '<button class="delete_img" data-file="' + file.name + '">Xóa</button>';
+                    txt += '</div>';
+                    $('#display_upload').append(txt);
+                    $imgs = $imgs + ',' + file.name;
+
+                    $('#uploaded_imgs').val($imgs);
+                    console.log($('#uploaded_imgs').val());
+
+                });
+            }
+        });
+        $(document).on('click', '.delete_img', function (e) {
+            e.preventDefault();
+            $file = $(this).data('file');
+            $url = "<?php echo $this->createUrl('post/deletefile?pid='.$post->id.'&file=');?>" + $file;
+            $.get($url);
+            var $str = $('#uploaded_imgs').val();
+            $str = $str.replace(',' + $file, '');
+
+            $('#uploaded_imgs').val($str);
+            $('#i-' + $file).remove();
+        });
+    });
+
+</script>

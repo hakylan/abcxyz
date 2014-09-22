@@ -1,0 +1,231 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 1/10/14
+ * Time: 3:58 PM
+ */
+$user_id = @$user_id;
+$user_address = @$user_address;
+$province_list = @$province_list;
+$is_user = isset($is_user) ? $is_user : 0;
+?>
+<style>
+    .note{
+        display: none;
+    }
+</style>
+<?php if($user_id > 0 && $user_address){ ?>
+    <?php foreach($user_address as $ua){
+        if($ua instanceof \UserAddress){
+            
+        $district_list = \Locations::findByParentId($ua->province_id);
+        ?>
+<li class="normal <?php if($ua->is_default == 1){ echo "active"; } ?> _li_address" data-address-id="<?php echo $ua->getId() ?>">
+    <?php if($is_user == 1){ ?>
+        <span class="address-active"></span>
+
+        <span class="uppercase act _accept_address _select_address" <?php if($ua->is_default == 1){ ?>style="display: none"<?php } ?>
+              data-address-id="<?php echo $ua->id ?>"
+              >Xét mặc định</span>
+
+    <?php } ?>
+    <div class="item-list-addresscart">
+
+        <?php if($is_user == 0){ ?>
+        <span class="uppercase _accept_address" data-address-id="<?php echo $ua->id ?>">
+            Chọn</span>
+        <?php } ?>
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="selectAddress<?php echo $ua->id ?>" class="modal fade editadresscart" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="col-lg-12 col-sm-12 col-md-12">
+                            <button type="button" class="close _cancel_popup" data-address-id="<?php echo $ua->getId() ?>" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                            <h4 id="myModalLabel" class="modal-title uppercase">Xác nhận xử dụng địa chỉ</h4>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="module-popup">
+                            <div class="module-modal home">
+                                <div class="col-lg-12 col-sm-12 col-md-12">
+                                    <div>
+                                        <p>Để tránh nhầm lẫn trong quá trình chuyển hàng, quý khách vui lòng xác nhận việc xử dụng địa chỉ nhận hàng này</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module-popup ">
+                            <div class="module-modal addresscart-active">
+                                <div class="col-lg-12 col-sm-12 col-md-12">
+                                    <p><span class="uppercase"><b><?php echo $ua->reciver_name ?></b></span><?php echo $ua->detail ?>
+                                        <?php
+                                            $district = Locations::retrieveById($ua->district_id);
+                                            $province = Locations::retrieveById($ua->province_id);
+                                        if($district && $province){
+                                            echo " Quận / huyện: {$district->getLabel()} - Tỉnh / Thành phố: {$province->getLabel()}";
+                                        }
+                                        ?>
+                                    </p>
+                                    <p><?php echo $ua->note ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-gray uppercase" type="button">hủy</button>
+                            <button class="btn btn-blue uppercase _accept_address"
+                                    data-dismiss="modal" data-address-id="<?php echo $ua->id ?>" type="button">Xác nhận</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div>
+        </div>
+        <p><span class="uppercase normal-blod"><?php echo $ua->reciver_name ?></span> / <?php echo $ua->detail ?>
+            <?php
+            $district = Locations::retrieveById($ua->district_id);
+            $province = Locations::retrieveById($ua->province_id);
+            if($district && $province){
+                echo " - {$district->getLabel()} - {$province->getLabel()}";
+            }
+            ?>
+        </p>
+        <div class="note-address"><span class="italic"><?php echo $ua->note ?></span>
+            <?php if($is_user == 1){ ?>
+                <div class="right-edit-delete">
+                    <a href="#" class="remove-add" data-target="#deleteAddress<?php echo $ua->id ?>" data-toggle="modal">Xóa</a>
+                    <a href="#" class="edit" data-target="#editAddress<?php echo $ua->id ?>" data-toggle="modal">Sửa ĐC / </a>
+                </div>
+            <?php } ?>
+        </div>
+
+    </div>
+    <?php if($is_user == 0){ ?>
+    <div class="right-edit-delete">
+        <a href="#" class="remove-add" data-target="#deleteAddress<?php echo $ua->id ?>" data-toggle="modal">Xóa Địa Chỉ</a>
+        <a href="#" class="edit" data-target="#editAddress<?php echo $ua->id ?>" data-toggle="modal">Sửa Địa Chỉ / </a>
+    </div>
+    <?php } ?>
+
+
+    <div style="display: none;" class="modal fade finish-poup" id="deleteAddress<?php echo $ua->id ?>" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Xóa địa chỉ</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="price-red1">Bạn có chắc chắn muốn xóa địa chỉ này không?</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <button type="button" class="btn btn-gray" data-dismiss="modal">Không</button>
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <button type="button" class="btn btn-blue _delete_address" data-dismiss="modal"
+                                data-address-id="<?php echo $ua->id ?>">
+                            Đồng ý</button>
+                    </div>
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="editAddress<?php echo $ua->id ?>" class="modal fade editadresscart" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                    <h4 id="myModalLabel" class="modal-title uppercase">Sửa địa chỉ nhận hàng</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="module-popup">
+                        <div class="module-modal">
+                            <div class="left">
+                                <div class="name">
+                                    <p>Tên người liên hệ: <span class="red-normal">*</span></p>
+                                </div>
+                                <input id="contact_name<?php echo $ua->id ?>" class="form-control form-myinput _text" value="<?php echo $ua->reciver_name ?>" type="text" placeholder="Tên người liên hệ">
+                                <p class="note red-normal _error_name" data-address-id="<?php echo $ua->id ?>"></p>
+                            </div>
+                            <div class="right">
+                                <div class="name">
+                                    <p>Số điện thoại: <span class="red-normal">*</span></p>
+                                </div>
+                                <input id="contact_phone<?php echo $ua->id ?>" value="<?php echo $ua->reciver_phone ?>"
+                                       class="form-control form-myinput pull-right _text" type="text" placeholder="Số điện thoại">
+                                <p class="note red-normal _error_phone" data-address-id="<?php echo $ua->id ?>"></p>
+
+                            </div>
+                        </div>
+                        <div class="module-modal">
+                            <div class="left">
+                                <div class="name">
+                                    <p>Tỉnh/ Thành phố: <span class="red-normal">*</span></p>
+                                </div>
+                                <select class="_select_ _select_province" disabled="disabled" data-address-id="<?php echo $ua->id ?>" id="select_province<?php echo $ua->id ?>">
+                                    <option value="-1">Tỉnh/thành phố</option>
+                                    <?php if($province_list){
+                                        foreach($province_list as $pro){
+                                    ?>
+                                            <option value="<?php  echo $pro->id ?>" <?php if($pro->id == $ua->province_id){ ?> selected="selected" <?php } ?> >
+                                                <?php  echo $pro->label ?>
+                                            </option>
+                                    <?php }} ?>
+                                </select>
+                                <p class="note red-normal _error_province" data-address-id="<?php echo $ua->id ?>"></p>
+                            </div>
+                            <div class="right">
+                                <div class="name">
+                                    <p>Quận/ Huyện: <span class="red-normal">*</span></p>
+                                </div>
+                                <select class="_select_ pull-right _select_district" id="select_district<?php echo $ua->id ?>">
+                                    <option value="-1">Quận/ Huyện</option>
+                                    <?php if($district_list){
+                                        foreach($district_list as $district){
+                                            ?>
+                                            <option value="<?php  echo $district->id ?>" <?php if($district->id == $ua->district_id){ ?> selected="selected" <?php } ?> >
+                                                <?php  echo $district->label ?>
+                                            </option>
+                                        <?php }} ?>
+                                </select>
+                                <p class="note red-normal _error_district" data-address-id="<?php echo $ua->id ?>"></p>
+                            </div>
+                        </div>
+                        <div class="module-modal home">
+                            <div class="module-modal-ct">
+                                <div class="name">
+                                    <p>Số nhà: <span class="red-normal">*</span></p>
+                                </div>
+                                <input id="home_number<?php echo $ua->id ?>" value="<?php echo $ua->detail ?>" class="form-control form-myinput _text" type="text"
+                                       placeholder="Số nhà" >
+                                <p class="note red-normal _error_home" data-address-id="<?php echo $ua->id ?>"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-popup">
+                        <div class="module-modal">
+                            <div class="module-modal-ct">
+                                <div class="name">
+                                    <p><b>Chú thích:</b></p>
+                                </div>
+                                <textarea class="form-control form-mytextarea _text" id="note<?php echo $ua->id ?>"
+                                          placeholder="Vd:Chuyển hàng cho mình vào 9h sáng nhé..." rows="3"><?php echo $ua->note ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-gray uppercase" data-address-id="<?php echo $ua->id ?>"
+                            type="button">hủy</button>
+                    <button class="btn btn-blue uppercase _save_address" data-address-id="<?php echo $ua->id ?>" type="button">Lưu địa chỉ</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div>
+    </div>
+</li>
+        <?php }} ?>
+<?php } ?>

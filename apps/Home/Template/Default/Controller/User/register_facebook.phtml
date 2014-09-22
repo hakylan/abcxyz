@@ -1,0 +1,117 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 1/2/14
+ * Time: 11:56 AM
+ */
+$profile_fb = @$profile_fb;
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+$document->addJs($jsPath . 'user.js', 'TOP');
+?>
+<script>
+    $(document).ready(function(){
+        $('._input_regis').bind('keypress', function(e) {
+            if(e.keyCode==13){
+                UserFacebook.regisFacebook();
+            }
+        });
+    });
+
+</script>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-4 col-sm-4 col-md-4">
+                    <div class="avatar">
+                        <img src="<?php echo $profile_fb['avatar'] ?>" />
+                    </div>
+                    <p class="normal icon-facebook">
+                        <span class="arow"></span><?php echo $profile_fb['first_name'].' '.$profile_fb['last_name'] ?>
+                    </p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <form action="#">
+                        <div class="regis-item">
+                            <p class="normal-blod">Tạo tài khoản SeuDo.vn kết nối với tài khoản facebook của bạn.</p>
+
+                        </div>
+                        <div class="regis-item">
+                            <input class="inputregister form-control form-myinput _input_regis" id="usernameRegis"
+                                   type="text" placeholder="Tên đăng nhập" >
+                            <p class="red-normal _error _errorUserName" style="display: none"></p>
+                            <div class="tooltipregister">
+                                <div class="arrow_box">
+                                    <p class="normal">Sử dụng các ký tự latin (a-z),(0-9) và ký tự gạch dưới</p>
+                                    <p class="normal">Từ 3 đến 15 ký tự</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="regis-item name">
+                            <input class="form-control form-myinput pull-left _input_regis" value="<?php echo $profile_fb['first_name'] ?>"
+                                   id="first_nameRegis" type="text" placeholder="Họ" >
+                            <p class="red-normal _error _errorFirstName" style="display: none"></p>
+                            <input class="form-control form-myinput pull-right _input_regis" value="<?php echo $profile_fb['last_name'] ?>"
+                                   id="last_nameRegis" type="text" placeholder="Tên" >
+                            <p class="red-normal _error _errorLastName" style="display: none"></p>
+
+                        </div>
+                        <div class="regis-item">
+                            <input class="form-control form-myinput inputregister _input_regis" value="<?php echo $profile_fb['email'] ?>"
+                                   type="text" id="emailRegis" placeholder="Email" >
+                            <p class="red-normal _error _errorEmail" style="display: none"></p>
+                            <div class="tooltipregister">
+                                <div class="arrow_box">
+                                    <p class="normal">Seudo sẽ gửi các thông báo tới email này.</p>
+                                    <p class="normal">Vui lòng sử dụng email tồn tại.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="regis-item">
+                            <input class="form-control form-myinput _input_regis" id="passwordRegis" type="password"
+                                   placeholder="Mật khẩu (tối thiểu 6 ký tự)" >
+                            <p class="red-normal _error _errorPassword" style="display: none"></p>
+
+                        </div>
+                        <p class="normal">Bạn đã có tài khoản? <a href="javascript:void(0)" data-dismiss="modal" aria-hidden="true">Đăng nhập tại đây</a></p>
+                        <p class="normal submitfacebook"><button class="btn btn-blue" id="btnRegisterFacebook" type="button">Tạo tài khoản mới</button></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="loading-face" style="display: none">
+            <div id="facebookG">
+                <div id="blockG_1" class="facebook_blockG">
+                </div>
+                <div id="blockG_2" class="facebook_blockG">
+                </div>
+                <div id="blockG_3" class="facebook_blockG">
+                </div>
+            </div>
+        </div>
+
+
+    </div><!-- /.modal-content -->
+</div>
+<script>
+    $('.inputregister').each(function() {
+        $(this).hover(function() {
+            $(this).parent().find('.tooltipregister').css('display', 'inline-block');
+        }).focus(function() {
+                $(this).parent().find('.tooltipregister').css('display', 'inline-block');
+            }).blur(function() {
+                $(this).parent().find('.tooltipregister').css('display', 'none');
+            }).mouseout(function() {
+                $(this).parent().find('.tooltipregister').css('display', 'none');
+            });
+    })
+</script>

@@ -1,0 +1,1048 @@
+<?php
+// List action text
+$actionTitle = array(
+    \Order::STATUS_BUYING => 'Đang đặt hàng',
+    \Order::STATUS_NEGOTIATING => 'Đã mua hàng',
+    \Order::STATUS_NEGOTIATED => 'Thanh toán',
+);
+$document = $controller->document();
+
+$backend_url = \SeuDo\Main::getBackendUrl();
+
+$document->addCss("css/order_paid.css");
+//$document->addCss("css/style-backendv1.css");
+$document->addCss("css/style-muahang.css");
+$document->addCss("css/extend/quyen_purchase_payment.css");
+$document->addJs("js/process/order_paid.js","TOP");
+$document->addJs("js/seudo-backendv1.js","TOP");
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$cookie_ct = Flywheel\Factory::getCookie()->read("ct_auto_pai"); //::getCookie();
+$this->document()->addJsCode('
+    var order_template = Handlebars.compile($("#_order_block").html());
+
+    var order_item_comment_template = Handlebars.compile($("#_order_item_comment").html());
+    var _order_item_comment = Handlebars.compile($("#_item_order_item_comment").html());
+
+    var chat_item_template = Handlebars.compile($("#_order_item_chat").html());
+    Handlebars.registerPartial("list", $("#_order_item_block").html());
+    Handlebars.registerPartial("list_item_comments", $("#_item_order_item_comment").html());', 'BOTTOM', 'standard');
+// dau's
+//$this->document()->addJsCode("
+//Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+//  if(v1 < v2) {
+//    return options.fn(this);
+//  }
+//  return options.inverse(this);
+//});
+//   ", 'BOTTOM', 'standard');
+
+//$this->document()->addJsCode('
+//    var chat_template = Handlebars.compile($("#_order_chat").html());
+//    Handlebars.registerPartial("list_comments", $("#_order_item_chat").html());',
+//'BOTTOM', 'standard');
+/**
+ * List link sp
+ */
+$user = isset($user) ? $user : new \Users();
+$countBuying = isset($countBuying) ? $countBuying : 0;
+$countNegotiating = isset($countNegotiating) ? $countNegotiating : 0;
+$countNegotiated = isset($countNegotiated) ? $countNegotiated : 0;
+$countBought = isset($countBought) ? $countBought : 0;
+$countOutOf = isset($countOutOf) ? $countOutOf : 0;
+$countConfirm = isset($countConfirm) ? $countConfirm : 0;
+$countConfirmed = isset($countConfirmed) ? $countConfirmed : 0;
+
+$site = isset($site) ? $site : "all";
+$status = isset($status) ? $status : "all";
+
+$page = isset($page) ? $page : 1;
+$customer_confirm = isset($customer_confirm) ? $customer_confirm : \Order::CUSTOMER_CONFIRM_NONE;
+
+$nextStatus = array(
+    \Order::STATUS_BUYING => \Order::STATUS_NEGOTIATING,
+    \Order::STATUS_NEGOTIATING => \Order::STATUS_NEGOTIATED,
+    \Order::STATUS_NEGOTIATED => \Order::STATUS_BOUGHT,
+);
+
+$statusTitle = array(
+    //\Order::STATUS_BUYING => \Order::$statusTitle[\Order::STATUS_BUYING],
+    \Order::STATUS_BUYING => \Order::$statusTitle[\Order::STATUS_NEGOTIATING],
+    \Order::STATUS_NEGOTIATING => \Order::$statusTitle[\Order::STATUS_NEGOTIATED],
+    \Order::STATUS_NEGOTIATED => \Order::$statusTitle[\Order::STATUS_BOUGHT],
+);
+
+
+$exchange_rate_format = ExchangeRate::getExchange();
+
+$tab_list = array(
+    array(
+        "text" => "Chờ Pai",
+        "data_id" => "tab_dm",
+        "data_status" => \Order::STATUS_BUYING,
+        "count" => $countBuying
+    ),
+    array(
+        "text" => "Đã Pai",
+        "data_id" => "tab_dm",
+        "data_status" => \Order::STATUS_NEGOTIATING,
+        "count" => $countNegotiating
+    ),
+    array(
+        "text" => "Chờ thanh toán",
+        "data_id" => "tab_ctt",
+        "data_status" => \Order::STATUS_NEGOTIATED,
+        "count" => $countNegotiated
+    ),
+    array(
+        "text" => "Chờ khách xác nhận",
+        "data_id" => "tab_ckxn",
+        "data_status" => \Order::CUSTOMER_CONFIRM_WAIT,
+        "is_confirm" => 1,
+        "count" => $countConfirm
+    ),
+    array(
+        "text" => "Đã thanh toán",
+        "data_id" => "tab_dtt",
+        "data_status" => \Order::STATUS_BOUGHT,
+        "count" => $countBought
+    ),
+    array(
+        "text" => "Hết hàng",
+        "data_id" => "tab_hh",
+        "data_status" => \Order::STATUS_OUT_OF_STOCK,
+        "count" => $countOutOf
+    )
+);
+
+$site_filter = array(
+    array(
+        "site" => "Tất cả",
+        "data-id" => "all"
+    ),
+    array(
+        "site" => "Taobao",
+        "data-id" => CartItem::TAOBAO_SITE
+    ),
+    array(
+        "site" => "Tmall",
+        "data-id" => CartItem::TMALL_SITE
+    ),
+    array(
+        "site" => "1688",
+        "data-id" => CartItem::ALIBABA_SITE
+    ),
+    array(
+        "site" => "Eelly",
+        "data-id" => CartItem::EELLY_SITE
+    ),
+);
+
+$document->addJsVar("actionTitle",json_encode($actionTitle));
+$document->addJsVar("nextStatus",json_encode($nextStatus));
+$document->addJsVar("statusTitle",json_encode($statusTitle));
+$document->addJsVar("negotiated",\Order::STATUS_NEGOTIATED);
+$document->addJsVar("negotiating",\Order::STATUS_NEGOTIATING);
+$document->addJsVar("out_of_stock",\Order::STATUS_OUT_OF_STOCK);
+$document->addJsVar("bought",\Order::STATUS_BOUGHT);
+$document->addJsVar("buying",\Order::STATUS_BUYING);
+$document->addJsVar("customer_wait",\Order::CUSTOMER_CONFIRM_WAIT);
+$document->addJsVar("customer_confirmed",\Order::CUSTOMER_CONFIRM_CONFIRMED);
+$document->addJsVar("canChange",json_encode($canChangeOrder));
+
+?>
+<!--<script type="text/javascript">-->
+<!--    $(document).ready(function() {-->
+<!--        $(document).on('click', 'a._change-out-of-stock', function() {-->
+<!--            var e = $(this);-->
+<!--            var r = confirm("Bạn có chắc chuyển hết hàng đơn hàng " + e.data('order-code') +". Việc hết hàng không thể hoàn tác!");-->
+<!--            if (r == true) {-->
+<!--                $.post(out_of_stock_url, {id: e.data('order-id')}, function(response) {-->
+<!--                    if (response.type == 1) {-->
+<!--                        $(".item-shop-" + e.data('order-id')).fadeOut();-->
+<!--                    } else {-->
+<!--                        alert(response.message);-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<!-- dau's -->
+<script id="_order_chat" type="text/x-handlebars-template">
+
+</script>
+
+<!-- dau's -->
+<script id="_order_item_chat_external" type="text/x-handlebars-template">
+    {{#if type}}
+        <ul>
+            {{#each external_comments}}
+                <li>
+                    {{#if is_chat}}
+                    <div class="module-item">
+                        <div class="position-avatar">
+                            <a class="user-img-tool" title="{{first_name}}" rel="tooltiptop" data-original-title="@{{first_name}}">
+                                <img class="img-rounded" alt="" src="{{img_path}}">
+                            </a>
+                        </div>
+                        <p class="normal"><span class="normal-blod">{{first_name}}</span> <span class="font-gray-dark time pull-right">{{date sub_time}}</span></p>
+                        <p class="normal">{{{message}}}</p>
+                    </div>
+                    {{/if}}
+                    {{#if is_log}}
+                    <div class="module-item">
+                        <p class="font-gray-dark">{{date sub_time}}</p>
+                        <p class="font-gray-dark">{{{message}}}</p>
+                    </div>
+                    {{/if}}
+                    {{#if is_activity}}
+                    <div class="module-item">
+                        <p class="font-gray-dark">{{date sub_time}}</p>
+                        <p class="font-gray-dark">{{{message}}}</p>
+                    </div>
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ul>
+    {{/if}}
+</script>
+
+<script id="_order_item_chat_internal" type="text/x-handlebars-template">
+    {{#if type}}
+    <ul>
+        {{#each internal_comments}}
+        <li>
+            {{#if is_chat}}
+            <div class="module-item">
+                <div class="position-avatar">
+                    <a class="user-img-tool" title="" rel="tooltiptop" data-original-title="@{{first_name}}">
+                        <img class="img-rounded" alt="" src="{{img_path}}">
+                    </a>
+                </div>
+                <p class="normal"><span class="normal-blod">{{first_name}}</span> <span class="font-gray-dark time pull-right">{{date sub_time}}</span></p>
+                <p class="normal">{{{message}}}</p>
+            </div>
+            {{/if}}
+            {{#if is_log}}
+            <div class="module-item">
+                <p class="font-gray-dark">{{date sub_time}}</p>
+                <p class="font-gray-dark">{{{message}}}</p>
+            </div>
+            {{/if}}
+            {{#if is_activity}}
+            <div class="module-item">
+                <p class="font-gray-dark">{{date sub_time}}</p>
+                <p class="font-gray-dark">{{{message}}}</p>
+            </div>
+            {{/if}}
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+</script>
+
+<script id="_order_item_chat" type="text/x-handlebars-template">
+    <li>
+        {{#if is_chat}}
+        <div class="module-item">
+            <div class="position-avatar">
+                <a class="user-img-tool" title="" rel="tooltiptop" data-original-title="@{{first_name}}">
+                    <img class="img-rounded" alt="" src="{{img_path}}">
+                </a>
+            </div>
+            <p class="normal"><span class="normal-blod">{{first_name}}</span> <span class="font-gray-dark time pull-right">{{date sub_time}}</span></p>
+            <p class="normal">{{{message}}}</p>
+        </div>
+        {{/if}}
+        {{#if is_log}}
+        <div class="module-item">
+            <p class="font-gray-dark">{{date sub_time}}</p>
+            <p class="font-gray-dark">{{{message}}}</p>
+        </div>
+        {{/if}}
+        {{#if is_activity}}
+        <div class="module-item">
+            <p class="font-gray-dark">{{date sub_time}}</p>
+            <p class="font-gray-dark">{{{message}}}</p>
+        </div>
+        {{/if}}
+    </li>
+</script>
+
+<!-- dau's -->
+<script id="_order_item_comment" type="text/x-handlebars-template">
+    {{#each info}}
+        {{> list_item_comments}}
+    {{/each}}
+</script>
+<!-- dau's -->
+<script id="_item_order_item_comment" type="text/x-handlebars-template">
+    <div><span class="font-gray normal-blod">{{username}}</span> {{{message}}}</div>
+</script>
+
+<script id="_order_block" type="text/x-handlebars-template">
+
+{{#each orders_list}}
+<div class="search-title">
+    <h3 class="title">
+        <p class="normal">{{@key}}</p>
+    </h3>
+</div>
+{{#if this}}
+    {{#each this}}
+<div class="item-order-purchase item-shop-{{order.id}} _order_content" data-order-id="{{order.id}}">
+
+<div class="main-content">
+<div class="module-custom">
+<div class="custom-top" data-order-id="{{order.id}}">
+    <div class="item title col-lg-left">
+        <span>{{order.id}} -</span>
+        <a href="{{order.backend_detail_link}}" target="_blank">{{order.code}}</a>
+        <p>({{order.status_title}})</p>
+    </div>
+    <div class="item col-lg-left"><span class="normal-blod title">Tên người nhận : </span>
+        <span class="name_recipient _name_recipient" data-order-id="{{order.id}}">{{order.name_recipient_origin}}</span>
+    </div>
+    <div class="item col-lg-left user-tk">
+        <span class="normal-blod">User mua hàng:</span>
+        {{#if account_origin_list}}
+        <div class="item-search"> <!--thêm class="active" để đưa về giao diện đã chọn tk-->
+            <select class="pull-right _select_account" name="select_account" data-order-id="{{order.id}}">
+                <option value="0">Chọn người mua hàng site gốc</option>
+                {{#each account_origin_list}}
+                <option value="{{username}}" {{#if is_selected}}selected="selected"{{/if}}><span class="font-Georgia">{{username}}</span></option>
+                {{/each}}
+            </select>
+            <span class="opacity"></span>
+        </div>
+        {{/if}}
+    </div>
+    {{#if buyer}}
+    <div class="item col-lg-left">
+        <div class="ct-cus pull-left">
+            <div class="position-left avatar">
+                <img class="img-circle" alt="" src="{{buyer.avatar}}">
+            </div>
+            <p class="normal">{{buyer.first_name}} / <span class="normal-blod uppercase">{{buyer.code}}</span></p>
+            <p class="normal"><span class="font-Georgia">@{{buyer.username}}</span></p>
+        </div>
+    </div>
+    {{/if}}
+    <div class="item col-lg-left">
+        {{#if tellers}}
+        <a data-original-title="Mua hàng @{{tellers.username}}" href="javascript:void(0)"
+           rel="tooltipbottom" title="" class="user-img-tool">
+            <img src="{{tellers.avatar}}" alt="" class="img-circle">
+        </a>
+        {{/if}}
+        {{#if paid_staff}}
+        <a data-original-title="Thanh toán @{{paid_staff.username}}" href="javascript:void(0)" rel="tooltipbottom" title="" class="user-img-tool">
+            <img src="{{paid_staff.avatar}}" alt="" class="img-circle">
+        </a>
+        {{/if}}
+
+    </div>
+    <div class="rate-tq pull-right" style="">
+        <p class="normal">Tỉ giá:
+            <span class="red-bold">1 CNY</span> =
+            <span class="red-bold">
+                <?php echo $exchange_rate_format ?> VNĐ
+            </span></p>
+    </div>
+
+</div>
+<div class="list-cart-order">
+<div class="main-left">
+<div class="header-listcart">
+    <div class="col-lg-4">
+        <p class="text-center font-gray-dark">Sản Phẩm <span class="font-orange _total_order_item" data-order-id="{{order.id}}">({{order.total_item}})</span></p>
+        <div class="stt"><p>#</p></div>
+    </div>
+    <div class="col-lg-2">
+        <p class="text-center font-gray-dark">Màu Sắc</p>
+    </div>
+
+    <div class="col-lg-2">
+        <p class="text-center font-gray-dark">Đơn giá</p>
+    </div>
+
+    <div class="col-lg-1">
+        <p class="text-center font-gray-dark">SL (<span class="font-orange _total_item_quantity" data-order-id="{{order.id}}">{{order.total_quantity}}</span>)</p>
+    </div>
+    <div class="col-lg-2">
+        <p class="text-center font-gray-dark">Tổng Giá</p>
+    </div>
+    {{#if order.is_autopaid}}
+    <div class="col-lg-1">
+        <p class="text-center font-gray-dark">Autopai</p>
+    </div>
+    {{/if}}
+    <div class="border-header-list">
+        <div class="border"></div>
+    </div>
+</div>
+<div class="body-listorder">
+    {{#each order_items}}
+    {{>list}}
+    {{/each}}
+</div>
+<div class="custom-bottom">
+<div class="bg-gray  order_footer">
+<div class="footer_order">
+<textarea class="_address_receive" data-order-id="{{order.id}}" cols="30"
+          rows="2">{{order.address_receive}} {{order.name_recipient_origin}}</textarea>
+<div class="footer_top">
+    <div class="col-lg-2 form-input left">
+        <p class="normal">
+            Người bán:
+        </p>
+        <p class="normal name">
+            <img src="{{order.favicon_site}}">
+            <span class="normal normal-blod">{{order.seller_name}} </span>
+        </p>
+        <p class="aliww">{{order.seller_aliwang}}</p>
+    </div>
+    <div class="col-lg-2 form-input left input-check" style="padding-top: 15px;">
+        <p>
+        <input type="checkbox" data-order-id="{{order.id}}" data-type="<?php echo \Services::TYPE_WOOD_CRATING ?>"
+               class="_select_services _checkbox_services" {{#if order.is_wood_crating}}checked="checked"{{/if}}/>
+        Có đóng gỗ
+        </p>
+        <p style="margin-top: 10px;">
+            <input type="checkbox" data-order-id="{{order.id}}" data-type="<?php echo \Services::TYPE_HIGH_VALUE ?>"
+                   class="_select_services _checkbox_services"  {{#if order.is_high}}checked="checked"{{/if}}/>
+            Giá trị cao
+        </p>
+    </div>
+    <div class="col-lg-2 form-input left input-check"
+         style="padding-top: 15px;">
+        <p>
+            <input type="checkbox" data-order-id="{{order.id}}" data-type="<?php echo \Services::TYPE_FRAGILE ?>"
+                   class="_select_services _checkbox_services" {{#if order.is_fragile}}checked="checked"{{/if}}/>
+            Dễ vỡ
+        </p>
+        <p style="margin-top: 10px;">
+            {{console_log order.is_cnp}}
+            <input type="checkbox" data-order-id="{{order.id}}" data-type="<?php echo \Services::TYPE_EXPRESS_CHINA_VIETNAM ?>"
+                   class="_select_services _checkbox_services"  {{#if order.is_cnp}}checked="checked"{{/if}}/>
+            CPN
+        </p>
+    </div>
+    <div class="col-lg-2 form-input left input-check"  style="padding-top: 15px;">
+        <input type="checkbox" data-order-id="{{order.id}}" data-type="<?php echo \Services::TYPE_CHECKING ?>"
+               class="_select_services _checkbox_services"  {{#if order.is_checking}}checked="checked"{{/if}}/>
+        Kiểm hàng
+    </div>
+    <div class="footer_top-total col-lg-4 pull-right">
+        <div class="item">
+            <p class="normal-blod title">Tổng:</p>
+        </div>
+        <div class="item ">
+            <p class="product">
+                <span class="_total_item_quantity" data-order-id="{{order.id}}">{{order.total_quantity}}</span>
+                SP</p>
+        </div>
+        <div class="item price">
+            <p class="font-red">
+                                <span class="_total_order_price_vnd" data-order-id="{{order.id}}" >
+                                    {{order.order_price_vnd}}
+                                </span> VNĐ</p>
+            <p class="font-red">
+                                <span class="_total_order_price_ndt" data-order-id="{{order.id}}" >
+                                    {{order.order_price_ndt}}
+                                </span>
+                CNY</p>
+        </div>
+    </div>
+
+</div>
+<div class="footer_bottom">
+    <div class="bordertop"></div>
+
+    <div class="col-lg-4">
+        <div class="col-lg-6">
+            <div class="item-footer-ct">
+                <div class="title">
+                    <p class="font-small">
+                        Phí VC TQ (CNY):
+                    </p>
+                </div>
+                <div class="item-main-ct">
+
+                    <div class="form-input">
+                        <div data-order-id="{{order.id}}" class="input-append-wrapper input-append-right _domestic_transfer_fee">
+                            <div data-order-id="{{order.id}}" class="input-append bg-green poiter _change_pvc">
+                                <i class="glyph-icon icon-save"></i>
+                            </div>
+                            <div class="append-right">
+                                <input type="text" value="{{order.domestic_shipping_fee}}" name="domestic-fee-{{order.id}}" id="domestic-fee-{{order.id}}"
+                                       data-order-id="{{order.id}}" class="_input_pvc">
+                                <div class="dropdow-error _error_pvc" data-order-id="{{order.id}}">
+                                    <p class="font-small">Yêu cầu nhập PVC , nếu Free nhập 0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="item-footer-ct">
+                <div class="title">
+                    <p class="font-small">
+                        Tổng GTĐ (CNY):
+                    </p>
+                </div>
+                <div class="item-main-ct">
+                    <div data-order-id="{{order.id}}" class="form-input total-order-money">
+                        <div class="input-append-wrapper input-append-right">
+                            <div data-order-id="{{order.id}}" class="input-append bg-green poiter _change_total_money">
+                                <i class="glyph-icon icon-save"></i>
+                            </div>
+                            <div class="append-right">
+                                <input type="text" value="{{order.direct_fill_amount_cny}}" name="domestic-fee-{{order.id}}" id="domestic-fee-{{order.id}}"
+                                       data-order-id="{{order.id}}" class="_inout_total_money">
+                                <div class="dropdow-error _error_total_money" data-order-id="{{order.id}}">
+                                    <p class="font-small">Không được bỏ trống Mã đơn trên Site gốc</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p style="padding-left: 10px; display: inline-block;margin-top: 10px">CNY phân cách thập phân bằng dấu chấm "."</p>
+
+    </div>
+    <div class="col-lg-4">
+        <div class="item-footer-ct v2">
+            <div class="title">
+                <p class="normal">
+                    Mã đơn trên site gốc:
+                </p>
+            </div>
+            <div class="item-main-ct">
+                <div data-order-id="{{order.id}}" class="form-input invoice">
+                    <div class="input-append-wrapper input-append-right">
+                        <div data-order-id="{{order.id}}"
+                             class="input-append bg-green poiter _change_order_code_origin">
+                            <i class="glyph-icon icon-save"></i>
+                        </div>
+                        <div class="append-right">
+                            <input type="text" name="invoice-{{order.id}}" id="invoice-{{order.id}}" value="{{order.invoice}}"
+                                   data-order-id="{{order.id}}" class="_input_order_code_origin">
+                            <div class="dropdow-error _error_order_code_origin" data-order-id="{{order.id}}">
+                                <p class="font-small">Không được bỏ trống Mã đơn trên Site gốc</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 submit-bottom text-right">
+        {{#if order.is_show_button}}
+            <?php
+            if($controller->isAllowed(PERMISSION_ORDER_PAYMENT) && $controller->isAllowed(PERMISSION_PURCHASE_ORDER)){ ?>
+            {{#if order.is_negotiating}}
+            <a href="javascript:void(0)" data-status="<?php echo \Order::STATUS_NEGOTIATING ?>"
+               data-order-id="{{order.id}}" class="_btn_change_status btn medium bg-black" data-text="THANH TOÁN HỘ">
+                <span style="text-transform: uppercase;" class="button-content">THANH TOÁN HỘ</span>
+            </a>
+            <a href="javascript:void(0)" data-status="NEGOTIATED" style="margin-right: 15px" data-text="THANH TOÁN"
+               data-order-id="{{order.id}}" class="_btn_change_status btn medium primary-bg font-white">
+                <span style="text-transform: uppercase;" class="button-content">THANH TOÁN</span>
+            </a>
+
+            {{else}}
+            <a id="action-order-{{order.id}}" class="_btn_change_status _status_btn btn
+            medium primary-bg font-white disabled" data-order-id="{{order.id}}" data-text="{{order.text_show_button}}"
+               data-status="{{order.status}}" href="javascript:void(0)">
+                <span class="button-content" style="text-transform: uppercase;"> {{order.text_show_button}} </span>
+            </a>
+            {{/if}}
+            <?php }else{ ?>
+            <?php if(!$controller->isAllowed(PERMISSION_ORDER_PAYMENT)){ ?>
+            {{#if order.not_nagotiated}}
+            <a id="action-order-{{order.id}}" data-text="{{order.text_show_button}}" class="_btn_change_status _status_btn btn medium primary-bg font-white disabled"
+               data-order-id="{{order.id}}" data-status="{{order.status}}" href="javascript:void(0)">
+                <span class="button-content" style="text-transform: uppercase;"> {{order.text_show_button}} </span>
+            </a>
+            {{/if}}
+            <?php }else{ ?>
+             <a id="action-order-{{order.id}}" class="_btn_change_status _status_btn btn medium primary-bg font-white disabled" data-order-id="{{order.id}}"
+                data-status="{{order.status}}" href="javascript:void(0)">
+    <span class="button-content" style="text-transform: uppercase;"> {{order.text_show_button}} </span>
+    </a>
+            <?php } ?>
+            <?php } ?>
+        {{else}}
+
+            {{#if order.is_customer_confirm}}
+            <a class=" btn medium primary-bg font-white disabled" disabled="disabled" data-order-id="{{order.id}}" href="javascript:void(0)">
+                <span class="button-content" style="text-transform: uppercase;"> Chờ xác nhận </span>
+            </a>
+            {{/if}}
+        {{/if}}
+
+        <!--Neu co quyen thanh toan va mua hang-->
+        <?php if($controller->isAllowed(PERMISSION_ORDER_PAYMENT) && $controller->isAllowed(PERMISSION_PURCHASE_ORDER)){ ?>
+            <div class="_is_order_payment" data-order-id="{{order.id}}" style="display: none">
+        <a href="javascript:void(0)" data-status="NEGOTIATED" style="margin-right: 15px"
+           data-order-id="{{order.id}}" data-dismiss="modal"
+           class="_btn_change_status btn medium primary-bg font-white">
+            <span style="text-transform: uppercase;" class="button-content">THANH TOÁN</span>
+        </a>
+        <a href="javascript:void(0)" data-status="<?php echo \Order::STATUS_NEGOTIATING ?>"
+           data-dismiss="modal" data-order-id="{{order.id}}"
+           class="_btn_change_status btn medium bg-black">
+            <span style="text-transform: uppercase;" class="button-content">THANH TOÁN SAU</span>
+        </a>
+    </div>
+
+        <?php } ?>
+        <p class="normal text-center remover">
+            <a class="pull-right" href="javascript:void(0)" data-target="#out-of-stock{{order.id}}" data-toggle="modal">Hết hàng</a>
+        </p>
+        <div style="display: none;" class="modal fade" id="out-of-stock{{order.id}}" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 500px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Thông báo</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Bạn có chắc chuyển hết hàng đơn hàng {{order.code}}. Việc hết hàng không thể hoàn tác!
+                        </p>
+                        <div class="form-row text-center">
+                            <div class="form-input col-lg-12">
+                                <button class="btn medium primary-bg float-righ _out_of_stock_order" data-status="{{order.status}}"
+                                        data-order-id="{{order.id}}" data-dismiss="modal" >
+                                                            <span class="button-content">
+                                                                Đồng ý
+                                                            </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="position-7" data-order-id="{{order.id}}">
+    <div class="summary" data-order-id="{{order.id}}">
+        <div class="module-custom">
+            <!--Box comment-->
+            <!-- dau's -->
+            <div id="seu-chat-tab-{{order.id}}" class="seu-chat-tab _order_comment" data-order-id="{{order.id}}" >
+                <ul class="nav nav-tabs pull-right">
+                    <li id="chat_external_active" class="customer active"><a data-toggle="tab" href="#home{{order.id}}">Với khách</a></li>
+                    <li class="user-sevice"><a data-toggle="tab" href="#profile{{order.id}}">Nội bộ</a></li>
+                </ul>
+                <div class="tab-content seu-chat">
+                    <div id="home{{order.id}}" class="tab-pane active content-box bg-white">
+                        <div class="button-pane pad10A">
+                            <div class="form-row pad0B">
+                                <div class="form-input col-lg-12">
+                                    <div class="input-append-wrapper input-append-right">
+                                        <a title="" data-order-id={{order.id}} id="btn_send_message_external" class="btn input-append primary-bg tooltip-button" data-original-title="Reply">
+                                            <i class="glyph-icon icon-mail-reply"></i>
+                                        </a>
+                                        <div class="append-right">
+                                            <input type="text" id="msg_chat_external" data-order-id="{{order.id}}" class="_input_chat" name="msg_chat" placeholder="Chát công cộng về sản phẩm...">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-box-wrapper">
+                            <ul class="chat-box" id="box_external"></ul>
+                        </div>
+                    </div>
+                    <div id="profile{{order.id}}" class="tab-pane content-box bg-white chat-tab2">
+                        <div class="button-pane pad10A">
+                            <div class="form-row pad0B">
+                                <div class="form-input col-lg-12">
+                                    <div class="input-append-wrapper input-append-right">
+                                        <a title="" data-order-id={{order.id}} id="btn_send_message_internal" class="btn input-append primary-bg tooltip-button" data-original-title="Reply">
+                                            <i class="glyph-icon icon-mail-reply"></i>
+                                        </a>
+                                        <div class="append-right">
+                                            <input type="text" id="msg_chat_internal" data-order-id="{{order.id}}" class="_input_chat" name="msg_chat" placeholder="Chát nội bộ về sản phẩm...">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-box-wrapper">
+                            <ul class="chat-box" id="box_internal"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    </div>
+<div class="border-list-item" data-order-id="{{order.id}}">
+    <div class="border"></div>
+</div>
+        {{/each}}
+    {{/if}}
+    {{/each}}
+</script>
+<script id="_order_item_block" type="text/x-handlebars-template">
+    <div class="body-listorder-item">
+        <div class="col-lg-4">
+            <div class="module-listitem">
+                <div class="id-order">
+                    <p class="text-center">{{id}}</p>
+                </div>
+                <div class="position-left img-avatar">
+                    <img class="img-rounded" src="{{image}}" alt="">
+                </div>
+                <div class="content">
+                    <p class="normal title"><a href="{{link}}" title="{{title}}" target="_blank" >
+                        {{title_sub}}
+                    </a><span class="font-gray-dark">({{weight}}Kg)</span></p>
+                    <p class="font-red note _item_note item-note-{{id}}" data-item-id="{{id}}" style="word-wrap:break-word">
+                        {{#if note}}
+                        {{note}}
+                        {{/if}}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 cl">
+            <p class="text-center">{{property}}</p>
+            <p class="text-center">{{property_translated}}</p>
+        </div>
+
+        <div class="col-lg-2 dg">
+            <p class="text-center font-black normal-blod">
+                <span class="_unit_item_price_ndt"  data-item-id="{{id}}">{{unit_price_ndt}}</span>
+                CNY</p>
+            <p class="text-center font-black normal-blod">
+                <span class="_unit_item_price_vnd" data-item-id="{{id}}">{{unit_price_vnd}}</span>
+                 VNĐ</p>
+            <p class="text-center">
+                <span data-toggle="modal" data-target="#edit_price{{id}}"
+                      style="color: rgb(0, 114, 188); cursor: pointer;">Sửa</span>
+            </p>
+            <div style="display: none;" class="modal fade" id="edit_price{{id}}" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 500px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-order-item-id="{{id}}" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title text-center" id="myModalLabel"><span class="uppercase normal-blod">Sửa đơn giá Sản Phẩm</span></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-label col-lg-3 text-right">
+                                    <label for="role-label">
+                                        Khuyến mại
+                                    </label>
+                                </div>
+                                <div class="form-input col-md-8">
+                                    <input type="checkbox" style="width: 10px" class="_is_price_promotion
+                                    {{#if is_customer_confirm}}disabled{{/if}}"  data-order-id="{{order_id}}"
+                                    {{#if is_customer_confirm}}disabled="disabled"{{/if}}
+                                           data-order-item-id="{{id}}"/>
+
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-label col-lg-3 text-right">
+                                    <label for="role-label">
+                                        Đơn giá                                <span class="required">*</span>
+                                    </label>
+                                </div>
+                                <div class="form-input col-md-8">
+                                    <input type="text" class="_price_edit_item {{#if is_customer_confirm}}disabled{{/if}}"
+                                           data-order-id="{{order_id}}"
+                                    {{#if is_customer_confirm}}disabled="disabled"{{/if}}
+                                           data-order-item-id="{{id}}" placeholder="0" value="{{unit_price_ndt}}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-label col-lg-3 text-right">
+                                    <label for="role-label">
+                                        Lý do sửa                                <span class="required">*</span>
+                                    </label>
+                                </div>
+                                <div class="form-input col-md-8">
+                                    <textarea placeholder="Lý do sửa giá sản phảm" class="_reason_edit_price
+                                    {{#if is_customer_confirm}}disabled{{/if}}"
+                                    {{#if is_customer_confirm}}disabled="disabled"{{/if}}
+                                              data-order-id="{{order_id}}"
+                                              data-order-item-id="{{id}}"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-input col-lg-5 col-lg-offset-6">
+                                    <button class="btn medium primary-bg float-right _save_price_item _close
+                                    {{#if is_customer_confirm}}disabled{{/if}}" data-dismiss="modal"
+                                    {{#if is_customer_confirm}}disabled="disabled"{{/if}}
+                                            data-price="{{unit_price_ndt}}"
+                                            data-order-id="{{order_id}}" data-order-item-id="{{id}}"  >
+                                                                <span class="button-content">
+                                                                    Lưu lại
+                                                                </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+        </div>
+        <div class="col-lg-1 sl">
+            <p class="text-center">
+                <span class="_quantity_item_span" data-item-id="{{id}}" > {{pending_quantity}} </span>
+                {{#if is_customer_confirm}}
+
+                {{else}}
+                <input type="text" name="item-quantity-{{id}}" class="_quantity_item text-center hidden"
+                       data-item-id="{{id}}" data-order-id="{{order_id}}" data-quantity="{{pending_quantity}}" value="{{pending_quantity}}" >
+                <a href="javascript:void(0)" class="_edit_quantity" title="Sửa số lượng" data-item-id="{{id}}">
+                    <i class="glyph-icon icon-wrench" style="margin-left: 7px;"></i>
+                </a>
+                {{/if}}
+            </p>
+
+            <p class="text-center">
+                <a href="javascript:void(0)" class="_item_out_of_stock" data-order-id="{{order_id}}"
+                   data-item-id="{{id}}">
+                    Hết hàng
+                </a>
+            </p>
+        </div>
+        <div class="col-lg-2 tg">
+            <p class="text-center">
+                <span>CNY:</span>
+                <span class="font-red normal-blod _total_item_price_ndt" data-item-id="{{id}}" data-order-id="{{order_id}}">{{total_price_ndt}}</span>
+            </p>
+            <p class=" text-center">
+                <span>VNĐ:</span>
+                <span class="font-red normal-blod _total_item_price_vnd" data-item-id="{{id}}" data-order-id="{{order_id}}">{{total_price_vnd}}</span>
+            </p>
+            <p class="font-gray-dark text-center">({{pending_quantity}}x{{price}})</p>
+        </div>
+
+        {{#if is_autopaid}}
+        <div class="col-lg-1 autopai">
+            <div style="text-align: center">
+                <a href="javascript:void(0)" class="btn medium bg-blue _autopai {{#if is_customer_confirm}}disabled{{/if}}"
+                {{#if is_customer_confirm}}disabled="disabled"{{/if}}
+                   data-order-id="{{order_id}}"
+                   data-item-site-id="{{item_id}}"
+                   data-item-id="{{id}}"
+                   data-outer-id="{{outer_id}}"
+                   data-ct="<?php echo $cookie_ct ?>"
+                   data-site="{{source}}"> <span class="button-content">Autopai</span></a>
+                <br><span class="_da_paid" data-item-id="{{id}}" style="color:#5BCCF6;
+                {{#if is_paied}}display: none{{/if}}">[Đã Pai]</span>
+            </div>
+        </div>
+        {{/if}}
+        <!-- dau's -->
+        <div id="chat-item-body-{{order_id}}-{{id}}" class="chat-item-body col-lg-6 col-lg-offset-3">
+            <div class="seu-chat-item-order form-input">
+                <div class="input-append-wrapper input-append-right">
+                    <div class="append-right">
+                        <input type="text" name="" class="_item_input_chat" data-item-id="{{id}}"
+                               data-order-id={{order_id}} placeholder="Chát nội bộ về sản phẩm...">
+                    </div>
+                    <!--Box Item comment-->
+                    <div class="content-chat-item font-gray _content_chat_item" data-item-id="{{id}}">
+                        {{#if item_comment}}
+                        {{#each item_comment.data}}
+                        <div><span class="font-gray normal-blod">{{username}}</span>{{{message}}}</div>
+                        {{/each}}
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="show-chat-item">
+                    {{#if item_comment.page_next}}
+                    <span id="show-more-item-comment-{{order_id}}-{{id}}"
+                          page="{{item_comment.page_next}}" data-page-size="3"
+                          class="font-blue _view_item_chat" data-order-id="{{order_id}}" data-item-id="{{id}}">Xem thêm 3 chát nữa <i class="glyph-icon font-blue icon-caret-down"></i></span>
+                    {{else}}
+                    {{/if}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</script>
+
+<!--<link rel="stylesheet" href="http://192.168.1.110/stylev1.css"/>-->
+<div class="_temp_chat_item">
+
+</div>
+
+<div id="page-title">
+    <div class="container">
+        <h3 class="main-header-title">
+            <p class="uppercase">MUA HÀNG - THANH TOÁN ĐƠN HÀNG</p>
+        </h3>
+        <?php if($controller->isAllowed(PERMISSION_PURCHASE_ORDER)){ ?>
+            <div id="breadcrumb-right">
+                <div class="float-right">
+            <span>Số đơn đang chờ:
+                <strong class="_total_order_deposited"><?php echo $orderWaiting ?></strong>
+            <a class="btn btn-red-b btn-lg pull-right _grab"
+               href="javascript:
+   (function() {
+        var file_jquery = document.createElement('script');
+        file_jquery.setAttribute('src', '<?php echo $backend_url;?>assets/js/jquery.js?t=' + Math.random());
+        document.body.appendChild(file_jquery);
+
+        var file_js = document.createElement('script');
+        file_js.setAttribute('src', '<?php echo $backend_url;?>assets/js/process/getCookie.js?t=' + Math.random());
+        document.body.appendChild(file_js);
+        }()
+    );">
+                Bắt đầu Autopaid
+            </a>
+            </span>
+                    <a title="Nhận đơn hàng" style="width: 140px ; margin-left: 20px" href="javascript:;"
+                       class="btn medium primary-bg _receive-order"
+                       data-url="<?php echo \SeuDo\Main::getRouter("backend")->createUrl('Order/Purchase/RequestOrder') ?>">
+                        <i class="glyph-icon icon-cloud-download"></i>
+                        &nbsp; Nhận đơn hàng &nbsp;
+                    </a>
+                </div>
+            </div>
+            <div id="breadcrumb-right">
+                <div class="float-right">
+
+                </div>
+            </div>
+
+        <?php } ?>
+    </div>
+</div>
+<div id="iframe_autopaid" >
+</div>
+<?php
+$searchFrm = new \Flywheel\Html\Form('search-purchase', \SeuDo\Main::getRouter("backend")->createUrl("OrderPaid/default"), 'GET');
+$searchFrm->setHtmlOption(array(
+    'id' => '_frm_search_purchase'
+));
+$searchFrm->beginForm();
+?>
+<input type="hidden" name="site_origin" class="_site_origin_search" value="all"/>
+<input type="hidden" name="group_name" class="_group_name_search" value="1"/>
+<?php
+//if(!$controller->isAllowed(PERMISSION_PURCHASE_ORDER)){
+//    $_status = \Order::STATUS_NEGOTIATED;
+//}else{
+//    $_status = \Order::STATUS_BUYING;
+//}
+?>
+<input type="hidden" name="status" class="_status_search" value="<?php echo $status ?>"/>
+<input type="hidden" name="customer_confirm" class="_customer_confirm_search" value="<?php echo $customer_confirm ?>"/>
+<input type="hidden" name="page" class="_page_search" value="<?php echo $page ?>"/>
+<?php $searchFrm->endForm(false) ?>
+<div id="page-content" class="seu-page-content purchase no-header">
+    <div class="container">
+        <div class="row">
+            <ul class="nav nav-tabs my-tabs">
+                <?php
+                foreach ($tab_list as $tab) {
+                    if(!$controller->isAllowed(PERMISSION_PURCHASE_ORDER) && ($tab['data_status'] == \Order::STATUS_BUYING
+                        || $tab['data_status'] == \Order::STATUS_NEGOTIATING)){
+                        $status = \Order::STATUS_NEGOTIATED;
+                        continue;
+                    }
+                    if($status == 'all'){
+                        $status = $customer_confirm;
+                    }
+//                    if(!$controller->isAllowed(PERMISSION_ORDER_PAYMENT) && $tab['data_status'] == \Order::STATUS_NEGOTIATED){
+//                        $status = \Order::STATUS_BOUGHT;
+//                        continue;
+//                    }
+                    ?>
+                    <li class="<?php if($tab['data_status'] == $status){  ?>active<?php } ?> _tab
+                        <?php if(isset($tab['is_confirm']) && $tab['is_confirm'] == 1){echo "_customer_confirm_tab"; } ?>"
+                        data-status="<?php echo $tab['data_status'] ?>" data-id="<?php echo $tab['data_id'] ?>">
+                        <a href="#<?php echo $tab['data_id'] ?>" title="<?php echo $tab['text'] ?>" data-status="<?php echo $tab['data_status'] ?>" data-toggle="tab">
+                            <?php echo $tab['text'] ?>
+                            <span class="arow _number_order" data-status="<?php echo $tab['data_status'] ?>">
+                                <?php echo $tab["count"] ?>
+                            </span>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+            <div class="module-search">
+                <div class="menu-search">
+                    <?php foreach ($site_filter as $s) {
+                    ?>
+                    <a href="javascript:void(0)" data-site="<?php echo $s["data-id"] ?>" class="_site_filter <?php if($s["data-id"] == $site) echo "active" ?>"><?php echo $s["site"] ?></a>
+                    <?php } ?>
+<!--                    <a href="javascript:void(0)" class="_group_name_receive active">Gom theo tên người nhận</a>-->
+                </div>
+            </div>
+            <div class="tab-content my-tab-content">
+                <?php
+                foreach ($tab_list as $tab) {
+                    if(!$controller->isAllowed(PERMISSION_PURCHASE_ORDER) && $tab['data_status'] == \Order::STATUS_BUYING){
+                        $status = \Order::STATUS_NEGOTIATED;
+                        continue;
+                    }
+                    if($status == 'all'){
+                        $status = $customer_confirm;
+                    }
+//                    if(!$controller->isAllowed(PERMISSION_ORDER_PAYMENT) && $tab['data_status'] == \Order::STATUS_NEGOTIATED){
+//                        $status = \Order::STATUS_BOUGHT;
+//                        continue;
+//                    }
+                    ?>
+                    <div class="tab-pane <?php if($tab['data_status'] == $status){ ?>active<?php } ?> _div_content_order"
+                         data-status="<?php echo $tab['data_status'] ?>" id="<?php echo $tab['data_id'] ?>">
+
+                        <div class="list-order _list_order" data-status="<?php echo $tab['data_status'] ?>">
+                            <div style="text-align: center">
+                                <h1 style="margin-bottom: 20px">
+                                    <img src="<?php echo \SeuDo\Main::getHomeUrl().'/assets/img/small/loading31.gif' ?>">
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <br/>
+
+    <div class="waiting">Đang lấy đơn hàng, vui lòng đợi ...</div>
+
+</div>
+
+<div class="wrapper"></div>
+<div class="orderPaid-data"
+     data-config='{"userAvatar":"<?php echo \Users::getAvatar32x($user) ?>", "fullName":"<?php echo $user->getFullName() ?>"}'>
+</div>
+
+<!-- dau's -->
+<script id="_item_order_item_comment" type="text/x-handlebars-template">
+    <div class="_content_chat_item_view"><span class="normal-blod">{{username}}</span> {{{message}}}</div>
+</script>

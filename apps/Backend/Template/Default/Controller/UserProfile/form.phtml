@@ -1,0 +1,398 @@
+<?php
+use Flywheel\View\Render;
+
+/** @var Render  $this */
+
+/** @var \Backend\Controller\UserProfile $controller */
+
+$title = t('Thay đổi thông tin quản trị viên');
+$document = $this->document();
+$document->title = t("Thay đổi thông tin quản trị viên");
+
+$document->addCss('css/userprofile.css');
+
+$document->addJs('js/userprofile.js');
+$document->addJs('js/jquery.wallform.min.js');
+$document->addJs('js/jqueryui.js');
+$document->addJs('js/avatar.js');
+$document->addJs('js/register.js');
+
+$document->addJsVar('base_url', $controller->createUrl('/assets/images/loader.gif'), 'TOP');
+$document->addJsVar('url_editUserProfile', $controller->createUrl('user/user_profile/edit'), 'TOP');
+
+$form = new \Flywheel\Html\Form('user-frm');
+
+if($user || ($user instanceof \Users)){
+    ?>
+
+<div id="page-title">
+    <h3>
+        <?php echo $title; ?>
+    </h3>
+</div>
+
+<div class="form-row">
+    <div class="col-lg-4">
+        <div class="text-center">
+            <h3 for="avatar"><?php td('ẢNH ĐẠI DIỆN'); ?></h3>
+        </div>
+        <div class="form-input">
+            <div class="avatar-user text-center">
+                <div id="preview" class="avatar-preview">
+                    <img src="<?php echo \Users::getAvatar160x($user); ?>">
+                    <!--image avatar-->
+                </div>
+            </div>
+            <div class="form-row"></div>
+            <div class="text-center">
+                <form id="imageform" method="post" enctype="multipart/form-data" action='user/user_profile/upload_avatar'>
+                    <span class="btn btn-gray normal-blod uppercase span-avatar" type="button">
+                        Chọn ảnh từ máy <input class="input-computer input-avatar" type="file" name="avatar" id="avatar">
+                    </span>
+                    <span class="arow"></span>
+                </form>
+            </div>
+        </div>
+
+        <div class="form-row"></div>
+
+        <div class="form-row text-center">
+            <a href="javascript:;" class="_user-change-pass left" data-toggle="modal" data-target="#myModal">
+                <?php td('+ Đổi mật khẩu'); ?>
+            </a>
+        </div>
+
+        <div class="form-row text-center">
+            <a href="javascript:;" class="_user-change-pass" data-toggle="modal" data-target="#myModalPayment">
+                <?php td('+ Đổi hoặc tạo mới mật khẩu an toàn'); ?>
+            </a>
+        </div>
+    </div>
+
+    <!--modal: Reset password-->
+    <div class="modal fade finish-poup itemdetail" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="_reset-password">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                        <h4 id="myModalLabel" class="modal-title"><p class="text-left normal-blod title">ĐỔI MẬT KHẨU</p></h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="item-module-popup v2">
+                            <div class="left">
+                                <p class="text-left">Mật khẩu cũ:</p>
+                            </div>
+                            <div class="right form-input">
+                                <p class="normal"><input name="old_pass" id="old_pass" type="password" /></p>
+                                <span class="_err-old_pass float-left font-red"></span>
+                            </div>
+                        </div>
+
+                        <div class="item-module-popup v2">
+                            <div class="left">
+                                <p class="text-left">Mật khẩu mới:</p>
+                            </div>
+                            <div class="right form-input">
+                                <p class="normal"><input type="password" name="new_pass" ></p>
+                                <span class="_err-new_pass float-left font-red"></span>
+                            </div>
+                        </div>
+
+                        <div class="item-module-popup v2">
+                            <div class="left">
+                                <p class="text-left">Nhập lại mật khẩu mới:</p>
+                            </div>
+                            <div class="right form-input">
+                                <p class="normal"><input name="re_new_pass" id="re_new_pass" type="password" /></p>
+                                <span  class="_err-re_new_pass float-left font-red"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-blue btn-sm pull-right button-save" id="_btn-reset-password" type="button">LƯU</button>
+                        <button class="btn btn-gray btn-sm pull-right button-close" data-dismiss="modal" type="button">HỦY</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--modal: Reset pass payment-->
+    <div class="modal fade finish-poup itemdetail" id="myModalPayment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="_reset-password-payment">
+                    <div class="modal-header">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                        <?php
+                        if($user->getPaymentPass() == ''){
+                            ?>
+                             <h4 id="myModalLabel" class="modal-title"><p class="text-left normal-blod title">THÊM MỚI MẬT KHẨU AN TOÀN</p></h4>
+                        <?php
+                        }else{
+                        ?>
+                             <h4 id="myModalLabel" class="modal-title"><p class="text-left normal-blod title">ĐỔI MẬT KHẨU AN TOÀN</p></h4>
+                        <?php
+                        }
+                        ?>
+                        </div>
+                    </div>
+                    <div class="modal-body" id="old_payment">
+                        <?php
+                        if($user->getPaymentPass() != ''){
+                            ?>
+                            <div class="item-module-popup v2">
+                                <div class="left">
+                                    <p class="text-left">Mật khẩu cũ:</p>
+                                </div>
+                                <div class="right form-input">
+                                    <p class="normal"><input name="old_payment_pass" id="old_payment_pass" type="password" /></p>
+                                    <span class="_err-old_payment_pass float-left font-red"></span>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
+
+                        <div class="item-module-popup v2">
+                            <div class="left">
+                                <?php
+                                    if($user->getPaymentPass() == ''){
+                                ?>
+                                        <p class="text-left">Mật khẩu an toàn:</p>
+                                <?php
+                                    }else{
+                                ?>
+                                        <p class="text-left">Mật khẩu mới:</p>
+                                <?php
+                                    }
+                                ?>
+                            </div>
+                            <div class="right form-input">
+                                <p class="normal"><input type="password" name="new_payment_pass" id="new_payment_pass"></p>
+                                <span class="_err-new_pass_payment float-left font-red"></span>
+                            </div>
+                        </div>
+
+                        <div class="item-module-popup v2">
+                            <div class="left">
+                                <p class="text-left">Nhập lại mật khẩu mới:</p>
+                            </div>
+                            <div class="right form-input">
+                                <p class="normal"><input name="re_payment_pass" id="re_payment_pass" type="password" /></p>
+                                <span class="_err-re_payment float-left font-red"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-blue btn-sm pull-right button-save" id="_btn-reset-password-payment" type="button">LƯU</button>
+                        <button class="btn btn-gray btn-sm pull-right button-close" data-dismiss="modal" type="button">HỦY</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--modal: logout-->
+    <div class="modal fade finish-poup itemdetail" id="changePassSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="myModalLabel" class="modal-title"><p class="text-center normal-blod title">ĐỔI MẬT KHẨU THÀNH CÔNG</p></h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="item-module-popup v2">
+                        <div class="center">
+                            <p class="text-center">Hệ thống sẽ tự động thoát ra sau <span id="seconds_logout" class="font-red"></span> giây. <br />Bạn vui lòng đăng nhập lại bằng mật khẩu mới.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-blue btn-sm pull-right button-save" id="ok_logout" value="<?php echo $controller->createUrl('login/logout');?>" type="button">OK</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--modal: peyment success-->
+    <div class="modal fade finish-poup itemdetail" id="changePaymentPassSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                        <h4 id="myModalLabel" class="modal-title"><p class="text-center normal-blod title">THAY ĐỔI MẬT KHẨU AN TOÀN THÀNH CÔNG.</p></h4>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-blue btn-sm pull-right button-save" data-dismiss="modal" type="button">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="frm-edit-user" method="" onsubmit="return edit_UserProfile(); ">
+        <div id="page-content">
+            <div id="user-form" class="col-lg-8">
+                <?php //$form->beginForm(); ?>
+
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="">
+                            Email:
+                        </label>
+                    </div>
+                    <div class="form-label col-md-7">
+                        <label for="">
+                            <label><?php echo $user->getEmail(); ?></label>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="">
+                            Họ và tên:
+                            <span class="required">*</span>
+                        </label>
+                    </div>
+                    <div class="form-input col-md-3">
+                        <input type="text" name="input[last_name]" value="<?php echo $user->getLastName(); ?>" id="users-last_name" class="parsley-validated" />
+                    </div>
+                    <div class="form-input col-md-4">
+                        <input type="text" name="input[first_name]" value="<?php echo $user->getFirstName(); ?>" id="users-first_name" class="parsley-validated" />
+                    </div>
+                    <p id="error-fullname" class="red-normal"></p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="">
+                            Ngày sinh:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-7">
+                        <input type="text" value="<?php echo (strtotime($user->getBirthday())>0)?($user->getBirthday()->format('d/m/Y')):'00/00/0000';?>" class="parsley-validated" name="input[birthday]" id="users-birthday">
+                    </div>
+                    <p class="red-normal" id="_error-birthday"></p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="">
+                            Số điện thoại:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-7">
+                        <input type="text" name="input[mobile]" value="<?php echo \UserProfiles::getOneUserProfile($user, 'mobile');?>" class="parsley-validated" />
+                    </div>
+
+                    <p id="error-mobile" class="red-normal"></p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="">
+                            Skype:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-7">
+                        <input type="text" name="input[skype]" value="<?php echo \UserProfiles::getOneUserProfile($user, 'skype');?>" class="parsley-validated" />
+                    </div>
+
+                    <p id="error-skype" class="red-normal"></p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="">
+                            Bộ phận:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-7">
+                        <input type="text" name="input[parts]" value="<?php echo \UserProfiles::getOneUserProfile($user, 'parts');?>" class="parsley-validated" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="">
+                            Giới tính:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-7">
+                        <div class="form-checkbox-radio">
+                            <?php
+                                $form->radioButton('input[gender]', $user->getGender())
+                                    ->add(1, t('Nam'))
+                                    ->add(0, t('Nữ'))
+                                    ->add(2, t('Không xác nhận'))
+                                    ->display();
+                            ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-input col-md-9 text-right">
+                        <button class="btn primary-bg medium btnSubmitEditUser">
+                            <span class="button-content"><?php td('LƯU'); ?></span>
+                        </button>
+                    </div>
+                </div>
+                <?php //$form->endForm(); ?>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="divider"></div>
+<div class="form-row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-11">
+        <?php
+        $permissions = array();
+
+        foreach(\Permissions::$permissions as $group){
+            foreach($group['permissions'] as $key => $permission){
+                $permissions[$key] = $permission;
+            }
+        }
+        ?>
+
+        <?php
+
+        foreach(\Permissions::buildPermission($user) as $key => $role){
+            if(!empty($role)){
+                $label = \Roles::findOneById($key);
+                ?>
+                <div class="col-lg-3">
+                    <h4>
+                        <?php echo $label->getLabel(); ?>
+                    </h4>
+                    <ul>
+                        <?php
+                        foreach($role as $val){
+                            foreach($permissions as $k => $v){
+                                if($k == $val){
+                                    ?>
+                                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $v['label']; ?></li>
+                                <?php
+                                }
+                            }
+                        }
+                        ?>
+                    </ul>
+                </div>
+                <?php
+            }
+        }
+        ?>
+    </div>
+</div>
+<?php } ?>

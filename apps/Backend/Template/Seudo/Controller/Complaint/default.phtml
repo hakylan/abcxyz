@@ -1,0 +1,267 @@
+<?php
+use \SeuDo\Main;
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = Main::getHomeUrl();
+//echo $publicHomePath;
+
+$jsPath = $publicHomePath.'assets/js/';
+$jsBackendPath = $publicHomePath.'backend/assets/js/';
+//echo '$jsBackendPath: ' . $jsBackendPath;
+$cssPath = $publicHomePath.'assets/css/';
+$imgPath = $publicHomePath.'assets/images/';
+
+$document->addCss('css/cssloading.css',"TOP");
+$document->addCss('css/style-danhsachkhieunai.css',"TOP");
+//$document->addCss('css/style-typo.css',"TOP");
+$document->addCss('css/bootstrap-select.min.css',"TOP");
+
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs('js/jqueryui.js',"TOP");
+$document->addJs('js/process/complaint_manage.js',"TOP");
+
+$status = isset( $status ) ? $status : '';
+$page = isset( $page ) ? $page : 1;
+$order_code = isset( $order_code ) ? $order_code : '';
+$customer_code = isset( $customer_code ) ? $customer_code : '';
+$item_code = isset( $item_code ) ? $item_code : '';
+$from_time = isset( $from_time ) ? $from_time : '';
+$to_time = isset( $to_time ) ? $to_time : '';
+$error_division_company = isset( $error_division_company ) ? $error_division_company : '';
+$error_partner = isset( $error_partner ) ? $error_partner : '';
+$error_seller = isset( $error_seller ) ? $error_seller : '';
+$damage = isset( $damage ) ? $damage : '';
+$recipient_by = isset( $recipient_by ) ? $recipient_by : 0;
+$approval_by = isset( $approval_by ) ? $approval_by : 0;
+$item_id = isset( $item_id ) ? $item_id : '';
+$reasons = isset( $reasons ) ? $reasons : '';
+
+$user = \Users::select();
+$user->andWhere(" `status` = '" . \Users::STATUS_ACTIVE . "'");
+$user->andWhere(" `section` = '" . \Users::SECTION_CRANE . "'");
+$users = $user->execute();
+?>
+
+<div class="module-float module-title">
+    <p class="font-bold uppercase">Quản lý khiếu nại dịch vụ</p>
+</div>
+
+<div class="module-float module-total">
+    <div class="item">
+        <p>Tổng số có</p>
+        <p><span class="total" id="_total">0</span>  k.nại</p>
+    </div>
+    <div class="item">
+        <p>Tháng trước có</p>
+        <p><span class="total" id="_total_before_month">0</span>  k.nại</p>
+    </div>
+    <div class="item">
+        <p>Hiện tại có</p>
+        <p><span class="total" id="_total_current">0</span>  k.nại</p>
+    </div>
+    <div class="item">
+        <p>Chấp nhận có</p>
+        <p><span class="total" id="_total_accept">0</span>  k.nại</p>
+    </div>
+    <div class="item">
+        <p>Hoàn tiền có</p>
+        <p><span class="total" id="_total_refund">0</span>  k.nại</p>
+    </div>
+    <div class="item">
+        <p>Từ chối có</p>
+        <p><span class="total" id="_total_reject">0</span>  k.nại</p>
+    </div>
+
+</div>
+
+<form id="_search" method="get" action="">
+
+
+
+    <div class="menu-tab module-float">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="module-float v2-menu">
+                    <ul class="module-float">
+                        <li class="_filter-status <?php echo $status == '' ? ' active ' : '' ?>" data-type="">
+                            <a>Tất cả <span class="_total-by-status font-red-new" style="display: none">(0)</span><span class="arrow"></span></a>
+                        </li>
+                        <?php
+                        $arrStatus = \Complaints::$statusTitle;
+                        if(sizeof($arrStatus) > 0){
+                            foreach((array)$arrStatus as $key => $value){
+                                $selected = $key == $status ? ' active ' : '';
+                                echo '<li class="_filter-status ' . $selected . '" data-type="' . $key . '"><a>' . $value . ' <span class="_total-by-status font-red-new" style="display: none">(0)</span><span class="arrow"></span></a></li>';
+                            }
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <input type="hidden" name="status" value="<?php echo $status; ?>" />
+    <input id="_current-page" type="hidden" name="page" value="<?php echo $page; ?>" />
+    <input type="hidden" name="reasons" value="<?php echo $reasons; ?>" />
+    <input id="" type="hidden" name="get_by_buyer" value="1" />
+
+    <div class="module-float search">
+        <div class="col-lg-12 col-md-12 ">
+            <div class="row module-item">
+                <div class="module-float">
+                    <div class="col-lg-8 col-md-8">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="item-search public-position">
+                                    <span class="title-search font-gray">Mã đơn hàng:</span>
+                                    <input name="order_code" value="<?php echo $order_code ?>" type="text" placeholder="Nhập mã đơn hàng..." class="form-control form-myinput" id="">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4">
+                                <div class="item-search public-position">
+                                    <span class="title-search font-gray">Mã khách:</span>
+                                    <input name="customer_code" value="<?php echo $customer_code ?>" type="text" placeholder="Nhập mã khách..." class="form-control form-myinput" id="">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4">
+                                <div class="item-search public-position">
+                                    <span class="title-search font-gray">Mã sản phẩm:</span>
+                                    <input name="item_id" value="<?php echo $item_id ?>" type="text" placeholder="Nhập mã sản phẩm..." class="form-control form-myinput" id="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 module-datepic">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-xs-6">
+                                <div class="item-search date">
+                                    <input name="from_time" value="<?php echo $from_time ?>" type="text" id="_start-date" class="form-control form-myinput _from" placeholder="Từ ngày">
+                                    <span><img src="<?php echo Main::getBackendUrl() ?>assetv2/images/calenda.png"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-xs-6">
+                                <div class="item-search date">
+                                    <input name="to_time" value="<?php echo $to_time ?>" type="text" id="_end-date" class="form-control form-myinput _to" placeholder="Tới ngày">
+                                    <span><img src="<?php echo Main::getBackendUrl() ?>assetv2/images/calenda.png"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1 col-md-1 bottom">
+                        <div class="module-float submit">
+                            <button id="_btn-search" type="button" class="btn btn-red pull-right"><span class="uppercase font-white"><i class="fa fa-search"></i> Tìm kiếm</span></button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+            <div class="row module-item bottom _content-bottom">
+                <div class="module-float">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="item-search">
+
+                            <div class="module-item-check module-float">
+                                <div class="item-checklist v1"><span class="font-gray">Kết luận khiếu nại:</span></div>
+
+                                <?php $arrReasons = \Complaints::$reasonTitle; ?>
+
+                                <?php if( sizeof( $arrReasons ) > 0 ) { ?>
+                                    <?php foreach( $arrReasons as $key => $value ) { ?>
+                                        <div class="item-checklist">
+                                            <?php
+                                                $checked = "";
+                                                if( $reasons != "" ) {
+                                                    $tmp = explode(',', $reasons);
+                                                    if( sizeof($tmp) > 0 ) {
+                                                        foreach( $tmp as $v ) {
+                                                            if( $v == $value ) {
+                                                                $checked = " checked='checked' ";
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ?>
+                                            <input <?php echo $checked; ?> class="_reason" type="checkbox" value="<?php echo $key ?>" />
+                                            <?php echo $value ?>
+                                        </div>
+                                    <?php } ?>
+                                <?php } ?>
+
+                                <div class="item-checklist v2">
+                                    <input <?php echo $damage == \Complaints::YES ? ' checked="checked" ' : '' ?> type="checkbox" class="_chk-errors" name="damage" value="<?php echo $damage; ?>" />
+                                    Thiệt hại công ty
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="module-float search-select">
+                    <div class="col-lg-7 col-md-7">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="item-search public-position">
+                                    <span class="title-search font-gray">Nhân viên xử lý:</span>
+                                    <div class="module-float">
+                                        <select class="selectpicker" name="recipient_by">
+                                            <option value="0">Nhân viên xử lý</option>
+                                            <?php if( sizeof($users) > 0 ){ ?>
+                                                <?php foreach( $users as $user ) { ?>
+                                                    <?php if( $user instanceof \Users ){ ?>
+                                                        <option value="<?php echo $user->getId() ?>" <?php echo $recipient_by == $user->getId() ? ' selected="selected" ' : '' ?>><?php echo $user->getFullName() ?></option>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <div class="item-search public-position">
+                                    <span class="title-search font-gray">Nhân viên hoàn tiền:</span>
+                                    <div class="module-float">
+                                        <select class="selectpicker" name="approval_by">
+                                            <option value="0">Nhân viên hoàn tiền</option>
+                                            <?php if( sizeof($users) > 0 ){ ?>
+                                                <?php foreach( $users as $user ) { ?>
+                                                    <?php if( $user instanceof \Users ){ ?>
+                                                        <option value="<?php echo $user->getId() ?>" <?php echo $approval_by == $user->getId() ? ' selected="selected" ' : '' ?>><?php echo $user->getFullName() ?></option>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="arrow-active _arrow-active">
+                <span class="up">Thu gọn <i class="fa fa-caret-up"></i></span>
+                <span class="down">Mở rộng <i class="fa fa-caret-down"></i></span>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<div class="module-float" style="margin-top: 20px;">
+    Tìm thấy <strong class="font-blue" id="_total-complaints">0</strong> khiếu nại
+</div>
+
+<div id="_list-complaints"></div>

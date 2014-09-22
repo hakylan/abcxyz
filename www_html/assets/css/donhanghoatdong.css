@@ -1,0 +1,90 @@
+.list-cart.deposit .cart-list-content li{
+    min-height: 80px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.list-cart.deposit .cart-list-content li > div{
+    position: relative;
+}
+.order-acc .header-deposit .checkbox-deposit{
+    width: 40px;
+}
+#wrapper {
+    height: 60px;
+    width: 75px;   
+    position: absolute;
+    top: 0px;
+    left: 50px;
+}
+#slider {  
+    height: 60px;
+    overflow: hidden;
+    background: url(images/slidecarousel/ajax-loader.gif) center center no-repeat;
+    right: 0 !important;
+    left: inherit !important;
+}  
+
+#slider .slide {
+    position: relative;
+    display: none; 
+    height: 60px; 
+    float: right;
+    background-position: center right;
+    cursor: pointer;
+    border-left: 1px solid #fff;
+}
+
+#slider .slide:first-child {
+    border: none;
+}
+
+#slider .slide.active {
+    cursor: default;
+    position: relative;
+    width: 60px !important;
+}   
+
+#slider .slide-block {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block !important;
+    width: 10px;
+    height: 60px;
+    background-color: #fff;
+    background-color: rgba(255,255,255, 0.8);    
+    padding: 0px;
+    font-size: 14px;
+    color: #134B94;
+    border: 1px solid #fff;
+    overflow: hidden;
+    border-left : none;
+    border-right : none;
+    
+}
+#slider .slide.active .slide-block {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    width: 60px;
+    background-color: #fff;
+    background-color: rgba(255,255,255, 0.8);    
+    padding: 0px;
+    font-size: 14px;
+    color: #134B94;
+    border: 1px solid #fff;
+    overflow: hidden; 
+}
+
+#slider .slide .slide-block img {
+    display: inline-block;
+    height : 100%;
+    width: auto;
+}
+
+#slider .slide.active .slide-block img {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+}

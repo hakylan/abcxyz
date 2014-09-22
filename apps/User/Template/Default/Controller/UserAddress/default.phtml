@@ -1,0 +1,147 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = \SeuDo\Main::getHomeUrl();
+$jsPath = $publicHomePath.'assets/js/';
+$cssPath = $publicHomePath.'assets/css/';
+$document->addJs($jsPath.'process/checkout_address.js',"TOP");
+$document->addJs($jsPath.'jquery.loadingbar.min.js',"TOP");
+$document->addJs($jsPath.'jquery.loadingbar.js',"TOP");
+$document->addCss($cssPath.'loadingbar.css',"TOP");
+?>
+
+
+<a id="load_address" href="javascript:void(0)" data-cart-id="" data-user="1" data-shop-id=""
+   data-href="#" style="display:none" class="reload a_loading">
+    loading
+</a>
+<a id="load_district" href="javascript:void(0)" data-address-id="" data-href="#" style="display:none" class="reload a_loading">loading</a>
+<div class=""></div>
+
+<div class="module-content">
+<section class="order-title">
+    <div class="seu-module-ct">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title"><span class="title-page">Lịch sử giao dịch</span></p>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class=" adress-cart">
+<div class=" item-list">
+<div class="address-module">
+<div class="module ">
+<div class="module-title">
+    <div class="title-left">
+        <p class="title normal-blod uppercase">Danh sách địa chỉ nhận hàng của bạn</p>
+        <p class="normal italic">Danh sách địa chỉ nhận hàng của bạn. Bạn có thể sử dụng tối đa 5 địa chỉ.</p>
+    </div>
+    <div class="title-right pull-right">
+        <button class="btn btn-addadress pull-right" type="button" data-target="#myModaladdadress" data-toggle="modal"><span class="arow"></span><span class="normal-blod uppercase">Thêm địa chỉ</span></button>
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModaladdadress" class="modal fade editadresscart" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                        <h4 id="myModalLabel" class="modal-title uppercase">Thêm địa chỉ nhận hàng</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="module-popup">
+                            <div class="module-modal">
+                                <div class="left">
+                                    <div class="name">
+                                        <p>Tên người liên hệ: <span class="red-normal">*</span></p>
+                                    </div>
+                                    <input id="contact_name0" class="form-control form-myinput _text" type="text" placeholder="Tên người liên hệ">
+                                    <p class="note red-normal _error_name" data-address-id="0"></p>
+                                </div>
+                                <div class="right">
+                                    <div class="name">
+                                        <p>Số điện thoại: <span class="red-normal">*</span></p>
+                                    </div>
+                                    <input id="contact_phone0" class="form-control form-myinput pull-right _text" type="text" placeholder="Số điện thoại">
+                                    <p class="note red-normal _error_phone" data-address-id="0"></p>
+
+                                </div>
+                            </div>
+                            <div class="module-modal">
+                                <div class="left">
+                                    <div class="name">
+                                        <p>Tỉnh/ Thành phố: <span class="red-normal">*</span></p>
+                                    </div>
+                                    <select class="_select_ _select_province" data-address-id="0" id="select_province0">
+                                        <option value="-1">Tỉnh/thành phố</option>
+                                        <?php if($province_list){
+                                            foreach($province_list as $pro){
+                                                ?>
+                                                <option value="<?php  echo $pro->id ?>" >
+                                                    <?php  echo $pro->label ?>
+                                                </option>
+                                            <?php }} ?>
+                                    </select>
+                                    <p class="note red-normal _error_province" data-address-id="0"></p>
+                                </div>
+                                <div class="right">
+                                    <div class="name">
+                                        <p>Quận/ Huyện: <span class="red-normal">*</span></p>
+                                    </div>
+                                    <select class="pull-right _select_ _select_district" disabled="disabled" id="select_district0">
+                                        <option value="-1">Quận/huyện</option>
+                                    </select>
+                                    <p class="note red-normal _error_district" data-address-id="0"></p>
+                                </div>
+                            </div>
+                            <div class="module-modal home">
+                                <div class="module-modal-ct">
+                                    <div class="name">
+                                        <p>Số nhà: <span class="red-normal">*</span></p>
+                                    </div>
+                                    <input id="home_number0" class="form-control form-myinput _text" type="text"
+                                           placeholder="Số nhà" >
+                                    <p class="note red-normal _error_home" style="padding-left:0px !important;" data-address-id="0"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module-popup">
+                            <div class="module-modal">
+                                <div class="module-modal-ct">
+                                    <div class="name">
+                                        <p><b>Chú thích:</b></p>
+                                    </div>
+                                    <textarea class="form-control form-mytextarea _text" id="note0"
+                                              placeholder="Vd:Chuyển hàng cho mình vào 9h sáng nhé..." rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-gray uppercase _cancel_popup" data-address-id="0" type="button">hủy</button>
+                        <button class="btn btn-blue uppercase _save_address"  data-address-id="0" type="button">Lưu địa chỉ</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div>
+        </div>
+
+    </div>
+</div>
+<ul class="cart-list-content _checkoutAddress">
+
+
+</ul>
+
+
+
+</div>
+</div>
+
+</div>
+</section>
+
+
+
+
+</div>

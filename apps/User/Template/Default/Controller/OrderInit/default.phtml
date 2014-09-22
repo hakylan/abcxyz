@@ -1,0 +1,483 @@
+<?php
+$document = $controller->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = \SeuDo\Main::getHomeUrl();
+
+//$backend_url = \SeuDo\Main::getBackendUrl();
+//$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+// dau's cope file => fronend (check file js, two location same content, title)
+$document->addJs($publicHomePath.'/assets/js/handlebars-v1.3.0.js',"TOP");
+$document->addJs($publicHomePath.'/assets/js/process/order_init.js',"TOP");
+$document->addJs($publicHomePath.'/assets/js/seudo-frontendv2.js',"TOP");
+
+$document->addJsCode('
+    var item_order_comment_template = Handlebars.compile($("#_item_order_comment").html());', 'BOTTOM', 'standard');
+
+$document->addCss($publicHomePath.'/assets/css/order.css');
+$order_list = isset($order_list) ? $order_list : array();
+$config_expire = \SystemConfig::retrieveByConfigKey(\SystemConfig::ORDER_EXPIRE_DATE);
+if($config_expire instanceof \SystemConfig){
+    $day_expire = $config_expire->getConfigValue();
+}else{
+    $day_expire = 30;
+}
+?>
+<?php if(isset($currentUser) && ($currentUser instanceof \Users)){?>
+    <div class="_temp_comment" style="display: none;">
+        <div class="mychat-item ">
+            <div class="item-avatar _comment_avatar">
+                <img src="<?php echo \Users::getAvatar32x($currentUser);?>">
+            </div>
+            <div class="item-ct">
+                <p class="normal">
+        <span class="normal-blod _fullname_chat">
+            <?php echo $currentUser->getFullName();?>:
+        </span><span class="_content_chat"></span>
+                </p>
+                <p class="normal"><span class="italic _time_chat"></span></p>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+
+<div class="module-content">
+<section class="order-title">
+    <div class="seu-module-ct">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title uppercase"><span class="title-page">Đơn hàng chờ thanh toán</span></p>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+<?php if($order_list): ?>
+    <section class="search-order search-history">
+        <div class="seu-module-ct">
+            <div class="s-content">
+                <p class="normal">Hãy kiểm tra kỹ thông tin và click vào <span class="uppercase">"đặt cọc"</span> để chuyển sang bước "Đặt Cọc Đơn Hàng". Có thể đặt cọc nhiều đơn hàng một lúc.</p>
+                <p class="normal">Đơn hàng chờ đặt cọc sau <?php echo $day_expire ?> ngày sẽ bị hủy tự động.</p>
+            </div>
+        </div>
+    </section>
+<?php endif ?>
+<?php if($order_list){
+    foreach ($order_list as $order) {
+        if($order && ($order instanceof \Order)){
+            $item_order = $order->getItemInOrder();
+            if(empty($item_order)){
+                $order->setIsDeleted(1);
+                $order->save();
+                continue;
+            }
+            $address_oder = UserAddress::retrieveById($order->getUserAddressId());
+            $services = \OrderPeer::getOrderServices($order);
+            $buying = 0;
+            $shipping = 0;
+            $checking = 0;
+            $packing = 0;
+
+            if($services){
+                foreach ($services as $ser) {
+                    if($ser && $ser instanceof \OrderService){
+                        $money = $ser->getMoney();
+                        switch($ser->getServiceCode()){
+                            case Services::TYPE_BUYING:
+                                $buying += $money;
+                                break;
+                            case Services::TYPE_SHIPPING_CHINA_VIETNAM:
+                            case Services::TYPE_EXPRESS_CHINA_VIETNAM:
+                                $shipping += $money;
+                                break;
+                            case Services::TYPE_CHECKING:
+                                $checking += $money;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            ?>
+            <section class="adress-cart list-cart single _order_content" data-order-id="<?php echo $order->getId() ?>">
+            <input type="hidden" class="_order_detail" data-order-id="<?php echo $order->getId() ?>">
+
+            <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="module module-body">
+            <div class="header-main">
+                <div class="col-lg-3 col-md-3 col-sm-3 left">
+                    <input type="checkbox" value="<?php echo $order->getId() ?>" class="_select_order"
+                           data-order-id="<?php echo $order->getId() ?>" >
+                    <p class="uppercase normal-blod">
+                        <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl("order_detail/default",array("id"=>$order->getId())) ?>">
+                            <?php echo $order->getCode() ?>
+                        </a>
+                    </p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 right">
+                    <p class="normal">Người bán:
+                            <span class="uppercase normal-blod">
+                                <?php echo $order->getSellerName() ?>
+                            </span>
+                        <a href="javascript:void(0)" class="pull-right" data-target="#_confirm_delete_order<?php echo $order->getId() ?>" data-toggle="modal" >
+                            Xóa đơn hàng
+                        </a>
+                    <div style="display: none;" class="modal fade finish-poup" id="_confirm_delete_order<?php echo $order->getId() ?>" tabindex="-1" role="dialog"
+                         aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Thông báo</span></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="color: #000000">Khi xóa, không thể khôi phục dữ liệu .Bạn muốn tiếp tục không?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <button type="button" class="btn btn-gray btn-sm" data-dismiss="modal">Đóng</button>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <button type="button" class="btn btn-blue btn-sm _delete_order" data-order-id="<?php echo $order->getId() ?>"
+                                                data-dismiss="modal">Đồng ý</button>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+                    </p>
+                </div>
+            </div>
+            <div class="top-main ">
+                <div class="col-lg-6 col-md-6 col-sm-6 left">
+                    <p class="italic uppercase">
+
+                        Sản phẩm(<span class="bold-italic _total_item" data-order-id="<?php echo $order->getId() ?>">
+                                <?php echo $order->getOrderQuantity() ?></span>
+                        )</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="italic uppercase">Mẫu</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="italic uppercase">Số lượng(
+                            <span class="bold-italic _total_item" data-order-id="<?php echo $order->getId() ?>">
+                                <?php echo $order->getOrderQuantity() ?></span>)</p>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <p class="italic uppercase">Giá</p>
+                </div>
+
+            </div>
+            <ul class="cart-list-content _order_item_content" data-order-id="<?php echo $order->getId() ?>">
+                <li>
+                    <div class="loading-data _loading_order" style="">
+                        <img src="<?php echo $publicHomePath.'/assets/img/small/loading31.gif' ?>" style="width: 80px">
+                    </div>
+                </li>
+            </ul>
+
+            <div class="single-chat">
+            <div class="add-chat">
+            <div class="col-lg-8 col-md-8 col-sm-8">
+                <!--                                                                                            đ?a ch? -->
+                <div class="myaccout">
+                    <div class="module-inner">
+                        <div class="module-avatar">
+
+                        </div>
+                        <?php if($address_oder && $address_oder instanceof \UserAddress){ ?>
+                            <div class="module-myacc-ct">
+                                <p class="normal top">
+                                    <span class="normal-blod uppercase"><?php echo $address_oder->getReciverName() ?>
+                                    </span>
+                                    <span class="edit-add">
+<!--                                        <a href="#">Đ?i đ?a ch?</a>-->
+                                    </span></p>
+                                <p class="normal"><?php
+                                    echo $address_oder->getDetail();
+                                    $district = Locations::retrieveById($address_oder->getDistrictId());
+                                    $province = Locations::retrieveById($address_oder->province_id);
+                                    if($district && $province){
+                                        echo " - {$district->getLabel()} - {$province->getLabel()}";
+                                    }
+                                    ?> /
+                                    <span class="phone"><?php echo $address_oder->getReciverPhone() ?></span>
+                                    .</p>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+                <!--                                                                                            chat-->
+                <div class="chat-order " data-order-id="<?php echo $order->getId() ?>">
+
+                    <?php if(isset($currentUser) && ($currentUser instanceof \Users)){?>
+                        <div class="add-chat">
+                            <div class="mychat">
+                                <div class="module-inner">
+                                    <div class="module-chat">
+                                        <div class="module-input-chat">
+                                            <input class="form-control form-myinput _input_order_comment" type="text"
+                                                   placeholder="Trao đổi về đơn hàng, Enter để gửi" data-order-id="<?php echo $order->getId() ?>">
+                                            <span class="arow-submit-chat _submit_chat" data-order-id="<?php echo $order->getId() ?>"></span>
+                                        </div>
+                                    </div>
+                                    <div class="module-ct _list_comments _chat_order" data-order-id="<?php echo $order->getId() ?>">
+                                        <div class="loading-data _loading_order" style="">
+                                            <img src="<?php echo $publicHomePath.'/assets/img/small/loading1.gif' ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="module-totals">
+                    <div class="md-ct">
+                        <div class="md-item top">
+                            <div class="check-exp">
+                                <p class="normal-blod"><input type="checkbox" class="_choose_services_express" data-order-id="<?php echo $order->getId() ?>"
+                                                              value="<?php echo \Services::TYPE_EXPRESS_CHINA_VIETNAM ?>"
+                                        <?php
+                                        if($order->mappingToService(\Services::TYPE_EXPRESS_CHINA_VIETNAM)){
+                                            echo 'checked="checked"';
+                                        }
+                                        if($order->getStatus() != \Order::STATUS_INIT) {
+                                            echo 'disabled="true"';
+                                        }
+                                        ?>
+                                        />
+
+                                    <span>Chuyển phát nhanh</span></p>
+                                <div class="dropdow-error">
+                                    <span class="close-exp">x</span>
+                                    <p class="font-small">Áp dụng đồng nhất mức phí CPN là  45.000đ/kg về HN & 60.000đ/kg về SG </p>
+                                    <p class="font-small">Quảng Châu &ndash;&gt; Hà Nội : từ 2-3 ngày ( Thông thường là 2 ngày )</p>
+                                    <p class="font-small">Quảng Châu &ndash;&gt; Sài Gòn : từ 2-4 ngày ( Thông thường là 3 ngày )</p>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <p class="normal">
+                                    <input type="checkbox" class="_choose_services_express" data-order-id="<?php echo $order->getId() ?>"
+                                           value="<?php echo \Services::TYPE_WOOD_CRATING ?>"
+                                        <?php
+                                        if($order->mappingToService(\Services::TYPE_WOOD_CRATING)){
+                                            echo 'checked="checked"';
+                                        }
+                                        if($order->getStatus() != \Order::STATUS_INIT) {
+                                            echo 'disabled="true"';
+                                        }
+                                        ?>
+                                        />
+                                    <span>Đóng gỗ?</span></p>
+                            </div>
+                            <div class="left">
+                                <p class="normal"><input type="checkbox" class="_choose_services_express"
+                                                         data-order-id="<?php echo $order->getId() ?>"
+                                        <?php
+                                        if($order->mappingToService(\Services::TYPE_CHECKING)){
+                                            echo 'checked="checked"';
+                                        }
+                                        if($order->getStatus() != \Order::STATUS_INIT) {
+                                            echo 'disabled="true"';
+                                        }
+                                        ?>
+                                                         value="<?php echo \Services::TYPE_CHECKING ?>"><span>
+                                        Kiểm hàng?
+                                    </span></p>
+                            </div>
+
+                        </div>
+                        <div class="md-item">
+                            <div class="right">
+                                <p class="normal">
+                                    <span class="red-normal _real_amount" data-price="<?php echo $order->getOrderAmount() ?>"
+                                          data-order-id="<?php echo $order->getId() ?>">
+                                        <?php echo Common::numberFormat($order->getRealAmount());?><sup>đ</sup>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="left">
+                                <p class="normal">Tiền mua hàng:</p>
+                            </div>
+
+                        </div>
+                        <div class="md-item">
+                            <div class="right">
+                                <p class="normal">
+                                    <span class="red-normal _buying_order"
+                                          data-price="<?php echo floatval($buying) ?>" data-order-id="<?php echo $order->getId() ?>">
+                                        <?php //echo
+                                        if(floatval($buying) > 0){
+                                            echo Common::numberFormat($buying)."<sup>đ</sup>";
+                                        }else{
+                                            echo "~~";
+                                        }
+                                        ?>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="left">
+                                <p class="normal">Phí mua hàng:</p>
+                            </div>
+
+                        </div>
+                        <div class="md-item">
+                            <div class="right">
+                                <p class="normal">
+                                    <span class="red-normal _checking_order" data-price="<?php echo floatval($checking) ?>" data-order-id="<?php echo $order->getId() ?>">
+                                        <?php //echo
+                                        if(floatval($checking) > 0){
+                                            echo Common::numberFormat($checking)."<sup>đ</sup>";
+                                        }else{
+                                            echo "~~";
+                                        }
+                                        ?>
+                                </span></p>
+                            </div>
+                            <div class="left">
+                                <p class="normal">Phí kiểm hàng:</p>
+                            </div>
+
+                        </div>
+                        <div class="md-item">
+                            <div class="right">
+                                <p class="normal"><span class="red-normal _shipping_order" data-price="<?php echo floatval($shipping) ?>" data-order-id="<?php echo $order->getId() ?>">
+                                        <?php //echo
+                                        if(floatval($shipping) > 0){
+                                            echo Common::numberFormat($shipping)."<sup>đ</sup>";
+                                        }else{
+                                            echo "~~";
+                                        }
+                                        ?>
+                                </span></p>
+                            </div>
+                            <div class="left">
+                                <p class="normal">Phí vận chuyển:</p>
+                                <p class="italic">(tạm tính)</p>
+                            </div>
+
+                        </div>
+                        <div class="md-item border">
+                            <div class="line-border"></div>
+                        </div>
+                        <div class="md-item">
+                            <div class="right">
+                                <?php
+                                $total = floatval($order->getTotalAmount());
+                                ?>
+                                <p class="normal"><span class="red-bold _total_order_price" data-price="<?php echo $total ?>"
+                                                        data-order-id="<?php echo $order->getId() ?>">
+                                        <?php //echo
+                                        echo Common::numberFormat($total)."<sup>đ</sup>"
+                                        ?>
+                                    </span></p>
+                            </div>
+                            <div class="left">
+                                <p class="normal" data-price-total="">Tổng chi phí:</p>
+                            </div>
+
+                        </div>
+                        <div class="md-item">
+                            <div class="right">
+                                <p class="normal">
+                                    <span class="normal-blod _price_deposit_min"
+                                          data-deposit-min="<?php echo OrderPeer::calculateDepositAmount($total) ?>"
+                                          data-order-id="<?php echo $order->getId() ?>">
+                                        <?php echo Common::numberFormat(OrderPeer::calculateDepositAmount($total)); ?>
+                                        <sup>đ</sup>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="left">
+                                <p class="normal">Đặt cọc tối thiểu:</p>
+                            </div>
+
+                        </div>
+                        <div class="md-item">
+                            <button class="btn btn-blue btn-lg pull-right _order_deposit" data-order-id="<?php echo $order->getId() ?>" type="button">
+                                <span class="uppercase normal-blod">đặt cọc</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+
+            </section>
+
+        <?php }
+    } ?>
+    <section class="search-order bottom _scroll_bottom">
+        <div class="seu-module-ct">
+            <div class="s-bottom-ct">
+                <div class="col-md-3 col-xs-4">
+                    <input type="checkbox" class="_select_all_order" value="">
+                    <span class="arow"></span>
+                    <span class="normal">Chọn tất cả</span>
+                </div>
+                <input id="total_order" value="0" type="hidden">
+                <div class="col-xs-3 _total_order">
+                    0 Đơn / 0 Sản phẩm
+                </div>
+                <div class="col-md-4 col-xs-3">
+                    <span class="normal">Tổng đặt cọc:</span>
+                    <span class="red-normal _total_deposit" >0<sup>đ</sup></span>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-blue btn-lg pull-right _order_deposit_all">
+                        <span class="uppercase normal-blod _total_order_count">Đặt cọc 0 đơn</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+<?php
+}else{ ?>
+    <section class="adress-cart list-cart single">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h2>Không tồn tại đơn hàng nào.</h2>
+        </div>
+    </section>
+<?php } ?>
+</div>
+<input type="hidden" id="click_num" value="0">
+<input type="hidden" id="check_timeout" value="0">
+<!-- dau's -->
+<script id="_order_comment" type="text/x-handlebars-template">
+    {{#if external_comments}}
+    {{#each external_comments}}
+    {{> list_comments}}
+    {{/each}}
+    {{/if}}
+</script>
+<script id="_item_order_comment" type="text/x-handlebars-template">
+    <div class="mychat-item ">
+        <div class="item-avatar _comment_avatar">
+            {{#if img_path}}
+            <img src="{{img_path}}">
+            {{/if}}
+        </div>
+        <div class="item-ct">
+            <p class="normal">
+        <span class="normal-blod _fullname_chat">
+            {{username}}
+        </span><span class="_content_chat">{{{message}}}</span>
+            </p>
+            <p class="normal"><span class="italic _time_chat">{{time}}</span></p>
+        </div>
+    </div>
+</script>
+
+<!-- dau's hard code -->
+<script type="text/javascript">
+    var order_comment_template = Handlebars.compile($("#_order_comment").html());
+    var item_order_comment_template = Handlebars.compile($("#_item_order_comment").html());
+    Handlebars.registerPartial("list_comments", $("#_item_order_comment").html())
+</script>

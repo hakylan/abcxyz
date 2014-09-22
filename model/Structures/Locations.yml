@@ -1,0 +1,16 @@
+comment:
+    - '#Locations'
+    - '#Schema for Locations OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: 'int(10) unsigned', length: 4, fixed: false, unsigned: true, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    label: { name: label, type: string, db_type: string, alltypes: [string], ntype: varchar(150), length: 150, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    key_code: { name: key_code, type: string, db_type: string, alltypes: [string], ntype: char(5), length: 5, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    type: { name: type, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''COUNTRY'',''STATE'',''DISTRICT'',''VILLAGE'')', length: 8, fixed: false, unsigned: false, values: [COUNTRY, STATE, DISTRICT, VILLAGE], primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    parent_id: { name: parent_id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    status: { name: status, type: integer, db_type: integer, alltypes: [integer, boolean], ntype: tinyint(1), length: 1, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    CODE: { name: CODE, type: string, db_type: string, alltypes: [string], ntype: varchar(20), length: 20, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    can_delete: { name: can_delete, type: integer, db_type: integer, alltypes: [integer, boolean], ntype: tinyint(1), length: 1, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '1', notnull: true, auto_increment: false, extra: '' }
+    ordering: { name: ordering, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    logistic_code: { name: logistic_code, type: string, db_type: string, alltypes: [string], ntype: char(5), length: 5, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: locations

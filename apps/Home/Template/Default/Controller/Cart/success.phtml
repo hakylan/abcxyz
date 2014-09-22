@@ -1,0 +1,82 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+?>
+
+<section class="cart-header">
+    <nav class="container" >
+        <div class="row">
+            <div class="">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-title">
+                            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-8 col-md-8 col-sm-8 ">
+                                <p class="title"><span class="title-page">Thành công!</span></p>
+                            </div>
+                        </div>
+                        <div class="module-ct">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+</section>
+
+<section class="cartaddress-alert finish">
+    <nav class="container" >
+        <div class="row">
+            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-7 col-md-7 col-sm-7 ">
+                <p class="alert alert-success">Bạn đã đặt cọc đơn hàng thành công. Chúng tôi sẽ đàm phán với người bán để mua những đơn hàng này.
+                    Thông thường quá trình này mất 1-2 ngày (thời gian này phụ thuộc vào người bán).
+                    Trong tất cả các trường hợp bạn sẽ nhận được thông báo trên đơn hàng tại trang<a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('');?>" ><span > Đơn hàng đang mua hàng</span></a>.</p>
+                <!--                <span class="delete-item"></span>-->
+            </div>
+            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-7 col-md-7 col-sm-7 ">
+                <p class="normal">Trong thời gian từ 3-6 ngày hàng sẽ sẵn sàng để chuyển cho bạn. Bạn có thể tìm hiểu thêm quy trình vận hành <a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('');?>" ><span > tại đây</span></a>.</p>
+                <!--                <span class="delete-item"></span>-->
+            </div>
+            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-7 col-md-7 col-sm-7 ">
+                <p class="normal">Hoặc:</p>
+                <!--                <span class="delete-item"></span>-->
+            </div>
+            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-7 col-md-7 col-sm-7 ">
+                <p class="normal">- Theo dõi <a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('');?>" ><span > Đơn hàng đang mua hàng</span></a>.</p>
+                <!--                <span class="delete-item"></span>-->
+            </div>
+            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-7 col-md-7 col-sm-7 ">
+                <p class="normal">- <a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('Home/default');?>" ><span >Tiếp tục đặt hàng</span></a>.</p>
+                <!--                <span class="delete-item"></span>-->
+            </div>
+            <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-7 col-md-7 col-sm-7 ">
+                <p class="normal">-<a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('Cart/default');?>" ><span > Quay lại giỏ hàng</span></a>.</p>
+                <!--                <span class="delete-item"></span>-->
+            </div>
+        </div>
+    </nav>
+</section>
+
+<!--    list cart-->
+<!--    end list cart-->
+<!-- conten menu top    -->
+<div style="display: none;" class="modal fade" id="myModaldeleteitem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Xóa sản phẩm</h4>
+            </div>
+            <div class="modal-body">
+                <p class="price-red1">Bạn có chắc chắn muốn xóa sản phẩm này</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-gray btn-sm" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-red btn-sm">Yes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

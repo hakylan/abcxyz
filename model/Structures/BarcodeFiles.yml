@@ -1,0 +1,18 @@
+comment:
+    - '#BarcodeFiles'
+    - '#Schema for BarcodeFiles OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: 'int(11) unsigned', length: 4, fixed: false, unsigned: true, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    state: { name: state, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''NOT_ANALYZED'',''ANALYZING'',''DONE'')', length: 12, fixed: false, unsigned: false, values: [NOT_ANALYZED, ANALYZING, DONE], primary: false, unique: false, default: NOT_ANALYZED, notnull: true, auto_increment: false, extra: '' }
+    type: { name: type, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''FREIGHT_BILL'',''ORDER'')', length: 12, fixed: false, unsigned: false, values: [FREIGHT_BILL, ORDER], primary: false, unique: false, default: ORDER, notnull: true, auto_increment: false, extra: '' }
+    activity: { name: activity, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''IN'',''OUT'',''INVENTORY'',''OTHER'')', length: 9, fixed: false, unsigned: false, values: [IN, OUT, INVENTORY, OTHER], primary: false, unique: false, default: OTHER, notnull: true, auto_increment: false, extra: '' }
+    warehouse: { name: warehouse, type: string, db_type: string, alltypes: [string], ntype: varchar(10), length: 10, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    file_location: { name: file_location, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '', notnull: true, auto_increment: false, extra: '' }
+    file_name: { name: file_name, type: string, db_type: string, alltypes: [string], ntype: varchar(255), length: 255, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '', notnull: true, auto_increment: false, extra: '' }
+    content: { name: content, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    total_barcode: { name: total_barcode, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0', notnull: true, auto_increment: false, extra: '' }
+    working_date: { name: working_date, type: date, db_type: date, alltypes: [date], ntype: date, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00', notnull: true, auto_increment: false, extra: '' }
+    uploaded_by: { name: uploaded_by, type: integer, db_type: integer, alltypes: [integer], ntype: 'int(10) unsigned', length: 4, fixed: false, unsigned: true, values: {  }, primary: false, unique: false, default: null, notnull: true, auto_increment: false, extra: '' }
+    uploaded_time: { name: uploaded_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: barcode_files

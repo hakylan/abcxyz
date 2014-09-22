@@ -1,0 +1,104 @@
+<?php
+/** @var \Backend\Controller\Login $controller */
+/** @var Render $this */
+
+use Flywheel\View\Render;
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = Main::getBackendUrl();
+$user = @$user;
+?>
+<style>
+.error{
+    color: red;
+    margin-top: 9px;
+}
+#login-form{
+    margin-top: 55px !important;
+}
+</style>
+<div class="row">
+
+    <div class="clear"></div>
+    <form  action="<?php echo isset($url_login)?$url_login:'';?>" id="login-validation" class="col-md-3 center-margin form-vertical mrg25T" method="post" >
+
+        <div id="login-form" class="content-box">
+            <h3 class="content-box-header ui-state-default">
+                <div class="glyph-icon icon-separator">
+                    <i class="glyph-icon icon-user"></i>
+                </div>
+                <span>Sếu đỏ Login</span>
+            </h3>
+            <div class="content-box-wrapper pad20A pad0B">
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="login_email">
+                            Username:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-10" >
+                        <div class="form-input-icon" id="username">
+                            <i class="glyph-icon icon-user icon-envelope-alt ui-state-default"></i>
+                            <?php /*echo (isset($user) && ($user instanceof Users) )?'disabled':'';*/?>
+                            <input placeholder="Username or Email address"
+                                   value="<?php echo (isset($user) && ($user instanceof Users) )?$user->getUsername():'';?>" data-type="email" data-trigger="change" data-required="true" type="text" name="identity" id="login_email" tabindex="1"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="login_pass">
+                            Password:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-10">
+                        <div class="form-input-icon" id="password">
+                            <i class="glyph-icon icon-unlock-alt ui-state-default"></i>
+                            <input placeholder="Password" data-trigger="keyup" data-rangelength="[3,25]" type="password" name="password" id="login_pass" tabindex="2"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-label col-md-2">
+                        <span id=""><img id="captcha_image" src="<?php echo $this->document()->getBaseUrl() ?>captcha.php" alt="Captcha Image" style="width: 100%"></span>
+                        <span id=""style="float: right"><span id="_txtGetCapcha">Geting Capcha...</span>
+                        <a href='javascript:void(0);' id="reload_captcha" title="Refresh Captcha" class="btn medium radius-all-4 mrg5A ui-state-default tooltip-button" data-original-title="icon-sun" >
+                            <i class="glyph-icon icon-refresh"></i>
+                        </a></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-input col-md-10">
+                        <div class="form-input-icon" id="password">
+                            <i class="glyph-icon glyph-icon icon-key ui-state-default"></i>
+                            <input placeholder="Enter your results" value="<?php echo @$input ?>" type="text" id="_captcha" name="captcha" size="50" tabindex="3">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="button-pane text-center">
+                <div class=" col-md-8 error">
+                    <?php
+                        if(\Flywheel\Session\Session::has('backend_login_error')) {
+                            echo \Flywheel\Session\Session::get('backend_login_error');
+                        }
+                    ?>
+                </div>
+                <div class="col-md-4">
+                    <input type="hidden" value="<?php echo (isset($_tk)?$_tk:'');?>" name="tk">
+                    <input type="hidden" value="<?php echo (isset($_cr_url)?$_cr_url:'');?>" name="cr_url">
+                    <button style="margin-left: -9px" type="submit" class="btn large primary-bg text-transform-upr font-size-11" id="demo-form-valid" title="Validate!">
+                        <span class="button-content">
+                            Login
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>

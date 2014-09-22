@@ -1,0 +1,21 @@
+comment:
+    - '#ServiceShippingFees'
+    - '#Schema for ServiceShippingFees OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: int(11), length: 4, fixed: false, unsigned: false, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    name: { name: name, type: string, db_type: string, alltypes: [string], ntype: varchar(50), length: 50, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    code: { name: code, type: string, db_type: string, alltypes: [string], ntype: varchar(20), length: 20, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    description: { name: description, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    shipping_type: { name: shipping_type, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''NDCN'',''NDVN'',''CNVN'')', length: 4, fixed: false, unsigned: false, values: [NDCN, NDVN, CNVN], primary: false, unique: false, default: NDVN, notnull: false, auto_increment: false, extra: '' }
+    shipping_transportation: { name: shipping_transportation, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''MOTO'',''CPN'')', length: 4, fixed: false, unsigned: false, values: [MOTO, CPN], primary: false, unique: false, default: MOTO, notnull: false, auto_increment: false, extra: '' }
+    weight_from: { name: weight_from, type: number, db_type: decimal, alltypes: [decimal], ntype: 'decimal(4,1)', length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0.0', notnull: false, auto_increment: false, extra: '' }
+    weight_to: { name: weight_to, type: number, db_type: decimal, alltypes: [decimal], ntype: 'decimal(4,1)', length: 4, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '999.9', notnull: false, auto_increment: false, extra: '' }
+    fee_weight: { name: fee_weight, type: number, db_type: decimal, alltypes: [decimal], ntype: 'decimal(8,1)', length: 8, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    target_code: { name: target_code, type: string, db_type: string, alltypes: [string], ntype: varchar(5), length: 5, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '52', notnull: false, auto_increment: false, extra: '' }
+    created_date: { name: created_date, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: timestamp, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+    last_update: { name: last_update, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: false, auto_increment: false, extra: '' }
+    begin_date: { name: begin_date, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: false, auto_increment: false, extra: '' }
+    expired_date: { name: expired_date, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: false, auto_increment: false, extra: '' }
+    status: { name: status, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''ACTIVE'',''DISABLED'')', length: 8, fixed: false, unsigned: false, values: [ACTIVE, DISABLED], primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: service_shipping_fees

@@ -1,0 +1,194 @@
+.upfile .input-computer{
+    cursor: pointer; 
+    width: 100%;  
+    height: 31px;
+}
+.upfile .seubtn{
+    position: relative;
+}
+.delivering-search{
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.delivering-search .date{
+    float: left;
+    padding-left: 30px;
+    position: relative;
+}
+.delivering-search .date input{
+    display: inline-block;
+    width: 100%;
+}
+.delivering-search .date span{
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 20px;
+}
+.maincontent{
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+.delivering .top-main {
+    padding-top: 8px;
+}
+.delivering .list-main .title,
+.delivering .top-main .title{
+    position: relative;
+    padding-left: 65px;
+}
+._div_link{
+    width: 40px !important;
+}
+.delivering .list-main .title span,
+.delivering .top-main .title span{
+    position: absolute;
+    width : 50px;
+    top: 0px;
+    left: 16px;
+}
+.delivering .list-main .title span{
+    top: 5px;
+}
+.border-list-item{
+    float: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+}
+.item-main .scroll-to-fixed-fixed{
+    background: #fff; 
+    opacity: 0.8;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 0;
+}
+.item-main .module-title{
+    margin-top: 0;
+}
+.item-content.bottom{
+    background: #FEF0B3 !important;
+    margin-top: 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-top: 25px !important;
+}
+.item-content.bottom .button-save{
+    padding: 10px 20px;
+    margin-top: -10px;
+}
+.border-list-item .border{
+    border-bottom: 1px solid #FFFFFF;
+    margin: 0 auto;
+    width: 90%;
+}
+.delivering .list-main .item-content{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.delivering .list-main .item-content .date span{
+    margin-top: 2px;
+}
+.delivering .list-main .item-content .link-fiile span{
+    border: 1px solid #0072BC;
+    border-radius: 2px;
+    color: #0072BC;
+    padding: 2px 4px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.delivering .address{
+    float: left;
+    width: 100%;
+    padding: 10px 17px;
+    background: #f7f8f9; 
+}
+.map-add-detail {
+    margin-top: 5px;
+    padding-left: 30px;
+    position: relative;
+}
+.map-add-detail .icon-map {
+    color: #666666;
+    font-size: 18px;
+    height: 24px;
+    left: 0;
+    position: absolute;
+    top: 5px;
+    width: 24px;
+}
+.maincontent{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.uploadfile-barcode{
+    height: 32px;
+    margin-bottom: 5px;
+}
+.uploadfile-barcode span{
+    padding-top: 7px;
+    float: right;
+}
+.manipulation i{
+    font-size: 15px;
+    margin-left: 5px;
+}
+.manipulation button{
+    padding: 10px 25px;
+    margin-top: -8px;
+    float: left;
+}
+.uploadbarcode{
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+}
+.file-name{
+    margin-top: 20px;
+}
+.file-name .right{
+    display: inline-block;
+}
+.delivering .list-main .item-content-bottom{
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
+}
+.finish-poup.print .form-row{
+    padding-bottom: 5px;
+}
+.myModalprint .modal-dialog{
+	width: 800px;
+}
+.myModalprint .modal-body{
+	text-align: left;
+}
+.myModalprint .modal-title{
+	color: #000;
+	text-align: left;
+	padding-left: 15px;
+}
+.myModalprint .bottom-page{
+	margin-bottom: 80px;
+}
+.myModalprint .border-bottom{
+	float: left;
+	width: 100%;
+	padding: 0px 30px 10px 30px;
+}
+.myModalprint .border-bottom{
+	float: left;
+	width: 100%;
+	border-bottom: 1px solid #ccc;
+}
+.myModalprint .title-print{
+	font-size: 28px;
+}
+.delivering .list-main .item-content:nth-child(2n){
+    background: none repeat scroll 0 0 #f7f8f9;
+}

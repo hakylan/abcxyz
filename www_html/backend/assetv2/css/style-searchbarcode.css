@@ -1,0 +1,169 @@
+@charset "UTF-8";
+/*
+ * jQuery File Upload Plugin CSS Example 8.8.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+.main-body .header .module-title .title{
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.main-body{
+	padding-top: 30px;
+}
+.bootstrap-select{
+	width: 100% !important;
+}
+.bootstrap-select button.dropdown-toggle{
+    height: 34px;
+    background: #ddd;
+}
+.selectpicker{
+	border-radius: 2px;
+}
+
+.bootstrap-select .dropdown-menu.open{
+    padding-top: 0;
+}
+.search .submit{
+	padding-left: 0;
+}
+.search .date{
+	position: relative;
+	background: #fff;
+}
+
+.search .date span{
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	top: 3px;
+	right: 3px;
+	z-index: 1;
+}
+.search .date input{
+	padding-right: 20px;
+	position: relative;
+	z-index: 9;
+	background: none;
+}
+.main-body .total{
+	margin-top: 10px;
+}
+.main-content .list{
+	background: #fff;
+	box-shadow: 0 1px 2px 0 #ccc;
+	border-radius: 2px;
+}
+.main-content  .left{
+	position: relative;
+	padding-left: 45px;
+}
+.main-content .list .left{
+	text-transform: uppercase;
+}
+.main-content .list .header-top .left{
+    text-transform: none;
+}
+.main-content .list .left span{
+	position: absolute;
+	width: 40px;
+	height: 30px;
+	top : 0;
+	left: 0;
+	text-align: center;
+	padding-top: 0px;
+}
+.main-content .header-top{
+	height: 45px;
+	background: #f6f7f8;
+	padding-top: 12px;
+	border-bottom: 1px solid #dddddd;
+	font-weight: bold;
+}
+.main-content .main-ct{
+	background: #fff;
+}
+.main-content .main-ct .item-ct{
+	height: 42px;
+	border-bottom: 1px solid #dddddd;
+	padding-top: 12px;
+    position: relative;
+}
+.main-content .main-ct .item-ct a.remove{
+    cursor: pointer;
+    height: 15px;
+    position: absolute;
+    right: 10px;
+    width: 35px;
+}
+.main-content .main-ct .item-ct:last-child{
+    border-bottom: none;
+}
+.main-content .main-ct .item-ct:nth-child(2n) {
+    background: #f6f7f8;
+}
+.link-bottom{
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+.link-bottom .pana{
+	float: left;
+	width: 115px;
+	height: 31px;
+	background: #ededed;
+	border: 1px solid #ccc;
+	box-shadow: 0 1px 2px 0 #ccc;
+	margin-right: 10px;
+	font-size: 11px;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 6px;
+	position: relative;
+	cursor: pointer;
+}
+.link-bottom .pana.pre{
+    width: 120px;
+}
+.link-bottom .pana:hover{
+	background: #ededed;
+	background: -moz-linear-gradient(top,  #ededed 0%, #ddd 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ededed), color-stop(100%,#ddd));
+    background: -webkit-linear-gradient(top,  #ededed 0%,#ddd 100%);
+    background: -o-linear-gradient(top,  #ededed 0%,#ddd 100%);
+    background: -ms-linear-gradient(top,  #ededed 0%,#ddd 100%);
+    background: linear-gradient(top,  #ededed 0%,#ddd 100%);
+}
+.link-bottom .pana i{
+	position: absolute;
+	width: 8px;
+	height: 8px;
+	top: 8px;
+	right: 10px;
+}
+.link-bottom .button-default i{
+	position: absolute;
+	width: 10px;
+	height: 15px;
+	top: 8px;
+	font-size: 12px;
+	left: 8px;
+	color: #208b56;
+}
+.link-bottom .pana.pre i{
+	position: absolute;
+	width: 8px;
+	height: 8px;
+	top: 8px;
+	left: 6px;
+	right: inherit;
+}
+
+/*lọc theo ngày quản lý bao hàng*/
+
+ /*end*/

@@ -1,0 +1,101 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$document->addJs('/js/exchange_rate.js',"TOP");
+?>
+<style>
+    ._addExchange{
+        z-index: 2000;
+        width: 400px;
+        padding: 5px 15px;
+        background-color: #f5f5f5;
+
+    }
+    ._dropdown{
+        float: left;top: 110px;z-index: 2000;
+        position: absolute;
+    }
+</style>
+<div id="page-title">
+    <h3>
+        Quản lý tỷ giá VNĐ và CNY(Yuan)
+        <small>
+        </small>
+    </h3>
+
+    <div id="breadcrumb-right">
+        <div class="float-right">
+            <a class="btn medium primary-bg _addNewExchange" href="javascript:;" style="width: 140px" title="Thêm mới tỉ giá">
+                &nbsp; <i class="glyph-icon icon-plus"></i> Thêm mới tỷ giá &nbsp;
+            </a>
+        </div>
+    </div>
+</div>
+<h4 style="float: left; width: 30%; margin: 0px 0px 15px 10px;">Tỷ giá hiện tại : <b><i>1 ¥</i></b> = <b> <i><?php echo $exchange_rate[0]['exr']['exchange_rate'] ?> VNĐ</i></b><br></h4>
+
+<div class="dropdown _dropdown" style="">
+
+
+    <div class="_addExchange" data-show="0" style="box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6); display: none">
+
+        <h3>Thêm mới tỷ giá</h3><br/>
+
+        <span>
+            Tỷ giá:
+        </span>
+        <span><input type="text" id="exchange_rate"/></span>
+
+        <div class="pad10A text-center">
+            <a href="javascript:void(0)" id="addNewExchange" class="btn medium primary-bg">
+                <span class="button-content">Thêm mới</span>
+            </a>
+            <a href="javascript:void(0)" id="closeAdd" class="btn medium bg-black">
+                <span class="button-content">Close</span>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<div class="col-md-12 col-lg-12 col-sm-12" style="float: left">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Yuan</th>
+            <th>Tỷ giá (Tính ra tiền việt)</th>
+            <th>Thời gian tạo</th>
+            <th>Người tạo</th>
+        </tr>
+        </thead>
+            <tbody role="alert" aria-live="polite" id="_exchangeRate" aria-relevant="all">
+            <?php if($exchange_rate){
+                foreach($exchange_rate as $value){
+            ?>
+                <tr class="odd">
+                    <td class="sorting_1">
+                        <?php echo $value['exr']['id'] ?>
+                    </td>
+                    <td class="center">
+                        1
+                    </td>
+                    <td class="center">
+                        <?php echo $value['exr']['exchange_rate'] ?>
+                    </td>
+                    <td class="center ">
+                        <?php echo $value['exr']['create_time'] ?>
+                    </td>
+                    <td class="center ">
+                        <?php
+                        if(isset($value['user'])){
+                            echo $value['user']->username.' - '.$value['user']->first_name.' '.$value['user']->last_name;
+                        }else{
+                            echo 'Admin';
+                        }
+                        ?>
+                    </td>
+                </tr>
+            <?php }} ?>
+            </tbody>
+    </table>
+</div>

@@ -1,0 +1,24 @@
+{
+    "name": "tronghieu/toxotes",
+    "type": "library",
+    "description": "Alimama - B2B ecommerce website version 2",
+    "keywords": ["Ecommerce", "B2B"],
+    "homepage": "http://alimama.vn",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luu Trong Hieu",
+            "email": "tronghieu.luu@gmail.com"
+        }
+    ],
+    "require": {
+        "tronghieu/flyapi": "dev-master",
+        "tronghieu/flywheel-framework": "1.1.*@dev",
+        "swiftmailer/swiftmailer": "*",
+        "alexbilbie/mongoqb": "*",
+        "phpoffice/phpexcel": "dev-develop",
+        "zendframework/zend-soap": "2.3.*",
+        "mandango/mondator": "1.0.*@dev",
+        "mandango/mandango": "1.0.*@dev"
+    }
+}

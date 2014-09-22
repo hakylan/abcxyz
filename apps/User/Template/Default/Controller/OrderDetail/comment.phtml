@@ -1,0 +1,28 @@
+<div class="module-inner">
+    <div class="module-chat">
+        <div class="module-input-chat">
+            <input id="_input_order_comment" class="form-control form-myinput _input_order_comment" type="text" placeholder="Trao đồi về đơn hàng, Enter để gửi ">
+            <span id="_submit_chat" class="arow-submit-chat _submit_chat" data-order-id="<?php echo $orderId ?>"></span>
+        </div>
+    </div>
+    <div class="module-ct _list_comments" data-order-id="<?php echo $orderId ?>">
+        <?php if(isset($orderComments) && !empty($orderComments)):
+            foreach ($orderComments as $comment): ?>
+                <div class="mychat-item">
+                    <div class="item-avatar">
+                        <img src="<?php echo \Users::getAvatar32x(@$comment['user_id']) ?>">
+                    </div>
+                    <div class="item-ct">
+                        <p class="normal"><span class="normal-blod"><?php echo @$comment['username'] ?></span>
+                            <span class="italic">
+                                <?php echo @$comment['time'] ?>
+                            </span>
+                        </p>
+                        <p class="normal"><?php echo @$comment['message'] ?></p>
+                    </div>
+                </div>
+        <?php
+            endforeach;
+            endif;?>
+    </div>
+</div>

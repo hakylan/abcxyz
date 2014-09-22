@@ -1,0 +1,6 @@
+[2014-07-17 03:12:44] choose_services_backend.INFO: god - Quản Trị Sếu Đỏ Choose services EXPRESS_CHINA_VIETNAM for order with order code : ME79_060701 [] []
+[2014-07-17 03:12:55] choose_services_backend.INFO: god - Quản Trị Sếu Đỏ Choose services CHECKING for order with order code : ME79_060701 [] []
+[2014-07-17 03:13:00] choose_services_backend.INFO: god - Quản Trị Sếu Đỏ Choose services FRAGILE for order with order code : ME79_060701 [] []
+[2014-07-17 03:13:06] choose_services_backend.INFO: god - Quản Trị Sếu Đỏ Choose services WOOD_CRATING for order with order code : ME79_060701 [] []
+[2014-07-17 03:13:11] choose_services_backend.INFO: god - Quản Trị Sếu Đỏ Remove services WOOD_CRATING for order with order code : ME79_060701 [] []
+[2014-07-17 03:13:16] choose_services_backend.INFO: god - Quản Trị Sếu Đỏ Remove services EXPRESS_CHINA_VIETNAM for order with order code : ME79_060701 [] []

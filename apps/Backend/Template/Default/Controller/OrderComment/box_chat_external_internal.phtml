@@ -1,0 +1,84 @@
+<?php
+/* use \Flywheel\View\Render; */
+$document = $controller->document();
+$document->addJs('js/process/chat.js');
+$document->addJsVar("linkPost", $controller->createUrl('order_comment/add_message'));
+$orderId = 69;
+$document->addJsVar("orderId", $orderId);
+?>
+<div class="seu-chat-tab-<?php echo $orderId ?>">
+    <ul class="nav nav-tabs">
+        <li id="chat_external_active" class="active"><a data-toggle="tab" href="#home">Với khách</a></li>
+        <li><a data-toggle="tab" href="#profile">Nội bộ</a></li>
+    </ul>
+    <div class="tab-content seu-chat">
+        <div id="home" class="tab-pane active content-box bg-white">
+            <div class="button-pane pad10A">
+                <div class="form-row pad0B">
+                    <div class="form-input col-lg-12">
+                        <div class="input-append-wrapper input-append-right">
+                            <a title="" id="btn_send_message_external" class="btn input-append primary-bg tooltip-button" data-original-title="Reply">
+                                <i class="glyph-icon icon-mail-reply"></i>
+                            </a>
+                            <div class="append-right">
+                                <input type="text" id="msg_chat_external" class="_input_chat" name="msg_chat" placeholder="Chát công cộng về sản phẩm...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-box-wrapper">
+                <ul class="chat-box" id="box_external">
+                <?php
+                $html = '';
+                if (isset($external_comments)) {
+                    foreach ($external_comments as $comment) {
+                    $html .= '<li> <div class="item-chat">
+                                    <div class="user-name"><span class="font-green">'.$comment['username'].'</span> <i class="glyph-icon icon-comments"></i> <span class="italic">'.$comment['time'].'</span></div>
+                                    <div class="item-chat-content">
+                                        <p class="normal">'.$comment['message'].'</p>
+                                    </div>
+                                   </div>
+                             </li>';
+                    }
+                    echo $html;
+                } ?>
+                </ul>
+            </div>
+        </div>
+        <div id="profile" class="tab-pane content-box bg-white">
+            <div class="button-pane pad10A">
+                <div class="form-row pad0B">
+                    <div class="form-input col-lg-12">
+                        <div class="input-append-wrapper input-append-right">
+                            <a title="" id="btn_send_message_internal" class="btn input-append primary-bg tooltip-button" data-original-title="Reply">
+                                <i class="glyph-icon icon-mail-reply"></i>
+                            </a>
+                            <div class="append-right">
+                                <input type="text" id="msg_chat_internal" class="_input_chat" name="msg_chat" placeholder="Chát nội bộ về sản phẩm...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-box-wrapper">
+                <ul class="chat-box" id="box_internal">
+                    <?php
+                    $html = '';
+                    if (isset($internal_comments)) {
+                        foreach ($internal_comments as $comment) {
+                            $html .= '<li> <div class="item-chat">
+                                    <div class="user-name"><span class="font-green">'.$comment['username'].'</span> <i class="glyph-icon icon-comments"></i> <span class="italic">'.$comment['time'].'</span></div>
+                                    <div class="item-chat-content">
+                                        <p class="normal">'.$comment['message'].'</p>
+                                    </div>
+                                   </div>
+                             </li>';
+                        }
+                        echo $html;
+                    } ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

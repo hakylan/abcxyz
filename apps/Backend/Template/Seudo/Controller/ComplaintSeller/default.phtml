@@ -1,0 +1,331 @@
+<?php
+use \SeuDo\Main;
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = Main::getHomeUrl();
+//echo $publicHomePath;
+
+$jsPath = $publicHomePath.'assets/js/';
+$jsBackendPath = $publicHomePath.'backend/assets/js/';
+//echo '$jsBackendPath: ' . $jsBackendPath;
+$cssPath = $publicHomePath.'assets/css/';
+$imgPath = $publicHomePath.'assets/images/';
+
+$document->addCss('css/cssloading.css',"TOP");
+$document->addCss('css/style-typo.css',"TOP");
+$document->addCss('css/bootstrap-select.min.css',"TOP");
+$document->addCss('css/style-danhsachkhieunainguoiban.css',"TOP");
+
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs('js/jqueryui.js',"TOP");
+$document->addJs('js/process/complaint_seller_management.js',"TOP");
+?>
+
+
+    <div class="main-content">
+        <form id="_search" method="get" action="">
+            <div class="module-float search">
+                <div class="col-lg-12 col-md-12 ">
+                    <div class="row module-item">
+                        <div class="module-float">
+                            <div class="col-lg-5 col-md-5">
+                                <div class="item-search module-title">
+                                    <span class="title-search">Tìm kiếm</span>
+                                    <input value="<?php echo $key1; ?>" type="text" name="key1" id="_key1" class="form-control form-myinput" placeholder="Nhập đơn hàng, mã đơn site gốc, người bán...">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <div class="item-search">
+                                    <select name="level" id="_level" class="selectpicker">
+                                        <option value="">Khiếu nại với</option>
+                                        <?php
+                                            $arrLevels = \ComplaintSeller::$levelTitle;
+                                            foreach((array)$arrLevels as $key => $value){
+                                                $selected_level = $level != "" && $level == $key ? " selected='selected' " : "";
+                                                echo "<option " . $selected_level . " value=" . $key . ">" . $value . "</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2">
+                                <div class="item-search">
+                                    <select id="_account-purchase-origin" name="account_purchase_origin" class="selectpicker">
+                                        <option value="0">Account mua hàng</option>
+                                        <?php
+                                            if(sizeof($user_origin_site) > 0){
+                                                foreach((array)$user_origin_site as $user){
+                                                    $selected_acc_purchase_origin = $user->getId() == $account_purchase_origin
+                                                                                        ? " selected='selected' " : "";
+                                                    echo "<option " . $selected_acc_purchase_origin . " value=" . $user->getId() . ">" . $user->getSite() . " - " . $user->getUsername() . "</option>";
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <div class="item-search">
+                                    <select id="_seller_homeland" name="seller_homeland" class="selectpicker">
+                                        <option value="">Site</option>
+                                        <?php
+                                            $selected_seller_homeland = "";
+                                            $arrSites = \ComplaintSeller::$siteTitle;
+                                            foreach((array)$arrSites as $key => $value){
+                                                $selected_seller_homeland = $seller_homeland == $key ? " selected='selected' " : "";
+                                                echo "<option " . $selected_seller_homeland. " value=" . $key . ">" . $value . "</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row module-item">
+                        <div class="module-float">
+                            <div class="col-lg-5 col-md-5">
+                                <div class="item-search module-title">
+                                    <span class="title-search">Khách hàng</span>
+                                    <input value="<?php echo $key2; ?>" type="text" id="_key2" name="key2" class="form-control form-myinput" placeholder="Nhập user khách, mã khách...">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-xs-6">
+                                        <div class="item-search date">
+                                            <input id="_start-date" name="from_time" value="<?php echo $from_time ?>"
+                                                   class="form-control form-myinput pull-right _from" type="text" placeholder="Từ ngày">
+
+                                            <span><img src="<?php echo Main::getBackendUrl() ?>assetv2/images/calenda.png"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-xs-6">
+                                        <div class="item-search date">
+                                            <input id="_end-date" name="to_time" value="<?php echo $to_time ?>"
+                                                   class="form-control form-myinput pull-right _to" type="text" placeholder="Tới ngày">
+
+                                            <span><img src="<?php echo Main::getBackendUrl() ?>assetv2/images/calenda.png"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row module-item bottom">
+                        <div class="module-float">
+                            <div class="col-lg-10 col-md-10">
+                                <div class="item-search">
+                                    <span class="font-bold">Lí do:</span>
+                                    <div class="module-item-check module_float">
+                                        <?php
+                                            $arrReasons = \ComplaintSeller::$reasonTitle;
+                                            foreach((array)$arrReasons as $key => $value){
+                                                $checked_reason = "";
+                                                if($reason != ""){
+                                                    $arrReasonsChecked = explode(",", $reason);
+                                                    if(sizeof($arrReasonsChecked) > 0){
+                                                        foreach((array)$arrReasonsChecked as $r){
+                                                            if($key == $r) $checked_reason = " checked='checked' ";
+                                                        }
+                                                    }
+                                                }
+                                                ?>
+                                                    <div class="item-checklist">
+                                                        <input <?php echo $checked_reason; ?> name="_chk-reason" class="_reason" type="checkbox" value="<?php echo $key; ?>"><?php echo $value; ?>
+                                                    </div>
+                                                <?php
+                                            }
+                                        ?>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <div class="module-float submit">
+                                    <button id="_btn-search" type="button" class="btn btn-red pull-right"><span class="uppercase font-white"><i class="fa fa-search"></i> Tìm kiếm</span></button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="status" value="<?php echo $status; ?>" />
+            <input id="_current-page" type="hidden" name="page" value="<?php echo $page; ?>" />
+            <input type="hidden" name="reason" value="<?php echo $reason; ?>" />
+
+            <input type="hidden" name="account_purchase_origin_name" value="<?php echo $account_purchase_origin_name; ?>" />
+        </form>
+    <div class="menu-tab module-float">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="module-float v2-menu">
+                    <ul class="module-float">
+                        <li class="_filter-status <?php echo $status == '' ? ' active ' : '' ?>" data-type="">
+                            <a>Tất cả <span style="display:none" class="_total-status">(0)</span><span class="arrow"></span></a>
+                        </li>
+
+                        <?php
+                        $arrStatus = \ComplaintSeller::$statusTitle;
+                        if(sizeof($arrStatus) > 0){
+                            foreach((array)$arrStatus as $key => $value){
+                                $selected = $key == $status ? ' active ' : '';
+                                echo '<li class="_filter-status ' . $selected . '" data-type="' . $key . '"><a>' . $value . ' <span style="display:none" class="_total-status">(0)</span><span class="arrow"></span></a></li>';
+                            }
+                        }
+                        ?>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="module-float" style="margin-top: 20px;">
+        Tìm thấy <strong class="font-blue" id="_total-status">0</strong> khiếu nại
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 main-item">
+            <div class="module-float ">
+                <div class="module-float header-top">
+                    <div class="col-lg-3 col-md-3 left">
+                        <span >id</span>
+                        <p >Đơn hàng</p>
+                    </div>
+                    <div class="col-lg-9 col-md-9">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 text-center">
+                                <p>Tình trạng</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 text-center">
+                                <p >Lí do</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p >Khiếu nại với</p>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <p >Người bán</p>
+                            </div>
+                            <div class="col-lg-3 col-md-3 text-center">
+                                <p >Thời gian</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accout">Tiếp nhận</div>
+                </div>
+            </div>
+            <div id="_list-complaints"></div>
+        </div>
+    </div>
+
+    </div>
+
+    <div id="_show-paging"></div>
+
+
+
+<script id="_paging" type="text/x-handlebars-template">
+    <ul class="pagination">
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+    </ul>
+</script>
+
+<script id="_complaint-seller-row-template" type="text/x-handlebars-template">
+    <div class="_complaint-seller-row module-float list {{color}}">
+        <div class="module-float main-ct">
+            <div class="module-float">
+                <div class="col-lg-3 col-md-3 left">
+                    <span>{{id}}</span>
+
+                    <p class="title">
+                        <a href="order/detail/{{order_id}}" target="_blank">{{order_code}}</a> -
+                        <a href="user/detail/{{order_buyer_id}}" target="_blank" class="font-gray" style="text-transform: none!important;">{{buyer_info.username}}</a>
+                    </p>
+                    <p class="title-small">
+                        <a class="font-gray" style="text-transform: none!important;">{{account_purchase_origin}}</a> -
+                        {{#if show_link_site_root}}
+                            {{#each arrLinkSiteRoot}}
+                                <a href="{{link}}" target="_blank">{{order_invoice}}</a>
+                                {{#if last_index}} , {{/if}}
+                            {{/each}}
+                        {{else}}
+                            {{order_invoice}}
+                        {{/if}}
+                    </p>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 text-center">
+                            <p class="uppercase font-bold {{status_color}}">{{status_title}}</p>
+
+                            {{#if show_amount_seller_refund_by_status}}
+                                <p class="font-small">
+                                    <span class="font-gray">Đòi được:</span>
+                                    <span class="font-green uppercase">{{amount_seller_refund}} NDT</span>
+                                </p>
+                            {{/if}}
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 text-center">
+                            <p>{{reason_title}}</p>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2">
+                            <p>{{level_title}}</p>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <p>
+                                <a target="_blank" rel="nofollow" href="http://{{seller_name}}.{{seller_home_land}}.com">
+                                    <img style="width: inherit" src="{{seller_favicon_site}}" />
+                                </a>
+                                <span class="font-gray">{{seller_name}}</span>
+                            </p>
+                            <p>{{seller_aliwang}}</p>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 text-center">
+                            <p>
+                                <span class="font-small font-gray">Tiếp nhận:</span>&nbsp;
+                                <span>{{processed_time}}</span>
+                            </p>
+                            <p>
+                                <span class="font-small font-gray">Cần xử lý:</span>&nbsp;
+                                <span class="{{refocus_time_color}}">
+                                    {{refocus_time}}
+                                    {{#if show_diff_day}}
+                                        (+ {{diff_day}} n)
+                                    {{/if}}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <a target="_blank" class="font-gray" href="ComplaintSeller/detail/{{id}}" title="">
+                    <div class="img-acc">
+                        <div class="avatar">
+                            {{#if show_info_processed}}
+                                <img src="{{info_processed.avatar}}">
+                            {{/if}}
+                        </div>
+                        <i class="fa fa-chevron-right"></i>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</script>
+

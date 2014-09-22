@@ -1,0 +1,106 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = Main::getHomeUrl();
+$document->title = t("Thêm ảnh đại diện");
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$imgPath = $publicPath.'assets/images';
+$jsPathFront = $publicPath . 'assets/js/';
+$states = @$states;
+$user = @$user;
+$document->addJs($jsPathFront . 'jquery.wallform.min.js', 'TOP');
+?>
+<section class="page-register uploadavatar">
+    <nav class="container" >
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-title">
+                            <p class="title normal-blod uppercase">Chọn ảnh đại diện</p>
+                            <p class="normal">Vui lòng bớt ít phút chọn một bức ảnh thật đẹp để làm ảnh đại diện trên hệ thống <span class="red-normal">SếuĐỏ.vn</span>. Bạn sử dụng một trong 3 cách phía dưới.</p>
+                        </div>
+                        <div class="module-ct">
+                            <div class="col-xs-6 border-right">
+                                <div class="item-upload">
+                                    <div class="linkupload uploadfile">
+                                        <form id="imageform" method="post" enctype="multipart/form-data" action='<?php echo $controller->createUrl('register/upload_avatar_step2');?>'>
+                                        <span class="btn btn-gray normal-blod uppercase" type="button">Chọn ảnh từ máy
+                                            <input class="input-computer" type="file" name="photoimg" id="photoimg"></span>
+                                        <span class="arow"></span>
+                                        </form>
+                                    </div>
+                                    <p class="italic limit">Tối đa 8MB</p>
+                                    <div class="id-title"><span class="text italic">C</span><span class="number italic">1</span></div>
+                                </div>
+                                <div class="item-upload v2">
+                                    <div class="linkupload ">
+                                        <p class="normal">Sử dụng đường dẫn ảnh. Dán đường dẫn ảnh vào ô dưới và click vào nút UPLOAD</p>
+                                        <div class="item-ct">
+                                            <input id="exampleInput" class="form-control form-myinput _urlAvatar" type="text" placeholder="https://">
+                                            <button class="btn btn-gray _addUrlAvatar" type="button"><span class="uppercase normal-blod ">upload</span></button>
+                                            <br><p class="_errorUrl red-normal"></p>
+                                        </div>
+                                    </div>
+                                    <div class="id-title"><span class="text italic">C</span><span class="number italic">2</span></div>
+                                </div>
+                                <div class="item-upload v3">
+                                    <div class="linkupload ">
+                                        <div class="item-ct">
+                                            <div class="upload-face poiter">
+                                                <span class="arow-face"></span>
+                                                <p class="uppercase normal-blod _select_facebook" onclick="fb_login(1)">Sử dụng ảnh đại diện facebook</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="id-title"><span class="text italic">C</span><span class="number italic">3</span></div>
+                                </div>
+                                <div class="item-upload v4">
+                                    <div class="linkupload ">
+                                        <div class="item-ct">
+                                            <p class="normal"><a href="<?php echo $controller->createUrl('register/register_success')?>">Bỏ qua bước này</a></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <span class="arow-border"></span>
+                            </div>
+                            <div class="col-xs-6 img-avatar">
+                                <div class="img-avatar-title">
+                                    <p class="normal title _titleMoveImg hidden">Di chuyển ảnh để chọn vùng hiển thị</p>
+                                </div>
+                                <div class="item-upload">
+                                    <form id="_uploadAvatarStep3">
+                                    <div class="img">
+                                        <div class="box-shadow port">
+                                            <div id="preview">
+                                                <!--image avatar-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="normal bottom">
+                                        <input type="hidden" value="0px" name="locationX" id="locationX" />
+                                        <input type="hidden" value="0px" name="locationY" id="locationY" />
+                                        <input type="hidden" value="0px" name="sizeHeight" id="sizeHeight" />
+                                        <input type="hidden" value="0px" name="sizeWidth" id="sizeWidth" />
+                                        <button class="btn btn-blue uppercase normal-blod saveavatar hidden" type="button">Sử dụng</button>
+                                        <button class="btn btn-blue uppercase normal-blod _disable disable" type="button">Sử dụng</button>
+                                    </p>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="opacity-upavatar hidden">
+                                <div class="opacity-bg"></div>
+                                <div class="md-content">
+                                    <p class="alert alert-alert col-xs-6 col-xs-offset-3 hidden _waitingImg"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+</section>

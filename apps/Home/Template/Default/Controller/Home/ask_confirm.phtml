@@ -1,0 +1,294 @@
+<?php
+$document = $this->document();
+$document->addJsVar('user_url', \SeuDo\Main::getUserRouter()->createUrl('/'), 'TOP');
+?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var emailType = 'resend';
+        $('.send-email').find('button').click(function () {
+            $('.send-email').css('display', 'none');
+            $('.sending').css('display', 'block');
+
+            ask_Confirm.sendMailVerify();
+        });
+
+        // Choose add new email
+        $('.send-email').find('a').click(function (e) {
+            emailType = 'add';
+            e.preventDefault();
+            $('.send-email').parent().css('display', 'none');
+            $('.new-email').css('display', 'block');
+        });
+
+        // Cancel new email
+        $('.new-email').find('a').click(function (e) {
+            emailType = 'resend';
+            e.preventDefault();
+            $('.send-email').parent().css('display', 'block');
+            $('.new-email').css('display', 'none');
+        });
+
+        // Add new email
+        $('#new-email').keyup(function (e) {
+            if (e.keyCode == 13) {
+                if (!validateEmail($(this).val())) {
+                    $(this).addClass('form-myinput-warning');
+                    $(this).parent().find('p').html('Email không đúng định dạng.');
+                    return;
+                }
+                // Call add mail action
+                ask_Confirm.newMail($(this).parent().find('p'), $(this).val(), $(this), $(this).next());
+            } else {
+                $(this).removeClass('form-myinput-warning');
+                $(this).parent().find('p').html('');
+                if (!validateEmail($(this).val())) {
+                    $('button.new-email').addClass('disabled');
+                } else {
+                    $('button.new-email').removeClass('disabled');
+                }
+            }
+        });
+        $('button.new-email').click(function () {
+            if (!validateEmail($('#new-email').val())) {
+                $('#new-email').addClass('form-myinput-warning');
+                if ($('#new-email').val().length == 0) {
+                    $(this).parent().find('p').html('Bạn chưa nhập email.');
+                } else
+                    $(this).parent().find('p').html('Email không đúng định dạng.');
+                return;
+            }
+            ask_Confirm.newMail($(this).parent().find('p'), $('#new-email').val(), $('#new-email'), $(this));
+        });
+
+        $('.send-mail-notify').find('a').click(function (e) {
+            e.preventDefault();
+            if (emailType == 'add') $('.new-email').css('display', 'block');
+            if (emailType == 'resend') {
+                $('.send-email').parent().css('display', 'block');
+                $('.send-email').css('display', 'block');
+            }
+            $('.send-mail-notify').css('display', 'none');
+        });
+
+        $('#_main_content').css({'min-height' : '0'});
+
+        // Check height of screen
+        if(window.innerHeight > $('body').height()) {
+            $('footer').css({
+                'bottom' : 0,
+                'position': 'fixed',
+                'width' : '100%'
+            });
+        }
+    })
+    ;
+    var ask_Confirm = {
+        'newMail': function (notifyObj, email, inputObj, buttonObj) {
+
+            // Empty text error
+            $(notifyObj).html('');
+            $(inputObj).removeClass('form-myinput-warning');
+            $(buttonObj).addClass('disabled');
+
+            $.ajax({
+                url:user_url + "/user/SetEmailNew",
+                type: 'POST',
+                cache: false,
+                data: { 'email': email, 'id': <?php echo $user->getId() ?> },
+                success: function (d) {
+                    //d = {'type': 1, 'msg' : 'Email đã tồn tại'};
+                    if (d.type) {
+                        // Change current mail
+                        $('span.mail').html(email);
+                        $('.send-mail-notify').find('span').html($('span.mail').html());
+
+                        // Hide new email interface
+                        $('.new-email').css('display', 'none');
+
+                        $('.send-mail-notify').find('p.alert-success').css('display', 'block');
+                        $('.send-mail-notify').find('p.alert-error').css('display', 'none');
+                        $('.send-mail-notify').css('display', 'block');
+                    } else {
+                        $(inputObj).addClass('form-myinput-warning');
+                        $(notifyObj).html(d.message);
+                    }
+                    $(buttonObj).removeClass('disabled');
+                }, error: function (err) {
+                    $(inputObj).addClass('form-myinput-warning');
+                    $(notifyObj).html(err.responseText);
+                }
+            });
+        },
+        'sendMailVerify': function () {
+            $.ajax({
+                url: user_url + "/user/ClickVerifyEmail",
+                type: 'POST',
+                data: {'id': <?php echo $user->getId() ?> },
+                success: function (d) {
+                    //d = { 'type': 1, 'msg' : 'Gửi email lỗi.' };
+                    $('.sending').css('display', 'none');
+                    if (!d.type) {
+                        $('.send-mail-notify').find('p.alert-success').css('display', 'none');
+                        $('.send-mail-notify').find('p.alert-error').css('display', 'block');
+                    } else {
+                        $('.send-mail-notify').find('p.alert-success').css('display', 'block');
+                        $('.send-mail-notify').find('p.alert-error').css('display', 'none');
+                    }
+                    $('.send-mail-notify').find('span').html($('span.mail').html());
+                    $('.send-mail-notify').css('display', 'block');
+                }, error: function (err) {
+
+                }
+            });
+        }
+    }
+
+    function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+</script>
+<style type="text/css">
+    .sending {
+        display: none;
+    }
+</style>
+
+<?php
+/**
+ * Created by PhpStorm.
+ * User: binhnt
+ * Date: 3/3/14
+ * Time: 7:31 PM
+ */
+$user = isset($user) ? $user : new \Users();
+$isEligible = \UsersPeer::isEligibleToOrder($user);
+
+?>
+<section class="cart-header">
+    <nav class="container">
+        <div class="row">
+            <div class="">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-title">
+                            <div
+                                class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-8 col-md-8 col-sm-8 ">
+                                <p class="title normal-blod">
+                                    <span class="title-page uppercase">
+                                        <?php
+                                        echo !$isEligible ? 'Bổ sung thông tin để tiếp tục' : 'Thông tin đã được xác thực';
+                                        ?>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+</section>
+<?php
+if (!$isEligible) {
+    ?>
+
+    <section class="cartaddress-alert finish-alert">
+        <nav class="container">
+            <div class="row">
+                <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-7 col-md-7 col-sm-7 ">
+                    <?php
+                    // Check verify email
+                    if (!$user->getVerifyEmail()) {
+                        ?>
+                        <p class="title normal-blod">Email <span class="mail"><?php echo $user->getEmail() ?></span> của
+                            bạn
+                            chưa được xác thực</p>
+                        <p class="normal">Khi quý khách đăng ký, chúng tôi đã gửi mail xác thực đến địa chỉ này. Hãy
+                            kiểm tra hòm mail của bạn và click vào linh xác thực. Nếu bạn chưa nhận được email này, hãy
+                            click vào nút phía dưới để nhận lại.</p>
+                        <div class="item-module top">
+                            <div class="send-email">
+                                <button class="btn btn-blue resend-email" type="button">
+                                    <span class="normal-blod uppercase">Gửi lại mail xác nhận</span>
+                                </button>
+                                <span class="normal or"> hoặc</span>
+                                <a href="">Sử dụng email khác</a>
+                            </div>
+                            <button class="btn btn-blue disable sending" type="button">
+                                <span class="normal-blod uppercase">Đang gửi mail xác nhận, vui lòng đợi trong dây lát .....</span>
+                            </button>
+                        </div>
+                        <div class="item-module bottom new-email">
+                            <input id="new-email" class="form-control form-myinput" type="text"
+                                   placeholder="Nhập email mới của bạn">
+                            <button class="btn btn-blue new-email disabled" type="button"><span
+                                    class="normal-blod uppercase">Sử dụng</span></button>
+                            <a href="#">Hủy</a>
+
+                            <p class="red-normal"></p>
+                        </div>
+
+                        <section class="cartaddress-alert finish finish-alert send-mail-notify" style="display: none;">
+                            <div class="row">
+                                <div class="">
+                                    <p class="alert alert-success ">
+                                        Gửi email xác nhận thành công tới địa chỉ hòm thư
+                                        <span><b><?php echo $user->getEmail() ?></b></span>, hãy kiểm tra hòm mail của
+                                        bạn để xác minh tài khoản.
+                                        Nếu vẫn chưa nhận được mail, <a href="javascript:void(0)">hãy thử lại</a>.
+                                    </p>
+
+                                    <p class="alert alert-error ">
+                                        Có lỗi trong quá trình gửi lại mail xác nhận thông tin, <a
+                                            href="javascript:void(0)">hãy thử lại</a>.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    <?php
+                    } ?>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2 col-lg-7 col-md-7 col-sm-7 ">
+                    <div class="item-module">
+                        <a href="<?php echo $this->request()->get('url') ?>">Quay lại trang trước</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderInit/default') ?>">Danh sách đơn hàng chờ thanh toán</a>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </section>
+<?php
+} else {
+    // Show notify
+    ?>
+
+    <section class="cartaddress-alert finish-alert">
+        <nav class="container">
+            <div class="row">
+                <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-7 col-md-7 col-sm-7 ">
+                    <p>Điều kiện thanh toán của bạn đã đầy đủ, bạn muốn vào?</p>
+                    <ul>
+                        <li> - <a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('Cart') ?>">Giỏ hàng</a></li>
+                        <li> - <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderInit/default') ?>">Danh sách đơn hàng chờ thanh toán</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2 col-lg-7 col-md-7 col-sm-7 ">
+                    <div class="item-module">
+                        <a href="<?php echo $this->request()->get('url') ?>">Quay lại trang trước</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </section>
+<?php
+}

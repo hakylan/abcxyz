@@ -1,0 +1,94 @@
+<?php
+
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$cssPath = $publicPath . 'assets/css/';
+$jsPathPro = $publicPath . 'assets/js/process/';
+$jsPath = $publicPath . 'assets/js/';
+$document->addJsVar('base_url', \SeuDo\Main::getHomeRouter()->createUrl('/'), 'TOP');
+$document->addJsVar('url_login', \SeuDo\Main::getHomeRouter()->createUrl('Login/login'), 'TOP');
+$document->addJsVar('url_register', \SeuDo\Main::getHomeRouter()->createUrl('Register/default'), 'TOP');
+$document->addJsVar('LoginFacebookUrl',\SeuDo\Main::getHomeRouter()->createUrl('ConnectFacebook'),'TOP');
+
+$document->addJs($jsPath.'jquery.lazyload.js',"TOP");
+$document->addJs($jsPath.'jquery.loadingbar.min.js',"TOP");
+$document->addJs($jsPath.'jquery.loadingbar.js',"TOP");
+$document->addCss($cssPath.'loadingbar.css',"TOP");
+$document->addCss($cssPath . 'check-browser.css');
+
+?>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title><?php echo $document->title != '' ? $document->title : 'Seudo.vn' ?></title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+        <base href="<?php echo $document->getBaseUrl() ?>"/>
+        <link rel="icon" href="<?php echo $publicPath?>/assets/images/icon-footer/LogoSeuDo1_ICO.ico">
+<!--        Load JS-->
+        <link href="<?php echo $publicPath;?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $publicPath;?>assets/bootstrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $publicPath;?>assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $publicPath;?>assets/bootstrap/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>mytypo.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>header.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>owl.carousel.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $jsPath;?>rate/rateit.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>owl.theme.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>cssloading.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>loading.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>style.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>seudo.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>footer.css" rel="stylesheet" type="text/css" media="all">
+        <link href="<?php echo $cssPath;?>linkorder.css" rel="stylesheet" type="text/css" media="all">
+        <?php echo $document->css(); ?>
+        <link href="<?php echo $cssPath;?>responsive.css" rel="stylesheet" type="text/css" media="all">
+
+        <script src="<?php echo $jsPath?>jquery-1.10.2.min.js"></script>
+
+        <script type="text/javascript" src="<?php echo $publicPath ?>assets/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?php echo $publicPath;?>assets/bootstrap/js/bootstrap-select.min.js"></script>
+        <script type="text/javascript" src="<?php echo $jsPath;?>owl.carousel.min.js"></script>
+        <script type="text/javascript" src="<?php echo $jsPath;?>rate/jquery.rateit.min.js"></script>
+        <script type="text/javascript" src="<?php echo $jsPath;?>jqueryui.js"></script>
+        <script type="text/javascript" src="<?php echo $jsPath;?>masonry.pkgd.js"></script>
+        <script type="text/javascript" src="<?php echo $jsPathPro;?>order_link_base.js"></script>
+        <script type="text/javascript" src="<?php echo $jsPath ?>jquery.nicescroll.js"></script>
+        <script type="text/javascript" src="<?php echo $publicPath;?>assets/js/seudo-frontend.js"></script>
+        <script type="text/javascript" src="<?php echo $publicPath;?>assets/js/jstorage.min.js"></script>
+        <script type="text/javascript" src="<?php echo $publicPath . '/assets/js/paiTool.js' ?>"></script>
+        <script type="text/javascript" src="<?php echo $publicPath . '/assets/js/jquery.lazyload.js' ?>"></script>
+        <?php
+            echo $document->js('TOP');
+            require_once GLOBAL_PATH . '/include/GA.php';
+        ?>
+    </head>
+    <body>
+
+        <!--  Header -->
+        <?php
+        $this->widget('app.Widget.Header', array(
+            'user' => BaseAuth::getInstance()->getUser()
+        ));
+        ?>
+        <!-- End Header -->
+
+
+        <!-- Main Content -->
+        <div id="_main_content" style="min-height: 648px;">
+        <?php echo $buffer; ?>
+        </div>
+        <!-- End Content -->
+
+        <!-- Footer -->
+        <?php $this->widget('app.Widget.Footer'); ?>
+        <!-- End footer -->
+
+    <?php $this->widget('app.Widget.FacebookWidget'); ?>
+    </body>
+
+    <?php
+    echo $document->js('BOTTOM');
+    ?>
+</html>

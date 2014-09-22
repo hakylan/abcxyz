@@ -1,0 +1,29 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = Main::getHomeUrl();
+$document->title = t("Chúc mừng!");
+$cssPath = $publicPath . 'assets/css/';
+$imgPath = $publicPath.'assets/images';
+$jsPathFront = $publicPath . 'assets/js/';
+?>
+
+<script>
+    $(document).ready(function(){
+        setTimeout(window.location.href='<?php echo $publicPath ?>',3000);
+    });
+</script>
+
+<section class="page-register editavatar">
+    <nav class="container" >
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <div class="alert icon-alert-info col-md-12">
+                    <h4>CHÚC MỪNG!</h4>
+                    <p>Đăng ký thành công, Bạn đã chính thức là thành viên trên <a href="<?php echo $publicPath;?>">SẾUĐỎ.VN</a></p>
+                </div>
+            </div>
+            <!--        </div>-->
+    </nav>
+
+</section>

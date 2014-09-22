@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Quản lý đơn hàng</title>
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jqueryui.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <script type="text/javascript" src="js/process/menu.js"></script>
+    <script type="text/javascript" src="js/process/home.js"></script>
+    <script type="text/javascript" src="js/tooltip.js"></script>
+    <script type="text/javascript" src="js/jquery.textareaAutogrow.min.js"></script>
+    <script type="text/javascript" src="js/seudo-quantity.js"></script>
+    <script type="text/javascript" src="js/jquery.textareaAutogrow.js"></script>
+    <script type="text/javascript" src="js/keyevent.js"></script>
+    <script type="text/javascript" src="js/backendv2-frontend.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/roboto/roboto.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-typo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-header.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-menu-tab.css" />
+    <link rel="stylesheet" type="text/css" href="css/cssloading.css" />
+    <link rel="stylesheet" type="text/css" href="css/style-chitietdonhang.css" />
+
+</head>
+<body>
+    <header class="header">
+        <nav class="note-page container">
+            <div class="module-float note-alert">
+                <p><i style="" class="fa fa-warning"></i>Số dư khách âm hoặc số tiền cần thu tối thiểu âm (&lt;0) là khách thiếu tiền</p>
+            </div>
+        </nav>
+        <nav role="navigation" class="container header-top">
+            <div class="row">
+                <div class="col-lg-1 col-md-1">
+                    <div class="module-float logo">
+                        <a href="#"></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="module-float input-search">
+                        <input type="text" id="exampleInput" class="form-control form-myinput" placeholder="Tìm đơn hàng nhanh theo mã đơn hàng hoặc ID...">
+                        <a href="#"><span class="arrow"></span></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 pull-right">
+
+                </div>
+            </div>
+        </nav>
+
+        <nav class="seu-menu" role="navigation">
+            <div class="container">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="col-lg-12 col-md-12 seu-main-menu" >
+                    <ul class="nav navbar-nav module-float">
+
+                        <li class="active">
+                            <a class="navbar-nav-a" href="#">Dashboard</a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Danh sách đơn hàng</a></li>
+                                <li><a href="#">Quản lý mua hàng</a></li>
+                                <li><a href="#">Mua hàng và thanh toán</a></li>
+                                <li><a href="#">Giao hàng</a></li>
+                            </ul>
+                        </li>
+
+                        <li class=" dropdown">
+                            <a href="#" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Người dùng <b class="caret"></b></a>
+                            <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                            <ul class="dropdown-menu custom-nav-dropdown">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+
+            </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+
+    <section class="list-order-title">
+        <div class="container">
+            <div class="module-float title">
+                <p class="font-bold uppercase">Quản lý đơn hàng</p>
+            </div>
+            <div class="module-float input-search">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <input type="text" class="form-control form-myinput" placeholder="Nhập Id, mã đơn hàng, mã đơn gốc...." value="" >
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <input type="text" class="form-control form-myinput" placeholder="Nhập mã vận đơn...." value="" >
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <input type="text" class="form-control form-myinput" placeholder="Nhập Id, mã khách, đơn khách...." value="" >
+                    </div>
+                </div>
+            </div>
+            <div class="module-float tab-search">
+                <div class="item-tiny-tab"><a href="#">Người bán giao</a></div>
+                <div class="item-tiny-tab"><a href="#">Đã kiểm</a></div>
+                <div class="item-tiny-tab"><a href="#">Chờ giao</a></div>
+                <div class="item-tiny-tab active"><a href="#">Nhận từ người bán</a></div>
+                <div class="item-tiny-tab"><a href="#">yêu cầu giao</a></div>
+                <div class="item-tiny-tab"><a href="#">Vận chuyển</a></div>
+                <div class="item-tiny-tab"><a href="#">chưa mua</a></div>
+                <div class="item-tiny-tab"><a href="#">đã đặt cọc</a></div>
+                <div class="item-tiny-tab"><a href="#">chờ duyệt</a></div>
+                <div class="item-tiny-tab"><a href="#">đã pai</a></div>
+                <div class="item-tiny-tab"><a href="#">đã mua</a></div>
+                <div class="item-tiny-tab"><a href="#">đang giao</a></div>
+                <div class="item-tiny-tab"><a href="#">Nhận hàng</a></div>
+                <div class="item-tiny-tab"><a href="#">Hủy / hết hàng</a></div>
+            </div>
+            <div class="module-float search-step1">
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 services">
+                        <p class="title">Tình trạng</p>
+                        <p class="active"><a href="#">Có vận đơn</a></p>
+                        <p><a href="#">Khiếu nại dịch vụ</a></p>
+                        <p><a href="#">Chưa có vận đơn</a></p>
+                        <p><a href="#">Khiếu nại người bán</a></p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 services">
+                        <p class="title">Dịch vụ</p>
+                        <p><span class="icon-cpn">icon-cpn</span> <a href="#">CPN</a></p>
+                        <p><span><i class="fa fa-chevron-down"></i></span> <a href="#">Có kiểm</a></p>
+                        <p><span><i class="fa fa-cube"></i></span> <a href="#">Đóng gỗ</a></p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p class="title">Vận chuyển</p>
+                        <div class="module-float w-search">
+                            <select class="selectpicker">
+                                <option value="0">Kho đích</option>
+                                <option>Hà Nội</option>
+                                <option>Sài Gòn</option>
+                                <option>Đà Nẵng</option>
+                            </select>
+                        </div>
+                        <div class="module-float w-search">
+                            <select class="selectpicker">
+                                <option value="0">Kho hiện tại</option>
+                                <option>Hà Nội</option>
+                                <option>Sài Gòn</option>
+                                <option>Đà Nẵng</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-2 col-md-2 services">
+                        <p class="title">Tình trạng kho</p>
+                        <p>Xuất</p>
+                        <p>Nhập</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p class="title">Acc mua hàng</p>
+                        <div class="module-float w-search">
+                            <select class="selectpicker">
+                                <option value="0">Tất cả</option>
+                                <option>Hà Nội</option>
+                                <option>Sài Gòn</option>
+                                <option>Đà Nẵng</option>
+                            </select>
+                        </div>
+                        <p class="title">Site gốc</p>
+                        <div class="module-float w-search">
+                            <select class="selectpicker">
+                                <option value="0">Tất cả</option>
+                                <option>Hà Nội</option>
+                                <option>Sài Gòn</option>
+                                <option>Đà Nẵng</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <p class="title">Aliwangwang người bán</p>
+                        <input type="text" value="" placeholder="" class="form-control form-myinput">
+                    </div>
+                </div>
+            </div>
+            <div class="module-float search-open">
+                <div class="module-absolute">
+                    <div class="arrow-open">
+                        <span class="up">Rút gọn <i class="fa fa-caret-up"></i></span>
+                        <span class="down">Thêm bộ lọc <i class="fa fa-caret-down"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="module-float search-step2">
+                <div class="item-step2"><a href="#">Có vận đơn <span>x</span></a></div>
+                <div class="item-step2"><a href="#">Chưa có vận đơn <span>x</span></a></div>
+                <div class="item-step2"><a href="#">CPN <span>x</span></a></div>
+            </div>
+        </div>
+        <div class="container main-list-order">
+            <div class="module-float total">
+                <div class="module_float">
+                    <p>Có <span class="font-bold">125</span> kết quả</p>
+                </div>
+                <div class="total-tab">
+                    <div class="item active">Cũ trước</div>
+                    <div class="item">Mới trước</div>
+                </div>
+                <div class="total-datepic">
+                    <span class="module_float">Từ</span>
+                    <div class="module_float input-date">
+                        <input type="text" placeholder="" class="form-control form-myinput" id="datepicker">
+                        <span class="arrow-date"></span>
+                    </div>
+                    <span class="module_float">Đến</span>
+                    <div class="module_float input-date">
+                        <input type="text" placeholder="" class="form-control form-myinput" id="datepicker2">
+                        <span class="arrow-date"></span>
+                    </div>
+                </div>
+                <div class="total-select">
+                    <span class="font-gray module_float">Theo:</span>
+                    <div class="module_float select">
+                        <select class="selectpicker">
+                            <option value="0">Thời gian</option>
+                            <option>Tạo đơn</option>
+                            <option>Đặt cọc</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                            <option>Đã pai</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="total-date">
+                    <span class="font-gray">Lâu hơn:</span>
+                    <a href="#">1 ngày <span class="arrow"></span></a>
+                    <a href="#">3 ngày <span class="arrow"></span></a>
+                    <a href="#">7 ngày <span class="arrow"></span></a>
+                    <a href="#">15 ngày </a>
+
+
+                </div>
+
+            </div>
+            <div class="module-float main-list-ct">
+                <div class="module-float">
+                    <div class="main-list-item">
+                        <div class="module-float module-title">
+                            <div class="col-lg-7 col-md-7 ">
+                                <div class="module-float module-left">
+                                    <div class="avatar">
+                                        <img src="images/dummy/image1.jpg">
+                                    </div>
+                                    <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a> / <a href="#">hóivan</a> (X404)</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 module-right">
+                                <div class="pull-right"><button class="btn pull-right uppercase font-small">Chi tiết</button></div>
+                                <div class="pull-right module-custom"><span class="font-red-new"><i class="fa fa-warning"></i></span> Đang khiếu nại dịch vụ <span class="font-red-new font-bold uppercase">· chờ giao</span></div>
+                            </div>
+                        </div>
+                        <div class="module-float item-ct">
+                            <div class="col-lg-7 col-md-7 item-ct-left">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 step1">
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Id</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>1002</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Mã vạch</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>S/6</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Kho</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>VNHN / VNSG</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Tình trạng</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>Xuất kho </p>
+                                                <p>12:20 7/7</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 step2">
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Người bán</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>
+                                                    <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                                    <span>zyhoa</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Acc mua hàng</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>alimama_vn</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Mua hàng</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p><a href="#">NT Huong</a></p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Thanh toán</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p><a href="#">NT Van</a> </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 step3">
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>VND</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>9000K</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>NDT</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>3000<sup>¥</sup></p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>SLG</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>2 / 2 / 2</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>KLG</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>5kg</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2">
+                                        <p class="font-gray">Tính chất</p>
+                                        <p><span class="icon-cpn">icon-cpn</span> CPN</p>
+                                        <p><i class="fa fa-chevron-down font-gray"></i> Kiểm hàng</p>
+                                        <p><i class="fa fa-cube font-gray"></i> Đóng gỗ</p>
+                                        <p><i class="fa fa-glass font-gray"></i> Dễ vỡ</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 item-ct-right">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-1"></div>
+                                    <div class="col-lg-5 col-md-5 step2">
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Đặt cọc</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>12/12</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Đã pai</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>11:30 11/05</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Đàm phán</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>12:20 15/05</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Mua hàng</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>12:20 15/05</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Người bán giao</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>12:20 15/05</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>QC nhận</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>12:20 15/05</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-1 col-md-1"></div>
+                                    <div class="col-lg-5 col-md-5 step2">
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Kiểm hàng</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>12:20 15/05</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Chờ giao</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>---</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Y/C giao</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>---</p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Giao hàng</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>--- </p>
+                                            </div>
+                                        </div>
+                                        <div class="module-float">
+                                            <div class="cus-left">
+                                                <p>Nhận hàng</p>
+                                            </div>
+                                            <div class="cus-right">
+                                                <p>--- </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module-float click-open-item">
+                            <div class="arrow-item">
+                                <span class="up">Thu gọn <i class="fa fa-angle-up"></i></span>
+                                <span class="down">Xem thêm <i class="fa fa-angle-down"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="main-list-item">
+                        <div class="module-float module-title">
+                            <div class="col-lg-7 col-md-7 ">
+                                <div class="module-float module-left">
+                                    <div class="avatar">
+                                        <img src="images/dummy/image1.jpg">
+                                    </div>
+                                    <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a> / <a href="#">hóivan</a> (X404)</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 module-right">
+                                <div class="pull-right"><button class="btn pull-right uppercase font-small">Chi tiết</button></div>
+                                <div class="pull-right module-custom"><span class="font-red-new"><i class="fa fa-warning"></i></span> Đang khiếu nại dịch vụ <span class="font-red-new font-bold uppercase">· chờ giao</span></div>
+                            </div>
+                        </div>
+                        <div class="module-float item-ct">
+                    <div class="col-lg-7 col-md-7 item-ct-left">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 step1">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Id</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>1002</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mã vạch</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>S/6</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kho</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>VNHN / VNSG</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Tình trạng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>Xuất kho </p>
+                                        <p>12:20 7/7</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>
+                                            <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                            <span>zyhoa</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Acc mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>alimama_vn</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Huong</a></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Thanh toán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Van</a> </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 step3">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>VND</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>9000K</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>NDT</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>3000<sup>¥</sup></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>SLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>2 / 2 / 2</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>KLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>5kg</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="font-gray">Tính chất</p>
+                                <p><span class="icon-cpn">icon-cpn</span> CPN</p>
+                                <p><i class="fa fa-chevron-down font-gray"></i> Kiểm hàng</p>
+                                <p><i class="fa fa-cube font-gray"></i> Đóng gỗ</p>
+                                <p><i class="fa fa-glass font-gray"></i> Dễ vỡ</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 item-ct-right">
+                        <div class="row">
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đặt cọc</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12/12</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đã pai</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>11:30 11/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đàm phán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>QC nhận</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kiểm hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Chờ giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Y/C giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Giao hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Nhận hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="main-list-item">
+                    <div class="module-float module-title">
+                        <div class="col-lg-7 col-md-7 ">
+                            <div class="module-float module-left">
+                                <div class="avatar">
+                                    <img src="images/dummy/image1.jpg">
+                                </div>
+                                <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a> / <a href="#">hóivan</a> (X404)</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-5 module-right">
+                            <div class="pull-right"><button class="btn pull-right uppercase font-small">Chi tiết</button></div>
+                            <div class="pull-right module-custom"><span class="font-red-new"><i class="fa fa-warning"></i></span> Đang khiếu nại dịch vụ <span class="font-red-new font-bold uppercase">· chờ giao</span></div>
+                        </div>
+                    </div>
+                    <div class="module-float item-ct">
+                    <div class="col-lg-7 col-md-7 item-ct-left">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 step1">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Id</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>1002</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mã vạch</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>S/6</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kho</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>VNHN / VNSG</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Tình trạng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>Xuất kho </p>
+                                        <p>12:20 7/7</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>
+                                            <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                            <span>zyhoa</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Acc mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>alimama_vn</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Huong</a></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Thanh toán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Van</a> </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 step3">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>VND</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>9000K</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>NDT</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>3000<sup>¥</sup></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>SLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>2 / 2 / 2</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>KLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>5kg</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="font-gray">Tính chất</p>
+                                <p><span class="icon-cpn">icon-cpn</span> CPN</p>
+                                <p><i class="fa fa-chevron-down font-gray"></i> Kiểm hàng</p>
+                                <p><i class="fa fa-cube font-gray"></i> Đóng gỗ</p>
+                                <p><i class="fa fa-glass font-gray"></i> Dễ vỡ</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 item-ct-right">
+                        <div class="row">
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đặt cọc</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12/12</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đã pai</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>11:30 11/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đàm phán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>QC nhận</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kiểm hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Chờ giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Y/C giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Giao hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Nhận hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="main-list-item">
+                    <div class="module-float module-title">
+                        <div class="col-lg-7 col-md-7 ">
+                            <div class="module-float module-left">
+                                <div class="avatar">
+                                    <img src="images/dummy/image1.jpg">
+                                </div>
+                                <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a> / <a href="#">hóivan</a> (X404)</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-5 module-right">
+                            <div class="pull-right"><button class="btn pull-right uppercase font-small">Chi tiết</button></div>
+                            <div class="pull-right module-custom"><span class="font-red-new"><i class="fa fa-warning"></i></span> Đang khiếu nại dịch vụ <span class="font-red-new font-bold uppercase">· chờ giao</span></div>
+                        </div>
+                    </div>
+                    <div class="module-float item-ct">
+                    <div class="col-lg-7 col-md-7 item-ct-left">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 step1">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Id</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>1002</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mã vạch</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>S/6</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kho</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>VNHN / VNSG</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Tình trạng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>Xuất kho </p>
+                                        <p>12:20 7/7</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>
+                                            <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                            <span>zyhoa</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Acc mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>alimama_vn</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Huong</a></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Thanh toán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Van</a> </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 step3">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>VND</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>9000K</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>NDT</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>3000<sup>¥</sup></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>SLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>2 / 2 / 2</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>KLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>5kg</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="font-gray">Tính chất</p>
+                                <p><span class="icon-cpn">icon-cpn</span> CPN</p>
+                                <p><i class="fa fa-chevron-down font-gray"></i> Kiểm hàng</p>
+                                <p><i class="fa fa-cube font-gray"></i> Đóng gỗ</p>
+                                <p><i class="fa fa-glass font-gray"></i> Dễ vỡ</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 item-ct-right">
+                        <div class="row">
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đặt cọc</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12/12</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đã pai</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>11:30 11/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đàm phán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>QC nhận</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kiểm hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Chờ giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Y/C giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Giao hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Nhận hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="main-list-item">
+                    <div class="module-float module-title">
+                        <div class="col-lg-7 col-md-7 ">
+                            <div class="module-float module-left">
+                                <div class="avatar">
+                                    <img src="images/dummy/image1.jpg">
+                                </div>
+                                <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a> / <a href="#">hóivan</a> (X404)</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-5 module-right">
+                            <div class="pull-right"><button class="btn pull-right uppercase font-small">Chi tiết</button></div>
+                            <div class="pull-right module-custom"><span class="font-red-new"><i class="fa fa-warning"></i></span> Đang khiếu nại dịch vụ <span class="font-red-new font-bold uppercase">· chờ giao</span></div>
+                        </div>
+                    </div>
+                    <div class="module-float item-ct">
+                    <div class="col-lg-7 col-md-7 item-ct-left">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 step1">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Id</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>1002</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mã vạch</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>S/6</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kho</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>VNHN / VNSG</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Tình trạng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>Xuất kho </p>
+                                        <p>12:20 7/7</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>
+                                            <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                            <span>zyhoa</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Acc mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>alimama_vn</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Huong</a></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Thanh toán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Van</a> </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 step3">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>VND</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>9000K</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>NDT</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>3000<sup>¥</sup></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>SLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>2 / 2 / 2</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>KLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>5kg</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="font-gray">Tính chất</p>
+                                <p><span class="icon-cpn">icon-cpn</span> CPN</p>
+                                <p><i class="fa fa-chevron-down font-gray"></i> Kiểm hàng</p>
+                                <p><i class="fa fa-cube font-gray"></i> Đóng gỗ</p>
+                                <p><i class="fa fa-glass font-gray"></i> Dễ vỡ</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 item-ct-right">
+                        <div class="row">
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đặt cọc</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12/12</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đã pai</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>11:30 11/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đàm phán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>QC nhận</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kiểm hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Chờ giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Y/C giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Giao hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Nhận hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="main-list-item">
+                        <div class="module-float module-title">
+                            <div class="col-lg-7 col-md-7 ">
+                                <div class="module-float module-left">
+                                    <div class="avatar">
+                                        <img src="images/dummy/image1.jpg">
+                                    </div>
+                                    <p><a href="#" class="uppercase font-bold">m2121-3232-frerer</a> / <a href="#">hóivan</a> (X404)</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 module-right">
+                                <div class="pull-right"><button class="btn pull-right uppercase font-small">Chi tiết</button></div>
+                                <div class="pull-right module-custom"><span class="font-red-new"><i class="fa fa-warning"></i></span> Đang khiếu nại dịch vụ <span class="font-red-new font-bold uppercase">· chờ giao</span></div>
+                            </div>
+                        </div>
+                        <div class="module-float item-ct">
+                    <div class="col-lg-7 col-md-7 item-ct-left">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 step1">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Id</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>1002</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mã vạch</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>S/6</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kho</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>VNHN / VNSG</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Tình trạng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>Xuất kho </p>
+                                        <p>12:20 7/7</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>
+                                            <span class="icon-link"><img src="http://seudo.vn/assets/images/icon-footer/1688.png"></span>
+                                            <span>zyhoa</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Acc mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>alimama_vn</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Huong</a></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Thanh toán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p><a href="#">NT Van</a> </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 step3">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>VND</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>9000K</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>NDT</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>3000<sup>¥</sup></p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>SLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>2 / 2 / 2</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>KLG</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>5kg</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <p class="font-gray">Tính chất</p>
+                                <p><span class="icon-cpn">icon-cpn</span> CPN</p>
+                                <p><i class="fa fa-chevron-down font-gray"></i> Kiểm hàng</p>
+                                <p><i class="fa fa-cube font-gray"></i> Đóng gỗ</p>
+                                <p><i class="fa fa-glass font-gray"></i> Dễ vỡ</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 item-ct-right">
+                        <div class="row">
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đặt cọc</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12/12</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đã pai</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>11:30 11/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Đàm phán</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Mua hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Người bán giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>QC nhận</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-1 col-md-1"></div>
+                            <div class="col-lg-5 col-md-5 step2">
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Kiểm hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>12:20 15/05</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Chờ giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Y/C giao</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>---</p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Giao hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                                <div class="module-float">
+                                    <div class="cus-left">
+                                        <p>Nhận hàng</p>
+                                    </div>
+                                    <div class="cus-right">
+                                        <p>--- </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    </div>
+                        <div class="module-float click-open-item">
+                            <div class="arrow-item">
+                                <span class="up">Thu gọn <i class="fa fa-angle-up"></i></span>
+                                <span class="down">Xem thêm <i class="fa fa-angle-down"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="module-float loading-list-detail">
+                <div class="module-float text-center">
+                    <a href="#" class="font-lag"><span>Tải thêm </span> <i class="fa fa-cloud-download"></i></a>
+                </div>
+                <div class="module-float ">
+                    <div class="col-lg-2 col-md-2 col-lg-offset-5 col-md-offset-5">
+                        <div class="module-float loading">
+                            <div class="load-center">
+                                <div class="f_circleG" id="frotateG_01">
+                                </div>
+                                <div class="f_circleG" id="frotateG_02">
+                                </div>
+                                <div class="f_circleG" id="frotateG_03">
+                                </div>
+                                <div class="f_circleG" id="frotateG_04">
+                                </div>
+                                <div class="f_circleG" id="frotateG_05">
+                                </div>
+                                <div class="f_circleG" id="frotateG_06">
+                                </div>
+                                <div class="f_circleG" id="frotateG_07">
+                                </div>
+                                <div class="f_circleG" id="frotateG_08">
+                                </div>
+
+                            </div>
+                            <div class="module_float loading-ct"><span>Đang tải thêm....</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+        <!--<script>-->
+            <!--$(document).ready(function(){-->
+
+                <!--$(".content-item").hover(function(){-->
+                    <!--$(this).find('.input-chat').slideToggle();-->
+                    <!--console.log($(this).find('.input-chat'));-->
+                <!--});-->
+            <!--})-->
+        <!--</script>-->
+
+        <script>
+        $(document).ready(function(){
+
+            $(".search-open .arrow-open").click(function(){
+                $(".search-open .arrow-open").toggleClass("open");
+                $(".search-step1").slideToggle();
+            });
+
+            $(".main-list-item .click-open-item .arrow-item").click(function(){
+                var $root = $(this).parents('.main-list-item');
+                $root.toggleClass("open");
+            });
+
+        })
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<?php
+use Flywheel\View\Render;
+/** @var Render $this */
+
+$doc = $this->document();
+
+$doc->addCss('js/multiupload/fileupload.css');
+
+$this->document()->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$doc->addJs('js/multiupload/jquery.ui.widget.js');
+$doc->addJs('js/multiupload/jquery.fileupload.js');
+$doc->addJs('js/process/upload_barcode_file.js');
+$form = new Flywheel\Html\Form("barcode-file-upload");
+$form->setHtmlOption(array(
+
+));
+?>
+
+<div id="page-title" class="seu-main-header">
+    <div class="container">
+        <h3 class="main-header-title">
+            <?php td("Upload mã vạch") ?>
+        </h3>
+    </div>
+</div>
+
+<div id="page-content" class="seu-page-content barcode no-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="infobox bg-gray">
+                    <p><strong>Các bước thực hiện</strong></p>
+                    <ul>
+                        <li>B1: Chọn kho</li>
+                        <li>B2: Chọn hành động Nhập/Xuất/Kiểm kê v.v..</li>
+                        <li>B3: Nhập ngày/tháng làm việc (không cần năm)</li>
+                        <li>B3: Chọn file upload.</li>
+                        <li>B4: Click vào nút Upload.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FROM UPLOAD -->
+            <div class="col-lg-8 col-md-8 col-sm-6">
+                <div id="_error-container" class="hidden infobox bg-red">
+                    <p></p>
+                </div>
+
+                <form id="barcode-file-upload" name="barcode-file-upload">
+                    <div class="form-row">
+                        <div class="form-label col-lg-3 text-right">
+                            <label>HÀNH ĐỘNG (*)</label>
+                        </div>
+                        <div class="form-input col-lg-9">
+                            <?php $this->widget('app.Widget.SelectWarehouse', array(
+                                    'label' => t('CHỌN HÀNH ĐỘNG'),
+                                    'elementName' => 'warehouse',
+                                    'htmlOptions' => array('id' => '_chose-warehouse'),
+                                    'form' => $form,
+                                ));
+                            ?>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-label col-lg-3 text-right">
+                            <label class="label-description">
+                                Ngày (*)
+                                <span>Nhập ngày / tháng</span>
+                            </label>
+                        </div>
+                        <div class="form-input col-lg-2">
+                            <input name="working_date" value="<?php echo date('d/m') ?>" type="text">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-label col-lg-3 text-right">
+                            <label>Chú thích</label>
+                        </div>
+                        <div class="form-input col-lg-9">
+                            <textarea name="description"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-label col-lg-3 text-right">
+                            <label>Chú thích</label>
+                        </div>
+                        <div class="form-input col-lg-9">
+                            <span class="btn medium bg-green fileinput-button">
+                                <span class="button-content">
+                                    <i class="glyph-icon icon-plus"></i>
+                                    CHỌN FILE
+                                </span>
+                                <input id="barcode_file" type="file" name="barcode_file" multiple>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="_upload-result-container">
+                </div>
+            </div>
+            <!--/form upload -->
+        </div>
+    </div>
+</div>
+
+<script id="_upload-result" type="text/x-handlebars-template">
+    <h3>
+        File đã được upload thành công!<br>
+        <small>Nội dung file đang được phân tích, kết quả phân tích sẽ được gửi vào {{uploader.email}}!</small>
+    </h3>
+
+    <p><strong>Các mã trong file</strong></p>
+    <div class="row">
+        {{#each content}}
+            <div class="col-md-2">{{this}}</div>
+        {{/each}}
+    </div>
+</script>

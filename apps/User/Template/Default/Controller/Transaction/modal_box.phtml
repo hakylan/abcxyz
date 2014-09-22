@@ -1,0 +1,187 @@
+<?php
+$order_code = isset($order_code) ? $order_code : '';
+$transaction_list = isset($transaction_list) ? $transaction_list : '';
+$user = isset($user) ? $user : '';
+$app = isset($app) ? $app : 'user';
+
+?>
+<?php  if(!empty($transaction_list) ){
+//    if($user instanceof \Users){
+
+    if($app == 'user'){
+    ?>
+<div class="feetable">
+<div class="feetable-header">
+    <div class="col-lg-4 col-md-6 col-sm-6 left">
+        <div class="fee-module">
+            <p class="title uppercase">Giao dịch liên quan</p>
+
+            <p class="title-order">Đơn hàng<span class="uppercase normal-blod"> <?php echo $order_code ?></span></p>
+        </div>
+    </div>
+    <div class="col-lg-8 col-md-6 col-sm-6 right">
+        <div class="fee-module">
+            <p class="title"><span class="uppercase name"><?php echo $user->getFullName() ?>.</span> Số dư: <span
+                    class="price">
+                    <?php
+                    $class = "normal-blue";
+                    $positive = "+";
+                    $account_balance = $user->getAccountBalance();
+                    if($account_balance < 0){
+                        $positive = "-";
+                        $class = "red-bold";
+                    }
+                    ?>
+                    <?php echo $positive.Common::numberFormat($account_balance); ?>
+                    <sup>đ</sup></span></p>
+        </div>
+    </div>
+</div>
+
+<div class="menu-fee">
+    <div class="module-left col-lg-4 col-md-4 col-sm-4">
+        <div class="ma-id">
+            <p class="italic"><span class="uppercase">id</span>Mã giao dịch</p>
+        </div>
+    </div>
+
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="italic">Loại giao dịch</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="italic">Trạng thái</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="italic">Giá trị giao dịch</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="italic">Thời gian</p>
+    </div>
+</div>
+<div class="main-body" style="border: none">
+<?php foreach ($transaction_list as $transaction) {
+        if(!empty($transaction) && ($transaction instanceof \UserTransaction)){
+            $detail = $transaction->getDetail();
+            ?>
+<div class="module-item">
+    <div class="module-left col-lg-4 col-md-4 col-sm-4">
+        <div class="ma-id">
+            <p class="normal-blod uppercase"><span>
+                <?php echo $transaction->getId() ?>
+                </span>
+                <?php echo $transaction->getTransactionCode() ?>
+                <p class="small"><?php echo $detail ?></p>
+            </p>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="normal"><?php echo $transaction->getTransactionTypeTitle() ?></p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="normal"><?php echo $transaction->getTransactionStateTitle() ?></p>
+    </div>
+
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="normal">
+            <?php
+            echo Common::numberFormat($transaction->getAmount());
+            ?>
+            <sup>đ</sup></p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2">
+        <p class="normal">
+            <?php
+            if(strtotime($transaction->getClosedTime()) > 1){
+                $time_transaction = new DateTime($transaction->getClosedTime());
+                echo $time_transaction->format("H:i d/m/Y");
+            }
+            ?>
+        </p>
+    </div>
+</div>
+<?php }} ?>
+
+
+</div>
+</div>
+<?php }else if($app == 'backend'){ ?>
+        <table class="table table-striped text-center">
+        <thead>
+        <tr>
+            <th class="text-center">Id</th>
+            <th>Mã giao dịch</th>
+            <th class="text-center">Loại giao dịch</th>
+            <th class="text-center">Trạng thái</th>
+            <th class="text-center">Giá trị giao dịch</th>
+            <th class="text-center">Số dư cuối kỳ</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($transaction_list as $transaction) {
+            if(!empty($transaction) && ($transaction instanceof \UserTransaction)){
+                ?>
+            <tr>
+                <td><?php echo $transaction->getId() ?></td>
+                <td class="font-bold text-left">
+                    <?php echo $transaction->getTransactionCode() ?>
+                    <br/>
+                    <span class="font-italic font-normal">
+                         <?php
+                         if(strtotime($transaction->getClosedTime()) > 1){
+                             $time_transaction = new DateTime($transaction->getClosedTime());
+                             echo $time_transaction->format("H:i:s d/m/Y");
+                         }
+                         ?>
+                    </span>
+
+                </td>
+                <td>
+                    <?php echo $transaction->getTransactionTypeTitle() ?>
+                </td>
+                <td>
+                    <?php echo $transaction->getTransactionStateTitle() ?>
+                </td>
+                <td>
+                    <?php
+                    if($transaction->getAmount()>0){
+                        $class = 'bg-green';
+                    }else{
+                        $class = 'bg-red';
+                    }
+                    ?>
+                    <div class="label <?php echo $class ?>">
+                        <?php
+                        echo Common::numberFormat($transaction->getAmount());
+                        ?>
+                    </div>
+
+                </td>
+                <td>
+                    <?php
+                    $ending_balance = $transaction->getEndingBalance();
+                    if($ending_balance > 0){
+                        $p='+';
+                        $class = 'bg-green';
+                    }else{
+                        $p='-';
+                        $class = 'bg-red';
+                    }
+                    ?>
+                    <div class="label <?php echo $class ?>">
+                        <?php
+                        echo $p,Common::numberFormat($ending_balance);
+                        ?>
+                    </div>
+                </td>
+            </tr>
+        <?php }} ?>
+        </tbody>
+        </table>
+<?php } ?>
+<?php }else{ ?>
+    <div class="loading-data _loading_order" style="text-align: center">
+        <h2>
+            Không tồn tại giao dịch nào
+        </h2>
+    </div>
+<?php } ?>

@@ -1,0 +1,75 @@
+<!-- Begin header -->
+<?php
+use Flywheel\Document\Html;
+
+/** @var Html $document */
+$document = $this->document();
+$publicPath = $this->document()->getPublicPath();
+$assetPath = $publicPath . '/assets/';
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <base href="<?php echo $document->getBaseUrl() ?>"/>
+    <link rel="icon" href="<?php echo $publicPath?>/assets/images/icon-footer/LogoSeuDo1_ICO.ico">
+    <!-- Website Title -->
+    <title>Alimama</title>
+    <!-- Meta data for SEO -->
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Template stylesheet -->
+    <link href="<?php echo $assetPath ?>bootstrap/css/bootstrap-bookmartlet.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $assetPath ?>css/mytypo.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $assetPath ?>css/cssloading.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $assetPath ?>/css/loading.css" rel="stylesheet" type="text/css" media="all">
+    <link href="<?php echo $assetPath ?>css/bookmartlet.css" rel="stylesheet" type="text/css" media="all">
+
+
+    <!-- Jquery and plugins -->
+    <script type="text/javascript" src="<?php echo $assetPath ?>js/jquery1.10.2.js"></script>
+    <script type="text/javascript" src="<?php echo $assetPath ?>bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php echo $assetPath ?>js/jquery.nicescroll.js"></script>
+    <script type="text/javascript" src="<?php echo $assetPath ?>js/process/cart_bookmark.js"></script>
+    <script type="text/javascript" src="<?php echo $assetPath?>js/jstorage.min.js"></script>
+    <script type="text/javascript" src="<?php echo $publicPath;?>assets/js/process/include/global.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.bookmartlet').css('height', document.body.clientHeight + 'px');
+            $(".cencel").click(function(){
+                $(".page-bookmartlet").addClass("none");
+            });
+
+//            $(".item-tab-content ul").niceScroll();
+//            $(".page-bookmartlet").niceScroll();
+//            $(".show-cart-module-ct").niceScroll();
+
+        });
+
+    </script>
+    <?php
+    echo $document->js('TOP');
+    ?>
+
+</head>
+<body class="page-bookmartlet">
+<div class="loading-data _loading" style="display: none">
+    <div class="content">
+        Đang tải dữ liệu <span>...</span>
+    </div>
+</div>
+
+<section class="page-book">
+<?php echo $buffer; ?>
+</section>
+<!-- conten menu top    -->
+
+<!-- Begin footer -->
+</body>
+</html>
+
+<!-- end Footer  -->

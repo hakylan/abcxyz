@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript">
+        // Check click on close position
+
+    </script>
+</head>
+<body>
+    <a href="javascript:(function() {
+                    if(document.getElementById('seudo_script') != null) { return; }
+                    var jsCode = document.createElement('script');
+                    jsCode.setAttribute('id', 'seudo_script');
+                    jsCode.setAttribute('src', 'http://localhost/tp_seudo/www_html/assets/js/bookmarklet.js?t=' + Math.random());
+                    document.body.appendChild(jsCode); }()
+                );">Seudo.vn</a>
+</body>
+</html>

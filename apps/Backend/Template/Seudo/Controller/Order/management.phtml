@@ -1,0 +1,1042 @@
+<?php
+use Flywheel\View\Render;
+use \SeuDo\Main;
+
+/** @var Render $this */
+
+$title = t('Quản Lý Đơn Hàng');
+$this->document()->title .= $title;
+
+$publicHomePath = Main::getHomeUrl();
+$jsPath = $publicHomePath . 'backend/assetv2/js/';
+$cssPath = $publicHomePath . 'backend/assetv2/css/';
+
+//$this->document()->addCss('css/order.css');
+//$this->document()->addCss('css/loading.css');
+$this->document()->addCss('css/style-chitietdonhang.css');
+$this->document()->addCss('css/bootstrap-select.min.css');
+
+$this->document()->addJs('js/jqueryui.js', 'TOP');
+$this->document()->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$this->document()->addJs('js/process/order.js?v=2', 'BOTTOM');
+//$this->document()->addJs('js/backendv2-frontend.js');
+//$this->document()->addJs('js/process/common.js');
+$this->document()->addJsVar('get_orders_url', $this->createUrl('order/management/get_orders'));
+$this->document()->addJsVar('order_management_page', $this->createUrl('order/management'));
+
+$this->document()->addJsVar('LinkSearchFreightBill', $this->createUrl('order/management/SearchFreightBill'));
+$this->document()->addJsVar('LinkSearchShippingMobile', $this->createUrl('order/management/SearchShippingMobile'));
+$this->document()->addJsVar('LinkSearchCustomer', $this->createUrl('order/management/SearchCustomer'));
+
+$this->document()->addJsVar('today', date('d/m/Y'));
+
+$this->document()->addJsVar('STATUS_DEPOSITED', \Order::STATUS_DEPOSITED);
+$this->document()->addJsVar('STATUS_BUYING', \Order::STATUS_BUYING);
+$this->document()->addJsVar('STATUS_NEGOTIATING', \Order::STATUS_NEGOTIATING);
+$this->document()->addJsVar('STATUS_WAITING_BUYER_CONFIRM', \Order::STATUS_WAITING_BUYER_CONFIRM);
+$this->document()->addJsVar('STATUS_NEGOTIATED', \Order::STATUS_NEGOTIATED);
+$this->document()->addJsVar('STATUS_BOUGHT', \Order::STATUS_BOUGHT);
+$this->document()->addJsVar('STATUS_SELLER_DELIVERY', \Order::STATUS_SELLER_DELIVERY);
+$this->document()->addJsVar('STATUS_RECEIVED_FROM_SELLER', \Order::STATUS_RECEIVED_FROM_SELLER);
+$this->document()->addJsVar('STATUS_CHECKING', \Order::STATUS_CHECKING);
+$this->document()->addJsVar('STATUS_CHECKED', \Order::STATUS_CHECKED);
+$this->document()->addJsVar('STATUS_TRANSPORTING', \Order::STATUS_TRANSPORTING);
+$this->document()->addJsVar('STATUS_WAITING_FOR_DELIVERY', \Order::STATUS_WAITING_FOR_DELIVERY);
+$this->document()->addJsVar('STATUS_RECEIVED', \Order::STATUS_RECEIVED);
+$this->document()->addJsVar('STATUS_DELIVERING', \Order::STATUS_DELIVERING);
+$this->document()->addJsVar('STATUS_COMPLAINT', \Order::STATUS_COMPLAINT);
+$this->document()->addJsVar('STATUS_OUT_OF_STOCK', \Order::STATUS_OUT_OF_STOCK);
+$this->document()->addJsVar('STATUS_CANCELLED', \Order::STATUS_CANCELLED);
+$this->document()->addJsVar('STATUS_INIT', \Order::STATUS_INIT);
+$this->document()->addJsVar('PER_PAGE', \Order::PER_PAGE);
+
+$this->document()->addJsVar('CUSTOMER_CONFIRM_WAIT', \Order::CUSTOMER_CONFIRM_WAIT);
+
+$searchForm = new \Flywheel\Html\Form('search-frm');
+
+$tabs = array(
+    \Order::STATUS_INIT => "CHƯA MUA",
+    \Order::STATUS_DEPOSITED => "ĐÃ ĐẶT CỌC",
+    \Order::STATUS_WAITING_FOR_APPROVAL => "CHỜ DUYỆT",
+    \Order::STATUS_BUYING => "ĐANG MUA",
+    \Order::STATUS_NEGOTIATING => "ĐÃ ĐẶT HÀNG",
+//    \Order::STATUS_WAITING_BUYER_CONFIRM => "CHỜ XÁC NHẬN",
+//    \Order::STATUS_BUYER_CONFIRMED => "KHÁCH XÁC NHẬN",
+    \Order::STATUS_NEGOTIATED => "CHỜ THANH TOÁN",
+    \Order::STATUS_BOUGHT => "ĐÃ MUA HÀNG",
+    \Order::STATUS_SELLER_DELIVERY => "NGƯỜI BÁN GIAO",
+    \Order::STATUS_RECEIVED_FROM_SELLER => "SeuDo Nhận",
+//    \Order::STATUS_CHECKING => "ĐANG KIỂM HÀNG",
+    \Order::STATUS_CHECKED => "ĐÃ KIỂM HÀNG",
+    Order::STATUS_TRANSPORTING => "VẬN CHUYỂN",
+    \Order::STATUS_WAITING_FOR_DELIVERY => "CHỜ GIAO HÀNG",
+    \Order::STATUS_CUSTOMER_CONFIRM_DELIVERY => "YÊU CẦU GIAO HÀNG",
+    \Order::STATUS_DELIVERING => "ĐANG GIAO HÀNG",
+    \Order:: STATUS_RECEIVED => "KHÁCH NHẬN HÀNG",
+//    \Order::STATUS_COMPLAINT => "KHIẾU NẠI KHÁCH HÀNG",
+    \Order::STATUS_CANCELLED => "HỦY BỎ",
+    \Order::STATUS_OUT_OF_STOCK => "HẾT HÀNG"
+);
+
+$tabsTimeOrder = array(
+    \Order::STATUS_INIT => "Tạo đơn",
+    \Order::STATUS_DEPOSITED => "Đặt cọc",
+    \Order::STATUS_NEGOTIATING => "Đã pai",
+    \Order::STATUS_NEGOTIATED => "Đàm phán",//Đã đàm phán
+    \Order::STATUS_BOUGHT => "Mua hàng",
+    \Order::STATUS_SELLER_DELIVERY => "Người bán giao",
+    \Order::STATUS_RECEIVED_FROM_SELLER => "Quảng châu nhận",
+    \Order::STATUS_TRANSPORTING => "Vận chuyển",
+    \Order::STATUS_CHECKING => "Kiểm hàng",
+    \Order::STATUS_WAITING_FOR_DELIVERY => "Chờ giao",
+    \Order::STATUS_CUSTOMER_CONFIRM_DELIVERY => "Y/C giao",
+    \Order::STATUS_DELIVERING => "Giao hàng",
+    \Order::STATUS_RECEIVED => "Nhận hàng",
+    \Order::STATUS_CANCELLED => "Hủy bỏ",
+    \Order::STATUS_OUT_OF_STOCK => "Hết hàng"
+);
+$active = 'active';
+$sort_asc = 'ASC';
+$sort_desc = 'DESC';
+$background_active = 'background-active-input-order';
+
+$title_current_warehouse = 'Kho hiện tại';
+$title_destination_warehouse = 'Kho đích';
+$title_user_origin_site = 'Acc mua hàng';
+$title_homeland = 'Site gốc';
+
+$arrFilter = $stores = $arrStores = $acc = array();
+
+$status = isset($status) ? $status : "";
+$page = isset($page) ? $page : 1;
+$homeland = isset($homeland) ? $homeland : "";
+$seller_aliwang = isset($seller_aliwang) ? $seller_aliwang : "";
+$acc = isset($acc) ? $acc : array();
+$keyword = isset($keyword) ? $keyword : "";
+$freight_bill = isset($freight_bill) ? $freight_bill : "";
+$customer = isset($customer) ? $customer : "";
+$user_origin_site = isset($user_origin_site) ? $user_origin_site : "";
+$current_warehouse = isset($current_warehouse) ? $current_warehouse : "";
+$destination_warehouse = isset($destination_warehouse) ? $destination_warehouse : "";
+$warehouse_status_in = isset($warehouse_status_in) ? $warehouse_status_in : "";
+$warehouse_status_out = isset($warehouse_status_out) ? $warehouse_status_out : "";
+$is_cpn = isset($is_cpn) ? $is_cpn : "";
+$is_need_checking = isset($is_need_checking) ? $is_need_checking : "";
+$is_check_wood_crating = isset($is_check_wood_crating) ? $is_check_wood_crating : "";
+$is_complaint_seller = isset($is_complaint_seller) ? $is_complaint_seller : "";
+$is_complaint = isset($is_complaint) ? $is_complaint : "";
+$is_have_bill_lading = isset($is_have_bill_lading) ? $is_have_bill_lading : "";
+$is_no_bill_lading = isset($is_no_bill_lading) ? $is_no_bill_lading : "";
+$ordering = isset($ordering) ? $ordering : "";
+$sort_order = isset($sort_order) ? $sort_order : $sort_desc;//default DESC
+$date_from = isset($date_from) ? $date_from : "";
+$date_to = isset($date_to) ? $date_to : "";
+$is_search_by_date = isset($is_search_by_date) ? $is_search_by_date : "";
+$wait_customer_confirm = isset($wait_customer_confirm) ? $wait_customer_confirm : "";
+$no_weight = isset($no_weight) ? $no_weight : "";
+
+$stores = \Warehouses::getAllWarehouses();
+$acc = \UserOriginSite::getAllUserOriginSite();
+
+if( sizeof($stores) > 0 ) {
+    foreach ( $stores as $store ) {
+        if( $store instanceof \Warehouses ) {
+            $arrStores[ $store->getCode() ] = $store->toArray();
+        }
+    }
+}
+
+?>
+
+<input type="hidden" name="total_page" value="1" />
+
+<section class="list-order-title">
+    <div class="container">
+        <div class="module-float title">
+            <p class="font-bold uppercase"><?php echo $title; ?></p>
+        </div>
+
+        <?php
+            $searchFrm = new \Flywheel\Html\Form('search-frm', $this->createUrl('order/management'), 'GET');
+            $searchFrm->setHtmlOption(array(
+                'id' => 'search-frm'
+            ));
+            $searchFrm->beginForm();
+        ?>
+
+        <input type="hidden" name="status" value="<?php echo $status; ?>" />
+        <input type="hidden" name="page" value="<?php echo $page; ?>" />
+        <input type="hidden" name="warehouse_status_in" value="<?php echo $warehouse_status_in; ?>" />
+        <input type="hidden" name="warehouse_status_out" value="<?php echo $warehouse_status_out; ?>" />
+        <input type="hidden" name="is_cpn" value="<?php echo $is_cpn; ?>" />
+        <input type="hidden" name="is_need_checking" value="<?php echo $is_need_checking; ?>" />
+        <input type="hidden" name="is_check_wood_crating" value="<?php echo $is_check_wood_crating; ?>" />
+        <input type="hidden" name="is_complaint_seller" value="<?php echo $is_complaint_seller; ?>" />
+        <input type="hidden" name="wait_customer_confirm" value="<?php echo $wait_customer_confirm; ?>" />
+        <input type="hidden" name="no_weight" value="<?php echo $no_weight; ?>" />
+        <input type="hidden" name="is_complaint" value="<?php echo $is_complaint; ?>" />
+        <input type="hidden" name="is_have_bill_lading" value="<?php echo $is_have_bill_lading; ?>" />
+        <input type="hidden" name="is_no_bill_lading" value="<?php echo $is_no_bill_lading; ?>" />
+        <input type="hidden" name="sort_order" value="<?php echo $sort_order; ?>" />
+        <input type="hidden" name="is_search_by_date" value="<?php echo $is_search_by_date; ?>" />
+
+        <div class="module-float input-search">
+            <div class="row">
+                <div class="col-lg-5 col-md-5">
+                    <input type="text" class="form-control form-myinput <?php echo $keyword ? $background_active : '' ?>" name="keyword" value="<?php echo $keyword ?>" placeholder="<?php td('Tìm theo mã đơn hàng, mã đơn site gốc hoặc user mua hàng v.v....'); ?>">
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <input type="text" class="form-control form-myinput <?php echo $freight_bill ? $background_active : '' ?>" name="freight_bill" value="<?php echo $freight_bill ?>" placeholder="<?php td('Mã vận đơn'); ?>">
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <input type="text" class="form-control form-myinput <?php echo $customer ? $background_active : '' ?>" name="customer" value="<?php echo $customer; ?>" placeholder="<?php td('Nhập ID, mã khách, tên khách'); ?>">
+                </div>
+            </div>
+        </div>
+        <div class="module-float tab-search">
+            <?php
+            foreach($tabs as $statusConst => $statusTitle){
+                $classStatusChecked = "";
+                if($status != ""){
+                    $arrStatus = explode(",", $status);
+                    foreach((array)$arrStatus as $s){
+                        $s = trim($s);
+                        $statusConst = trim($statusConst);
+                        if($s == $statusConst){
+                            $classStatusChecked = $active;
+                        }
+                    }
+                }
+                ?>
+                <div data-value="<?php echo $statusConst; ?>" class="_item-status-order item-tiny-tab <?php echo $classStatusChecked; ?>">
+                    <a href="javascript:"><?php echo $statusTitle; ?></a>
+                </div>
+            <?php } ?>
+
+        </div>
+        <div class="module-float search-step1">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 services">
+                    <p class="title">Tình trạng</p>
+                    <p>
+                        <a href="javascript:" class="_search-more <?php echo $is_have_bill_lading ? $active : '' ?>"
+                           data-type="STATE"
+                           data-name="is_have_bill_lading"
+                           data-text="Có vận đơn"
+                           data-value="OK">Có vận đơn <span class="delete <?php echo $is_have_bill_lading ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+
+                    <p>
+                        <a href="javascript:" class="_search-more <?php echo $is_no_bill_lading ? $active : '' ?>"
+                           data-type="STATE"
+                           data-name="is_no_bill_lading"
+                           data-text="Chưa có vận đơn"
+                           data-value="OK">Chưa có vận đơn <span class="delete <?php echo $is_no_bill_lading ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+
+                    <p>
+                        <a href="javascript:" class="_search-more <?php echo $is_complaint ? $active : '' ?>"
+                           data-type="STATE"
+                           data-name="is_complaint"
+                           data-text="Khiếu nại dịch vụ"
+                           data-value="OK">Khiếu nại dịch vụ <span class="delete <?php echo $is_complaint ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+
+                    <p>
+                        <a href="javascript:" class="_search-more <?php echo $is_complaint_seller ? $active : '' ?>"
+                           data-type="STATE"
+                           data-name="is_complaint_seller"
+                           data-text="Khiếu nại người bán"
+                           data-value="OK">Khiếu nại người bán <span class="delete <?php echo $is_complaint_seller ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+
+                    <p>
+                        <a href="javascript:" class="_search-more <?php echo $wait_customer_confirm ? $active : '' ?>"
+                           data-type="STATE"
+                           data-name="wait_customer_confirm"
+                           data-text="Chờ khách xác nhận mua"
+                           data-value="<?php echo \Order::CUSTOMER_CONFIRM_WAIT ?>">Chờ khách xác nhận mua <span class="delete <?php echo $wait_customer_confirm ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+
+                    <p>
+                        <a href="javascript:" class="_search-more <?php echo $no_weight ? $active : '' ?>"
+                           data-type="STATE"
+                           data-name="no_weight"
+                           data-text="Không có cân nặng"
+                           data-value="OK">Không có cân nặng <span class="delete <?php echo $no_weight ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-2 services">
+                    <p class="title">Dịch vụ</p>
+                    <p>
+                        <span class="icon-cpn">icon-cpn</span>
+                        <a href="javascript:" class="_search-more <?php echo $is_cpn ? $active : '' ?>"
+                           data-type="SERVICE"
+                           data-name="is_cpn"
+                           data-text="CPN"
+                           data-value="OK">CPN <span class="delete <?php echo $is_cpn ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+                    <p>
+                        <span><i class="fa fa-chevron-down"></i></span>
+                        <a href="javascript:" class="_search-more <?php echo $is_need_checking ? $active : '' ?>"
+                           data-type="SERVICE"
+                           data-name="is_need_checking"
+                           data-text="Có kiểm"
+                           data-value="OK">Có kiểm <span class="delete <?php echo $is_need_checking ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+                    <p>
+                        <span><i class="fa fa-cube"></i></span>
+                        <a href="javascript:" class="_search-more <?php echo $is_check_wood_crating ? $active : '' ?>"
+                           data-type="SERVICE"
+                           data-name="is_check_wood_crating"
+                           data-text="Đóng gỗ"
+                           data-value="OK">Đóng gỗ <span class="delete <?php echo $is_check_wood_crating ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Vận chuyển</p>
+                    <div class="module-float w-search">
+                        <?php
+                        $s = $searchForm->selectOption('current_warehouse', $current_warehouse, array('class' => 'selectpicker'));
+                        $s->addOption($title_current_warehouse, '');
+                        if( sizeof($stores) > 0 ) {
+                            foreach( $stores as $item ) {
+                                if( $item instanceof \Warehouses ) {
+                                    $s->addOption( $item->getName() . ' - ' . $item->getCode(), $item->getCode() );
+                                }
+                            }
+                        }
+                        $s->display();
+                        ?>
+                    </div>
+                    <div class="module-float w-search">
+                        <?php
+                        $s = $searchForm->selectOption('destination_warehouse', $destination_warehouse, array('class' => 'selectpicker'));
+                        $s->addOption($title_destination_warehouse, '');
+                        if( sizeof($stores) > 0 ) {
+                            foreach( $stores as $item ) {
+                                if( $item instanceof \Warehouses ) {
+                                    $s->addOption( $item->getName() . ' - ' . $item->getCode(), $item->getCode() );
+                                }
+                            }
+                        }
+                        $s->display();
+                        ?>
+                    </div>
+
+                </div>
+                <div class="col-lg-2 col-md-2 services">
+                    <p class="title">Tình trạng kho</p>
+                    <p>
+                        <a href="javascript:" class="_search-more <?php echo ( $warehouse_status_in == \Order::WAREHOUSE_STATUS_IN ) ? $active : '' ?>"
+                           data-name="warehouse_status_in"
+                           data-type="STORE"
+                           data-text="Xuất"
+                           data-value="<?php echo \Order::WAREHOUSE_STATUS_IN ?>">Xuất <span class="delete <?php echo ( $warehouse_status_in == \Order::WAREHOUSE_STATUS_IN ) ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+                    <p>
+                        <a href="javascript:" class="_search-more <?php echo ( $warehouse_status_out == \Order::WAREHOUSE_STATUS_OUT ) ? $active : '' ?>"
+                           data-name="warehouse_status_out"
+                           data-type="STORE"
+                           data-text="Nhập"
+                           data-value="<?php echo \Order::WAREHOUSE_STATUS_OUT ?>">Nhập <span class="delete <?php echo ( $warehouse_status_out == \Order::WAREHOUSE_STATUS_OUT ) ? '' : 'hidden' ?>">x</span></a>
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Acc mua hàng</p>
+                    <div class="module-float w-search">
+                        <?php
+                        $list_user_origin_site = $searchForm->selectOption('user_origin_site', $user_origin_site, array('class' => 'selectpicker'));
+                        $list_user_origin_site->addOption($title_user_origin_site, '');
+                        if( sizeof($acc) > 0 ) {
+                            foreach( $acc as $a ) {
+                                if( $a instanceof \UserOriginSite ) {
+                                    $list_user_origin_site->addOption( $a->getUsername(), $a->getUsername() );
+                                }
+                            }
+                        }
+                        $list_user_origin_site->display();
+                        ?>
+                    </div>
+                    <p class="title">Site gốc</p>
+                    <div class="module-float w-search">
+
+                        <?php
+                            $searchForm->selectOption('homeland', $homeland, array('class' => 'selectpicker'))
+                                ->addOption($title_homeland, '')
+                                ->addOption('taobao.com', 'TAOBAO')
+                                ->addOption('tmall.com', 'TMALL')
+                                ->addOption('1688.com', '1688')
+                                ->addOption('eelly.com', 'EELLY.COM')
+                                ->display();
+                        ?>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <p class="title">Aliwangwang người bán</p>
+                    <input type="text" name="seller_aliwang" value="<?php echo $seller_aliwang; ?>" placeholder="" class="form-control form-myinput <?php echo $seller_aliwang ? $background_active : '' ?>">
+                </div>
+            </div>
+        </div>
+
+        <div class="module-float search-open">
+            <div class="module-absolute">
+                <div class="arrow-open">
+                    <span class="up">Rút gọn <i class="fa fa-caret-up"></i></span>
+                    <span class="down">Thêm bộ lọc <i class="fa fa-caret-down"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="module-float search-step2" id="_show-list-filter">
+            <?php
+                if( $is_have_bill_lading ) {
+                    $arrFilter['Có vận đơn'] = array('name' => 'is_have_bill_lading', 'value' => $is_have_bill_lading);
+                }
+                if( $is_complaint ){
+                    $arrFilter['Khiếu nại dịch vụ'] = array('name' => 'is_complaint', 'value' => $is_complaint);
+                }
+                if( $is_no_bill_lading ) {
+                    $arrFilter['Chưa có vận đơn'] = array('name' => 'is_no_bill_lading', 'value' => $is_no_bill_lading);
+                }
+                if( $is_complaint_seller ) {
+                    $arrFilter['Khiếu nại người bán'] = array('name' => 'is_complaint_seller', 'value' => $is_complaint_seller);
+                }
+
+                if( $wait_customer_confirm ) {
+                    $arrFilter['Chờ khách xác nhận mua'] = array('name' => 'wait_customer_confirm', 'value' => $wait_customer_confirm);
+                }
+
+                if( $no_weight ) {
+                    $arrFilter['Không có cân nặng'] = array('name' => 'no_weight', 'value' => $no_weight);
+                }
+
+                if( $is_cpn ) {
+                    $arrFilter['CPN'] = array('name' => 'is_cpn', 'value' => $is_cpn);
+                }
+                if( $is_need_checking ) {
+                    $arrFilter['Có kiểm'] = array('name' => 'is_need_checking', 'value' => $is_need_checking);
+                }
+                if( $is_check_wood_crating ) {
+                    $arrFilter['Đóng gỗ'] = array('name' => 'is_check_wood_crating', 'value' => $is_check_wood_crating);
+                }
+                if( $warehouse_status_in ) {
+                    $arrFilter['Xuất'] = array('name' => 'warehouse_status_in', 'value' => $warehouse_status_in);
+                }
+                if( $warehouse_status_out ) {
+                    $arrFilter['Nhập'] = array('name' => 'warehouse_status_out', 'value' => $warehouse_status_out);
+                }
+
+                //Thời gian lâu hơn
+                if( $is_search_by_date != "" ) {
+                    $arrFilter[$is_search_by_date] = array('name' => 'date', 'value' => '', 'prefix' => '-date');
+                }
+                //Vận chuyển
+                if( $current_warehouse != "" ) {
+                    $current_warehouse_name = sizeof($arrStores) > 0 && isset( $arrStores[ $current_warehouse ][ 'name' ] ) ? $arrStores[ $current_warehouse ][ 'name' ] : "";
+                    $arrFilter[$title_current_warehouse . ': ' . $current_warehouse_name . ' - ' . $current_warehouse] = array('name' => 'current_warehouse', 'value' => $current_warehouse, 'prefix' => '-select');
+                }
+                if( $destination_warehouse != "" ) {
+                    $destination_warehouse_name = sizeof($arrStores) > 0 && isset( $arrStores[ $destination_warehouse ][ 'name' ] ) ? $arrStores[ $destination_warehouse ][ 'name' ] : "";
+                    $arrFilter[$title_destination_warehouse . ': ' . $destination_warehouse_name . ' - ' . $destination_warehouse] = array('name' => 'destination_warehouse', 'value' => $destination_warehouse, 'prefix' => '-select');
+                }
+                //Acc mua hàng
+                if( $user_origin_site != "" ) {
+                    $arrFilter[$title_user_origin_site . ': ' . $user_origin_site] = array('name' => 'user_origin_site', 'value' => $user_origin_site, 'prefix' => '-select');
+                }
+                //Site gốc
+                if( $homeland != "" ) {
+                    $arrFilter[$title_homeland . ': ' . $homeland] = array('name' => 'homeland', 'value' => $homeland, 'prefix' => '-select');
+                }
+                //Aliwangwang người bán
+                if( $seller_aliwang != "" ) {
+                    $arrFilter[ 'Aliwangwang người bán: ' . $seller_aliwang ] = array('name' => 'seller_aliwang', 'value' => $seller_aliwang, 'prefix' => '-input');
+                }
+
+                if( sizeof( $arrFilter ) > 0 ) {
+                    foreach( $arrFilter as $key => $filter ) {
+                        $prefix = isset($filter['prefix']) ? $filter['prefix'] : '';
+                        echo '<a class="_clear-filter' . $prefix . ' ' . $filter['name'] . '" href="javascript:"><div class="item-step2" data-name="' . $filter['name'] . '" data-value="' . $filter['value'] . '">' . $key . ' <span>x</span></div></a>';
+                    }
+                }
+            ?>
+        </div>
+    </div>
+
+    <div class="container main-list-order">
+        <div class="module-float total">
+            <div class="module_float">
+                <p>Có <span class="font-bold" id="_result-count">0</span> kết quả</p>
+            </div>
+
+            <div class="total-tab">
+                <div data-sort="<?php echo $sort_asc ?>" class="_sort_order item <?php echo $sort_order == $sort_asc ? $active : '' ?>">Cũ trước</div>
+                <div data-sort="<?php echo $sort_desc ?>" class="_sort_order item <?php echo $sort_order == $sort_desc ? $active : '' ?>">Mới trước</div>
+            </div>
+            <div class="total-datepic">
+                <span class="module_float">Từ</span>
+                <div class="module_float input-date">
+                    <input class="form-control form-myinput" name="date_from" id="date_from" value="<?php echo $date_from ?>" type="input" placeholder="" />
+                    <span class="arrow-date"></span>
+                </div>
+                <span class="module_float">Đến</span>
+                <div class="module_float input-date">
+                    <input class="form-control form-myinput" name="date_to" id="date_to" value="<?php echo $date_to ?>" type="input" placeholder="" />
+                    <span class="arrow-date"></span>
+                </div>
+            </div>
+            <div class="total-select">
+                <span class="font-gray module_float">Theo:</span>
+                <div class="module_float select">
+                    <?php
+                    $sel_order_by_time = $searchForm->selectOption('ordering', $ordering, array('class' => 'selectpicker'));
+                    if( sizeof($tabsTimeOrder) > 0 ) {
+                        foreach( $tabsTimeOrder as $tabKey => $tabValue ){
+                            $sel_order_by_time->addOption($tabValue, $tabKey);
+                        }
+                    }
+                    $sel_order_by_time->display();
+                    ?>
+                </div>
+            </div>
+
+            <div class="total-date">
+                <span class="font-gray">Lâu hơn: </span>
+                <a class="_search-by-date
+                    <?php echo $is_search_by_date == '1 ngày' ? 'font-bold' : '' ?>"
+                   href="javascript:"
+                   data-text="1 ngày"
+                   data-value=""
+                   data-name="BEFORE_1_DAY"
+                   data-date="BEFORE_1_DAY">1 ngày </a> <span class="arrow"> | </span>
+                <a class="_search-by-date
+                    <?php echo $is_search_by_date == '3 ngày' ? 'font-bold' : '' ?>"
+                   href="javascript:"
+                   data-text="3 ngày"
+                   data-value=""
+                   data-name="BEFORE_3_DAY"
+                   data-date="BEFORE_3_DAY">3 ngày </a> <span class="arrow"> | </span>
+                <a class="_search-by-date
+                    <?php echo $is_search_by_date == '7 ngày' ? 'font-bold' : '' ?>"
+                   href="javascript:"
+                   data-text="7 ngày"
+                   data-value=""
+                   data-name="BEFORE_7_DAY"
+                   data-date="BEFORE_7_DAY">7 ngày </a> <span class="arrow"> | </span>
+                <a class="_search-by-date
+                    <?php echo $is_search_by_date == '15 ngày' ? 'font-bold' : '' ?>"
+                   href="javascript:"
+                   data-text="15 ngày"
+                   data-value=""
+                   data-name="BEFORE_15_DAY"
+                   data-date="BEFORE_15_DAY">15 ngày </a>
+            </div>
+
+        </div>
+
+        <?php $searchForm->endForm(false); ?>
+
+        <div class="module-float main-list-ct">
+            <div class="module-float" id="_orders-list-placeholder"></div>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="module-float loading-list-detail">
+            <div class="module-float text-center">
+                <a class="font-lag _load-more-orders" href="javascript:" data-target="<?php echo $page + 1 ?>">
+                    <span>Tải thêm </span>
+                    <i class="fa fa-cloud-download"></i>
+                </a>
+            </div>
+            <div class="module-float" id="_loading" style="display: none;">
+                <div class="col-lg-2 col-md-2 col-lg-offset-5 col-md-offset-5">
+                    <div class="module-float loading">
+                        <div class="load-center">
+                            <div id="frotateG_01" class="f_circleG">
+                            </div>
+                            <div id="frotateG_02" class="f_circleG">
+                            </div>
+                            <div id="frotateG_03" class="f_circleG">
+                            </div>
+                            <div id="frotateG_04" class="f_circleG">
+                            </div>
+                            <div id="frotateG_05" class="f_circleG">
+                            </div>
+                            <div id="frotateG_06" class="f_circleG">
+                            </div>
+                            <div id="frotateG_07" class="f_circleG">
+                            </div>
+                            <div id="frotateG_08" class="f_circleG">
+                            </div>
+
+                        </div>
+                        <div class="module_float loading-ct"><span>Đang tải dữ liệu....</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script id="_orders_list" type="text/x-handlebars-template">
+    <div class="orders-list">
+        {{#each orders}}
+        {{>list}}
+        {{/each}}
+    </div>
+</script>
+
+<script id="_list-partial" type="text/x-handlebars-template">
+    <div class="main-list-item _item-order-view" data-order-id="{{id}}">
+    <div class="module-float module-title">
+        <div class="col-lg-7 col-md-7 ">
+            <div class="module-float module-left">
+                <div class="avatar">
+                    <img class="lazy" data-original="{{avatar}}" />
+                </div>
+                <p>
+                    <a target="_blank" href="{{detail_link}}" class="uppercase font-bold">{{code}}</a> /
+                    <a href="<?php echo $controller->createUrl('user/detail') ?>/{{buyer.id}}" target="_blank">{{buyer.shorten_fullname}}</a>
+                    ({{buyer.code}})
+                    <br />
+                    <div class="font-small font-gray">
+                        {{# if show_customer_confirm}}
+                            Đơn hàng đang được gửi khách xác nhận, lí do:
+                            <strong>
+                                {{#if show_note_customer_confirm}}
+                                    {{note_customer_confirm}}
+                                {{else}}
+                                    ---
+                                {{/if}}
+                            </strong>
+                            từ <strong>{{date confirm_created_time}}</strong>
+                            {{#if show_time_left_customer_confirm}}
+                                ({{time_left_customer_confirm}} ngày)
+                            {{/if}}
+
+
+                        {{/if}}
+                    </div>
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-5 module-right">
+            <a href="<?php echo $controller->createUrl('order/detail') ?>/{{id}}" target="_blank" title="Chi tiết">
+                <div class="pull-right"><button class="btn pull-right uppercase font-small">Chi tiết</button></div>
+            </a>
+            <div class="pull-right module-custom">
+                <span class="_complaint" style="{{#if is_complaint}}{{else}}display: none;{{/if}}">
+                    <span class="font-red-new">
+                        <i class="fa fa-warning"></i>
+                    </span>
+                    Đang khiếu nại dịch vụ·
+                </span>
+                <span class="font-bold uppercase {{order_status_color}}"> {{order_status status}}</span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="module-float item-ct">
+    <div class="col-lg-8 col-md-8 item-ct-left">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 step1">
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Id</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>{{id}}</p>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Mã vạch</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>S/{{id}}</p>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Kho</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>
+                            {{#if current_warehouse}}
+                            {{current_warehouse}}
+                            {{else}}
+                            ---
+                            {{/if}}
+
+                            {{#if destination_warehouse}}
+                            / {{destination_warehouse}}
+                            {{else}}
+                            / ---
+                            {{/if}}
+                        </p>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Tình trạng</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>
+                            {{#if is_warehouse_status_in}}
+                                Nhập kho
+                            {{/if}}
+                            {{#if is_warehouse_status_out}}
+                                Xuất kho
+                            {{/if}}
+                        </p>
+                        <p>
+                            {{#if is_warehouse_status_in}}
+                                {{date warehouse_in_time}}
+                            {{/if}}
+                            {{#if is_warehouse_status_out}}
+                                {{date warehouse_out_time}}
+                            {{/if}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 step2">
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Người bán</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>
+                            <span class="icon-link">
+                                <a target="_blank" rel="nofollow" href="http://{{seller_name}}.{{seller_home_land}}.com"><img src="{{seller_favicon_site}}"></a>
+                            </span>
+                            {{seller_name}}
+                        </p>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Acc mua hàng</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>{{account_purchase_origin}}</p>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Mua hàng</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if teller}}
+                            <p>
+                                <a href="<?php echo $controller->createUrl('user/detail') ?>/{{teller.id}}" rel="tooltiptop" data-original-title="Mua hàng <br>@{{teller.username}}" target="_blank">{{teller.shorten_fullname}}</a>
+                            </p>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Thanh toán</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if payment}}
+                            <p>
+                                <a href="<?php echo $controller->createUrl('user/detail') ?>/{{payment.id}}" rel="tooltiptop" data-original-title="Thanh toán <br>@{{payment.username}}" target="_blank">{{payment.shorten_fullname}}</a>
+                            </p>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Bill VC</p>
+                    </div>
+                    <div class="cus-right">
+                        {{name_recipient_origin}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 step3">
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>VND</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>
+                            <span class="_money-amount-k" data-amount="{{total_amount}}">
+                                {{total_amount}}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>NDT</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>
+                            <span class="_money-amount-cny" data-amount="{{total_amount_cny}}">
+                                {{total_amount_cny}}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>SLG</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>{{recive_quantity}} / {{pending_quantity}} / {{order_quantity}}</p>
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>KLG</p>
+                    </div>
+                    <div class="cus-right">
+                        <p>
+                            {{#if weight}}
+                                {{weight}} kg
+                            {{else}}
+                                --- kg
+                            {{/if}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <p class="font-gray">Tính chất</p>
+                {{#if is_cpn}}
+                    <p><span class="icon-cpn">icon-cpn</span> CPN</p>
+                {{/if}}
+
+                {{#if need_checking}}
+                    <p><i class="fa fa-chevron-down font-gray"></i> Kiểm hàng</p>
+                {{/if}}
+
+                {{#if check_wood_crating}}
+                    <p><i class="fa fa-cube font-gray"></i> Đóng gỗ</p>
+                {{/if}}
+
+                {{#if check_fragile}}
+                    <p><i class="fa fa-glass font-gray"></i> Dễ vỡ</p>
+                {{/if}}
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 item-ct-right">
+        <div class="row">
+            <div class="col-lg-1 col-md-1"></div>
+            <div class="col-lg-6 col-md-6 step2">
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Đặt cọc</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_deposit_time}}
+                            <p>{{date deposit_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Đã pai</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_paid_staff_assigned_time}}
+                            <p>{{date paid_staff_assigned_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Đàm phán</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_negotiated_time}}
+                            <p>{{date negotiated_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Mua hàng</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_bought_time}}
+                            <p>{{date bought_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>NB Giao</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_seller_delivered_time}}
+                            <p>{{date seller_delivered_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Nhận hàng</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_received_from_seller_time}}
+                        <p>{{date received_from_seller_time}}</p>
+                        {{else}}
+                        <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Vận chuyển</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_transporting_time}}
+                        <p>{{date transporting_time}}</p>
+                        {{else}}
+                        <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-5 col-md-5 step2">
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Kiểm hàng</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_checked_time}}
+                            <p>{{date checked_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Chờ giao</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_waiting_delivery_time}}
+                            <p>{{date waiting_delivery_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Y/C giao</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_confirm_delivery_time}}
+                            <p>{{date confirm_delivery_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Giao hàng</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_delivered_time}}
+                            <p>{{date delivered_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="module-float">
+                    <div class="cus-left">
+                        <p>Khách nhận hàng</p>
+                    </div>
+                    <div class="cus-right">
+                        {{#if is_received_time}}
+                            <p>{{date received_time}}</p>
+                        {{else}}
+                            <p>---</p>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+    <div class="module-float click-open-item">
+        <div class="arrow-item _arrow-item _new">
+            <span class="up">Thu gọn <i class="fa fa-angle-up"></i></span>
+            <span class="down">Xem thêm <i class="fa fa-angle-down"></i></span>
+        </div>
+    </div>
+    </div>
+</script>
+
+<script id="_freight-bill" type="text/x-handlebars-template">
+    <li>{{freight_bill}}</li>
+</script>
+
+<script id="_item-filter-view" type="text/x-handlebars-template">
+    <a class="_clear-filter{{prefix}} {{name}}" href="javascript:">
+        <div class="item-step2" data-name="{{name}}" data-value="{{value}}">{{text}} <span>x</span></div>
+    </a>
+</script>
+
+<script id="_customer-info" type="text/x-handlebars-template">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <a href="{{buyer.detail_link}}" target="_blank">
+                        <img src="{{buyer.avatar}}" class="user-avatar">
+                    </a>
+                </div>
+
+                <div class="user-name">
+                    <a href="{{buyer.detail_link}}" target="_blank"><strong>{{buyer.last_name}} {{buyer.first_name}}</strong></a><span class="font-gray-dark">({{buyer.code}})</span><br />
+                    <span class="font-gray-dark">@{{buyer.username}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            {{#if teller}}
+            <a href="{{teller.detail_link}}" target="_blank" class="teller-avatar" data-toggle="tooltip" data-placement="top" title="<?php td('Mua hàng'); ?> {{teller.username}}">
+                <img src="{{teller.avatar}}">
+            </a>
+            {{/if}}
+            {{#if payment}}
+            <a href="{{payment.detail_link}}" target="_blank" class="payment-avatar" data-toggle="tooltip" data-placement="top" title="<?php td('Thanh toán'); ?> {{payment.username}}">
+                <img src="{{payment.avatar}}">
+            </a>
+            {{/if}}
+        </div>
+    </div>
+</script>

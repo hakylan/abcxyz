@@ -1,0 +1,5 @@
+<?php
+$msg = \Flywheel\Session\Session::getInstance()->getFlash('msg');
+if($msg):?>
+    <div class="infobox warning-bg"><?php echo $msg?></div>
+<?php endif?>

@@ -1,0 +1,193 @@
+@charset "UTF-8";
+/*
+ * jQuery File Upload Plugin CSS Example 8.8.2
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+.main-body .header .module-title .title{
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.main-body{
+    padding-top: 30px;
+}
+.bootstrap-select{
+    width: 100% !important;
+}
+.bootstrap-select button.dropdown-toggle{
+    height: 34px;
+    background: #ddd;
+}
+.selectpicker{
+    border-radius: 2px;
+}
+.bootstrap-select .dropdown-menu > li > a{
+    padding: 6px 10px;
+}
+.search .module-title .title{
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-top: -3px;
+}
+.search .module-title span{
+    float: left;
+    margin-right: 5px;
+}
+.search .module-title span.arrow{
+    width: 5px;
+    height: 18px;
+    margin-top: -2px;
+    background:  url(../images/border-title.png) no-repeat ;
+}
+.main-content{
+    margin-top: 20px;
+}
+.main-content .module-ct-left .item{
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.main-content .module-ct-left .item .left{
+    float: left;
+    width: 25%;
+}
+.main-content .module-ct-left .item .right{
+    float: left;
+    width: 75%;
+    position: relative;
+}
+.main-content .module-ct-left .item .right .input-dola{
+    height: 28px;
+    width: 150px;
+}
+.main-content .module-ct-left .item .right.avatar{
+    padding-left: 32px;
+}
+.main-content .module-ct-left .item .right .img-avatar{
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    border: 1px solid #dfdfdf;
+    overflow: hidden;
+    position: absolute;
+    top: -4px;
+    left: 0;
+}
+.main-content .module-ct-left .item .right .item-right,
+.main-content .module-ct-left .item .right .item-left{
+    float: left;
+    width: 50%;
+}
+.main-content .module-ct-left .item.openpopup button{
+    font-weight: normal;
+    padding-top: 0;
+}
+.main-content .module-ct-left .item.openpopup{
+    margin-top: 10px;
+}
+.module-ct-right{
+    border: 1px solid #dfdfdf;
+    border-radius: 2px;
+    background: #fafafa;
+}
+.module-ct-right .ct-right-header{
+    height: 40px;
+    background: #fff;
+    padding: 8px 30px;
+    position: relative;
+    margin-bottom: 10px;
+}
+.module-ct-right .ct-right-header .search > span{
+    float: left;
+    margin-right: 8px;
+    margin-top: 7px;
+}
+.module-ct-right .ct-right-header .search .module_float{
+    width: 250px;
+    position: relative;
+    height: 30px;
+}
+.module-ct-right .ct-right-header .search .module_float input{
+    float: left;
+    width: 100%;
+    height: 30px;
+}
+.module-ct-right .ct-right-header .search .module_float .submit{
+    position: absolute;
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    padding-top: 5px;
+    border: 1px solid #cccccc;
+    top: 0;
+    right: 0;
+    background: #ededed;
+    cursor: pointer;
+}
+.module-ct-right .ct-right-header .total p{
+    padding-top: 6px;
+}
+.module-ct-right .ct-right-header .border{
+    position: absolute;
+    background:  url(../images/border-bottom-chitiet.png) repeat-x ;
+    width: 100%;
+    left: 0;
+    bottom: 0px;
+    height: 5px;
+}
+.module-ct-right .ct-main{
+    padding: 15px;
+    min-height: 350px;
+}
+.module-ct-right .ct-main .item{
+    background: #fff;
+    position: relative;
+    padding-top: 7px;
+    padding-left: 15px;
+    height: 30px;
+    box-shadow: 0 1px 1px 0 #ddd;
+    margin-bottom: 10px;
+}
+.module-ct-right .ct-main .item .arrow-left{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #c5c7cb;
+}
+.module-ct-right .ct-main .item .icon{
+    position: absolute;
+    top: 4px;
+    font-size: 14px;
+    right: 5px;
+    width: 15px;
+    height: 15px;
+    color: #ecf3fa;
+    cursor: pointer;
+}
+.module-ct-right .ct-main .item .tooltip{
+    width: 120px !important;
+    font-size: 11px;
+}
+.tooltip-inner,
+.tooltip-arrow{
+    border-radius: 2px !important;
+}
+.module-ct-right .ct-main .item .icon:hover{
+    color: #428bca;
+}
+.module-ct-right .ct-main .item.v2 .title{
+    text-decoration: line-through;
+    color: #959595;
+}
+.print button{
+    height: 30px;
+    padding-top: 6px;
+}

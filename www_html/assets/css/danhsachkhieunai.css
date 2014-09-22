@@ -1,0 +1,60 @@
+.total{
+    padding-left: 30px;
+    margin-top: -25px;
+    margin-bottom: 20px;
+}
+.top-list{
+    padding-left: 30px;
+
+}
+.top-list > .module-float{
+    border-bottom: 1px solid #ccc;
+}
+.top-list .module-float.left{
+    position: relative;
+    padding-left: 50px;
+}
+.top-list .module-float .left-id{
+    position: absolute;
+    width: 50px;
+    top: 0px;
+    left: 0;
+    text-align: center;
+}
+.main-item{
+    height: 85px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.main-item .left > .module-float{
+    position: relative;
+    padding-left: 65px;
+}
+.main-item .left .avatar-img{
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    left: 0;
+    top: 2px;
+    overflow: hidden;
+}
+.main-item .left .avatar-img img{
+    display: inline-block;
+    width: 100%;
+}
+.main-item p{
+    padding-top: 15px;
+}
+.main-item .left .module-float p{
+    padding-top: 0;
+    margin-bottom: 3px;
+}
+.main-item .left .module-float{
+    margin-top: -2px;
+}
+.top-list .main-item{
+    border: none;
+}
+.top-list .main-item:nth-child(2n){
+    background: #f7f8f9;
+}

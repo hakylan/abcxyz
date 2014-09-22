@@ -1,0 +1,65 @@
+<section class="homesocial">
+<nav class="container">
+<div class="row">
+<div class="col-lg-9 col-md-9 col-sm-9 sidebar1">
+    <div class="seu-module">
+        <div class="module-inner">
+            <div class="module-title">
+                <p class="title">Cộng đồng</p>
+            </div>
+            <div class="module-ct">
+                <ul>
+                    <?php foreach ($posts AS $post):
+                        $imgs = explode(',', $post->images);
+                        $thumb = \Flywheel\Config\ConfigHandler::get('post_upload_url') . $imgs[0];
+                        ?>
+                        <li class="item">
+                            <div class="img">
+                                <img src="<?php echo $thumb ?>"/>
+                            </div>
+                            <div class="item-ct">
+                                <p class="title"><a
+                                        href="<?php echo $this->createUrl('post/' . $post->alias) ?>">
+                                        <?php echo $post->title ?>
+                                    </a>
+                                </p>
+
+                                <p class="social"><a
+                                        href="<?php echo $this->createUrl('category/' . $ca[$post->category_id]['slug']) ?>"><?php echo $ca[$post->category_id]['title'] ?></a><span
+                                        class="italic"> - <?php echo $post->created_date ?></span></p>
+
+                                <p class="content">
+                                    <?php echo TextHelper::word_limiter($post->content, 20) ?>
+                                </p>
+
+                                <div class="item-ct-bottom">
+                                    <span class="italic">
+                                        <fb:comments-count href=<?php echo $this->createUrl('post/' . $post->alias) ?>>0</fb:comments-count>  bình luận  -  </span>
+                                    <div class="raty rv_only" data-score="<?php echo $post->rate_avg?>"></div>
+                                    <a href="<?php echo $this->createUrl('post/' . $post->alias) ?>"
+                                       type="button" class="btn btn-blue btn-sm pull-right">Chi tiết</a>
+                                </div>
+                            </div>
+                        </li>
+
+                    <?php endforeach ?>
+                </ul>
+                <?php if ($paging): ?>
+                    <div class="pagination-page">
+                        <ul class="pagination">
+                            <?php echo $paging->render();?>
+                        </ul>
+                    </div>
+                <?php endif ?>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-3 col-md-3 col-sm-3 sidebar2">
+    <?php $this->widget('app.widget.leftcol', array('categories'=>$cats,'featured_posts'=>$featured_posts))?>
+</div>
+
+</div>
+</nav>
+</section>

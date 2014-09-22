@@ -1,0 +1,33 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$document->title = t("Kết đơn thành công");
+?>
+<section class="cartaddress-alert finish-step">
+    <nav class="container" >
+        <div class="row">
+            <div class="col-lg-10 col-md-12 col-md-offset-0 col-xs-10 col-xs-offset-1 col-lg-offset-1">
+                <div class="module-content">
+                    <div class="module-title">
+                        <p class="title uppercase"><span class="title-page">Bạn đã đặt cọc thành công!</span></p>
+                    </div>
+                    <div class="module-boby">
+                        <p class="normal">Bạn đã đặt cọc đơn hàng thành công. Chúng tôi sẽ đàm phán với người bán để mua những đơn hàng này. Thông thường quá trình này mất 1-2 ngày (thời gian này phụ thuộc vào người bán). Trong tất cả các trường hợp bạn sẽ nhận được thông báo trên đơn hàng tại trang
+                            <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderActive/default', array('status' => \Order::STATUS_DEPOSITED)) ?>" ><span > Đơn hàng đang mua hàng</span></a>.</p>
+
+                        <p class="normal">Trong thời gian từ 3-6 ngày hàng sẽ sẵn sàng để chuyển cho bạn. Bạn có thể tìm hiểu thêm quy trình vận hành
+                            <a href="http://hotro.seudo.vn/quy-dinh-chinh-sach/" target="_blank"><span > tại đây</span></a>.</p>
+
+                        <p class="normal">Hoặc bạn có thể đi đến các trang sau:</p>
+                        <div class="module-bottom">
+                            <a href="<?php echo $controller->createUrl('cart/default')?>" class="cart"><span class="arow"></span><span class="uppercase normal-blod">Quay lại giỏ hàng</span></a>
+                            <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderActive/default', array('status' => \Order::STATUS_DEPOSITED)) ?>" class="order"><span class="normal italic"> Đơn hàng đang mua hàng </span></a>
+                            <a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('OrderLink'); ?>" class="next"><span class="normal italic">Tiếp tục đặt hàng</span></a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</section>

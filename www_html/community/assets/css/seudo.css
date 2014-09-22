@@ -1,0 +1,19 @@
+.selectCountry{
+    padding: 7px;
+    margin-bottom: 10px;
+    width: 46%;
+}
+.password_strength{
+    float: right;
+    color: #BF362A;
+    font-weight: bold;
+}
+.password_strength.password_strength_2 {
+    color: #D84B37;
+}
+.password_strength.password_strength_3 {
+    color: #749619;
+}
+.password_strength.password_strength_4 {
+    color: #A0BA59;
+}

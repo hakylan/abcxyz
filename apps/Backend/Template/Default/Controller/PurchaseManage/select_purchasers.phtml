@@ -1,0 +1,41 @@
+
+<?php
+$is_select_purchasers = $controller->isAllowed(PERMISSION_PURCHASE_SELECT_TELLERS);
+$is_skips_purchasers = $controller->isAllowed(PERMISSION_PURCHASE_SKIPS_TELLERS);
+?>
+<?php if($paid_staff){
+    $avatar_paid_staff = Users::getAvatar32x($paid_staff);
+    ?>
+<div class="_div_tellers_detail" data-order-id="<?php echo $order->id ?>">
+    <a href="javascript:void(0)" style="float: left" class="someClass"
+       title="<?php echo $paid_staff->getFullName(); ?>">
+        <img src="<?php echo $avatar_paid_staff ?>" style="width: 25px;float: left"">
+    </a>
+    <span class="span_left"><?php echo $paid_staff->getFullName(); ?><br/>
+                    @<?php echo $paid_staff->username ?>
+                </span><br/>
+    <p style="float: left;clear: both">Nhận đơn:
+        <?php
+        if($order->paid_staff_assigned_time){
+            $warehouse_time = new DateTime($order->paid_staff_assigned_time);
+            echo $warehouse_time->format("H:i:s d:m:Y");
+        }else{
+            echo "00:00:00 00-00-0000";
+        }
+        ?>
+    </p>
+    <?php if($is_skips_purchasers){ ?>
+        <p style="float: left;clear: both">
+            <a href="javascript:void(0)" class="skips_purchasers"
+               data-tellers-id="<?php echo $paid_staff->id ?>" data-order-id="<?php echo $order->id ?>">Thu hồi</a>
+        </p>
+    <?php } ?>
+</div>
+
+<?php } ?>
+
+<script>
+    $(document).ready(function(){
+
+    });
+</script>

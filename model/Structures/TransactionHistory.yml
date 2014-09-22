@@ -1,0 +1,15 @@
+comment:
+    - '#TransactionHistory'
+    - '#Schema for TransactionHistory OMs'
+colums:
+    id: { name: id, type: integer, db_type: integer, alltypes: [integer], ntype: 'int(11) unsigned', length: 4, fixed: false, unsigned: true, values: {  }, primary: true, unique: false, default: null, notnull: true, auto_increment: true, extra: auto_increment }
+    transaction_uid: { name: transaction_uid, type: string, db_type: string, alltypes: [string], ntype: char(24), length: 24, fixed: true, unsigned: false, values: {  }, primary: false, unique: true, default: '', notnull: true, auto_increment: false, extra: '' }
+    type: { name: type, type: string, db_type: enum, alltypes: [enum, integer], ntype: 'enum(''IN'',''OUT'',''TRANSFER'',''ADJUSTMENT'')', length: 10, fixed: false, unsigned: false, values: [IN, OUT, TRANSFER, ADJUSTMENT], primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    account: { name: account, type: string, db_type: string, alltypes: [string], ntype: char(16), length: 16, fixed: true, unsigned: false, values: {  }, primary: false, unique: false, default: '', notnull: true, auto_increment: false, extra: '' }
+    note: { name: note, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    detail: { name: detail, type: string, db_type: string, alltypes: [string, clob], ntype: text, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: null, notnull: false, auto_increment: false, extra: '' }
+    amount: { name: amount, type: number, db_type: float, alltypes: [float], ntype: 'double(20,2)', length: 20, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0.00', notnull: true, auto_increment: false, extra: '' }
+    acc_balance: { name: acc_balance, type: number, db_type: float, alltypes: [float], ntype: 'double(20,2)', length: 20, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0.00', notnull: true, auto_increment: false, extra: '' }
+    completed_time: { name: completed_time, type: datetime, db_type: timestamp, alltypes: [timestamp], ntype: datetime, length: null, fixed: false, unsigned: false, values: {  }, primary: false, unique: false, default: '0000-00-00 00:00:00', notnull: true, auto_increment: false, extra: '' }
+infos:
+    _dbConnectName: transaction_history

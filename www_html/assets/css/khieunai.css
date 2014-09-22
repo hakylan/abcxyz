@@ -1,0 +1,378 @@
+.complaint .module{
+    float: left;
+    width: 100%;
+}
+.complaint .module-item-header{
+    background: #3f4652;
+    color: #fff;
+    padding: 10px 0;
+}
+.complaint .module-item-header p{
+    margin-bottom: 0; 
+}
+.complaint .module-item-header .left span{
+    float: left;
+    margin-right: 8px;
+}
+.complaint .module-item-header .left a{
+    color: #fff;
+}
+.complaint .module-item-header .left span.arow{
+    background: url("../images/doc-kn.png") no-repeat;
+    width: 2px;
+    height: 15px;  
+    margin-top: 4px;
+}
+.complaint .module-item-header .left span.public{   
+    margin-top: 4px;
+}
+.complaint .module-item-header .right span{
+    float: right;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+.complaint .module-item-header .right .arow{
+    background: url("../images/map-kn.png") no-repeat;
+    width: 13px;
+    height: 17px;
+}
+.complaint .module-item-ct .item-order .module{
+    position: relative;
+    padding-left: 100px;
+    min-height: 100px;
+    padding-top: 20px;
+    margin-bottom: 25px;
+}
+.complaint .module-item-ct .item-order .img-item{
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    top: 22px;
+    left: 0;
+}
+.complaint .module-item-ct .item-order .img-item img{
+    display: inline-block;
+    width: 100%;
+}
+.complaint .module-item-ct .total .top-total{
+    border-bottom: 1px solid #ccc;
+    padding-top: 5px;
+}
+.complaint .module-item-ct .total .top-total p{
+    font-size: 11px;
+    margin-bottom: 3px;
+}
+.complaint .module-item-ct{
+    border: 1px solid #ccc;
+    border-top: none;
+    min-height: 100px;
+}
+.complaint .module-item-ct .total .content-total > div{
+    padding-top: 30px;
+}
+.complaint .module-item-ct .total .content-total > div.v2{
+    padding-top: 20px;
+}
+.complaint .module-item-ct .total .content-total p{
+    margin-bottom : 3px;
+}
+.complaint .module-bottom{
+    margin-top: 20px;
+    text-align: center;
+}
+.complaint .module-bottom > button{
+    margin-left : 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.complaint .module-complaint .price-img{
+    padding-right: 40px;
+}
+.finish-poup input{
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05) inset;
+}
+.finish-poup .modal-title{
+    color: #032D3E;
+    font-size: 12px;
+}
+.finish-poup .modal-dialog{
+    width: 340px;
+}
+.finish-poup .modal-body{
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.complaint .step2 .module-title p{
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 0;
+}
+.complaint .step2 .module-title .title{
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+.complaint .step2 .module-title{
+    margin-bottom: 30px;
+}
+.chat .chat-box{
+    padding-left: 50px;
+    position: relative;
+    margin-bottom: 15px;
+}
+.chat .avatar{
+    height: 31px;
+    left: 5px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 31px;
+    border-radius: 2px;
+}
+.chat .avatar img{
+    display: inline-block;
+    width: 100%;
+}
+.chat .chat-box span.submit-chat{
+    color: #FFFFFF;
+    height: 31px;
+    overflow: hidden;
+    padding-top: 6px;
+    position: absolute;
+    right: 1px;
+    text-align: center;
+    top: 0px;
+    width: 52px;
+    background: #c53838;
+    cursor: pointer;
+    z-index: 1;
+}
+.chat .chat-box input{
+    padding-right: 65px;
+}
+.chat .item .avatar{
+    top: 2px;
+}
+.chat .item{
+     position: relative;
+     padding-left: 50px;
+     min-height: 50px;
+    border-bottom: 1px solid #efefef;
+    margin-bottom: 10px;
+ }
+.chat .item.no-border{
+    border: none;
+}
+.chat .item .name{
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+.chat .item .name span.time{
+    color: #999;
+    float: right;
+    font-weight: normal;
+}
+.chat .link-next{
+    background: #efefef;
+    height: 30px;
+    padding-top: 6px;
+    text-align: center;
+}
+.chat .link-next a{
+    color: #666666;
+}
+.complaint .module-complaint{
+    margin-top: 20px;
+}
+.complaint .back-link .link{
+    display: inline-block;
+    margin-top: 20px;
+}
+.complaint .back-link .link span,
+.complaint .back-link .link a{
+    float: left;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+.complaint .step2{
+    padding-bottom: 30px;
+}
+.complaint .back-link .link span{
+    background: url("../images/icons/link-khieunai.png") no-repeat ;
+    width: 3px;
+    height: 15px;
+    margin-top: 3px;
+}
+.module-complaint-step3{
+    background: #f8f8f8;
+    margin-top: 10px;
+    padding-top: 10px;
+    position: relative;
+}
+.module-complaint-step3 .opacity{
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    opacity: 0.5;
+    z-index: 1;
+}
+.module-complaint-step3 .module-title{
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.module-complaint-step3 .item-checklist{
+    float: left;
+    margin-right: 45px;
+}
+.module-complaint-step3 .item-checklist:last-child{
+    margin-right: 0px;
+}
+.module-complaint-step3 .item-checklist input{
+    float: left;
+    margin-top: 1px;
+    margin-right: 5px;
+}
+.module-complaint-step3 button{
+    margin-top: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-bottom: 40px;
+}
+.module-complaint-step3.slow .opacity{
+    display: none;
+}
+.complaint .step3 .module-title .title{
+    font-size: 24px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+.complaint .step3 .module-complaint{
+    margin-top: 40px;
+}
+.complaint .step3 .module-complaint .upload-img .top .title{
+    font-size: 18px;
+}
+.complaint .step3 .module-complaint .upload-img .top span.submit{
+    position: absolute;
+    width: 80px;
+    height: 31px;
+    border: 1px solid #dddddd;
+    top: 0;
+    right: 0;
+    background: #747474;
+    text-align: center;
+    padding-top: 6px;
+    color: #fff;
+    cursor: pointer;
+}
+.complaint .step3 .module-complaint .upload-img .top .price{
+    position: relative;
+}
+.complaint .step3 .module-complaint .upload-img .top{
+    margin-bottom: 10px;
+}
+.complaint .step3 .module-complaint .upload-img .top p{
+    margin-bottom: 5px;
+}
+.complaint .step3 .module-submit{
+    margin-bottom: 20px;
+}
+.complaint .step3 .module-submit .btn{
+     padding-left: 25px;
+     padding-right: 25px;
+     margin-left: 20px;
+     margin-bottom: 0;
+ }
+.complaint .step3 .module-submit button.btn-normal{
+    background: #fff;
+    border: 1px solid #dddddd;
+}
+.complaint .step3 .module-complaint .upload-img .top .note{
+    font-size: 12px;
+    font-weight: normal;
+    color: #959595;
+}
+.complaint .step3 .module-complaint .img-upload{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+.complaint .step3 .module-complaint .img-upload .item-img{
+    width: 16.667%;
+    padding-left: 5px;
+    padding-right: 5px;
+    float: left;
+    margin-bottom: 10px;
+}
+.right-images{
+    padding-left: 50px;
+}
+.complaint .step3 .module-complaint .img-upload .item-img form{
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+.complaint .step3 .module-complaint .img-upload .item-img form input{
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+    cursor: pointer;
+}
+.complaint .step3 .module-complaint .img-upload .item-img .module-float{
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+.complaint .step3 .module-complaint .img-upload .item-img .module-float img{
+    display: inline-block;
+    width: 100%;
+}
+.complaint .step3 .module-complaint .img-upload .item-img .module-float .upload{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    background: url("../images/icons/upload-img.png") no-repeat #ebebeb;
+    background-position: center;
+
+}
+.complaint .step3 .module-complaint .img-upload .item-img.new-upload .module-float{
+     opacity: 0.8;
+}
+.complaint .step3 .module-complaint .img-upload .item-img.new-upload .module-float:hover{
+    opacity: 1;
+}
+.complaint .step3 .module-complaint .img-upload .item-img.new-upload .remove{
+    display: none;
+}
+.complaint .step3 .module-complaint .img-upload .item-img .module-float .remove{
+    top: 0;
+    right: 0;
+    background: url("../images/close_hover.png") no-repeat scroll center center / 8px 8px  ;
+}
+
+.complaint .step3 .module-complaint .img-upload .item-img .module-float:hover .remove{
+    top: 0;
+    right: 0;
+    background: url("../images/close_hover.png") no-repeat scroll center center / 8px 8px #FFFFFF ;
+    opacity: 0.8;
+}
+body.modal-block.modal-open .modal{
+    margin-top: 0;
+}

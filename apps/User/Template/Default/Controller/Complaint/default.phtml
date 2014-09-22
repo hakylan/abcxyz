@@ -1,0 +1,360 @@
+<?php
+use \SeuDo\Main;
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$publicHomePath = Main::getHomeUrl();
+//echo $publicHomePath;
+
+$jsPath = $publicHomePath.'assets/js/';
+$jsBackendPath = $publicHomePath.'backend/assets/js/';
+$cssPath = $publicHomePath.'assets/css/';
+$imgPath = $publicHomePath.'assets/images/';
+//echo '$jsPath: ' . $jsPath;
+
+$document->addJs(Main::getUserUrl().'assets/js/handlebars-v1.3.0.js', 'TOP');
+$document->addJs($jsPath.'process/complaint.js',"TOP");
+//$document->addJs($jsPath.'autoNumeric.js');
+$document->addCss($cssPath.'khieunai.css');
+$document->addJs($publicHomePath . 'assets/js/jquery.wallform.min.js', 'TOP');
+?>
+
+<script type="text/javascript" src="<?php echo $jsPath; ?>autoNumeric.js"></script>
+<script type="text/javascript" src="<?php echo $jsPath; ?>numeral.js"></script>
+
+<div class="step2">
+    <div class="col-lg-12 col-md-12 col-xs-12 _step _step2 _step3" style="display: none">
+        <div class="module-title">
+            <p class="title bold-blue">Gửi khiếu nại thành công</p>
+            <p>Chúng tôi đã nhận được yêu cầu khiếu nại của Quý khách</p>
+            <p>Chúng tôi sẽ tiến hành xác minh và phản hồi lại Quý khách sớm nhất</p>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12 col-xs-12 _step _step1 _step2 _step3">
+    <div class="module-title">
+        <h3 class="title">
+            <p class="normal">Khiếu nại sản phẩm</p>
+        </h3>
+    </div>
+</div>
+<div class="col-lg-12 col-md-12 col-xs-12">
+    <div id="_product-view" class="_step _step1 _step2 _step3"></div>
+
+    <div class="module module-bottom _step _step1">
+        <button id="_btn_product_not_received" class="btn btn-blue" type="button"><span class="uppercase">Không nhận được hàng</span></button>
+        <button id="_btn_defective_product" class="btn btn-blue" type="button"><span class="uppercase">Sản phẩm lỗi</span></button>
+    </div>
+
+    <div class="module module-complaint-step3 _step _step1" id="_reasons">
+        <div class="col-lg-12col-md-12 col-xs-12">
+            <div class="module-float module-title">
+                <p>chọn lí do:</p>
+            </div>
+            <div class="module-float">
+
+                <div class="item-checklist _item-checklist">
+                    <input type="checkbox" name="_reasons" value="FALSE_COLOR_SIZE"> Sai màu sắc/ Kích thước
+                </div>
+                <div class="item-checklist _item-checklist">
+                    <input type="checkbox" name="_reasons" value="SAI_PATTERN_DESIGN"> Sai hoa văn/ Kiểu dáng
+                </div>
+                <div class="item-checklist _item-checklist">
+                    <input type="checkbox" name="_reasons" value="TEAR_HOLE"> Rách/ Thủng
+                </div>
+                <div class="item-checklist _item-checklist">
+                    <input type="checkbox" name="_reasons" value="DENTED_OR_BENT_BLUCKLED"> Bị móp hoặc cong vênh
+                </div>
+                <div class="item-checklist _item-checklist">
+                    <input type="checkbox" name="_reasons" value="WASHING_DIRTY_OR_NOT"> Dính bẩn không giặt được
+                </div>
+                <div class="item-checklist _item-checklist">
+                    <input type="checkbox" name="_reasons" value="MOLD"> Bị mốc
+                </div>
+                <div class="item-checklist _item-checklist">
+                    <input type="checkbox" name="_reasons" value="ORDER_REASON"> Lí do khác
+                </div>
+            </div>
+            <div class="module-float">
+                <button id="_btn-next-step" class="btn btn-blue pull-right disabled" type="button"><span class="uppercase">Tiếp tục</span></button>
+            </div>
+        </div>
+        <div class="opacity"></div>
+    </div>
+
+    <div class="module module-complaint">
+
+        <div class="col-lg-6 col-md-6 col-xs-6 col-lg-offset-3 _step _step2" style="display: none">
+            <div class="row back-link">
+                <p class="font-lags text-center">Số sản phẩm bạn đã nhận được: <span class="red-normal" id="_quantity">
+                    <?php echo $complaint_info['type'] == \Complaints::TYPE_PRODUCT_NOT_RECEIVED ? (float)$complaint_info['quantity'] : 0; ?></span>
+                </p>
+            </div>
+        </div>
+
+        <div class="module-float _step _step3" style="display: none">
+            <div class="row upload-img">
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                    <div class="module-float top">
+                        <div class="title module-float"><p>Nhập số tiền bạn muốn bồi thường (VND)</p></div>
+
+                        <div style="<?php echo $complaint_info['customer_amount_reimbursement'] == 0 ? '' : 'display:none;' ?>" id="_panel-update-customer-amount-reimbursement" class="price module-float">
+                            <span class="submit" id="_btn-customer-amount-reimbursement">Xác nhận</span>
+                            <input value="<?php echo $complaint_info['customer_amount_reimbursement']; ?>" data-a-dec="," data-a-sep="." type="text" id="_txt-customer-amount-reimbursement" class="form-control form-myinput" placeholder="Nhập tiền...">
+                        </div>
+
+                        <div style="<?php echo $complaint_info['customer_amount_reimbursement'] > 0 ? '' : 'display:none;' ?>" id="_show-customer-amount-reimbursement">
+                            <span class="bold-blue">
+                                <?php echo \Common::numberFormat($complaint_info['customer_amount_reimbursement']) ?><sup>đ</sup>
+                            </span>
+                            <?php if($complaint_info['status'] == \Complaints::STATUS_WAITING_RECEIVE){ ?>
+                                <a href="javascript:" id="_edit-customer-amount-reimbursement">Sửa</a>
+                            <?php } ?>
+                        </div>
+
+                    </div>
+
+                    <div class="module-float top">
+                        <?php if($complaint_info['recipient_amount_reimbursement'] > 0){ ?>
+                            <div class="title module-float"><p>Số tiền được duyệt</p></div>
+                            <div class="title module-float">
+                                <p class="red-bold">
+                                    <span id="_txt-recipient-amount-reimbursement"><?php echo \Common::numberFormat($complaint_info['recipient_amount_reimbursement']) ?></span><sup>đ</sup>
+                                </p>
+                            </div>
+                        <?php } ?>
+
+                        <?php if($complaint_info['status'] == \Complaints::STATUS_OUSTANDING){ ?>
+                            <div class="module-float module-submit" id="_panel-button-amount-censorship">
+                                <button style="margin-left: 0; margin-right: 15px" data-message-success="Đã đồng ý" data-type="ACCEPTED" data-message-doing="Đang xử lý" id="_btn-approval" type="button" class="_btn-action-customer btn btn-blue">Đồng ý</button>
+                                <button style="margin-left: 0; margin-right: 15px" data-message-success="Đã từ chối" data-type="REFUSED" data-message-doing="Đang xử lý" id="_btn-reject" type="button" class="_btn-action-customer btn btn-normal">Hủy</button>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <div class="col-lg-8 col-md-8 col-xs-8 right-images">
+                    <div class="module-float top">
+                    <div class="title module-float">
+                        <p>Ảnh khiếu nại <span class="note">(Tối đa 6 ảnh)</span></p>
+
+                    </div>
+
+                    <div class="module-float">
+                        <p class="alert alert-alert">Quý khách vui lòng upload ít nhất một ảnh để seudo có căn cứ xem xét xử lý.</p>
+                    </div>
+
+                    <div class="img-upload" id="_list-file-upload">
+
+                        <div class="item-img new-upload" id="_new-upload">
+                            <div class="module-float">
+                                <form action="<?php echo Main::getHomeUrl();?>user/complaint2/upload_image" enctype="multipart/form-data" method="post" id="imageform">
+                                    <input type="file" id="photoimg" name="photoimg" class="input-computer">
+                                    <span class="upload"></span>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-xs-6 col-lg-offset-3 _step _step2 _step3" style="display: none">
+            <div class="row chat">
+                <div class="modulle-float chat-box">
+                    <div class="avatar">
+                        <img src="<?php echo $current_user_avatar; ?>">
+                    </div>
+                    <span class="submit-chat" id="_btn-send-message">Gửi</span>
+                    <input type="text" id="_txt-message" class="form-control form-myinput" placeholder="Trao đổi với chúng tôi..">
+                </div>
+
+                <div id="_comments"></div>
+
+                <div page="1" id="_btn-load-comment-more" class="modulle-float link-next" style="display: none">
+                    <a>Xem thêm bình luận</a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-xs-6 col-lg-offset-3">
+            <div class="row back-link text-center">
+                <div class="link">
+                    <a href="<?php echo $publicHomePath; ?>user/order_init/default">Danh sách đơn hàng</a> <span class="arow"></span><a href="http://seudo.vn">Trang chủ</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="hidden module module-complaint">
+        <div class="col-lg-5 col-md-5 col-xs-5 price-img">
+            <div class="module top">
+                <p class="font-lagss">Nhập số tiền bạn muốn bồi thường (VND)</p>
+                <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="Nhập số tiền bạn muons bồi thường">
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-7 col-xs-7 ">
+            <div class="module-custom right">
+                <p class="font-lags">Nhập số tiền b</p>
+                <p class="pull-right"> <span class="normal-blod">Lạc Long Quân - Cầu Giấy - Hà Nội</span><span class="arow"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="_comment-view" type="text/x-handlebars-template">
+    {{# if is_chat}}
+        <div class="modulle-float item _comment-ct-view">
+            <div class="avatar">
+                <img src="{{img_path}}">
+            </div>
+            <p class="name"><span class="title">{{username}}</span><span class="time">{{sub_time}}</span></p>
+            <p>{{message}}</p>
+        </div>
+    {{/if}}
+
+    {{# if is_activity}}
+        <div class="modulle-float item">
+            <div class="avatar">
+            </div>
+            <p class="font-gray">{{sub_time}}</p>
+            <p class="font-gray">{{message}}</p>
+        </div>
+    {{/if}}
+
+    {{# if is_log}}
+        <div class="modulle-float item">
+            <div class="avatar">
+            </div>
+            <p class="font-gray">{{sub_time}}</p>
+            <p class="font-gray">{{message}}</p>
+        </div>
+    {{/if}}
+</script>
+
+<script id="_item-file-view" type="text/x-handlebars-template">
+    <div class="item-img _item-img">
+        <div class="module-float">
+            <img src="{{service_url}}/thumb/resize/w_100/{{path}}">
+            <span class="remove _remove-image" data-file-id="{{id}}"></span>
+        </div>
+    </div>
+</script>
+
+<script id="_info-product" type="text/x-handlebars-template">
+    <input type="hidden" id="_quantity-order" value="{{item.order_quantity}}">
+    <div class="module module-item-header">
+        <div class="col-lg-4 col-md-4 col-xs-4">
+            <div class="module-custom left">
+                <p class="normal">
+                    <a href="<?php echo Main::getHomeUrl();?>user/chi-tiet-don-hang/{{order.id}}" target="_blank">
+                        <span class="normal-blod uppercase font-lags">{{order.code}}</span><span class="arow">
+                    </a>
+                    </span><span class="normal public">Đang khiếu nại</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
+            <div class="module-custom right">
+                <p class="pull-right"> <span class="normal-blod">{{order.user_address.detail}}</span><span class="arow"></span></p>
+            </div>
+        </div>
+    </div>
+    <div class="module module-item-ct">
+        <div class="module main-ct">
+            <div class="col-lg-7 col-md-7 col-xs-7 item-order">
+                <div class="module">
+                    <div class="img-item">
+                        <a href="{{item.link}}" target="_blank">
+                            <img src="{{item.image}}" alt="{{item.title}}">
+                        </a>
+                    </div>
+                    <div class="module-content">
+                        <p class="title normal-blod">
+                            <a href="{{item.link}}">{{item.title}}</a>
+                        </p>
+                        <p class="normal">{{item.property_translated}} ({{item.weight}} kg)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-xs-5 total">
+                <div class="module">
+                    <div class="module top-total">
+                        <div class="col-lg-3 col-md-3 col-xs-3">
+                            <p class="italic normal-center">Số lượng</p>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-xs-3">
+                            <p class="italic normal-center">Đơn giá</p>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-3">
+                            <p class="italic normal-center">Đơn giá NDT</p>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-3">
+                            <p class="italic normal-center">Thành tiền</p>
+                        </div>
+                    </div>
+                    <div class="module content-total">
+                        <div class="col-lg-3 col-md-3 col-xs-3">
+                            <p class="normal-blod normal-center">{{item.order_quantity_format}}</p>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-xs-3">
+                            <p class="normal-blod normal-center">{{item.price_format}}<sup>đ</sup></p>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-3">
+                            <p class="normal-blod normal-center">{{item.price_cny_format}}<sup>¥</sup></p>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-xs-3">
+                            <p class="red-bold normal-center font-lag">{{item.amount_format}}<sup>đ</sup></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</script>
+
+
+<!--     poup thành công                     -->
+<div style="display: none;" class="modal fade finish-poup" id="myModalfinish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×<span class="toll-close">Nhấn Esc để đóng</span></button>
+                <h4 class="modal-title" id="myModalLabel"><span class="uppercase">Nhập số lượng hàng bạn nhận được: </span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                    <p class="normal">
+                        <input type="text" placeholder="Nhập số lượng.." class="form-control form-myinput focusnew" id="_txt-quantity-received">
+                    </p>
+                    <p class="text-left">Nếu không nhận được hàng vui lòng điền số 0</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-12 col-md-12 col-xs-12 font-red red-normal" id="_message-alert-error"></div>
+                <div class="col-lg-6 col-md-6 col-sm-6 pull-right">
+                    <button type="button" id="_btn-confirm-quantity-received" class="btn btn-blue uppercase">Xác Nhận</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--end poup thành công-->
+
+
+
+
+
+
+

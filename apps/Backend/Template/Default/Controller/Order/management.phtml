@@ -1,0 +1,462 @@
+<?php
+use Flywheel\View\Render;
+/** @var Render $this */
+
+$title = t('Quản Lý Đơn Hàng');
+$this->document()->title .= $title;
+
+$this->document()->addCss('css/order.css');
+$this->document()->addCss('fonts/font-awesome/css/font-awesome.min.css');
+$this->document()->addCss('css/loading.css');
+
+$this->document()->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$this->document()->addJs('js/process/order.js');
+//$this->document()->addJs('js/process/common.js');
+$this->document()->addJs('js/jqueryui.js');
+$this->document()->addJsVar('get_orders_url', $this->createUrl('order/management/get_orders'));
+$this->document()->addJsVar('order_management_page', $this->createUrl('order/management'));
+
+$this->document()->addJsVar('LinkSearchFreightBill', $this->createUrl('order/management/SearchFreightBill'));
+$this->document()->addJsVar('LinkSearchShippingMobile', $this->createUrl('order/management/SearchShippingMobile'));
+$this->document()->addJsVar('LinkSearchCustomer', $this->createUrl('order/management/SearchCustomer'));
+
+$this->document()->addJsVar('today', date('d/m/Y'));
+
+$this->document()->addJsVar('STATUS_DEPOSITED', \Order::STATUS_DEPOSITED);
+$this->document()->addJsVar('STATUS_BUYING', \Order::STATUS_BUYING);
+$this->document()->addJsVar('STATUS_NEGOTIATING', \Order::STATUS_NEGOTIATING);
+$this->document()->addJsVar('STATUS_WAITING_BUYER_CONFIRM', \Order::STATUS_WAITING_BUYER_CONFIRM);
+$this->document()->addJsVar('STATUS_NEGOTIATED', \Order::STATUS_NEGOTIATED);
+$this->document()->addJsVar('STATUS_BOUGHT', \Order::STATUS_BOUGHT);
+$this->document()->addJsVar('STATUS_SELLER_DELIVERY', \Order::STATUS_SELLER_DELIVERY);
+$this->document()->addJsVar('STATUS_RECEIVED_FROM_SELLER', \Order::STATUS_RECEIVED_FROM_SELLER);
+$this->document()->addJsVar('STATUS_CHECKING', \Order::STATUS_CHECKING);
+$this->document()->addJsVar('STATUS_CHECKED', \Order::STATUS_CHECKED);
+$this->document()->addJsVar('STATUS_TRANSPORTING', \Order::STATUS_TRANSPORTING);
+$this->document()->addJsVar('STATUS_WAITING_FOR_DELIVERY', \Order::STATUS_WAITING_FOR_DELIVERY);
+$this->document()->addJsVar('STATUS_RECEIVED', \Order::STATUS_RECEIVED);
+$this->document()->addJsVar('STATUS_DELIVERING', \Order::STATUS_DELIVERING);
+$this->document()->addJsVar('STATUS_COMPLAINT', \Order::STATUS_COMPLAINT);
+$this->document()->addJsVar('STATUS_OUT_OF_STOCK', \Order::STATUS_OUT_OF_STOCK);
+$this->document()->addJsVar('STATUS_CANCELLED', \Order::STATUS_CANCELLED);
+$this->document()->addJsVar('STATUS_INIT', \Order::STATUS_INIT);
+$this->document()->addJsVar('PER_PAGE', \Order::PER_PAGE);
+
+$searchForm = new \Flywheel\Html\Form('search-frm');
+
+$tabs = array(
+    \Order::STATUS_INIT => "CHƯA MUA",
+    \Order::STATUS_DEPOSITED => "ĐÃ ĐẶT CỌC",
+    \Order::STATUS_WAITING_FOR_APPROVAL => "CHỜ DUYỆT",
+    \Order::STATUS_BUYING => "ĐANG MUA",
+    \Order::STATUS_NEGOTIATING => "ĐÃ ĐẶT HÀNG",
+    \Order::STATUS_WAITING_BUYER_CONFIRM => "CHỜ XÁC NHẬN",
+    \Order::STATUS_BUYER_CONFIRMED => "KHÁCH XÁC NHẬN",
+    \Order::STATUS_NEGOTIATED => "CHỜ THANH TOÁN",
+    \Order::STATUS_BOUGHT => "ĐÃ MUA HÀNG",
+    \Order::STATUS_SELLER_DELIVERY => "NGƯỜI BÁN GIAO",
+    \Order::STATUS_RECEIVED_FROM_SELLER => "NHẬN HÀNG",
+    \Order::STATUS_CHECKING => "ĐANG KIỂM HÀNG",
+    \Order::STATUS_CHECKED => "ĐÃ KIỂM HÀNG",
+    Order::STATUS_TRANSPORTING => "VẬN CHUYỂN",
+    \Order::STATUS_WAITING_FOR_DELIVERY => "CHỜ GIAO HÀNG",
+    \Order::STATUS_CUSTOMER_CONFIRM_DELIVERY => "YÊU CẦU GIAO HÀNG",
+    \Order::STATUS_DELIVERING => "ĐANG GIAO HÀNG",
+    \Order:: STATUS_RECEIVED => "KHÁCH NHẬN HÀNG",
+    \Order::STATUS_COMPLAINT => "KHIẾU NẠI KHÁC HÀNG",
+    \Order::STATUS_CANCELLED => "HỦY BỎ",
+    \Order::STATUS_OUT_OF_STOCK => "HẾT HÀNG"
+);
+
+$tabsTimeOrder = array(
+    \Order::STATUS_INIT => "Tạo đơn",
+    \Order::STATUS_DEPOSITED => "Đặt cọc",
+    \Order::STATUS_BOUGHT => "Mua hàng",
+    \Order::STATUS_SELLER_DELIVERY => "Người bán phát hàng",
+    \Order::STATUS_CHECKING => "Kiểm hàng",
+    \Order::STATUS_WAITING_FOR_DELIVERY => "Chờ giao hàng",
+    \Order::STATUS_CUSTOMER_CONFIRM_DELIVERY => "Khách y/c giao",
+    \Order:: STATUS_RECEIVED => "Khách nhận hàng"
+);
+?>
+<div id="page-title" class="seu-main-header">
+    <div class="container">
+        <h3 class="main-header-title">
+            <?php echo $title; ?>
+        </h3>
+    </div>
+</div>
+
+<div id="page-content" class="seu-page-content order-management no-header">
+    <div class="container">
+        <!-- Search -->
+        <div class="row bottom-margin">
+            <?php
+            $searchFrm = new \Flywheel\Html\Form('search-frm', $this->createUrl('order/management'), 'GET');
+            $searchFrm->setHtmlOption(array(
+                'id' => 'search-frm'
+            ));
+            $searchFrm->beginForm();
+            ?>
+
+            <div class="col-lg-12">
+                <h4><?php td('Lọc Đơn Hàng'); ?></h4>
+            </div>
+
+            <div class="row-form ">
+                <div class="form-input col-md-4">
+                    <input name="keyword" value="<?php echo $keyword ?>" type="text" placeholder="<?php td('Tìm theo mã đơn hàng, mã đơn site gốc hoặc user mua hàng v.v....'); ?>">
+                </div>
+                <div class="form-input col-md-2">
+                    <input name="freight_bill" value="<?php echo $freight_bill ?>" type="text" placeholder="<?php td('Mã vận đơn'); ?>">
+                </div>
+                <div class="form-input col-md-2">
+                    <input name="customer" value="<?php echo $customer; ?>" type="text" placeholder="<?php td('Mã khách hoặc tên đăng nhập'); ?>">
+                </div>
+                <div class="form-input col-md-2">
+                    <input name="shipping_mobile" value="<?php echo $shipping_mobile; ?>" type="text" placeholder="<?php td('Số điện thoại nhận hàng'); ?>">
+                </div>
+                <div class="form-input col-md-2">
+                    <?php
+                    $searchForm->selectOption('homeland', $homeland)
+                        ->addOption('Nguồn hàng', '')
+                        ->addOption('taobao.com', 'TAOBAO')
+                        ->addOption('tmall.com', 'TMALL')
+                        ->addOption('1688.com', '1688')
+                        ->addOption('eelly.com', 'EELLY.COM')
+                        ->display();
+                    ?>
+                </div>
+                <input name="page" value="<?php echo $page; ?>" type="hidden">
+                <input name="status" value="<?php echo $status; ?>" type="hidden">
+                <input name="ordering" value="<?php echo $ordering; ?>" type="hidden">
+                <input name="search_date" value="<?php echo $search_date; ?>" type="hidden" />
+                <input name="longer_day" value="<?php echo $longer_day; ?>" type="hidden" />
+                <input name="search_bill" value="<?php echo $search_bill; ?>" type="hidden" />
+                <input name="sort_order" value="<?php echo $sort_order; ?>" type="hidden" />
+                <input name="search_complain_seller" value="<?php echo $search_complain_seller; ?>" type="hidden" />
+            </div>
+
+            <div class="row-form" id="advance-filter">
+                <div class="col-lg-2 col-md-3" id="ordering-option-placeholder">
+                    <h5>Thời gian sắp xếp</h5>
+                    <ul id="_order-time">
+                        <?php
+                            foreach($tabsTimeOrder as $tabKey => $tabValue){
+                                ?>
+                                    <li><a href="javascript:void(0)" data-ordering="<?php echo $tabKey; ?>" data-toggle="tab"><?php echo $tabValue; ?></a></li>
+                                <?php
+                            }
+                        ?>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <h5>Cách sắp xếp</h5>
+                    <ul id="_sort_order">
+                        <li><a href="javascript:void(0)" data-sort="ASC" data-toggle="tab">Cũ trước</a></li>
+                        <li><a href="javascript:void(0)" data-sort="DESC" data-toggle="tab">Mới trước</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-3"  id="date-filter-placeholder">
+                    <h5>Lọc trong vòng</h5>
+                    <ul id="_search-date">
+                        <li><a href="javascript:void(0)" data-date="CURRENT_DAY" data-toggle="tab">Hôm nay</a></li>
+                        <li><a href="javascript:void(0)" data-date="THREE_DAY" data-toggle="tab">3 ngày</a></li>
+                        <li><a href="javascript:void(0)" data-date="FIVE_DAY" data-toggle="tab">5 ngày</a></li>
+                        <li><a href="javascript:void(0)" data-date="FIFTEEN_DAY" data-toggle="tab">15 ngày</a></li>
+                    </ul>
+                    <h5>lâu hơn</h5>
+                    <ul id="_search-date-longer">
+                        <li><a href="javascript:void(0)" data-longer-day="LONGER_THREE_DAY" data-toggle="tab">3 ngày</a></li>
+                        <li><a href="javascript:void(0)" data-longer-day="LONGER_FIVE_DAY" data-toggle="tab">5 ngày</a></li>
+                        <li> <a href="javascript:void(0)" data-longer-day="LONGER_FIFTEEN_DAY" data-toggle="tab">15 ngày</a></li>
+                        <li><a href="javascript:void(0)" data-longer-day="LONGER_THIRTY_DAY" data-toggle="tab">một tháng</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-3">
+                    <div class="col-lg-12 col-md-4 form-label"><label for="date_from">Hoặc chính xác từ</label></div>
+                    <div class="col-lg-12 col-md-8 form-input"><input name="date_from" id="date_from" value="<?php echo $date_from ?>" type="input" placeholder="Ngày/Tháng/Năm"></div>
+                    <div class="col-lg-12 col-md-4 form-label"><label for="date_to">đến</label></div>
+                    <div class="col-lg-12 col-md-8 form-input"><input name="date_to" id="date_to" value="<?php echo $date_to ?>" type="input" placeholder="Ngày/Tháng/Năm"></div>
+                </div>
+                <div class="col-lg-2 col-md-3">
+                    <h5>Tình trạng</h5>
+                    <ul id="_search-bill">
+                        <li><a href="javascript:void(0)" data-bill="0,1" data-toggle="tab">Tất cả</a></li>
+                        <li><a href="javascript:void(0)" data-bill="0" data-toggle="tab">Chưa có vận đơn</a></li>
+                        <li><a href="javascript:void(0)" data-bill="1" data-toggle="tab">Có vận đơn</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-3">
+                    <h5>Khiếu nại</h5>
+                    <ul id="_search-complaint">
+                        <li><a href="javascript:void(0)" data-complaint-seller="1" data-toggle="tab">Khiếu nại người bán</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <?php $searchForm->endForm(false); ?>
+        <!--/search -->
+
+        <!-- Tabs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <?php $class = ($status == "")? 'primary-bg' : 'ui-state-default'; ?>
+                <a href="javascript:;" class="btn small <?php echo $class; ?> _tabs-select _total-data" data-value="">
+                    <span class="button-content"><?php td('TẤT CẢ') ;?></span>
+                </a>
+
+                <?php
+                foreach($tabs as $statusConst => $statusTitle){
+                    $classStatusChecked = "ui-state-default";
+                    if($status != ""){
+                        $arrStatus = explode(",", $status);
+                        foreach((array)$arrStatus as $s){
+                            $s = trim($s);
+                            $statusConst = trim($statusConst);
+                            if($s == $statusConst){
+                                $classStatusChecked = "primary-bg";
+                            }
+                        }
+                    }
+                    ?>
+                    <a href="javascript:;" class="btn small <?php echo $classStatusChecked; ?> _tabs-select _data" data-value="<?php echo $statusConst; ?>">
+                        <span class="button-content"><?php echo $statusTitle; ?></span>
+                    </a> &nbsp;
+                <?php
+                }
+                ?>
+            </div>
+        </div>
+        <!--/ tabs -->
+
+        <!-- Orders -->
+        <div class="row">
+            <!-- Errors -->
+            <div class="infobox col-lg-6 error-bg center-margin hidden" id="_error-placeholder">
+                <div class="large btn font-orange info-icon">
+                    <i class="glyph-icon icon-warning"></i>
+                </div>
+                <h4><?php td('Có lỗi xảy ra'); ?></h4>
+                <p></p>
+            </div>
+            <!--/errors -->
+        </div>
+
+        <div class="row">
+            <!-- Errors -->
+            <div style="display: none;" class="infobox col-lg-6 center-margin" id="_warning-placeholder">
+                <div class="large btn font-orange info-icon">
+                    <i class="glyph-icon icon-warning"></i>
+                </div>
+                <h4><?php td('Đang đồng bộ dữ liệu với máy chủ. Vui lòng chờ trong giây lát...'); ?></h4>
+                <p></p>
+            </div>
+            <!--/errors -->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 bottom-margin clearfix">
+                <div class="col-lg-2 result-order" id="_result-count">
+                    Có vận đơn <strong class="font-blue">0</strong> đơn hàng
+                </div>
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="orders-list-header font-gray col-lg-12">
+                <div class="col-lg-3">
+                    <div class="col-lg-2">ID</div>
+                    <div class="col-lg-10"><?php td('Đơn Hàng'); ?></div>
+                </div>
+
+                <div class="col-lg-1">
+                    <?php td('Tình Trạng'); ?>
+                </div>
+
+                <div class="col-lg-1">
+                    <?php td('Kho'); ?>
+                </div>
+
+                <div class="col-lg-1">
+                    <?php td('Giá trị'); ?>
+                </div>
+
+                <div class="col-lg-1">
+                    <?php td('Sản Phẩm'); ?>
+                </div>
+
+                <div class="col-lg-2">
+                    <?php td('Người bán'); ?>
+                </div>
+
+                <div class="col-lg-3">
+                    <?php td('Khách hàng'); ?>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="_orders-list-placeholder">
+        </div>
+        <!-- Paging -->
+        <div class="row">
+            <div class="col-lg-offset-5 col-lg-2">
+                <a href="javascript:;" class="btn large primary-bg center-margin _load-more-orders" data-target="<?php echo $page+1 ?>">
+                    <span class="button-content uppercase">
+                        <span><?php td('TẢI THÊM ĐƠN'); ?></span> &nbsp;&nbsp;&nbsp;
+                        <i class="glyph-icon icon-chevron-circle-down"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!--/paging-->
+    </div>
+</div>
+
+<script id="_orders_list" type="text/x-handlebars-template">
+    <div class="orders-list">
+        {{#each orders}}
+        {{>list}}
+        {{/each}}
+    </div>
+</script>
+
+<script id="_list-partial" type="text/x-handlebars-template">
+    <div class="bottom-margin order-item-placeholder _order-item-placeholder" id="_order-item-{{id}}">
+        <div class="order-info col-lg-12">
+            <div class="col-lg-3">
+                <div class="col-lg-2"><small>{{id}}</small></div>
+                <div class="col-lg-10">
+                    <h5><a href="{{detail_link}}" target="_blank">{{code}}</a></h5>
+                    <div class="col-lg-1 font-gray-dark inline-header">
+                        <?php td('VĐ'); ?>
+                    </div>
+                    <div class="col-lg-11 freight-bill-list">
+                        {{#if packages}}
+                        <ul>
+                            {{#each packages}}
+                            {{>fb_list}}
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-1">
+                <small class="order-status-{{status}}">{{order_status status}}</small> <br />
+                {{#if need_checking}}
+                <small class="font-gray-dark">Có Kiểm hàng</small> <br />
+                {{else}}
+                <small class="font-gray-dark">Không Kiểm</small> <br />
+                {{/if}}
+                {{#if check_wood_crating}}
+                <small class="font-gray-dark">Có đóng gỗ</small>
+                {{/if}}
+            </div>
+            <div class="col-lg-1 font-gray-dark font-bold">{{destination_warehouse}}</div>
+            <div class="col-lg-1">
+                <p>Giá trị: <span class="_money-amount" data-amount="{{total_amount}}">{{total_amount}}</span></p>
+                {{#if direct_fill_amount_cny}}
+                <p><span class="amount_cny">{{direct_fill_amount_cny}}<sup>¥</sup></span></p>
+                {{/if}}
+            </div>
+            <div class="col-lg-1">
+                {{recive_quantity}}/{{pending_quantity}}/{{order_quantity}} <br />
+                {{#if weight}}
+                {{weight}} kg
+                {{/if}}
+            </div>
+
+            <div class="col-lg-2">
+                <strong>{{seller_name}}</strong>
+                <img src="{{icon_homeland seller_homeland}}"><br>
+                {{#if name_recipient_origin}}
+                <p class="font-gray-dark">
+                    <?php td('<span class="left pull-left">User nhận: </span>'); ?><span class="right pull-left">{{name_recipient_origin}}</span>
+                </p>
+                {{/if}}
+                {{#if account_purchase_origin}}
+                <p class="font-gray-dark">
+                    <?php td('<span class="left pull-left">User mua: </span>'); ?><span class="right pull-left">{{account_purchase_origin}}</span>
+                </p>
+                {{/if}}
+            </div>
+            <div class="col-lg-3">
+                {{#if buyer}}
+                {{>customer_info}}
+                {{else}}
+                <small class="font-gray-dark"><?php td('Không có quyền xem'); ?></small>
+                {{/if}}
+            </div>
+        </div>
+
+        <div class="order-bottom col-lg-12">
+            <div class="col-lg-3 font-gray-dark">
+                Mã đơn hàng gốc: <strong>{{invoice}}</strong><br>
+                Hóa đơn Alipay: <strong>{{alipay}}</strong>
+            </div>
+            <div class="col-lg-2 font-gray-dark">
+                Tạo đơn: <strong>{{date created_time}}</strong><br>
+                Đặt cọc: <strong>{{date deposit_time}}</strong>
+            </div>
+
+            <div class="col-lg-2 font-gray-dark">
+                Mua hàng: <strong>{{date buying_time}}</strong><br>
+                Thanh toán: <strong>{{date bought_time}}</strong>
+            </div>
+
+            <div class="col-lg-2 font-gray-dark">
+                Giao khách: <strong>{{date delivered_time}}</strong><br>
+                Khiếu nại:
+            </div>
+
+            <div class="col-lg-2 font-gray-dark">
+                Đã kiểm hàng: <strong>{{date checked_time}}</strong><br>
+                Đang kiểm hàng: <strong>{{date checking_time}}</strong>
+            </div>
+
+            <div class="col-lg-1 font-gray-dark cancelled_time">
+                <p>Hủy bỏ: <strong>{{date cancelled_time}}</strong></p>
+                <p>Hết hàng: <strong>{{date out_of_stock_time}}</strong></p>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="_freight-bill" type="text/x-handlebars-template">
+    <li>{{freight_bill}}</li>
+</script>
+
+<script id="_customer-info" type="text/x-handlebars-template">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <a href="{{buyer.detail_link}}" target="_blank">
+                        <img src="{{buyer.avatar}}" class="user-avatar">
+                    </a>
+                </div>
+
+                <div class="user-name">
+                    <a href="{{buyer.detail_link}}" target="_blank"><strong>{{buyer.last_name}} {{buyer.first_name}}</strong></a><span class="font-gray-dark">({{buyer.code}})</span><br />
+                    <span class="font-gray-dark">@{{buyer.username}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            {{#if teller}}
+            <a href="{{teller.detail_link}}" target="_blank" class="teller-avatar" data-toggle="tooltip" data-placement="top" title="<?php td('Mua hàng'); ?> {{teller.username}}">
+                <img src="{{teller.avatar}}">
+            </a>
+            {{/if}}
+            {{#if payment}}
+            <a href="{{payment.detail_link}}" target="_blank" class="payment-avatar" data-toggle="tooltip" data-placement="top" title="<?php td('Thanh toán'); ?> {{payment.username}}">
+            <img src="{{payment.avatar}}">
+            </a>
+            {{/if}}
+        </div>
+    </div>
+</script>

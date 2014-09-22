@@ -1,0 +1,142 @@
+<?php
+use SeuDo\Main;
+$document = $this->document();
+$publicPath = Main::getHomeUrl();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/';
+$document->addJs($jsPath . 'process/order_active.js', 'BOTTOM');
+
+$router = Main::getUserRouter();
+$_controllerName    = $router->getCamelControllerName();
+$_actionName        = $router->getAction();
+
+$user = @$user;
+
+$url = Main::getUserRouter()->createUrl('order_active/load_order_active');
+?>
+<script>
+    var OrderDeletedUrl = '<?php echo Main::getUserRouter()->createUrl('OrderDeleted/default') ?>';
+    var UrlLoadOrderActive = '<?php echo $url ?>';
+    var OrderActiveCount = '<?php echo Main::getUserRouter()->createUrl('OrderActive/count_order') ?>'
+</script>
+
+<div class="profile-user">
+
+    <div class="avatar">
+        <div class="img-avatar">
+            <img src="<?php echo \Users::getAvatar128x($user);?>" >
+            <!--                <div class="box-shadow"></div>-->
+        </div>
+        <div class="sidebar-user-header">
+            <p class="title"><?php echo $user->getFirstName();?></p>
+            <p class="normal"><?php echo '@'.$user->getUsername();?></p>
+
+        </div>
+        <div class="mabottom">
+            <p class="normal">Mã: <span class="uppercase normal-blod"><?php echo ($user->getCode()!='')?($user->getCode()):'';?></span>
+            <div  class="chatmenuacc"><span><?php echo ($user->getTtAddress()!='')?$user->getTtAddress():$user->getNationality();?></span><span class="icon-arow"></span></div>
+            </p>
+        </div>
+    </div>
+    <div class="item-sidebar-menu">
+        <div class="menu-title order">
+            <p class="title uppercase">đơn hàng</p>
+            <span class="arow-title"></span>
+        </div>
+        <ul class="sidebar-user">
+            <li <?php if($_controllerName === 'OrderInit'){ ?>class="active"<?php } ?>>
+
+                <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderInit/default');?>"
+                   class="_order_count" data-status="<?php echo Order::STATUS_INIT ?>"> Chờ thanh toán<span class="count">0</span>
+                    <span class="arow"></span></a>
+            </li>
+            <li <?php if($_controllerName === 'OrderActive'){ ?>class="active"<?php } ?>>
+                <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('order_active/default');?>"
+                   class="_order_count" class="_order_count" data-status="<?php echo "OrderActive" ?>">
+                     Đang hoạt động<span class="count">0</span>
+                    <span class="arow"></span></a>
+            </li>
+            <li <?php if($_controllerName === 'OrderGet'){ ?>class="active"<?php } ?>>
+                <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderGet/default');?>"
+                   class="_order_count" title="Kết thúc" data-status="<?php echo Order::STATUS_RECEIVED ?>"> Kết thúc<span class="count">0</span>
+                    <span class="arow"></span></a>
+            </li>
+            <li <?php if($_controllerName === 'OrderDeleted'){ ?>class="active"<?php } ?>>
+                <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderDeleted/default');?>" title="Hết hàng / Hủy"
+                   class="_order_count" data-status="DeletedOut"> Hết hàng / Hủy<span class="count">0</span>
+                    <span class="arow"></span></a>
+            </li>
+            <li <?php if($_controllerName === 'OrderConfirm'){ ?>class="active"<?php } ?>>
+                <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderConfirm/default');?>" title="Đơn hàng xác nhận"
+                   class="_order_count" data-status="<?php echo Order::CUSTOMER_CONFIRM_WAIT ?>"> Xác nhận <span class="count">0</span>
+                    <span class="arow"></span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="item-sidebar-menu">
+        <div class="menu-title exchange">
+            <p class="title uppercase">giao dịch</p>
+            <span class="arow-title"></span>
+        </div>
+        <ul class="sidebar-user">
+            <li class="<?php echo ($_controllerName === 'UserTransaction' && $_actionName === 'default')?'active':'';?>">
+                <a href="<?php echo Main::getUserRouter()->createUrl('UserTransaction/default');?>">Lịch sử giao dịch
+                    <span class="arow"></span></a>
+            </li>
+            <li class="<?php echo ($_controllerName == 'UserTransaction' && $_actionName == 'transaction_form')?'active':'';?>">
+                <a href="<?php echo Main::getUserRouter()->createUrl('user_transaction/transaction_form');?>"> Nạp tiền
+                    <span class="arow"></span></a>
+            </li>
+<!--            <li >-->
+<!--                <a href="#">Rút tiền</a>-->
+<!--            </li>-->
+
+        </ul>
+    </div>
+<!--    <div class="item-sidebar-menu">-->
+<!--        <div class="menu-title">-->
+<!--            <p class="title uppercase">lịch sử</p>-->
+<!--        </div>-->
+<!--        <ul class="sidebar-user">-->
+<!--            <li >-->
+<!--                <a href="#">Sản phẩm đã mua</a>-->
+<!--            </li>-->
+<!--            <li >-->
+<!--                <a href="#">Sản phẩm theo doi</a>-->
+<!--            </li>-->
+<!--            <li >-->
+<!--                <a href="#">Người bán quan tâm</a>-->
+<!--            </li>-->
+<!---->
+<!--        </ul>-->
+<!--    </div>-->
+    <div class="item-sidebar-menu">
+        <div class="menu-title user">
+            <p class="title uppercase">cá nhân</p>
+            <span class="arow-title"></span>
+        </div>
+        <ul class="sidebar-user">
+            <li class="<?php echo ($_controllerName == 'User' && $_actionName == 'detail')?'active':'';?>">
+                <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('user/detail')?>"> Thông tin
+                    <span class="arow"></span></a>
+            </li>
+            <li class="<?php echo ($_controllerName == 'User' && $_actionName == 'password_profile')?'active':'';?>">
+                <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('user/password_profile')?>"> Đổi mật khẩu
+                    <span class="arow"></span></a>
+            </li>
+            <li class="<?php if($_controllerName == 'UserAddress') { echo 'active' ; } ?>">
+                <a href="<?php echo Main::getUserRouter()->createUrl("UserAddress/default")  ?>"> Quản lý địa chỉ nhận hàng
+                    <span class="arow"></span></a>
+            </li>
+            <li class="<?php if($_controllerName == 'AccumulationScore') { echo 'active' ; } ?>">
+                <a href="<?php echo Main::getUserRouter()->createUrl("accumulation_score/default")  ?>"> Điểm thành viên
+                    <span class="arow"></span></a>
+            </li>
+            <li>
+                <a href="<?php echo \SeuDo\Main::getHomeRouter()->createUrl('login/logout');?>/"> Thoát
+                    <span class="arow"></span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="shadow-profile"></div>
+</div>

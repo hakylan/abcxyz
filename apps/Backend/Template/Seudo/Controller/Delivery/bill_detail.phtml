@@ -1,0 +1,271 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 6/17/14
+ * Time: 6:57 PM
+ */
+$document = $controller->document();
+$document->addCss( "css/style-chitietphieu.css" );
+$document->addJs( 'js/autoNumeric.js' );
+$document->addJs( 'js/process/bill_detail.js', "TOP" );
+$document->addJsVar( "save_real_cod_url", $this->createUrl( 'Delivery/BillDetail/SaveRealCod' ) );
+
+$domestic_shipping = isset( $domestic_shipping ) ? $domestic_shipping : array();
+if ( !empty( $domestic_shipping ) && $domestic_shipping instanceof \DomesticShipping ) {
+    $document->addJsVar( "bill_detail_id", $domestic_shipping->getId() );
+    $document->addJsVar( "real_cod", $domestic_shipping->getRealCod() );
+    $user = \Users::retrieveById( $domestic_shipping->getUserId() );
+    $address = \UserAddress::retrieveById( $domestic_shipping->getUserAddressId() );
+    $domestic_order = \DomesticShippingOrder::findByDomesticShippingId( $domestic_shipping->getId() );
+    $created_by = \Users::retrieveById( $domestic_shipping->getCreatedBy() );
+    if ( !empty( $user ) && !empty( $address ) && !empty( $domestic_order ) ) {
+        $avatar = \Users::getAvatar48x( $user );
+        $avatar_created = \Users::getAvatar48x( $created_by );
+        ?>
+
+        <div class="row search">
+            <div class="col-lg-9 col-md-9 col-xs-9">
+                <div class="module-float module-title">
+                    <p><span class="title"><?php echo $domestic_shipping->getDomesticBarcode() ?></span>
+                        <span class="arrow"></span>
+                <span class="font-gray">
+                    <?php
+                    $time = new DateTime( $domestic_shipping->getCreatedTime() );
+                    echo $time->format( "H:i d-m-Y" );
+                    ?>
+                </span></p>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 pull-right">
+                <div class="print module-float">
+                    <a href="<?php echo $controller->createUrl( "delivery_manage/frame_print", array( "domestic_id" => $domestic_shipping->getId() ) ) ?>"
+                       class="btn btn-gray pull-right" target="_blank">
+                        <i class="fa fa-print"></i> In Phiếu</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row main-content">
+        <div class="col-lg-4 col-md-4">
+            <div class="module-float module-ct-left">
+                <div class="item">
+                    <div class="left">
+                        <p>ID:</p>
+                    </div>
+                    <div class="right">
+                        <p class="font-bold uppercase"><?php echo $domestic_shipping->getId() ?></p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left">
+                        <p>Khách hàng:</p>
+                    </div>
+                    <div class="right avatar">
+                        <div class="img-avatar">
+                            <img src="<?php echo $avatar ?>">
+                        </div>
+                        <p class="font-bold">
+                            <a target="_blank"
+                               href="<?php echo $controller->createUrl( "user/detail", array( "id" => $user->getId() ) ) ?>"
+                               title="<?php echo $user->getFullName() ?>">
+                                <?php echo $user->getUsername() . '/' . $user->getCode() ?>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left">
+                        <p>Người nhận:</p>
+                    </div>
+                    <div class="right">
+                        <p class="font-bold uppercase">
+                            <?php echo $address->getDetail() ?>, <?php echo $address->getDistrictLabel() ?>
+                            , <?php echo $address->getProvinceLabel() ?>
+                        </p>
+                        <?php if ( $address->getNote() != "" ) { ?>
+                            <p class="font-gray">(<?php echo $address->getNote() ?>)</p>
+                        <?php } ?>
+                        <br>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left">
+                        <p>Phí VC nội địa:</p>
+                    </div>
+                    <div class="right">
+                        <p class="font-bold">
+                            <?php echo Common::numberFormat( $domestic_shipping->getDomesticShippingFee() ) ?>
+                            <sup>đ</sup>
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left">
+                        <p>COD:</p>
+                    </div>
+                    <div class="right">
+                        <p class="font-bold"><?php echo Common::numberFormat( $domestic_shipping->getCod() ) ?>
+                            <sup>đ</sup>
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left">
+                        <p>Trọng lượng:</p>
+                    </div>
+                    <div class="right">
+                        <p class="font-bold"><?php echo $domestic_shipping->getWeight() ?>Kg</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left">
+                        <p>Người tạo:</p>
+                    </div>
+                    <div class="right avatar">
+                        <div class="img-avatar">
+                            <img src="<?php echo $avatar_created ?>">
+                        </div>
+                        <p class="font-bold">
+                            <a href="javascript:void(0)">
+                                <?php echo $created_by->getUsername() . '/' . $created_by->getFullName() ?>
+                            </a>
+
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left">
+                        <p>Thực thu:</p>
+                    </div>
+                    <div class="right">
+                        <?php if ( $controller->isAllowed( PERMISSION_DELIVERY_CHANGE_REAL_COD ) ) { ?>
+                            <input type="text" data-a-dec="," data-a-sep="." value=""
+                                   placeholder="Nhập thực thu...."
+                                   class="form-control form-myinput input-dola _input_real_cod" style="float:left">
+                            <span style="margin:5px 0px 0px 10px;float:left">VNĐ</span>
+                            <?php
+
+                            if ( $domestic_shipping->getRealCod() > 0 ) {
+                                ?>
+                                <input type="button" value="Sửa" id="btn_save_real_cod"
+                                       style="float:left; margin:2px 0px 0px 10px">
+                            <?php
+                            } else {
+                                ?>
+                                <input type="button" value="Lưu" id="btn_save_real_cod"
+                                       style="float:left; margin:2px 0px 0px 10px">
+                            <?php
+                            }
+                        }else{
+                           echo number_format($domestic_shipping->getRealCod(),0,"",".")." VNĐ";
+                        }
+                        ?>
+
+
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left">
+                    </div>
+                    <div class="right">
+                        <p id="error_cod"></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-8 col-md-8">
+            <div class="module-float module-ct-right">
+                <div class="module-float ct-right-header">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 search">
+                            <p class="font-bold uppercase font-lag">Danh sách đơn hàng</p>
+                        </div>
+                    </div>
+                    <div class="border"></div>
+                </div>
+                <div class="module-float ct-main">
+                    <div class="col-lg-4 col-md-4">
+                        <?php foreach ( $domestic_order as $key => $order ) {
+                            $k = $key + 1;
+                            if ( $key >= 8 ) {
+                                continue;
+                            }
+                            if ( $order instanceof \DomesticShippingOrder ) {
+                                ?>
+                                <div class="module-float item">
+                                    <span class="arrow-left"></span>
+
+                                    <p class="uppercase">
+                                        <a href="<?php echo $controller->createUrl( "order/detail", array( "id" => $order->getOrderCode() ) ); ?>"
+                                           target="_blank">
+                                            <?php echo $order->getOrderCode() ?></a>
+                                    </p>
+                                </div>
+                            <?php
+                            }
+                        } ?>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <?php foreach ( $domestic_order as $key => $order ) {
+                            $k = $key + 1;
+                            if ( $key < 8 || $key >= 16 ) {
+                                continue;
+                            }
+                            if ( $order instanceof \DomesticShippingOrder ) {
+                                ?>
+                                <div class="module-float item">
+                                    <span class="arrow-left"></span>
+
+                                    <p class="uppercase">
+                                        <a href="<?php echo $controller->createUrl( "order/detail", array( "id" => $order->getOrderCode() ) ); ?>"
+                                           target="_blank">
+                                            <?php echo $order->getOrderCode() ?></a>
+                                    </p>
+                                </div>
+                            <?php
+                            }
+                        } ?>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <?php foreach ( $domestic_order as $key => $order ) {
+                            $k = $key + 1;
+                            if ( $key < 16 ) {
+                                continue;
+                            }
+                            if ( $order instanceof \DomesticShippingOrder ) {
+                                ?>
+                                <div class="module-float item">
+                                    <span class="arrow-left"></span>
+
+                                    <p class="uppercase">
+                                        <a href="<?php echo $controller->createUrl( "order/detail", array( "id" => $order->getOrderCode() ) ); ?>"
+                                           target="_blank">
+                                            <?php echo $order->getOrderCode() ?></a>
+                                    </p>
+                                </div>
+                            <?php
+                            }
+                        } ?>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        </div>
+    <?php
+    }
+} else {
+    ?>
+    <div class="row search">
+        <div class="col-lg-9 col-md-9 col-xs-9">
+            <div class="module-float module-title">
+                <p><span class="title">Không tồn tại phiếu</span></p>
+            </div>
+        </div>
+    </div>
+<?php } ?>        
+  

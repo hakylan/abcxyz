@@ -1,0 +1,127 @@
+<?php
+/** @var \Backend\Controller\BackendBase $controller */
+/** @var $document */
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$is_view_order_manage = $controller->isAllowed(PERMISSION_ORDER_VIEW_ORDER_MANAGE);
+$is_view_purchase_manage = $controller->isAllowed(PERMISSION_ORDER_VIEW_PURCHASE_MANAGE);
+$is_purchase_order = $controller->isAllowed(PERMISSION_PURCHASE_ORDER);
+$is_order_payment = $controller->isAllowed(PERMISSION_ORDER_PAYMENT);
+?>
+
+<nav class="seu-menu" role="navigation">
+    <div class="container">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="col-lg-12 col-md-12 seu-main-menu" >
+            <ul class="nav navbar-nav module-float _custom-navbar-nav">
+
+                <li class="active">
+                    <a class="navbar-nav-a" href="<?php echo $controller->createUrl("") ?>">Dashboard</a>
+                </li>
+
+                <li class="dropdown">
+                    <a href="javascript:;" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Đơn hàng <b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <?php if(isset($items['orders'])){
+                            for ($k = 0, $size = sizeof($items['orders']); $k < $size; ++$k) :
+                                ?>
+                                <li>
+                                    <a href="<?php echo $items['orders'][$k]['url']; ?>" title="">
+                                        <?php echo $items['orders'][$k]['label']; ?>
+                                    </a>
+                                </li>
+                            <?php endfor; } ?>
+                    </ul>
+                </li>
+
+                <li class=" dropdown">
+                    <a href="javascript:;" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Giao hàng<b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <?php if(isset($items['delivery'])){
+                            foreach ($items['delivery'] as $delivery_url) {
+
+                                ?>
+                                <li>
+                                    <a href="<?php echo $delivery_url['url']; ?>" title="">
+                                        <?php echo $delivery_url['label']; ?>
+                                    </a>
+                                </li>
+                            <?php } } ?>
+                    </ul>
+                </li>
+
+                <li class=" dropdown">
+                    <a href="javascript:;" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Khiếu nại<b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <?php if(isset($items['complaint'])){
+                            for ($m = 0, $size = sizeof($items['complaint']); $m < $size; ++$m) :
+                                ?>
+                                <li>
+                                    <a style="white-space: normal" href="<?php echo $items['complaint'][$m]['url']; ?>" title="">
+                                        <?php echo $items['complaint'][$m]['label']; ?>
+                                    </a>
+                                </li>
+                            <?php endfor; } ?>
+                    </ul>
+                </li>
+
+                <li class=" dropdown">
+                    <a href="javascript:;" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Thành viên<b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <?php if(isset($items['member'])){
+                            for ($i = 0, $size = sizeof($items['member']); $i < $size; ++$i) :
+                                ?>
+                                <li>
+                                    <a href="<?php echo $items['member'][$i]['url']; ?>" title="">
+                                        <?php echo $items['member'][$i]['label']; ?>
+                                    </a>
+                                </li>
+                            <?php endfor; } ?>
+                    </ul>
+
+                </li>
+
+                <li class=" dropdown">
+                    <a href="javascript:;" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Hệ thống<b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <?php if(isset($items['system'])){
+                            for ($j = 0, $size = sizeof($items['system']); $j < $size; ++$j) :
+                                ?>
+                                <li>
+                                    <a href="<?php echo $items['system'][$j]['url']; ?>" title="">
+                                        <?php echo $items['system'][$j]['label']; ?>
+                                    </a>
+                                </li>
+                            <?php endfor; } ?>
+                    </ul>
+                </li>
+
+                <li class=" dropdown hidden">
+                    <a href="javascript:;" class="navbar-nav-a dropdown-toggle" data-toggle="dropdown">Vận Hành<b class="caret"></b></a>
+                    <i class="hidden fa fa-sort-asc dropdown-menu-item-arrow"></i>
+                    <ul class="dropdown-menu custom-nav-dropdown">
+                        <?php if(isset($items['operation'])){
+                            for ($l = 0, $size = sizeof($items['operation']); $l < $size; ++$l) :
+                                ?>
+                                <li>
+                                    <a href="<?php echo $items['operation'][$l]['url']; ?>" title="">
+                                        <?php echo $items['operation'][$l]['label']; ?>
+                                    </a>
+                                </li>
+                            <?php endfor; } ?>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div><!-- /.navbar-collapse -->
+
+    </div><!-- /.container-fluid -->
+</nav>

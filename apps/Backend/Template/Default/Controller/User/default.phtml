@@ -1,0 +1,224 @@
+<?php
+use Flywheel\View\Render;
+/** @var Render $this */
+
+$title = t('Quản lý người dùng');
+$this->document()->title .= $title;
+
+$prefix = array('0-9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+
+$this->document()->addCss('css/user.css');
+
+$this->document()->addJs('js/user.js?v=1.1', 'TOP');
+$this->document()->addJs('js/handlebars-v1.3.0.js', 'TOP');
+$this->document()->addJsVar('search_user_url', $this->createUrl('user/search'));
+$this->document()->addJsVar('ordering', $ordering);
+$this->document()->addJsVar('sort', $sort);
+$this->document()->addJsVar('user_page', $this->createUrl('user/default'));
+$this->document()->addJsCode('
+    var users_template = Handlebars.compile($("#_users-block").html());
+    Handlebars.registerPartial("list", $("#_list-partial").html());
+    search_user();'
+    , 'BOTTOM', 'standard');
+?>
+<div id="page-title">
+    <h3>
+        <?php echo $title; ?>
+    </h3>
+
+    <div id="breadcrumb-right">
+        <div class="float-right">
+            <a href="<?php echo $this->createUrl('user/add') ?>" class="btn large primary-bg">
+                <span class="button-content">
+                    <i class="glyph-icon icon-plus"></i>
+                    <?php td('Thêm người dùng'); ?>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="page-content">
+
+    <!-- Search -->
+    <h4><?php td('Tìm người dùng'); ?>
+        <small class="font-gray">
+            <?php td('Tìm tài khoản người dùng theo tên đăng nhập, mã khách hàng, email, số điện thoại v.v...'); ?>
+        </small>
+    </h4>
+    <div class="example-box">
+        <div class="example-code clearfix">
+            <?php
+            $searchFrm = new \Flywheel\Html\Form('search-user-frm', $this->createUrl('user/default'), 'GET');
+            $searchFrm->setHtmlOption(array(
+                'id' => '_search-user-frm'
+            ));
+            $searchFrm->beginForm();
+            ?>
+            <div class="form-row">
+                <div class="form-input col-lg-6 col-md-8">
+                    <input name="keyword" type="text" value="<?php echo $keyword; ?>" placeholder="<?php td("Tìm theo ID, tên đăng nhập, họ tên, mã khách hàng hoặc email"); ?>">
+                </div>
+
+                <div class="form-input col-lg-2 col-md-4">
+                    <input name="mobile" type="text" value="<?php echo $mobile; ?>" placeholder="<?php td("Tìm theo số điện thoại"); ?>">
+                </div>
+
+                <div class="form-input col-lg-2 col-md-3">
+                    <?php
+                    $searchFrm->selectOption('status', $status)
+                        ->addOption(t('Chọn trạng thái'), '')
+                        ->addOption(t('Kích hoạt'), 'ACTIVE')
+                        ->addOption(t('Chưa kích hoạt'), 'INACTIVE')
+                        ->addOption(t('Khóa'), 'LOCK')
+                        ->addOption(t('Cấm'), 'BAN')
+                        ->addOption(t('Xóa'), 'DELETE')
+                        ->display()
+                    ?>
+                </div>
+
+                <div class="form-input col-lg-2 col-md-3">
+                    <?php
+                    $searchFrm->selectOption('section', $section)
+                        ->addOption(t('Chọn đối tượng'), '')
+                        ->addOption(t('Khách hàng'), 'CUSTOMER')
+                        ->addOption(t('Nhân viên'), 'CRANE')
+                        ->display()
+                    ?>
+                </div>
+            </div>
+            <input name="pre" type="hidden" value="<?php echo $pre; ?>">
+            <input name="page" type="hidden" value="<?php echo $page; ?>">
+            <input name="ordering" type="hidden" value="<?php echo $ordering; ?>">
+            <input name="sort" type="hidden" value="<?php echo $sort; ?>">
+            <?php $searchFrm->endForm(false) ;?>
+        </div>
+        <!-- Prefix select -->
+        <div class="row">
+            <div class="col-md-1 text-right">
+                <?php td('Ký tự đầu tên đăng nhập'); ?>
+            </div>
+            <div class="col-md-11">
+                <?php $class = ($pre == "")? 'primary-bg' : 'ui-state-default'; ?>
+                <a href="javascript:;" class="btn small <?php echo $class; ?> _prefix-select" data-value="">
+                    <span class="button-content"><?php td('TẤT CẢ') ;?></span>
+                </a>
+                <?php for($i = 0; $i < sizeof($prefix); $i++) : ?>
+                    <?php $class = ($pre == $prefix[$i])? 'primary-bg' : 'ui-state-default'; ?>
+                    <a href="javascript:;" class="btn small <?php echo $class; ?> _prefix-select" data-value="<?php echo $prefix[$i] ?>">
+                        <span class="button-content"><?php echo $prefix[$i] ?></span>
+                    </a> &nbsp;
+                <?php endfor; ?>
+            </div>
+        </div>
+        <!--/ prefix select -->
+
+    </div>
+    <!--/ search -->
+
+    <script id="_users-block" type="text/x-handlebars-template">
+        {{#if type}}
+        <table class="table table-striped table-hover text-center" id="user-table-list">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th><?php td('Tên'); ?></th>
+                <th class="text-center"><?php td('Mã'); ?></th>
+                <th class="text-center"><?php td('Số dư'); ?> VND</th>
+                <th><?php td('Điện thoại') ?></th>
+                <th><?php td('Email') ?></th>
+                <th class="text-center"><?php td('Đối tượng'); ?></th>
+                <th class="text-center"><?php td('Trạng thái'); ?></th>
+                <th class="text-center"><?php td('Đăng nhập cuối'); ?></th>
+                <th class="text-center"><?php td('Tham gia'); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each users}}
+                {{>list}}
+            {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <div class="infobox warning-bg">
+            <div class="bg-yellow large btn info-icon">
+                <i class="glyph-icon icon-warning-sign"></i>
+            </div>
+            <h4 class="infobox-title">
+                <?php td('Lỗi'); ?>
+            </h4>
+            <p>
+                {{message}}
+            </p>
+        </div>
+        {{/if}}
+    </script>
+
+    <script id="_list-partial" type="text/x-handlebars-template">
+        <tr>
+            <td>{{id}}</td>
+            <td class="text-left name-container">
+                <div class="avatar-bock">
+                    <a href="{{detail_link}}"><img src="{{avatar}}" class="user-avatar" width="32" height="32"></a>
+                </div>
+                <div class="name-bock">
+                    <a href="{{detail_link}}"><span class="username"><strong>@{{username}}</strong></span></a><br>
+                    <a href="{{detail_link}}" class="font-gray-dark">{{short_fullname}}</a>
+                </div>
+            </td>
+            <td>
+                <strong>{{code}}</strong>
+            </td>
+            <td>
+                <span class="_money-amount" data-amount="{{account_balance}}">{{account_balance}}</span>
+            </td>
+            <td>
+                {{#if mobiles.length}}
+                <ul>
+                    {{#each mobiles}}
+                        <li>{{mobile}}</li>
+                    {{/each}}
+                </ul>
+                {{else}}
+                ~
+                {{/if}}
+            </td>
+            <td class="text-left"><a href="mailto:{{email}}">{{email}}</a></td>
+            <td>
+                {{section}}
+            </td>
+            <td>
+                {{status}}
+            </td>
+            <td>
+                {{last_login_time}}
+            </td>
+            <td>
+                {{joined_time}}
+            </td>
+        </tr>
+    </script>
+
+    <!--<div class="divider"></div>-->
+    <h3><?php td('Danh sách người dùng'); ?></h3>
+    <div class="row">
+        <div class="col-lg-6">
+            <p class="font-gray-dark"><?php td('Tìm thấy <strong id="_result-paragraph">0</strong> người dùng'); ?></p>
+        </div>
+        <div class="coll-lg-6 text-right">
+            <strong><?php td('Sắp xếp'); ?>:</strong>
+            <a href="javascript:;" data-ordering="username" data-sort="ASC" class="_ordering"><?php td('Tên đăng nhập'); ?></a> &nbsp;&middot;&nbsp;
+            <a href="javascript:;" data-ordering="account_balance" data-sort="DESC" class="_ordering"><?php td('Số dư giảm dần'); ?></a> &nbsp;&middot;&nbsp;
+            <a href="javascript:;" data-ordering="account_balance" data-sort="ASC" class="_ordering"><?php td('Số dư tăng dần'); ?></a> &nbsp;&middot;&nbsp;
+            <a href="javascript:;" data-ordering="joined_time" data-sort="DESC" class="_ordering"><?php td('Thời gian gia nhập'); ?></a> &nbsp;&middot;&nbsp;
+            <a href="javascript:;" data-ordering="last_login_time" data-sort="DESC" class="_ordering"><?php td('Lần đăng nhập cuối'); ?></a>
+        </div>
+    </div>
+    <p>&nbsp;</p>
+    <div class="example-box">
+        <div class="row" id="_user-list-container">
+        </div>
+        <div class="button-group center-div" id="_user-pagination">
+        </div>
+    </div>
+</div>

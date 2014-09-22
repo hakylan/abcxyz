@@ -1,0 +1,387 @@
+/*style header*/
+.header{
+    padding-top: 20px;
+    position: relative;
+}
+.header .logo{
+    width: 170px;
+}
+.header .baner{
+    padding-top: 30px;
+}
+.header .module-title{
+    margin-top: 10px;
+}
+.header .module-title p.title{
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 56px;
+    text-align: center;
+    color: #4c4643;
+    margin-bottom: 10px;
+}
+.header .module-title p.module-ct{
+    font-size: 20px;
+    text-align: center;
+    color: #4c4643;
+}
+.header .module-title .module-bt{
+    font-size: 18px;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    color: #dc4755;
+}
+.body-step1{
+    background: #fff;
+    padding-top: 100px;
+    padding-bottom: 80px;
+    border-bottom: 2px solid #ddd;
+}
+.body-step1 .logo-left{
+    padding-right: 100px;
+}
+.pic-arrow{
+    text-align: center;
+}
+.pic-arrow > div{
+    display: inline-block;
+    width: 75px;
+    height: 1px;
+    position: relative;
+}
+.arrow-pic{
+    position: absolute;
+    width: 75px;
+    height: 35px;
+    left: 0;
+    background: url("../images/pic.jpg") no-repeat;
+    bottom: -28px;
+}
+.module-ct-step1 .module-title{
+    color: #dc4755;
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+.module-ct-step1 .module-item{
+    font-size: 18px;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 20px;
+}
+.module-ct-step1 .module-item .check{
+    position: absolute;
+    width: 30px;
+    left: 0;
+    top: 0;
+    text-align: center;
+}
+.body-step1.v2{
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid #ccc;
+}
+.body-step1.v2 .module-ct-step1{
+    padding-top: 40px;
+}
+.body-step1 .button-step1{
+    padding: 6px 30px;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+    background: #dc4755;
+    border: none;
+    text-transform: uppercase;
+    font-size: 24px;
+    box-shadow: 0px 3px rgba(181, 2, 0, 1);
+    font-weight: bold;
+    margin-top: 20px;
+}
+.body-step1.v3{
+    padding-top: 5px;
+    padding-bottom: 0;
+}
+.body-step1.v3 .module-ct-step1{
+    padding-top: 80px;
+}
+.body-step2{
+    padding-top: 22px;
+    padding-bottom: 20px;
+    position: relative;
+}
+.body-step2 .module-title{
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    color: #4c4643;
+}
+.body-step2 .pic-arrow{
+    height: 1px;
+}
+.body-step2 .pic-arrow .arrow-pic{
+    bottom: -24px;
+}
+.body-step3{
+    padding-top: 50px;
+    background: #fff;
+}
+.body-step3 .module-item{
+    float: left;
+    width: 100%;
+    margin-bottom: 40px;
+    position: relative;
+    padding-left: 190px;
+    min-height: 50px;
+    padding-top: 5px;
+}
+.body-step3 .module-item p{
+    font-size: 24px;
+}
+.body-step3 .module-item .number{
+    position: absolute;
+    width: 170px;
+    top: 0;
+    left: 0;
+    text-align: center;
+}
+.body-step3 .module-item .number .ct{
+    display: inline-block;
+    width: 170px;
+    padding: 2px 10px;
+    text-align: center;
+    background: #6d7f91;
+    border-radius: 25px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 30px;
+}
+.body-step4{
+    background: #1cad7e;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color: #fff;
+}
+.body-step4 .module-title{
+    margin-bottom: 20px;
+    font-size: 48px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+}
+.body-step4 .module-ct p{
+    margin-bottom: 10px;
+    font-size: 48px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+}
+.body-step3 .arrow-pic{
+    background: url("../images/pick2.png") no-repeat;
+    bottom: -30px;
+}
+.bottomv2{
+    display: none;
+    border: 2px dashed #126a4d;
+    border-radius: 4px;
+    padding: 8px 15px;
+}
+.bottomv2 a{
+    color: #fff;
+}
+.bottomv2 .title{
+    text-transform: uppercase;
+    font-weight: bold;
+}
+/*end style header*/
+
+
+
+
+/*style tablet + smartphone*/
+@media (min-width:1200px) and (max-width:1800px){
+
+    .header .baner{
+        padding-right: 70px;
+    }
+}
+@media (max-width:1300px){
+    .header .module-title p.title{
+        font-size: 46px;
+    }
+
+}
+@media (max-width:1199px){
+    .body-step1 .logo-left{
+        padding-right: 0px;
+    }
+
+    .body-step1 .button-step1{
+        font-size: 18px;
+    }
+    .body-step4 .module-ct p,
+    .body-step4 .module-title{
+        font-size: 38px;
+    }
+    .module-ct-step1 .module-title{
+        font-size: 32px;
+    }
+    .body-step1.v3 .module-ct-step1{
+        padding-top: 50px;
+    }
+
+
+
+}
+@media (max-width:992px) {
+    .header .module-title p.title{
+        font-size: 32px;
+    }
+    .header .module-title p.module-ct{
+        font-size: 18px;
+    }
+
+    .body-step4 .module-ct p,
+    .body-step4 .module-title{
+        font-size: 32px;
+    }
+    .body-step2 .module-title{
+        font-size: 36px;
+    }
+
+    .module-ct-step1 .module-title{
+        font-size: 26px;
+    }
+    .module-ct-step1 .module-item{
+        font-size: 14px;
+    }
+
+}
+@media (max-width:767px) {
+    .header .module-title p.title{
+        font-size: 28px;
+    }
+    .body-step4 .module-ct p,
+    .body-step4 .module-title{
+        font-size: 26px;
+    }
+
+    .body-step2 .module-title{
+        font-size: 32px;
+    }
+    .body-step1 .logo-left{
+        margin-bottom: 20px;
+    }
+    .body-step1.v3 .module-ct-step1{
+        padding-top: 20px;
+    }
+    .module-ct-step1 .module-title{
+        font-size: 32px;
+    }
+    .module-ct-step1 .module-item{
+        font-size: 18px;
+    }
+    .body-step3 .module-item{
+        padding-left: 0;
+        padding-top: 55px;
+    }
+    .body-step3 .module-item p{
+        text-align: center;
+    }
+    .body-step3 .module-item .number{
+        width: 100%;
+    }
+    .bottomv2{
+        display: block;
+    }
+    .bottom{
+        display: none;
+    }
+    .body-step1 .module-ct-step1{
+        padding-left: 15px !important;
+    }
+
+}
+@media (max-width:600px) {
+    .header .logo{
+        width: 110px;
+    }
+    .header .module-title p.title{
+        font-size: 22px;
+    }
+    .header .module-title p.module-ct{
+        font-size: 16px;
+    }
+    .body-step1{
+        padding-top: 40px;
+        padding-bottom: 30px;
+    }
+
+    body {
+        font-size: 14px;
+    }
+    .body-step4 .module-ct p,
+    .body-step4 .module-title{
+        font-size: 20px;
+    }
+    .arrow-pic{
+        bottom: -27px;
+    }
+    .body-step2 .pic-arrow .arrow-pic{
+        bottom: -28px;
+    }
+    .body-step3 .arrow-pic{
+        bottom: -29px;
+    }
+    .body-step2 .module-title{
+        font-size: 26px;
+    }
+    .body-step1 .button-step1{
+        font-size: 14px;
+    }
+    .submit{
+        text-align: center;
+    }
+
+    .module-ct-step1 .module-title{
+        font-size: 22px;
+    }
+
+}
+@media (max-width:480px) {
+    .header .module-title p.title{
+        font-size: 16px;
+    }
+    .header .module-title p.module-ct{
+        font-size: 14px;
+    }
+    .header .module-title .module-bt{
+        font-size: 14px;
+    }
+
+    .body-step4 .module-ct p,
+    .body-step4 .module-title{
+        font-size: 14px;
+    }
+
+    .body-step2 .module-title{
+        font-size: 22px;
+    }
+    .body-step1 .button-step1{
+        font-size: 12px;
+    }
+
+}
+
+@media (min-width:768px) and (max-width:991px) {
+    .body-step1{
+        padding-top: 60px;
+        padding-bottom: 40px;
+    }
+    .body-step1 .button-step1{
+        font-size: 12px;
+    }
+
+}
+
+/*end style tablet + smartphone*/

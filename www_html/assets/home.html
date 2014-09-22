@@ -1,0 +1,1158 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+ 
+<!-- Website Title --> 
+<title>SeuDo</title>
+
+<!-- Meta data for SEO -->
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+
+
+<!-- Template stylesheet -->                                                           
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+<link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" media="all">
+<link href="bootstrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css" media="all">
+<link href="bootstrap/css/bootstrap-theme.min.min.css" rel="stylesheet" type="text/css" media="all">  
+<link href="css/mytypo.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/header.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/owl.carousel.css" rel="stylesheet" type="text/css" media="all"> 
+<link href="js/rate/rateit.css" rel="stylesheet" type="text/css" media="all"> 
+<link href="css/owl.theme.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/cssloading.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all"> 
+<link href="css/footer.css" rel="stylesheet" type="text/css" media="all">
+<link href="css/stylenote.css" rel="stylesheet" type="text/css" media="all">  
+<link href="css/linkorder.css" rel="stylesheet" type="text/css" media="all"> 
+<link href="css/bieuphi.css" rel="stylesheet" type="text/css" media="all"> 
+<!--<link href="css/website.css" rel="stylesheet" type="text/css" media="all">-->
+
+<link rel="icon" href="images/icon-footer/LogoSeuDo1_ICO.ico">
+
+<!-- Jquery and plugins -->               
+<script type="text/javascript" src="js/jquery1.10.2.js"></script>
+ 
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script> 
+<script type="text/javascript" src="bootstrap/js/bootstrap-select.min.js"></script> 
+ 
+<!--<script type="text/javascript" src="js/owl.carousel.min.js"></script> -->
+<script type="text/javascript" src="js/rate/jquery.rateit.min.js"></script> 
+<script type="text/javascript" src="js/jqueryui.js"></script>
+<script type="text/javascript" src="js/owl.carousel.min.js"></script>  
+<script type="text/javascript" src="js/masonry.pkgd.js"></script>
+<!--<script type="text/javascript" src="js/jquery.nicescroll.js"></script> -->
+<script type="text/javascript" src="js/lazy-load.js"></script> 
+<!--<script type="text/javascript" src="js/jquery.carouFredSel-6.2.1-packed.js"></script> -->
+<script type="text/javascript" src="js/jquery.carouFredSel-6.0.4-packed.js"></script>
+<script type="text/javascript" src="js/seudo-frontend.js"></script> 
+<script type="text/javascript" src="js/seudo-frontendv2.js"></script> 
+<script type="text/javascript" src="js/slide-show.js"></script>
+<!--<script type="text/javascript" src="js/jquery.tinyscrollbar.js"></script>-->
+<script type="text/javascript" src="js/jquery.jscroll.min.js"></script>
+
+
+ <script>
+$(document).ready(function(){
+  $(".click-block").click(function(){
+    $(".content-ct-none").addClass("block"); 
+    $(".click-block").addClass("none"); 
+  }); 
+  
+});
+
+</script>
+
+<style>
+      .lazy-load, .lazy-loaded {
+        -webkit-transition: opacity 0.3s;
+        -moz-transition: opacity 0.3s;
+        -ms-transition: opacity 0.3s;
+        -o-transition: opacity 0.3s;
+        transition: opacity 0.3s;
+        opacity: 0;
+      }
+
+      .lazy-loaded { opacity: 1; }
+
+      .demo img { display: block; margin: 10px 0; }
+    </style>
+</head>
+<body >
+
+    <!-- Begin header -->
+    <header id="header" class="header">
+        <section class="container header-top">
+            <div class="row">
+                    <div class="pull-right top-header">
+                        <div class="rate-tq">
+                            <p class="normal">Tỉ giá: <span class="red-bold">1 Nhân dân tệ</span> = <span class="red-bold">3.500<sup>đ</sup></span></p>
+                        </div>
+                        <div class="pull-right register login item-top-header cart-img" >
+                            <span class="arrow-header-cart"></span>
+                            <span class="arow-count">12</span>
+                            <span class="border"></span>
+                        </div>
+                        <!--style node sms-->
+                        <div class="pull-right item-top-header accout dropdown my-dropdow" >
+                            <a id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                                <span class="img-avatar"><img src="images/imgdemo/itemcart.jpg"></span>
+                                <span class="acc-usd">Luu Trong</span>
+                                <span class="arow"></span>
+                            </a>
+                            <span class="border"></span>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                                <div class="acc-title">
+                                    <span class="arow-tick"></span>
+                                    <p class="italic"><span class="normal">Mã khách: </span> <span class="uppercase normal-blod"> Ha1234</span></p>
+                                </div>
+                                <ul class="acc-gd">
+                                    <li>
+                                        <a href="#">Quản lý đơn hàng</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Lịch sử giao dịch</a>
+
+                                    </li>
+
+                                    <li>
+                                        <a href="#">Nạp tiền</a>
+                                    </li>
+                                </ul>
+                                <span class="border-hr"></span>
+                                <ul class="acc-gd">
+                                    <li>
+                                        <a href="#">Thông tin cá nhân</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Đổi mật khẩu</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Thoát</a>
+                                    </li>
+                                </ul>
+
+                            </ul>
+                        </div>
+                        <!--end style note sms-->
+                        <div class="pull-right item-top-header accout dropdown notifi" >
+                            <a id="drop1" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                            <span class="notealert">Thông báo</span>
+                            <span class="total">45</span>
+                          </a>
+                          <span class="border"></span>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                                <div class="acc-title">
+                                    <span class="arow-tick"></span>
+                                    <p class="normal-blod">Thông báo</p>
+                                </div>
+                                <div class="scrollbar-notifi " id="scrollbar1">
+                                    <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+                                    <div class="acc-gd viewport">
+                                        <ul class="overview scroll">
+                                            <li class="new">
+                                                <a href="#">
+                                                    <div class="avatar">
+                                                        <img src="images/imgdemo/itemcart.jpg">
+                                                    </div>
+                                                    <div class="module-ct">
+                                                        <p class="module-title">
+                                                            Đơn hàng <span class="normal-blod uppercase">32787-3fdhg</span> đang giao
+                                                        </p>
+                                                        <p class="md-note box">
+                                                            <span class="italic font-small">10:20 30/1/2014</span>
+                                                        </p>
+                                                    </div>
+
+                                                </a>
+                                            </li>
+                                            <li class="new">
+                                                <a href="#">
+                                                    <div class="avatar">
+                                                        <img src="images/imgdemo/itemcart.jpg">
+                                                    </div>
+                                                    <div class="module-ct">
+                                                        <p class="module-title">
+                                                            Đơn hàng <span class="normal-blod uppercase">32787-3fdhg</span> đang giao
+                                                        </p>
+                                                        <p class="md-note box">
+                                                            <span class="italic font-small">30/1/2014</span>
+                                                        </p>
+                                                    </div>
+
+                                                </a>
+                                            </li>
+                                            <li >
+                                                <a href="#">
+                                                    <div class="avatar">
+                                                        <img src="images/imgdemo/itemcart.jpg">
+                                                    </div>
+                                                    <div class="module-ct">
+                                                        <p class="module-title">
+                                                            Tài khoản đã được cộng thêm <span class="normal-blod">120.000<sup>đ</sup></span>
+                                                        </p>
+                                                        <p class="md-note rechar">
+                                                            <span class="italic font-small">2013</span>
+                                                        </p>
+                                                    </div>
+
+                                                </a>
+                                            </li>
+                                            <li >
+                                                <a href="#">
+                                                    <div class="avatar">
+                                                        <img src="images/imgdemo/itemcart.jpg">
+                                                    </div>
+                                                    <div class="module-ct">
+                                                        <p class="module-title">
+                                                            Tài khoản đã được cộng thêm <span class="normal-blod">120.000<sup>đ</sup></span>
+                                                        </p>
+                                                        <p class="md-note rechar">
+                                                            <span class="italic font-small">2013</span>
+                                                        </p>
+                                                    </div>
+
+                                                </a>
+                                            </li>
+                                            <li >
+                                                <a href="#">
+                                                    <div class="avatar">
+                                                        <img src="images/imgdemo/itemcart.jpg">
+                                                    </div>
+                                                    <div class="module-ct">
+                                                        <p class="module-title">
+                                                            Tài khoản đã được cộng thêm <span class="normal-blod">120.000<sup>đ</sup></span>
+                                                        </p>
+                                                        <p class="md-note ">
+                                                            <span class="italic font-small">2013</span>
+                                                        </p>
+                                                    </div>
+
+                                                </a>
+                                            </li>
+                                            <li >
+                                                <a href="#">
+                                                    <div class="avatar">
+                                                        <img src="images/imgdemo/itemcart.jpg">
+                                                    </div>
+                                                    <div class="module-ct">
+                                                        <p class="module-title">
+                                                            Tài khoản đã được cộng thêm <span class="normal-blod">120.000<sup>đ</sup></span>
+                                                        </p>
+                                                        <p class="md-note">
+                                                            <span class="italic font-small">1 tiếng</span>
+                                                        </p>
+                                                    </div>
+
+                                                </a>
+                                            </li>
+
+											<li class="new">
+                                                <a href="#">
+                                                    <div class="avatar">
+                                                        <img src="images/imgdemo/itemcart.jpg">
+                                                    </div>
+                                                    <div class="module-ct">
+                                                        <p class="module-title">
+                                                            Tài khoản đã được cộng thêm <span class="normal-blod">120.000<sup>đ</sup></span>
+                                                        </p>
+                                                        <p class="md-note rechar">
+                                                            <span class="icon"></span>
+                                                            <span class="italic">1 phút</span>
+                                                        </p>
+                                                    </div>
+
+                                                </a>
+                                            </li>
+                                            <li class="bottom-item">
+                                                <div id="facebookGhome" >
+                                                    <div id="blockG_1home" class="facebook_blockGhome">
+                                                    </div>
+
+                                                    <div id="blockG_2home" class="facebook_blockGhome">
+                                                    </div>
+                                                    <div id="blockG_3home" class="facebook_blockGhome">
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="bottom-item v2">
+                                                <img src="img/small/loading3.gif">
+                                            </li>
+                                            <!--<div class="next jscroll-next-parent" style="display: none;"><a href="test.html">next</a></div>-->
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="module-bottom">
+                                    <p class="normal-blod">
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                </div>
+                          </ul>
+                        </div>
+                        
+                        <div class="pull-right register item-top-header" >
+                            <a class="registerlink" href="#" data-target="#myModalregister" data-toggle="modal">Đăng ký</a>
+                            <span class="border"></span>
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModalregister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng ký</p></h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="#">
+                                        <div class="regis-item">
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Tài khoản<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput_name" class="inputregister form-control form-myinput pull-right" type="text" placeholder="Tài khoản" >
+                                            <p class="red-normal">Tên đăng nhập đã được sư dụng vui lòng điền tên đăng nhập khác.</p>
+                                            <div class="tooltipregister">
+                                                <div class="arrow_box">
+                                                <p class="normal">Sử dụng các ký tự latin (a-z) và ký tự gạch dưới</p>
+                                                <p class="normal">Từ 3 đến 15 ký tự</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="regis-item name"> 
+                                                <span class="normal name-label">Họ & tên</span>
+                                                <input id="exampleInput" class="form-control form-myinput f-name" type="text" placeholder="Họ" >
+                                                <span class="and">&</span>
+                                                <input id="exampleInput" class="form-control form-myinput pull-right l-name" type="text" placeholder="Tên" >
+                                            
+                                             
+                                        </div>
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Email<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="inputregister form-control form-myinput" type="text" placeholder="Email" >
+                                            <div class="tooltipregister">
+                                                <div class="arrow_box">
+                                                <p class="normal">Seudo sẽ gửi các thông báo tới email này.</p>
+                                                <p class="normal">Vui lòng sử dụng email tồn tại.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Mật khẩu<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="form-control form-myinput" type="password" placeholder="Mật khẩu (tối thiểu 6 ký tự)" >
+                                            
+                                        </div>
+                                        
+                                        <p class="normal">Với việc đăng ký tài khoản, tôi đã đồng ý với các điều khoản của seudo.vn</p> 
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button class="btn btn-gray disable " type="button">Hủy </button>
+                                    <button class="btn btn-blue" type="button">Đăng ký</button>
+                                  </div>
+                                  
+                                </div><!-- /.modal-content -->
+                              </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->  
+                        </div>
+                        <div class="pull-right register login item-top-header" >
+                            <a class="registerlink" href="#" data-target="#myModallogin" data-toggle="modal">Đăng nhập</a>
+                            <span class="border"></span>
+                            <!-- Modal -->
+                            <div class="modal login fade" id="myModallogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                              <div class="modal-dialog reset-password-block">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng nhập</p><a href="#">Đăng ký</a></h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="#">
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Tài khoản<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="Tài khoản hoặc email đã kích hoạt" >
+                                            <p class="red-normal">Tên đăng nhập sai vui lòng nhập lại tên đăng nhập khác.</p>
+                                        </div>
+                                        
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Mật khẩu<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="form-control form-myinput" type="password" placeholder="Mật khẩu" >
+                                            
+                                        </div>
+                                        
+                                        <div class="regis-item made">
+                                            <p class="normal">
+                                                <label>
+                                                    <input type="checkbox" value="">
+                                                    Ghi nhớ đăng nhập
+                                                </label>
+                                            </p>
+                                            <button class="btn btn-blue btn-lg btn-login pull-right" type="button">Đăng nhập</button>
+                                        </div>
+                                        
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <a class="pull-left click-resetpass" href="#">Quên mật khẩu ?</a>
+                                    <p class="normal facebook pull-right">Đăng nhập bằng facebook<span class="icon-facebook">login facebook</span></p> 
+                                    <div class="reset-password">
+                                        <p class="normal email-text">Nhập mail bạn đăng ký</p>
+                                        
+                                        <div class="regis-item ">  
+                                                <input id="exampleInput" class="form-control form-myinput inputregister" type="text" placeholder="Email" >
+                                                <p class="red-normal">Địa chỉ mail chưa đúng.</p>
+                                                <div class="tooltipregister">
+                                                            <div class="arrow_box">
+                                                            <p class="normal">Vui lòng nhập địa chỉ email đăng ký tài khoản SeuDo.vn của bạn.</p>
+                                                            </div>
+                                                </div> 
+                                        </div>
+                                        <button class="btn btn-blue" type="button">Lấy lại mật khẩu</button>
+                                        <p class="normal loading-resetpass"><span class="alert alert-error"> Đang gửi..... </span></p>
+                                        <p class="alert alert-info"> Email sent! If the email address you entered is registered at Freelancer.com, you'll receive an email with instructions on how to set a new password.  </p>
+                                    </div>
+                                  </div>
+                                  
+                                </div><!-- /.modal-content -->
+        <!--                        loading-->
+                                 <!--<div class="loading-face">
+                                    <div id="facebookG">
+                                        <div id="blockG_1" class="facebook_blockG">
+                                        </div>
+                                        <div id="blockG_2" class="facebook_blockG">
+                                        </div>
+                                        <div id="blockG_3" class="facebook_blockG">
+                                        </div>
+                                        </div>
+                                 </div>-->
+        <!--                        end loading-->
+                              </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->    
+                        </div>
+                        <div class="pull-right register login item-top-header" >
+                            <a href="#">Hướng dẫn</a>
+                            <span class="border"></span>
+                        </div>
+                        <div class="pull-right register login item-top-header price" >
+                            <span >Số dư:</span><span class="blueprice">+2.000.000<sup>đ</sup></span>
+                            <span class="border"></span>
+                        </div>
+                        <div class="pull-right register login item-top-header hotline" >
+                            <span >Hotline: 09999999</span>
+                        </div>
+                        
+                    </div>       
+                     
+            </div>
+            <div class="logo">
+                <a href="#"><img src="images/icon-footer/logoSeuDo.png"></a>
+            </div>
+        </section>
+        
+        <section class="container search-cart">
+            <div class="row">
+                <div class="header-cart pull-right">
+                    <span class="arrow-header-cart"></span>
+                    <p class="normal"><span class="normal-blod">0</span> sản phẩm</p>
+                    <p class="red-normal">123.000.000<sup>đ</sup></p>
+                    <span class="arrow-next-header-cart"></span>
+                </div>
+                <div class="header-search pull-right">
+                    <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="Nhập link sản phẩm bạn muốn đặt từ taobao.com, tmall.com, 1688.com và eely.com....">
+                    <span class="uppercase normal-blod">đặt hàng</span>
+                </div>
+            </div>
+        </section>
+        
+        <section class=" header-top scoll">
+            <div class="container">
+                <div class="row">
+                    <div class="rate-scoll">
+                        <p class="normal"><span class="red-bold">1<sup>ndt</sup></span> = <span class="red-bold">3.500<sup>đ</sup></span></p>
+                    </div>
+                    
+                    <div class="pull-right top-header">
+                        <div class="pull-right register login item-top-header cart-img" >
+                            <span class="arrow-header-cart"></span>
+                            <span class="arow-count">12</span>
+                            <span class="border"></span>
+                        </div>
+                        <div class="pull-right item-top-header accout dropdown my-dropdow" >
+                            <a id="drop1" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                            <span class="img-avatar"><img src="images/imgdemo/itemcart.jpg"></span> 
+                            <span class="acc-usd">Luu Trong</span>
+                            <span class="arow"></span>
+                          </a>
+                          <span class="border"></span>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="drop1"> 
+                                <div class="acc-title">
+                                    <span class="arow-tick"></span>
+                                    <p class="italic"><span class="normal">Mã khách: </span> <span class="uppercase normal-blod"> Ha1234</span></p>
+                                </div>
+                                <ul class="acc-gd">
+                                    <li> 
+                                        <a href="#">Quản lý đơn hàng</a> 
+                                    </li>
+                                    <li>
+                                        <a href="#">Lịch sử giao dịch</a>
+                                        
+                                    </li>
+                                    
+                                    <li>                                
+                                        <a href="#">Nạp tiền</a>
+                                    </li> 
+                                </ul>
+                                <span class="border-hr"></span>
+                                <ul class="acc-gd">
+                                    <li>
+                                        <a href="#">Thông tin cá nhân</a>
+                                    </li> 
+                                    <li> 
+                                        <a href="#">Đổi mật khẩu</a> 
+                                    </li>
+                                    <li>                                
+                                        <a href="#">Thoát</a>
+                                    </li> 
+                                </ul> 
+                                
+                          </ul>
+                        </div>
+                        
+                        <div class="pull-right register item-top-header" >
+                            <a class="registerlink" href="#" data-target="#myModalregister" data-toggle="modal">Đăng ký</a>
+                            <span class="border"></span>
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModalregister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng ký</p></h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="#">
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Tài khoản<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput_name" class="inputregister form-control form-myinput pull-right" type="text" placeholder="Tài khoản" >
+                                            <p class="red-normal">Tên đăng nhập đã được sư dụng vui lòng điền tên đăng nhập khác.</p>
+                                            <div class="tooltipregister">
+                                                <div class="arrow_box">
+                                                <p class="normal">Sử dụng các ký tự latin (a-z) và ký tự gạch dưới</p>
+                                                <p class="normal">Từ 3 đến 15 ký tự</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="regis-item name"> 
+                                                <span class="normal name-label">Họ & tên</span>
+                                                <input id="exampleInput" class="form-control form-myinput f-name" type="text" placeholder="Họ" >
+                                                <span class="and">&</span>
+                                                <input id="exampleInput" class="form-control form-myinput pull-right l-name" type="text" placeholder="Tên" >
+                                            
+                                             
+                                        </div>
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Email<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="inputregister form-control form-myinput" type="text" placeholder="Email" >
+                                            <div class="tooltipregister">
+                                                <div class="arrow_box">
+                                                <p class="normal">Seudo sẽ gửi các thông báo tới email này.</p>
+                                                <p class="normal">Vui lòng sử dụng email tồn tại.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="regis-item">
+                                            <span class="normal name-label">Mật khẩu<span class="red-normal"> *</span></span>
+                                            <input id="exampleInput" class="form-control form-myinput" type="password" placeholder="Mật khẩu (tối thiểu 6 ký tự)" >
+                                            
+                                        </div>
+                                        
+                                        <p class="normal">Với việc đăng ký tài khoản, tôi đã đồng ý với các điều khoản của seudo.vn</p> 
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button class="btn btn-gray disable " type="button">Hủy </button>
+                                    <button class="btn btn-blue" type="button">Đăng ký</button>
+                                  </div>
+                                  
+                                </div><!-- /.modal-content -->
+                              </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->  
+                        </div>
+                        <div class="pull-right register login item-top-header" >
+                            <a class="registerlink" href="#" data-target="#myModallogin" data-toggle="modal">Đăng nhập</a>
+<!--                            <span class="border"></span>-->
+                            <!-- Modal -->
+                            <div class="modal login fade" id="myModallogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                              <div class="modal-dialog reset-password-block">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel"><p class="red-normal">Đăng nhập</p><a href="#">Đăng ký</a></h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="#">
+                                        <div class="regis-item">
+                                            <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="Tài khoản hoặc email đã kích hoạt" >
+                                            <p class="red-normal">Tên đăng nhập sai vui lòng nhập lại tên đăng nhập khác.</p>
+                                        </div>
+                                        
+                                        <div class="regis-item">
+                                            <input id="exampleInput" class="form-control form-myinput" type="password" placeholder="Mật khẩu" >
+                                            
+                                        </div>
+                                        
+                                        <div class="regis-item made">
+                                            <p class="normal">
+                                                <label>
+                                                    <input type="checkbox" value="">
+                                                    Ghi nhớ đăng nhập
+                                                </label>
+                                            </p>
+                                            <button class="btn btn-blue btn-lg btn-login pull-right" type="button">Đăng nhập</button>
+                                        </div>
+                                        
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <a class="pull-left click-resetpass" href="#">Quên mật khẩu ?</a>
+                                    <p class="normal facebook pull-right">Đăng nhập bằng facebook<span class="icon-facebook">login facebook</span></p> 
+                                    <div class="reset-password">
+                                        <p class="normal email-text">Nhập mail bạn đăng ký</p>
+                                        
+                                        <div class="regis-item ">  
+                                                <input id="exampleInput" class="form-control form-myinput inputregister" type="text" placeholder="Email" >
+                                                <p class="red-normal">Địa chỉ mail chưa đúng.</p>
+                                                <div class="tooltipregister">
+                                                            <div class="arrow_box">
+                                                            <p class="normal">Vui lòng nhập địa chỉ email đăng ký tài khoản SeuDo.vn của bạn.</p>
+                                                            </div>
+                                                </div> 
+                                        </div>
+                                        <button class="btn btn-blue" type="button">Lấy lại mật khẩu</button>
+                                        <p class="normal loading-resetpass"><span class="alert alert-error"> Đang gửi..... </span></p>
+                                        <p class="alert alert-info"> Email sent! If the email address you entered is registered at Freelancer.com, you'll receive an email with instructions on how to set a new password.  </p>
+                                    </div>
+                                  </div>
+                                  
+                                </div><!-- /.modal-content -->
+        <!--                        loading-->
+                                 <!--<div class="loading-face">
+                                    <div id="facebookG">
+                                        <div id="blockG_1" class="facebook_blockG">
+                                        </div>
+                                        <div id="blockG_2" class="facebook_blockG">
+                                        </div>
+                                        <div id="blockG_3" class="facebook_blockG">
+                                        </div>
+                                        </div>
+                                 </div>-->
+        <!--                        end loading-->
+                              </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->    
+                        </div>
+                        
+                        
+                    </div> 
+                    
+                    <div class="header-search pull-right">
+                        <input type="text" placeholder="Nhập link sản phẩm bạn muốn đặt từ taobao.com, tmall.com, 1688.com và eely.com...." class="form-control form-myinput" id="exampleInput">
+                        <span class="uppercase normal-blod">đặt hàng</span>
+                    </div>      
+                </div>
+                
+                <div class="logo">
+                    <a href="#"><img src="images/icon-footer/menu_mini.jpg"></a>
+                </div>    
+            </div>
+            
+        </section>
+        
+    </header>
+    <!--<section class="seu-menu">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 megamenu-left">
+                        <ul class="seu-megamenu">
+                            <li class="item-megamenu active">
+                                <a href="#"><span class="uppercase home"><span class="icon"></span>trang chủ</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase sevice"><span class="icon"></span> giới thiệu</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase"> biểu phí</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase"> hướng dẫn</span></a>
+                            </li> 
+                        </ul>
+                    </div>
+                    <div class="megamenu-right pull-right">
+                        <div class="seu-facemenu">
+                                <a href="#"><span class="uppercase home"><span class="icon"></span>cộng đồng</span></a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>-->
+    
+    <section class="seudo-menu">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 seu-left">
+                        <ul class="seudo-megamenu">
+                            <li class="item-megamenu active">
+                                <a href="#"><span class="uppercase home"><span class="icon"></span>trang chủ</span></a>
+                            </li>
+                            <li class="item-megamenu ">
+                                <a href="#"><span class="uppercase sevice"><span class="icon"></span> giới thiệu</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase"> biểu phí</span></a>
+                            </li>
+                            <li class="item-megamenu">
+                                <a href="#"><span class="uppercase"> hướng dẫn</span></a>
+                            </li> 
+                        </ul>
+                    </div>
+                    <div class="seu-right pull-right">
+                        <div class="seu-facemenu">
+                                <a href="#"><span class="icon"></span><span class="uppercase home">công cụ đặt hàng</span></a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section> 
+
+    <!-- End header -->
+
+<!-- Begin header -->
+
+    <?php include_once('tpl/inc_header.php'); ?>
+
+<!-- End header -->
+   
+    <section class="home-slide">
+       <nav class="container" >
+            <div class="row">
+                    <!--<div class="list_carousel">
+                        <div id="home-slideshow">
+                              <img src="images/imgdemo/1_Nguon hang phong phu.jpg">
+                              <img src="images/imgdemo/2_De dang quan ly don hang.jpg">
+                              <img src="images/imgdemo/3_De dang tinh phi dich vu.jpg">
+                              <img src="images/imgdemo/4_Tich luy diem.jpg">  
+                        </div>
+                        <div class="clearfix"></div>
+                        <a id="prev3" class="prev" href="#"></a>
+                        <a id="next3" class="next" href="#"></a> 
+                    </div>--> 
+                    <style type="">
+                    #owl-demo .item img{
+display: block;
+width: 100%;
+height: auto;
+}
+                    </style>
+                    <div id="home-slideheader" class="owl-carousel">      
+                            <div class="item"><img class="lazyOwl" data-src="images/imgdemo/1_Nguon hang phong phu.jpg" alt="Lazy Owl Image"></div>
+                            <div class="item"><img class="lazyOwl" data-src="images/imgdemo/2_De dang quan ly don hang.jpg" alt="Lazy Owl Image"></div>
+                            <div class="item"><img class="lazyOwl" data-src="images/imgdemo/3_De dang tinh phi dich vu.jpg" alt="Lazy Owl Image"></div>
+                            <div class="item"><img class="lazyOwl" data-src="images/imgdemo/4_Tich luy diem.jpg" alt="Lazy Owl Image"></div>
+                            
+                     </div>
+                     
+                                 
+            </div>
+       </nav>
+    </section>
+    
+    <section class="home-sl1">
+        <nav class="container" >
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 sl1">
+                    <div class="seu-module ">
+                           <div class="module-inner">
+                                <div class="module-title">
+                                       <p class="title uppercase normal-blod">nguồn hàng</p>
+                                       <div class="avatar"></div>
+                                       
+                                </div>
+                                <div class="module-ct">
+                                       <p class="m-ct">Hàng trăm ngàn sản phẩm tới từ các website THƯƠNG MẠI ĐIỆN TỬ lớn nhất TQ</p>
+                                       <div class="logo">
+                                            <div class="left">
+                                                <span class="taobao"><a href="#">taobao.com</a></span>
+                                                <span class="ali"><a href="#">1688.com</a></span>
+                                            </div>
+                                            <div class="right">
+                                                <span class="tmall"><a href="#">tmall.com</a></span>
+                                                <span class="eelly"><a href="#">eelly.com</a></span>
+                                            </div>
+                                       </div>
+                                </div>
+                           </div>
+                      </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 sl2">
+                    <div class="seu-module ">
+                           <div class="module-inner">
+                                <div class="module-title">
+                                       <p class="title uppercase normal-blod">lợi ích</p>
+                                       <div class="avatar"></div>          
+                                </div>
+                                <div class="module-ct">
+                                        <div class="module-ct-item ">
+                                                <span class="left-item normal-blod"><i>1 </i></span>
+                                                <p class="normal">Tích lũy điểm thành viên hưởng triết khấu và ưu đãi.</p>
+                                       </div>
+                                       <div class="module-ct-item ">
+                                                <span class="left-item normal-blod"><i>2 </i></span>
+                                                <p class="normal">Đặt cọc khi đặt hàng. Thanh toán trước khi giao hàng.</p>
+                                       </div>
+                                       <div class="module-ct-item ">
+                                                <span class="left-item normal-blod"><i>3 </i></span>
+                                                <p class="normal">Giao dịch online, tích kiệm công sức nhập hàng.</p>
+                                       </div>
+                                       
+                                </div>
+                           </div>
+                      </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 sl3">
+                    <div class="seu-module ">
+                           <div class="module-inner">
+                                <div class="module-title">
+                                       <p class="title uppercase normal-blod">quản lý</p>
+                                       <div class="avatar"></div>          
+                                </div>
+                                <div class="module-ct">
+                                        <div class="module-ct-item ">
+                                                <span class="left-item normal-blod"><i>1 </i></span>
+                                                <p class="normal">Quản lý đơn hàng online thuận tiện.</p>
+                                       </div>
+                                       <div class="module-ct-item ">                            
+                                                <span class="left-item normal-blod"><i>2 </i></span>
+                                                <p class="normal">Thông báo tình trạng hàng hóa qua email, SMS, Viber.</p>
+                                       </div>
+                                       <div class="module-ct-item ">
+                                                <span class="left-item normal-blod"><i>3 </i></span>
+                                                <p class="normal">Dễ dàng theo dõi tài chính nhập hàng.</p>
+                                       </div>   
+                                       
+                                </div>
+                           </div>
+                      </div>
+                </div>
+            </div>
+       </nav>
+    </section>
+    
+    
+    <section class="home-sl2">
+        <nav class="container" >
+            <div class="row">
+                <div class="col-lg-offset-2 col-md-offser-2 col-sm-offset-2  col-lg-8 col-md-8 col-sm-8 ">
+                    <div class="sl2-search">
+                        <input type="text" placeholder="Nhập link sản phẩm bạn muốn đặt từ taobao.com, 1688.com và eely.com...." class="form-control form-myinput" id="exampleInput">
+                        <span class="uppercase normal-blod">đặt hàng</span>
+                    </div>
+                </div>
+            </div>
+       </nav>
+    </section>
+    
+    
+    <section class="home-sl3">
+        <nav class="container" >
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 sl1">
+                    <div class="seu-module ">
+                           <div class="module-inner">
+                                <div class="module-title">
+                                       <div class="avatar"></div>
+                                       <div class="module-link">
+                                            <p class="normal">1688.com(alibaba)</p>
+                                        </div>
+                                        <div class="bg">
+                                            <p class="normal-blod title">1688.com(alibaba)</p>
+                                            <p class="normal">Website B2B lớn nhất thế giới</p>
+                                        </div>
+                                        <a href="#"></a>    
+                                </div>
+                                <div class="module-ct">
+                                        
+                                </div>
+                           </div>
+                      </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 sl2">
+                    <div class="seu-module ">
+                           <div class="module-inner">
+                                <div class="module-title">
+                                       <div class="avatar"></div>
+                                       <div class="module-link">
+                                            <p class="normal">Taobao.com</p>
+                                        </div>
+                                        <div class="bg">
+                                            <p class="normal-blod title">Taobao.com</p>
+                                            <p class="normal">Website bán lẻ lớn nhất Trung Quốc</p>
+                                        </div>
+                                        <a href="#"></a>    
+                                </div>
+                                <div class="module-ct">
+                                        
+                                </div>
+                           </div>
+                      </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 sl3">
+                    <div class="seu-module ">
+                           <div class="module-inner">
+                                <div class="module-title">
+                                       <div class="avatar"></div>
+                                       <div class="module-link">
+                                            <p class="normal">Tmall.com</p>
+                                        </div> 
+                                        <div class="bg">
+                                            <p class="normal-blod title">Tmall.com</p>
+                                            <p class="normal">Website bán lẻ hàng hiệu uy tín nhất Trung Quốc</p>
+                                        </div>
+                                        <a href="#"></a>   
+                                </div>
+                                <div class="module-ct">
+                                        
+                                </div>
+                           </div>
+                      </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 sl4">
+                    <div class="seu-module ">
+                           <div class="module-inner">
+                                <div class="module-title">
+                                       <div class="avatar"></div>
+                                       <div class="module-link">
+                                            <p class="normal">Eelly.com</p>
+                                        </div> 
+                                        <div class="bg">
+                                            <p class="normal-blod title">Eelly.com</p>
+                                            <p class="normal">Chuyên trang bán buôn hàng thời trang</p>
+                                        </div>
+                                        <a href="#"></a>   
+                                </div>
+                                <div class="module-ct">
+                                        
+                                </div>
+                           </div>
+                      </div>
+                </div>
+            </div>
+       
+       </nav>
+    </section>
+    
+    <section class="home-sl4 v2">
+        <nav class="container" >
+            <div class="row">
+
+                <div class="col-xs-10 col-xs-offset-1 sl2">
+                    <div class="seu-module ">
+                           <div class="module-inner">
+                                <div class="module-title">
+                                       <p class="title uppercase normal-blod">Tính phí nhập hàng</p>    
+                                </div>
+                                <div class="module-ct">
+                                       <div class="sls1">
+                                            <div class="sls-module"> 
+                                                        <div class="item-full">
+                                                               <p class="normal">Chọn cấp độ của bạn</p>
+                                                               <div class="select-v2">
+                                                                   <select >
+                                                                        <option value="0">Vip</option>
+                                                                        <option>Quá Vip</option>
+                                                                        <option>Cực Kỳ Víp</option>
+                                                                    </select>
+                                                               </div>
+                                                        </div>
+                                                        <div class="item-full total-item">
+                                                               <p class="normal">Tổng tiền hàng <span class="arow"></span><span class="italic pull-right">Tỉ giá: 1 NDT = 3500 VND</span></p>
+                                                               <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="Vd: 100000 ndt hoặc 1000 vnd" >
+                                                        </div>
+                                                        <div class="item-2full">
+                                                               <div class="left">  
+                                                                    <p class="normal">Số sản phẩm thường</p>  
+                                                                    <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="0" >
+                                                               </div>
+                                                               <div class="right"> 
+                                                                    <p class="normal">Số phụ kiện <span class="italic">(giá dưới 34000<sup>đ</sup>)</span></p>  
+                                                                    <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="0" >
+                                                               </div>
+                                                        </div>
+                                                        <div class="item-2full">
+                                                               <div class="left">  
+                                                                    <p class="normal">Tỉnh /Tp của bạn</p>  
+                                                                    <div class="select-v2">
+                                                                   <select >
+                                                                        <option value="0">Vip</option>
+                                                                        <option>Quá Vip</option>
+                                                                        <option>Cực Kỳ Víp</option>
+                                                                    </select>
+                                                               </div>
+                                                               </div>
+                                                               <div class="right"> 
+                                                                    <p class="normal">Trọng lượng <span class="italic">(kg)</span></p>  
+                                                                    <input id="exampleInput" class="form-control form-myinput" type="text" placeholder="0.8 kg" >
+                                                               </div>
+                                                        </div>
+                                                            <p class="alert alert-alert">Dấu chấm "." biểu thị phần nghìn, dấu phẩy "," biểu thị phần thập phân. VD: 1.200,3 kg</p>
+                                                        <div class="item-full check-box">
+                                                               <p class="normal">Sử dụng dịch vụ ?</p>
+                                                               <div class="item-full-ct">
+                                                                    <input type="checkbox" value=""><span>Kiểm hàng</span><input type="checkbox" value=""><span>Đóng gỗ</span>
+                                                               </div>
+                                                               <button class="btn btn-blue btn-lg pull-right" type="button"><span class="uppercase">tính thử</span></button>
+                                                               <div class="alert-ct">
+                                                                    <span class="red-normal animated none bounceIn">Add thêm class bounceIn !</span>
+                                                               </div>
+                                                        </div>
+                                                         
+                                              </div>
+                                              
+                                       </div>
+                                       <div class="sls2">
+                                            <div class="m-title">
+                                                <p class="normal">Phí dịch vụ</p>
+                                                <div class="border-line"></div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="left">
+                                                    <p class="normal">Phí mua hàng</p>
+                                                </div>
+                                                <div class="right">
+                                                    <p class="red-bold">23.000.000<sup>đ</sup></p>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="left">
+                                                    <p class="normal">Phí kiểm hàng</p>
+                                                </div>
+                                                <div class="right">
+                                                    <p class="red-bold">23.000.000<sup>đ</sup><span class="italic"> (-10%)</span></p>
+                                                </div>
+                                            </div>
+                                            <div class="m-title ms">
+                                                <p class="normal">Phí vận chuyển</p>
+                                                <div class="border-line"></div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="left">
+                                                    <p class="normal">Phí v/c nội địa TQ</p>
+                                                </div>
+                                                <div class="right">
+                                                    <p class="red-bold">23.000.000<sup>đ</sup></p>
+                                                    <p class="italic">(60.000<sup>đ</sup> ~ 90.000<sup>đ</sup>)</p>
+                                                </div>
+                                            </div>  
+                                            <div class="item">
+                                                <div class="left">
+                                                    <p class="normal">Phí v/c TQ-VN</p>
+                                                    <p class="italic">(gồm phí đóng gỗ nếu có)</p>
+                                                </div>
+                                                <div class="right">
+                                                    <p class="red-bold">23.000.000<sup>đ</sup><span class="italic"> (-10%)</span></p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="item bottom">
+                                                <div class="left">
+                                                    <p class="normal-blod">Tổng</p>
+                                                </div>
+                                                <div class="right">
+                                                    <p class="normal line-through">23.000.000<sup>đ</sup></p>
+                                                    <p class="red-bold">23.000.000<sup>đ</sup></p>
+                                                    <p class="italic">(60.000.000<sup>đ</sup> ~ 90.000.000<sup>đ</sup>)</p>
+                                                </div>
+                                            </div>
+                                            <div class="link-bottom">
+                                                <p class="normal"><a href="#" class="pull-right">Xem bảng phí dịch vụ</a></p>
+                                            </div>     
+                                       </div>
+                                </div>
+                           </div>
+                      </div>
+                </div>
+                
+       
+       </nav>
+    </section>
+     <!--    list cart-->
+
+    
+<!--    end list cart-->
+     <!-- conten menu top    -->
+     <div style="display: none;" class="modal fade" id="myModaldeleteitem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Xóa sản phẩm</h4>
+              </div>
+              <div class="modal-body">
+                <p class="price-red1">Bạn có chắc chắn muốn xóa sản phẩm này</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-gray btn-sm" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-red btn-sm">Yes</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+     </div>                     
+<!-- Begin footer -->
+    <?php include_once('tpl/inc_footer.php'); ?>
+<!-- end Footer  -->
+    
+
+        <section class="seu-copyright"> 
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-7">
+                    <div class="custom left">
+                        <a href="#" class="uppercase">Trang chủ <span class="arow"></span></a>
+                        <a href="#" class="uppercase">giới thiệu<span class="arow"></span></a>
+                        <a href="#" class="uppercase">biểu phí<span class="arow"></span></a>
+                        <a href="#" class="uppercase">hướng dẫn<span class="arow"></span></a>
+                        <a href="#" class="uppercase">công cụ đặt hàng</a> 
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5">
+                    <div class="custom right">
+                        <p class="normal">Bản quyền thuộc về Công Ty Cổ Phần Công Nghệ Và Truyền Thông Alimam Việt Nam</p> 
+                        <p class="normal">Email cskh@seudo.vn - Hotline: 0988 388 324</p> 
+                    </div>
+                </div>
+              </div>
+            </div>
+  </section>
+
+</footer>
+<script type="text/javascript">
+        $(document).ready(function(){
+//            $('#scrollbar1').tinyscrollbar();
+        });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+//        $('.scrollbar-notifi .scroll').jscroll();
+
+    });
+</script>
+
+<script>
+$('.dropdown-toggle').dropdown()
+</script>
+<link href="css/responsive.css" rel="stylesheet" type="text/css" media="all">
+</body>
+</html>
+

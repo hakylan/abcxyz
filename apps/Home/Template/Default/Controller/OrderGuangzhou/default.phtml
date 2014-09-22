@@ -1,0 +1,284 @@
+<?php
+use Flywheel\View\Render;
+/** @var Render $this */
+
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+$cssPath = $publicPath . 'assets/css/';
+$jsPath = $publicPath . 'assets/js/process/';
+$jsPathFront = $publicPath . 'assets/js/';
+
+//$document->addJs($jsPath.'cart.js',"TOP");
+//$document->addJs($jsPath.'checkout_address.js',"TOP");
+//$document->addJs($jsPathFront.'jquery.loadingbar.min.js',"TOP");
+//$document->addJs($jsPathFront.'jquery.loadingbar.js',"TOP");
+//$document->addCss($cssPath.'loadingbar.css',"TOP");
+
+$this->document()->addCss('css/order.css');
+$this->document()->addCss('fonts/font-awesome/css/font-awesome.min.css');
+
+$this->document()->addJs($jsPath.'handlebars-v1.3.0.js', 'TOP');
+$this->document()->addJs($jsPath.'order.js');
+$this->document()->addJsVar('get_orders_url', $this->createUrl('backend/order/management/get_orders'));
+$this->document()->addJsVar('order_management_page', $this->createUrl('order/management'));
+
+$this->document()->addJsCode('
+    manage_page_init();
+');
+
+$tabs = array(
+    \Order::STATUS_INIT => "CHƯA MUA",
+    \Order::STATUS_DEPOSITED => "ĐÃ ĐẶT CỌC",
+    \Order::STATUS_WAITING_FOR_APPROVAL => "CHỜ DUYỆT",
+    \Order::STATUS_BUYING => "ĐANG MUA",
+    \Order::STATUS_NEGOTIATING => "ĐÃ ĐẶT HÀNG",
+    \Order::STATUS_WAITING_BUYER_CONFIRM => "CHỜ XÁC NHẬN",
+    \Order::STATUS_BUYER_CONFIRMED => "KHÁCH XÁC NHẬN",
+    \Order::STATUS_NEGOTIATED => "CHỜ THANH TOÁN",
+    \Order::STATUS_BOUGHT => "ĐÃ MUA HÀNG",
+    \Order::STATUS_SELLER_DELIVERY => "NGƯỜI BÁN GIAO",
+    \Order::STATUS_RECEIVED_FROM_SELLER => "NHẬN HÀNG",
+    \Order::STATUS_CHECKING => "ĐANG KIỂM HÀNG",
+    \Order::STATUS_CHECKED => "ĐÃ KIỂM HÀNG",
+    Order::STATUS_TRANSPORTING => "VẬN CHUYỂN",
+    \Order::STATUS_WAITING_FOR_DELIVERY => "CHỜ GIAO HÀNG",
+    \Order::STATUS_CUSTOMER_CONFIRM_DELIVERY => "YÊU CẦU GIAO HÀNG",
+    \Order::STATUS_DELIVERING => "ĐANG GIAO HÀNG",
+    \Order:: STATUS_RECEIVED => "KHÁCH NHẬN HÀNG",
+    \Order::STATUS_COMPLAINT => "KHIẾU NẠI KHÁC HÀNG",
+    \Order::STATUS_CANCELLED => "HỦY BỎ",
+    \Order::STATUS_OUT_OF_STOCK => "HẾT HÀNG"
+);
+
+$tabsTimeOrder = array(
+    \Order::STATUS_INIT => "Tạo đơn",
+    \Order::STATUS_DEPOSITED => "Đặt cọc",
+    \Order::STATUS_BOUGHT => "Mua hàng",
+    \Order::STATUS_SELLER_DELIVERY => "Người bán phát hàng",
+    \Order::STATUS_CHECKING => "Kiểm hàng",
+    \Order::STATUS_WAITING_FOR_DELIVERY => "Chờ giao hàng",
+    \Order::STATUS_CUSTOMER_CONFIRM_DELIVERY => "Khách y/c giao",
+    \Order:: STATUS_RECEIVED => "Khách nhận hàng"
+);
+?>
+
+<div id="page-title" class="seu-main-header">
+    <div class="container">
+        <h3 class="main-header-title">
+            <?php echo $title; ?>
+        </h3>
+    </div>
+</div>
+
+<div id="page-content" class="seu-page-content order-management no-header">
+<div class="container">
+
+<!-- Orders -->
+<div class="row">
+    <!-- Errors -->
+    <div class="infobox col-lg-6 error-bg center-margin hidden" id="_error-placeholder">
+        <div class="large btn font-orange info-icon">
+            <i class="glyph-icon icon-warning"></i>
+        </div>
+        <h4><?php td('Có lỗi xảy ra'); ?></h4>
+        <p></p>
+    </div>
+    <!--/errors -->
+</div>
+
+
+<div class="row">
+    <div class="orders-list-header font-gray col-lg-12">
+        <div class="col-lg-3">
+            <div class="col-lg-2">ID</div>
+            <div class="col-lg-10"><?php td('Đơn Hàng'); ?></div>
+        </div>
+
+        <div class="col-lg-1">
+            <?php td('Tình Trạng'); ?>
+        </div>
+
+        <div class="col-lg-1">
+            <?php td('Kho'); ?>
+        </div>
+
+        <div class="col-lg-1">
+            <?php td('Giá trị'); ?>
+        </div>
+
+        <div class="col-lg-1">
+            <?php td('Sản Phẩm'); ?>
+        </div>
+
+        <div class="col-lg-2">
+            <?php td('Người bán'); ?>
+        </div>
+
+        <div class="col-lg-3">
+            <?php td('Khách hàng'); ?>
+        </div>
+    </div>
+</div>
+<div class="row" id="_orders-list-placeholder">
+</div>
+<!-- Paging -->
+<div class="row">
+    <div class="col-lg-offset-5 col-lg-2">
+        <a href="javascript:;" class="btn large primary-bg center-margin _load-more-orders" data-target="<?php echo $page+1 ?>">
+            <span class="button-content uppercase">
+                <span><?php td('TẢI THÊM ĐƠN'); ?></span> &nbsp;&nbsp;&nbsp;
+                <i class="glyph-icon icon-chevron-circle-down"></i>
+            </span>
+        </a>
+    </div>
+</div>
+<!--/paging-->
+</div>
+</div>
+
+<script id="_orders_list" type="text/x-handlebars-template">
+    <div class="orders-list">
+        {{#each orders}}
+        {{>list}}
+        {{/each}}
+    </div>
+</script>
+
+<script id="_list-partial" type="text/x-handlebars-template">
+    <div class="bottom-margin order-item-placeholder _order-item-placeholder" id="_order-item-{{id}}">
+        <div class="order-info col-lg-12">
+            <div class="col-lg-3">
+                <div class="col-lg-2"><small>{{id}}</small></div>
+                <div class="col-lg-10">
+                    <h5><a href="{{detail_link}}" target="_blank">{{code}}</a></h5>
+                    <div class="col-lg-1 font-gray-dark inline-header">
+                        <?php td('VĐ'); ?>
+                    </div>
+                    <div class="col-lg-11 freight-bill-list">
+                        {{#if packages}}
+                        <ul>
+                            {{#each packages}}
+                            {{>fb_list}}
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-1">
+                <small class="order-status-{{status}}">{{order_status status}}</small> <br />
+                {{#if need_checking}}
+                <small class="font-gray-dark">Có Kiểm hàng</small> <br />
+                {{else}}
+                <small class="font-gray-dark">Không Kiểm</small> <br />
+                {{/if}}
+                {{#if check_wood_crating}}
+                <small class="font-gray-dark">Có đóng gỗ</small>
+                {{/if}}
+            </div>
+            <div class="col-lg-1 font-gray-dark font-bold">{{destination_warehouse}}</div>
+            <div class="col-lg-1">
+                <p>Giá trị: <span class="_money-amount" data-amount="{{total_amount}}">{{total_amount}}</span></p>
+                {{#if direct_fill_amount_cny}}
+                <p><span class="amount_cny">{{direct_fill_amount_cny}}<sup>¥</sup></span></p>
+                {{/if}}
+            </div>
+            <div class="col-lg-1">
+                {{recive_quantity}}/{{pending_quantity}}/{{order_quantity}} <br />
+                {{#if weight}}
+                {{weight}} kg
+                {{/if}}
+            </div>
+
+            <div class="col-lg-2">
+                <strong>{{seller_name}}</strong>
+                <img src="{{icon_homeland seller_homeland}}"><br>
+                {{#if name_recipient_origin}}
+                <p class="font-gray-dark">
+                    <?php td('<span class="left pull-left">User nhận: </span>'); ?><span class="right pull-left">{{name_recipient_origin}}</span>
+                </p>
+                {{/if}}
+                {{#if account_purchase_origin}}
+                <p class="font-gray-dark">
+                    <?php td('<span class="left pull-left">User mua: </span>'); ?><span class="right pull-left">{{account_purchase_origin}}</span>
+                </p>
+                {{/if}}
+            </div>
+            <div class="col-lg-3">
+                {{#if buyer}}
+                {{>customer_info}}
+                {{else}}
+                <small class="font-gray-dark"><?php td('Không có quyền xem'); ?></small>
+                {{/if}}
+            </div>
+        </div>
+
+        <div class="order-bottom col-lg-12">
+            <div class="col-lg-3 font-gray-dark">
+                Mã đơn hàng gốc: <strong>{{invoice}}</strong><br>
+                Hóa đơn Alipay: <strong>{{alipay}}</strong>
+            </div>
+            <div class="col-lg-2 font-gray-dark">
+                Tạo đơn: <strong>{{date created_time}}</strong><br>
+                Đặt cọc: <strong>{{date deposit_time}}</strong>
+            </div>
+
+            <div class="col-lg-2 font-gray-dark">
+                Mua hàng: <strong>{{date buying_time}}</strong><br>
+                Thanh toán: <strong>{{date bought_time}}</strong>
+            </div>
+
+            <div class="col-lg-2 font-gray-dark">
+                Giao khách: <strong>{{date delivered_time}}</strong><br>
+                Khiếu nại:
+            </div>
+
+            <div class="col-lg-2 font-gray-dark">
+                Đã kiểm hàng: <strong>{{date checked_time}}</strong><br>
+                Đang kiểm hàng: <strong>{{date checking_time}}</strong>
+            </div>
+
+            <div class="col-lg-1 font-gray-dark cancelled_time">
+                <p>Hủy bỏ: <strong>{{date cancelled_time}}</strong></p>
+                <p>Hết hàng: <strong>{{date out_of_stock_time}}</strong></p>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="_freight-bill" type="text/x-handlebars-template">
+    <li>{{freight_bill}}</li>
+</script>
+
+<script id="_customer-info" type="text/x-handlebars-template">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <a href="{{buyer.detail_link}}" target="_blank">
+                        <img src="{{buyer.avatar}}" class="user-avatar">
+                    </a>
+                </div>
+
+                <div class="user-name">
+                    <a href="{{buyer.detail_link}}" target="_blank"><strong>{{buyer.last_name}} {{buyer.first_name}}</strong></a><span class="font-gray-dark">({{buyer.code}})</span><br />
+                    <span class="font-gray-dark">@{{buyer.username}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            {{#if teller}}
+            <a href="{{teller.detail_link}}" target="_blank" class="teller-avatar" data-toggle="tooltip" data-placement="top" title="<?php td('Mua hàng'); ?> {{teller.username}}">
+                <img src="{{teller.avatar}}">
+            </a>
+            {{/if}}
+            {{#if payment}}
+            <a href="{{payment.detail_link}}" target="_blank" class="payment-avatar" data-toggle="tooltip" data-placement="top" title="<?php td('Thanh toán'); ?> {{payment.username}}">
+                <img src="{{payment.avatar}}">
+            </a>
+            {{/if}}
+        </div>
+    </div>
+</script>

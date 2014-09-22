@@ -1,0 +1,196 @@
+.order-status-INIT,
+.order-status-DEPOSITED,
+.order-status-BUYING,
+.order-status-NEGOTIATING,
+.order-status-WAITING_BUYER_CONFIRM,
+.order-status-BUYER_CONFIRMED,
+.order-status-NEGOTIATED,
+.order-status-BOUGHT,
+.order-status-SELLER_DELIVERY,
+.order-status-RECEIVED_FROM_SELLER,
+.order-status-CHECKING,
+.order-status-CHECKED,
+.order-status-TRANSPORTING,
+.order-status-WAITING_DELIVERY,
+.order-status-RECEIVED,
+.order-status-DELIVERING,
+.order-status-COMPLAINT,
+.order-status-OUT_OF_STOCK,
+.order-status-CONFIRM_DELIVERY,
+.order-status-CANCELLED {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.order-status-INIT,
+.order-status-CONFIRM_DELIVERY,
+.order-status-DEPOSITED {
+    color: #828282;
+}
+
+.order-status-BUYING,
+.order-status-NEGOTIATING,
+.order-status-WAITING_BUYER_CONFIRM,
+.order-status-BUYER_CONFIRMED,
+.order-status-NEGOTIATED,
+.order-status-BOUGHT {
+    color: #9CD159;
+}
+
+.order-status-SELLER_DELIVERY,
+.order-status-RECEIVED_FROM_SELLER,
+.order-status-CHECKING,
+.order-status-CHECKED,
+.order-status-TRANSPORTING,
+.order-status-WAITING_DELIVERY {
+    color: #FA7753;
+}
+
+.order-status-RECEIVED,
+.order-status-DELIVERING,
+.order-status-OUT_OF_STOCK,
+.order-status-CANCELLED {
+    color: #c2c2c2;
+}
+
+.order-status-COMPLAINT {
+    color: #FF5757;
+}
+
+.order-management .orders-list-header,
+.order-management .order-item-placeholder,
+.order-management .order-info,
+.order-management .order-bottom {
+    display: inline-block;
+    width: 100%;
+}
+.order-management .my-tabs {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.order-management .bold-blue {
+    font-weight: bold;
+}
+.order-management .orders-list-header {
+    font-size: 95%;
+    padding: 11px 0;
+    font-weight: bold;
+    background-color: #E9ECF1;
+}
+.order-management .order-info {
+    padding: 11px 0;
+    /*border-radius: 2px;*/
+    border: 1px solid #E9ECF1;
+    box-shadow: 0 1px 2px #efefef;
+    z-index: 1;
+}
+.order-management .order-info h5 {
+    margin-top: 0;
+}
+.order-management .order-info .inline-header {
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 95%;
+}
+.order-management .order-info .freight-bill-list {
+    padding-left: 0;
+    font-size: 95%;
+}
+.order-management .order-item-placeholder {
+    /*padding-bottom: 15px;*/
+}
+.order-management .order-info:hover {
+    background-color: #fffdf4;
+}
+.order-management .order-info > div {
+    /*padding-left: 5px;
+    padding-right: 5px;*/
+}
+.order-management .order-bottom {
+    border-top: none;
+    margin: 0 auto;
+    font-size: 95%;
+    border-radius: 0 0 3px 3px;
+    line-height: 1.2;
+}
+.order-management .user-info {
+    position: relative;
+    width: 100%;
+    padding-left: 40px;
+}.order-management .user-avatar {
+    position: absolute;
+    left: 0;
+    /*top: 3px*/
+}
+.order-management .user-avatar img {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+}
+.order-management .teller-avatar img,
+.order-management .payment-avatar img {
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    border: 2px solid #eaeaea;
+}
+
+/** FILTER FORM PLACEHOLDER **/
+.order-management #advance-filter h5 {
+    font-weight: bold;
+}
+
+.order-management #advance-filter label {
+    font-weight: normal;
+}
+
+.order-management #advance-filter * {
+    font-size: 11px;
+}
+
+.order-management #advance-filter input {
+    height: 26px;
+    padding: 3px 5px;
+}
+
+/*.order-management #advance-filter #ordering-option-placeholder ul li,*/
+.order-management #advance-filter #date-filter-placeholder ul li {
+    width: 45%;
+    display: inline-block;
+}
+.order-management .filter-label {
+    font-weight: bold;
+    font-size: 95%;
+}
+/** FILTER FORM PLACEHOLDER **/
+
+/*style count order*/
+.result-order {
+    padding-top: 8px;
+    font-size: 14px;
+    color: #666666;
+}
+
+.active {
+    font-weight: bold;
+}
+
+.longer_day select {
+    height: 20px;
+}
+
+.left {
+    width: 35%;
+}
+
+.right {
+    width: 65%;
+}
+
+.cancelled_time {
+    padding: 0;
+}
+
+.cancelled_time p {
+    margin-left: -10px;
+}

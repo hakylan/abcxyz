@@ -1,0 +1,31 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 4/19/14
+ * Time: 11:06 PM
+ */
+$user = isset($user) ? $user : array();
+if($user instanceof \Users):
+?>
+<h3>Thông tin khách hàng:</h3>
+<p><span>Họ và tên khách hàng:</span> <?php echo $user->getFullName() ?></p>
+<p><span>Tài khoản:</span> <?php echo $user->getUsername() ?></p>
+<br/>
+<h3>Đơn hàng</h3>
+<p>Gom theo địa chỉ : <?php echo $address_full ?></p>
+<p><span>Số điện thoại:</span> <?php echo $phone_number ?></p>
+
+    <h4>+Đơn:</h4>
+<?php
+foreach ($order_list as $order) {
+    if($order instanceof \Order){
+?>
+    <p><?php echo $order->getCode() ?></p>
+<?php }} ?><br/>
+<h3>Thông tin tài chính:</h3>
+<p>Tổng tiền hàng + phí : <?php echo Common::numberFormat($total_amount) ?></p>
+<p>Số tiền cần thanh toán trên các đơn hàng: <?php echo Common::numberFormat($missing_amount) ?></p>
+<p>Số dư tài khoản sau tất toán : <?php echo Common::numberFormat($user->getAccountBalance()) ?></p>
+<p>COD : <?php echo $cod > 0 ? Common::numberFormat($cod) : "Không có COD"?></p>
+<?php endif ?>

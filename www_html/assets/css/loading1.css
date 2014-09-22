@@ -1,0 +1,26 @@
+._loading{
+    background: none repeat scroll 0 0 #111111;
+    height: 100%;
+    opacity: 0.6;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2147483647;
+    text-align: center;
+}
+
+._loading div.content{
+    margin-top: 10%;
+    width: 100%;
+}
+
+#sd_add_cart{
+    background: url("../img/small/icon-bkv1.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: inline-block;
+    height: 42px;
+    width: 150px;
+}
+
+#sd_add_cart:hover{
+    background: url("../img/small/icon-bkv2.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}

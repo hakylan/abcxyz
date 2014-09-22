@@ -1,0 +1,163 @@
+<?php
+use Flywheel\View\Render;
+
+$document = $this->document();
+
+$document->addCss('css/order.css');
+$document->addCss('css/style-chitietdonhang.css');
+$document->addCss('css/extend/quyen_order_detail.css');
+$document->addJs('js/handlebars-v1.3.0.js', 'TOP');
+//$document->addJs('js/process/order.js');
+//$document->addJs('js/autoNumeric.js');
+//$document->addJs('js/process/order_detail.js');
+//$document->addJs('js/seudo-backendv1.js');
+//$document->addJs('js/jqueryui.js');
+
+
+
+
+?>
+<div class="seu-main-header" id="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <h3 class="main-header-title uppercase pull-left">
+                    Báo cáo trả lại tiền cho khách hàng:
+                </h3>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="page-content" class="seu-page-content delivering no-header">
+    <div class="container">
+
+        <div class="module-custom" id="_order_content">
+            <h2 style="margin-top: 20px; border: 0px; font-size: 20px;">Danh sách giao dịch cần khắc phục : tổng số <?php echo count($list_user_report);?> khách hàng</h2>
+
+                <?php
+                foreach($list_user_report as $user_id =>$user_report){
+                $user = \Users::retrieveById($user_id);
+                $total_money = $user_report['get_money'] - $user_report['refund_money'];
+
+
+                    ?>
+                   <br /><br />
+                    <h1> Khách hàng <?php echo $user->getUsername();?></h1>
+                <table width="100%" cellspacing="0" cellpadding="5" border="1" style="border-collapse:collapse;margin-top: 20px;margin-bottom: 20px">
+                    <tr>
+
+
+
+                        <th >Tổng số tiền truy thu </th>
+                        <th >Tổng số tiền trả lại sau khi tính điểm tích lũy </th>
+                        <th >Tổng số tiền cần giao dịch </th>
+
+
+                    </tr>
+                    <tr>
+
+
+
+                        <td><?php echo number_format($user_report['get_money']);?> (VNĐ)</td>
+                        <td><?php echo number_format($user_report['refund_money']);?> (VNĐ)</td>
+                        <td>
+                            <?php
+                                if($total_money> 0){
+                                    echo "Truy thu tiền khách hàng : ".number_format($total_money)." (VNĐ)";
+                                }else{
+                                    $total_money = $total_money*(-1);
+                                    echo "Trả tiền khách hàng : ".number_format($total_money)." (VNĐ)";
+                                }
+
+                            ?>
+                        </td>
+
+
+                    </tr>
+                </table>
+                    <p></p>
+                    <p style="font-size: 20px"><b>Chi tiết giao dịch trả lại tiền cho khách sau khi tính chiết khấu và các đơn hàng được hưởng chiết khấu: </b></p>
+                    <table width="100%" cellspacing="0" cellpadding="5" border="1" style="border-collapse:collapse;margin-top: 20px;margin-bottom: 20px">
+                        <tr>
+
+
+                            <th >Số tiền (VNĐ)</th>
+                            <th >Lí do</th>
+                            <th >Mã giao dịch</th>
+                            <th >Thời gian</th>
+
+
+
+                        </tr>
+                        <?php
+                        foreach($user_report["detail"] as $detail){
+                            if($detail["error"] == 1){
+                        ?>
+                        <tr>
+
+
+                            <td><?php echo number_format($detail["money"]);?> </td>
+                            <td><?php echo $detail["note"];?> </td>
+                            <td><?php echo $detail["code"];?> </td>
+                            <td><?php echo $detail["time"];?> </td>
+
+
+
+                        </tr>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </table>
+                    <p></p>
+
+                    <p style="font-size: 20px"><b>Chi tiết giao dịch truy thu lại tổng số tiền trả sai cho khách hàng ở các giao dịch trên: </b></p>
+                    <table width="100%" cellspacing="0" cellpadding="5" border="1" style="border-collapse:collapse;margin-top: 20px;margin-bottom: 20px">
+                        <tr>
+
+
+                            <th >Số tiền (VNĐ)</th>
+                            <th >Lí do</th>
+                            <th >Mã giao dịch</th>
+                            <th >Thời gian</th>
+
+
+
+                        </tr>
+                        <?php
+                        foreach($user_report["detail"] as $detail){
+                            if($detail["error"] == 0){
+                                ?>
+                                <tr>
+
+
+                                    <td><?php echo number_format($detail["money"]);?> </td>
+                                    <td><?php echo $detail["note"];?> </td>
+                                    <td><?php echo $detail["code"];?> </td>
+                                    <td><?php echo $detail["time"];?> </td>
+
+
+
+                                </tr>
+                            <?php
+                            }
+                        }
+                        ?>
+                    </table>
+                <?php
+                }
+                ?>
+
+
+            <p></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+

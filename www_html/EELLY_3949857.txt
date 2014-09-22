@@ -1,0 +1,85 @@
+{
+  "homeland": "eelly",
+  "origin_url": "http://www.eelly.com/goods/3949857.html",
+  "id": "3949857",
+  "cat_id": "317",
+  "parent_cat_id": "289",
+  "weight": "0.50",
+  "detail_attributes": "<ul><li><label>货号：</label><div>AV8036</div></li><li><label>重量：</label><div>0.50Kg</div></li><li><label>分类：</label><div>短裤/热裤</div></li><li><label>吊牌：</label><div>有</div></li><li><label>风格：</label><div><a href=\"http://www.eelly.com/s-category-317-g-18_628.html\" title=\"&#38889;&#29256;\">韩版</a></div></li><li><label>腰型：</label><div><a href=\"http://www.eelly.com/s-category-317-g-90_2279.html\" title=\"&#20013;&#33136;\">中腰</a></div></li><li><label>款式：</label><div><a href=\"http://www.eelly.com/s-category-317-g-36_1068.html\" title=\"&#28909;&#35044;\">热裤</a></div></li><li><label>厚薄：</label><div><a href=\"http://www.eelly.com/s-category-317-g-23_775.html\" title=\"&#24120;&#35268;\">常规</a></div></li><li><label>图案：</label><div><a href=\"http://www.eelly.com/s-category-317-g-73_2118.html\" title=\"&#26684;&#23376;\">格子</a></div></li><li><label>季节：</label><div><a href=\"http://www.eelly.com/s-category-317-g-25_790.html\" title=\"&#26149;&#23395;\">春季</a></div></li><li><label>适用年龄：</label><div><a href=\"http://www.eelly.com/s-category-317-g-51_1850.html\" title=\"20-29&#23681;\">20-29岁</a></div></li></ul><div class=\"cel\"></div>",
+  "detail_desc": "<div width=\"760px\"><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/p4YBAFMieNuIZKmzAAAZoJODrb4AAAcTwEfs2QAABm4831.jpg\" style=\"float:none;\" title=\"1.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/pYYBAFMieNyIVV0oAASIKB5xY_kAAAcTwFjJuYABIhA043.jpg\" style=\"float:none;\" title=\"2.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/p4YBAFMieNyISuTIAAA_omUP65YAAAcTwEfzRwAAD-6341.jpg\" style=\"float:none;\" title=\"3.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G02/M00/00/3B/ooYBAFMieN-INRa_AAIM6zl_-coAAAXLQFr7yEAAg0D295.jpg\" style=\"float:none;\" title=\"4.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G01/M00/00/42/o4YBAFMieN-ITIZmAAAP5h_wq_kAAAZ2wL_pPIAABAY716.jpg\" style=\"float:none;\" title=\"5.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/p4YBAFMieN-IelTUAAWiV3i1250AAAcTwFojAMABaJv284.jpg\" style=\"float:none;\" title=\"6.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G02/M00/00/00/pIYBAFMieOCIGQb5AAAvdYY1-noAAAAFQOWcq4AAC-N049.jpg\" style=\"float:none;\" title=\"7.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/pYYBAFMieOGIRvbaAAE3CqW2VY0AAAcTwFuLnIAATci550.jpg\" style=\"float:none;\" title=\"8.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/p4YBAFMieOGIf88NAAAZHT5Y9ZQAAAcTwFvZZQAABk1068.jpg\" style=\"float:none;\" title=\"9.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G02/M00/00/3B/ooYBAFMieOWIcKiKAAHPnOHA_ssAAAXLQFt_CQAAc-0225.jpg\" style=\"float:none;\" title=\"10.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G02/M00/00/3B/pIYBAFMieOmIGLL1AAG6wvgLXfMAAAXLQFvy9gAAbra934.jpg\" style=\"float:none;\" title=\"11.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G02/M00/00/3B/ooYBAFMieOyIXgdMAAH2G8geWuoAAAXLQFxhrIAAfYz165.jpg\" style=\"float:none;\" title=\"12.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/p4YBAFMiePCICvDyAAHwjYdFBGIAAAcTwFyfmIAAfCl594.jpg\" style=\"float:none;\" title=\"13.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G01/M00/00/42/o4YBAFMiePSIWntgAAH32WFjDz8AAAZ6gFS4dAAAffx182.jpg\" style=\"float:none;\" title=\"14.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G01/M00/00/42/o4YBAFMiePeIAsLxAAHm0Owtu10AAAZ6gFV7xQAAebo866.jpg\" style=\"float:none;\" title=\"15.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/p4YBAFMiePqIN1lcAAG3C_pnw2QAAAcTwGHH_8AAbcj313.jpg\" style=\"float:none;\" title=\"16.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/pYYBAFMieP2IVSX4AAGw3qCiMxUAAAcTwGI1yIAAbD2868.jpg\" style=\"float:none;\" title=\"17.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G02/M00/00/3B/pIYBAFMieP6IcZoTAAA4BaHqVC8AAAXLQGSTDAAADgd734.jpg\" style=\"float:none;\" title=\"18.jpg\" pictype=\"goods_des\"></p><p><img lazy_src=\"http://img.eelly.com/G03/M00/00/48/pYYBAFMieQKIJHfsAAKQAOtEZmsAAAcTwGLGt0AApAY693.jpg\" style=\"float:none;\" title=\"19.jpg\" pictype=\"goods_des\"></p><div></div><p><br></p><p><br></p><p><br></p></div>",
+  "title": "红e艾菲妮 爆款 2014年新款春秋 韩版修身气质休闲格子短裤AV8036",
+  "price": [
+    {
+      "number": " ≥5",
+      "price": "46.00"
+    }
+  ],
+  "images": [
+    {
+      "preview": "http://img.eelly.com/G02/M00/00/3B/small_50_ooYBAFMnumuIDhHwAAhLOi8qLOkAAAXbQAzGHgACEtS892.jpg",
+      "original": "http://img.eelly.com/G02/M00/00/3B/ooYBAFMnumuIDhHwAAhLOi8qLOkAAAXbQAzGHgACEtS892.jpg "
+    },
+    {
+      "preview": "http://img.eelly.com/G03/M00/00/49/small_50_pYYBAFMntKGIJ7o6AAfbbSZgFEIAAAcywKlALwAB9uF066.jpg",
+      "original": "http://img.eelly.com/G03/M00/00/49/pYYBAFMntKGIJ7o6AAfbbSZgFEIAAAcywKlALwAB9uF066.jpg "
+    },
+    {
+      "preview": "http://img.eelly.com/G02/M00/00/3B/small_50_pIYBAFMntKaIGqycAAbQS3CI1SsAAAXbAH8ZsQABtBj739.jpg",
+      "original": "http://img.eelly.com/G02/M00/00/3B/pIYBAFMntKaIGqycAAbQS3CI1SsAAAXbAH8ZsQABtBj739.jpg "
+    }
+  ],
+  "metadata": {
+    "keywords": "短裤,半身裙,秋冬,明星同款,秋冬,韩版,2014春秋,小香风,显瘦,拼接,2014春,杭派,甜美,修身,2014新款潮,代发,女装,明星,2014,新款,韩国代购",
+    "description": "红e艾菲妮爆款2014年新款春秋韩版修身气质休闲格子短裤AV8036,短裤/热裤,颜色:1756,尺码:1776 1773 1774 1780,分类:短裤/热裤,另外衣联网还为您提供了短裤/热裤的最新行业资讯、促销活动等信息."
+  },
+  "supplier": {
+    "member_id": "afn",
+    "seller_username": "afn",
+    "homepage": "http://afn.eelly.com"
+  },
+  "size": [
+    "XL（28码）97",
+    "L（27码）91",
+    "M（25码-26码）86",
+    "XXL（29码）85"
+  ],
+  "style": [
+    "格子"
+  ],
+  "purchase": {
+    "inventory": "359",
+    "skuMap": [
+      {
+        "style": "格子",
+        "size": "XL（28码）97",
+        "inventory": "97"
+      },
+      {
+        "style": "格子",
+        "size": "L（27码）91",
+        "inventory": "91"
+      },
+      {
+        "style": "格子",
+        "size": "M（25码-26码）86",
+        "inventory": "86"
+      },
+      {
+        "style": "格子",
+        "size": "XXL（29码）85",
+        "inventory": "85"
+      }
+    ]
+  },
+  "status": "ACTIVE",
+  "created_time": "2014-03-28 14:22:31",
+  "modified_time": "2014-03-28 14:22:31",
+  "last_updated": "2014-03-28 14:22:31",
+  "last_crawled": "2014-03-28 14:22:31",
+  "qq_nick": {
+    "0": "919340659",
+    "1": "2562772051",
+    "2": "56468349"
+  },
+  "wangwang": "tb8176468_2012"
+}

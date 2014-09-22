@@ -1,0 +1,306 @@
+<?php
+$totalItems = 0;
+$totalOrderMoney = 0;
+$totalOrderDeposit = 0;
+$logger = \HomeAuth::getInstance()->getUser();
+?>
+<section class="cart-header">
+    <nav class="container" >
+        <div class="row">
+            <div class="">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-title">
+                            <p class="title"><span class="title-page">đặt cọc!</span></p>
+                        </div>
+                        <div class="module-ct">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+</section>
+<section class="cartaddress-alert">
+    <nav class="container" >
+        <div class="row">
+            <div class="alert alert-alert"><p class="normal">Đơn hàng của bạn ở trạng thái "Chờ thanh toán" trong mục <span class="red-normal">"
+                        <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderInit/default') ?>">Đơn hàng cá nhân</a>"</span>.</p>
+                <p class="normal">Vui lòng kiểm tra các thông tin đơn hàng phía dưới và click vào
+                    <span class="red-normal">"<a href="javascript:void(0)">Đặt cọc</a>"</span>.</p>
+            </div>
+
+            <!--                <span class="delete-item"></span>-->
+        </div>
+    </nav>
+</section>
+<!--    list cart-->
+<section class="container adress-cart list-cart deposit ">
+    <div class="row">
+        <div class="module">
+
+            <div class="top-main header-deposit">
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <div class="checkbox-deposit">
+                        <input type="checkbox" value="" class="check-all" checked="true">
+                        <span class="uppercase">tt</span>
+                    </div>
+                    <p class="normal-blod checkbox">Đơn hàng</p>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <p class="normal-blod uppercase">Địa chỉ</p>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 right-top-deposit">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p class="normal-blod uppercase">Sản phẩm</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p class="normal-blod uppercase">Tổng tiền hàng</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p class="normal-blod uppercase">Đặt cọc tối thiểu</p>
+                    </div>
+                </div>
+
+            </div>
+            <ul class="cart-list-content header-deposit">
+                <?php
+                if(!empty($orders)) {
+                    $locations = \Locations::read('*')->execute()->fetchAll();
+                    $locationsRevert = array();
+                    foreach($locations as $k => $v) {
+                        $locationsRevert[$v['id']] = $v['label'];
+                    }
+                    foreach($orders as $k => $order) {
+                        if(!($order instanceof \Order)) {
+                            $order = new \Order();
+                        }
+
+                        $buyer      = \Users::retrieveById($order->getBuyerId());
+                        $userPhone  = \UserMobiles::retrieveById($buyer->getVerifyMobile());
+                        if(empty($userPhone)) {
+                            $userPhone = new UserMobiles();
+                        }
+                        $userAddress= \UserAddress::findOneByUserIdAndIsDefault($buyer->getId(), 1);
+                        if(empty($userAddress)) {
+                            $userAddress = new UserAddress();
+                        }
+
+                        $deposit = OrderPeer::calculateDepositAmount($order->getOrderAmount());
+                        ?>
+                        <li class="deposit-num-<?php echo $order->getId() ?>"
+                            data-info='{"item" : "<?php echo $order->getOrderQuantity() ?>", "amount" : "<?php echo $order->getOrderAmount() ?>", "deposit" : "<?php echo $deposit ?>"}'>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="checkbox-deposit">
+                                    <input class="_check_order_deposit" type="checkbox" value="<?php echo $order->getId() ?>" checked="true">
+                                    <span class="uppercase"><?php echo $k + 1 ?></span>
+                                </div>
+                                <p class="normal-blod checkbox">Mã đơn hàng</p>
+                                <p class="normal checkbox">
+                                    <a target="_blank" href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('order_detail/default',array('id'=>$order->getId())) ?>">
+                                        <?php echo $order->getCode(); ?>
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <p class="normal">
+                                    <?php echo $buyer->getFirstName() . ' ' . $buyer->getLastName() . ' / ' . $userPhone->getMobile() ?>
+                                </p>
+                                <p class="normal">
+                                    <?php
+                                    echo $userAddress->getDetail()
+                                        . ', ' . (isset($locationsRevert[$userAddress->getDistrictId()]) ? $locationsRevert[$userAddress->getDistrictId()] : '')
+                                        . ', ' . (isset($locationsRevert[$userAddress->getProvinceId()]) ? $locationsRevert[$userAddress->getProvinceId()] : '');
+                                    ?>
+                                </p>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 right-top-deposit">
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <p class="normal"><?php echo Common::numberFormat($order->getOrderQuantity()) ?></p>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <p class="normal"><?php echo Common::numberFormat($order->getOrderAmount()) ?><sup>đ</sup></p>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <p class="red-normal"><?php echo Common::numberFormat($deposit) ?><sup>đ</sup></p>
+                                </div>
+                            </div>
+
+                        </li>
+                        <?php
+                        $totalItems += $order->getOrderQuantity();
+                        $totalOrderDeposit += $deposit;
+                        $totalOrderMoney += $order->getOrderAmount();
+                    }
+                } else {
+                    ?>
+                    <!-- Thông báo khi không có đơn hàng -->
+                <?php
+                }
+                ?>
+            </ul>
+        </div>
+    </div>
+</section>
+<section class="cart-bottom single-bottom deposit">
+    <nav class="container" >
+        <div class="row">
+            <div class="col-xs-6 next">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderInit/default');?>">
+                            <button class="btn btn-gray btn-sm" type="button">Quay lại kết đơn</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-1 next">
+                <div class="seu-module">
+                    <div class="module-inner">
+                        <div class="module-ict">
+                            <span class="italic">Tổng :</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5 total-money right">
+                <div class="seu-module dum-usd">
+                    <div class="module-inner">
+                        <div class="col-xs-4 module-ict">
+                            <span class="italic">Sản phẩm </span>
+                            <p class="normal totalItems"><?php echo $totalItems ?></p>
+                        </div>
+                        <div class="col-xs-4 module-ict">
+                            <span class="italic">Chi phí </span>
+                            <p class="normal totalAmount">
+                                <?php echo Common::numberFormat($totalOrderMoney) ?>
+                                <sup>đ</sup>
+                            </p>
+                        </div>
+                        <div class="col-xs-4 module-ict">
+                            <span class="italic">Đặt cọc </span>
+                            <p class="normal red-normal totalDeposit">
+                                <?php echo Common::numberFormat($totalOrderDeposit) ?>
+                                <sup>đ</sup>
+                                <span class="italic "> (70%)</span>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="seu-module alert-button">
+                    <div class="module-inner col-xs-10 pull-right">
+                        <div class="alert alert-error " <?php if( $totalOrderDeposit < $logger->getAccountBalance() ){ ?>
+                            style="display: none" <?php } ?>>
+                            <p class="normal">Tài khoản của quý khách không đủ, vui lòng
+                                <a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('user_transaction/transaction_form') ?>">Nạp tiền</a>
+                            </p>
+                            <p class="normal">Quý khách có thể thanh toán những đơn này trong mục </p>
+
+                            <p class="normal"><a href="<?php echo \SeuDo\Main::getUserRouter()->createUrl('OrderInit/default') ?>">Đơn hàng chờ thanh toán</a></p>
+
+                        </div>
+                        <button class="btn btn-blue btn-lg pull-right deposit
+                        <?php
+                        if( $totalOrderDeposit > $logger->getAccountBalance() ){ ?>
+                            disabled hidden<?php } ?>" type="button">
+                            <span class="uppercase normal-blod">đặt cọc</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</section>
+
+
+<input type="hidden" class="cannotDeposit" data-toggle="modal" data-target="#cannotDeposit">
+<div style="display: none;" class="modal fade" id="cannotDeposit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Cảnh báo</h4>
+            </div>
+            <div class="modal-body">
+                <p class="price-red1 content-msg">Bạn không thể thanh toán đặt cọc.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-gray btn-sm" data-dismiss="modal">Đóng</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!--     poup thành công                     -->
+<input type="hidden" class="successDeposit" data-toggle="modal" data-target="#successDeposit">
+<div style="display: none;" class="modal fade finish-poup" id="successDeposit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><span class="uppercase normal-blod">Thanh toán thành công!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p class="normal">Quý khách có muốn tiếp tục mua hàng với <span class="red-normal">Sếuđỏ.vn</span>.</p>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <button type="button" class="btn btn-gray" data-dismiss="modal">No</button>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <button type="button" class="btn btn-blue">Yes</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!--     Model box confirm               -->
+<input type="hidden" class="confirmDeposit" data-toggle="modal" data-target="#confirmDeposit">
+<div style="display: none;" class="modal fade finish-poup" id="confirmDeposit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <span class="uppercase normal-blod">Xác thực bằng mật khẩu đăng nhập</span></h4>
+            </div>
+            <div class="modal-body">
+                <!--<div class="col-lg-5 col-md-5 col-sm-5 text-right">
+                    <p>Mật khẩu đăng nhập:</p>
+                </div>-->
+                <div class="col-lg-8 col-md-8 col-sm-8 col-md-offset-2">
+                    <input type="password" class="form-control form-myinput" id="confirm-deposit"
+                           placeholder="Mật khẩu đăng nhập">
+                    <div class="err-msg" style="color:red; margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="row"></div>
+            <div class="modal-footer">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <button type="button" class="btn btn-gray" data-dismiss="modal">Bỏ qua</button>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <button type="button" class="btn btn-blue deposit-confirm">Đặt cọc</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<?php
+$urlSynBalance = \SeuDo\Main::getHomeRouter()->createUrl('order_deposit/syn_balance');
+$urlDeposit = \SeuDo\Main::getHomeRouter()->createUrl('order_deposit/deposit');
+$urlFinish  = \SeuDo\Main::getHomeRouter()->createUrl('order_deposit/finish');
+$urlAuthDeposit = \SeuDo\Main::getHomeRouter()->createUrl('order_deposit/authDeposit');
+
+?>
+<div class="loading-content" style="display: none">
+    <div class="loading">
+        <p class="alert alert-success"> Đang xử lý..... </p>
+    </div>
+</div>
+<div class="order-deposit-info"
+     data-attr='{"urlSynBalance":"<?php echo $urlSynBalance ?>", "urlDeposit":"<?php echo $urlDeposit ?>", "urlAuthDeposit":"<?php echo $urlAuthDeposit; ?>", "urlFinish":"<?php echo $urlFinish ?>"}'></div>

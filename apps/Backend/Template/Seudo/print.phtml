@@ -1,0 +1,30 @@
+<?php
+use SeuDo\Main;
+use Flywheel\Document\Html;
+/** @var Html $document */
+$document   = $this->document();
+$publicPath = Main::getBackendUrl();
+$publicHomePath = Main::getHomeUrl();
+$document->addJsVar('backend_url', $controller->createUrl('/'), 'TOP');
+
+?>
+<!-- AUI Framework -->
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="<?php echo $document->getBaseUrl() ?>">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>In phiếu giao hàng</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+
+    <link rel="icon" href="<?php echo $publicHomePath?>assetv2/images/icon-footer/LogoSeuDo1_ICO.ico">
+<body>
+    <div class="pad20A">
+        <?php echo $buffer;?>
+    </div>
+
+</body>
+</html>

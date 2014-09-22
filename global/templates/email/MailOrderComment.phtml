@@ -1,0 +1,36 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 4/28/14
+ * Time: 4:07 PM
+ */
+$order_comment = isset($order_comment) ? $order_comment : array();
+?>
+<?php
+if(!empty($order_comment)){
+
+foreach ($order_comment as $key=>$comment) {
+    $order = \Order::retrieveById($key);
+    if($order instanceof \Order){
+?>
+<br/><h3>Đơn hàng: </h3>
+<p>
+    <span>ID:</span> <?php echo $order->getId() ?>
+</p>
+<p>
+    <span>Code: </span><span><?php echo $order->getCode() ?></span>
+</p>
+<h3>Comment</h3>
+    <?php
+    foreach ($comment as $cm) {
+        if(!empty($cm)){
+            $account = is_string($cm["account"]) ? $cm["account"] : "";
+            $username = is_string($cm["username"]) ? $cm["username"] : "";
+            $message = is_string($cm["message"]) ? $cm["message"] : "";
+    ?>
+<p>
+    <span><?php echo $account.' - '.$username ?>: </span><i><?php echo $message ?></i>
+</p>
+<?php         }
+    }}}} ?>

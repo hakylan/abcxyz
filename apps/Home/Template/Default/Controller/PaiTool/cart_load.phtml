@@ -1,0 +1,15 @@
+<?php
+$document = $this->document();
+$publicPath = $document->getPublicPath();
+?>
+<script type="text/javascript" src="<?php echo $publicPath ?>/assets/js/jquery.nicescroll.js"></script>
+<script>
+//    $(".show-cart-module-ct").niceScroll();
+</script>
+<?php
+//Logic
+
+$this->widget('app.Widget.CartBook', array(
+    'cart_list' => $cart_list
+));
+?>

@@ -1,0 +1,358 @@
+<?php
+return array(
+    'i18n' => array(
+        'enable' => true,
+        'default_fallback' => array('en'),
+        'default_locale' => 'en-US',
+        'resource' => array(
+            'vi-VN' => array()
+        )
+    ),
+
+    'js_version'=> "0.1",
+    'css_version'=> "0.2",
+
+    'sms' => array(
+        'enable' => true,
+        'brandname' => 'SeuDo',
+        'transporters' => array(
+            'SeuDo\SMS\Transporters\VHT' => array(
+                'service_url' => 'http://bc.vht.com.vn:8440/vht/services/sms?wsdl',
+                'account' => '',
+                'code' => ''
+            ),
+        ),
+    ),
+
+    'accountant' => array(
+        'key' => '7127456225478599',
+        'secret' => '53Tx7c6y9oHwu2Sk4QZzsgthqKeXNWJm',
+        'url' => 'http://192.168.1.150/seudo_accoutant/www_html/api/v2/'
+    ),
+
+    'logistic' => array(
+        'key' => '',
+        'secret' => '',
+        /*'url' => 'http://192.168.1.150/seudo_accountant/www_html/api/v2/'*/
+        'url' => 'http://logistic.seudo.vn/api'
+    ),
+
+    'caching' => array(
+        '__enable__' => true,
+        '__default__' => 'widget',
+        '__hash__' => '-8/RsLPePPy54BtNGBm*MqX7=vn8>j6QHJGG~49AN',
+        'widget' => array(
+            'storage' => 'Apc',
+            'group' => 'html'
+        ),
+        'page_cache' => array(
+            'storage' => 'Apc',
+            'group' => 'html'
+        ),
+        'item' => array(
+            'storage' => 'Apc',
+            'group' => 'item'
+        ),
+        'crawl' => ROOT_PATH . '/cache/crawlItem/'
+    ),
+
+    /*
+     * Session
+     */
+    'session' => array(
+        'storage' => '', // \Flywheel\Session\Storage\File
+        'name'  => '54gdq!#',
+        'lifetime' => 86400,
+        //'cookie_domain' => '',
+        'cookie_exception' => true,
+        'cookie_basename' => 'HQ1310__',
+        'cookie_secret' => 'P8(<G4v,?#y_GP2NWn89uI-/bMa/Y.l.kEiRtr9 .9[^1tiz_Z,-]8itVBnyd}DEV',
+    ),
+
+    /*
+     * Config database connection
+     */
+    'database' => array(
+        'default' => array(
+            'adapter' => 'mysqli', //sqlite, mysql, mssql, oracle or pgsql
+            'dsn' => 'mysql:host=your-host;dbname=database name',  //
+            'db_user' => 'user',  //root
+            'db_pass' => 'pass',    //you database password
+            'cache_prepare' => true,
+            'slaves' => array(
+                /*'slave1' => array(
+                    'adapter' => 'mysql',
+                    'weight' => 2,
+                    'dsn' => 'mysql:host=your-db-host;dbname=your-db-name',
+                    'db_user' => 'your-db-name',
+                    'db_pass' => 'your-db-pasword',
+                ),
+                'slave2' => array(
+                    'adapter' => 'mysql',
+                    'weight' => 2,
+                    'dsn' => 'mysql:host=your-db-host;dbname=your-db-name',
+                    'db_user' => 'your-db-name',
+                    'db_pass' => 'your-db-pasword',
+                ),*/
+            ),
+        ),
+
+        '__default__' => 'default'
+    ),
+
+    'mongodb' => array(
+        '__default__' => 'default',
+        'default' => array(
+            'dsn' => 'mongodb://seudo:123456@192.168.1.150/seudo_vn',
+        ),
+    ),
+
+    'logger'=>array(
+        'debug'=>100,
+        'path' => ROOT_PATH.'/runtime/log/',
+        'mail'=>array(
+            'master'=>'luutronghieu@alimama.vn',
+            'follow'=>array(
+
+            )
+        ),
+        'mongo' => array(
+            'dns' => "mongodb://seudo:123456@192.168.1.150/logging",
+            'database' => 'logging'
+        )
+    ),
+
+    'sfs' => array(
+        'service_url' => 'http://192.168.1.150:8676',
+        'secret_key' => 'F2c8A5X2F2QqGVLyYuvytqfwQtj6DnjU',
+    ),
+     'service' => array(
+         'crawl_item' => 'http://192.168.1.150:1234/'
+     ),
+    'mail'=>array(
+            'host'=>'email-smtp.us-east-1.amazonaws.com',
+            'port'=>465,
+            'security'=>'ssl',
+            'username'=>'AKIAIP7T7YGQV36UACQQ',
+            'password'=>'AujgMV+cYVWrqDSRixVdDlSjtFqNbay8w5v4XioMtHlR',
+            'default_sender'=>array(
+                'mail'=>'dvkh@seudo.vn',
+                'first_name'=>'Dịch vụ khách hàng',
+                'last_name'=>'Sếu đỏ'
+            )
+        ),
+    'url'=> array( // as a base url to access module (home, backend, etc...)
+        'backend'=>'',
+        'home'=>''
+    ),
+    'redis' => array(
+        '__default__' => 'default',
+
+        //config key info
+        'default'   => array(
+            'dsn' => '192.168.1.150:6379/15',
+            'option' => array(
+                'timeout' => 30, //connection timeout
+                'prefix' => 'custom-key-prefix'
+            ),
+        ),
+        'cart' => array(
+            'dsn' => '192.168.1.150:6379/1',
+            'option' => array(
+                'timeout' => 30, //connection timeout
+            ),
+        ),
+        'users' => array(
+            'dsn' => $host.':'.$port.'/2',
+            'option' => array(
+                'timeout' => 30, //connection timeout
+            ),
+        ),
+
+        'user_address' => array(
+            'dsn' => 'localhost:6379/4',
+            'option' => array(
+                'timeout' => 30
+            ),
+        ),
+
+        'order_active' => array(
+            'dsn' => host.':'.$port.'/3',
+            'option' => array(
+                'timeout' => 30, //connection timeout
+            ),
+        ),
+
+        'purchase_allocation' => array(
+            'dsn' => "{$redis_host}:{$redis_port}/12",
+        ),
+
+        'order_link_error' => array(
+//            'dsn' => '192.168.1.150:6379/3',
+            'dsn' => "{$redis_host}:{$redis_port}/4",
+        ),
+
+        'order' => array(
+            'dsn' => "{$redis_host}:{$redis_port}/6",
+        ),
+
+        'order_item' => array(
+            'dsn' => "{$redis_host}:{$redis_port}/8",
+        ),
+
+        'consumer' => array(
+            'dsn' => '192.168.1.150:6379/13',
+        ),
+
+        //system configuration
+        'system_config' => array(
+            'dsn' => "{$redis_host}:{$redis_port}/14"
+        ),
+
+        //Save Error link order
+        'order_link_error' => array(
+            'dsn' => "{$redis_host}:{$redis_port}/3"
+        ),
+    ),
+    'money_rounding' => array(
+        array(
+            'begin' => 0,
+            'end' => 5000,
+            'round' => 100
+        ),
+        array(
+            'begin' => 5000,
+            'end' => 50000,
+            'round' => 500
+        ),
+        array(
+            'begin' => 50000,
+            'end' => null,
+            'round' => 1000
+        )
+    ),
+    'queue' => array(
+        'api' => array(
+            'adapter' => 'redis',
+            'name' => 'api_background_queue',
+            'config' => array(
+                'dsn' => "$host:$port/15", //host:port/database
+                'auth' => $auth
+            ),
+        ),
+
+        'dispatch_event' => array(
+            'adapter' => 'redis',
+            'name' => 'dispatch_event_queue',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+        'email_queue' => array(
+            'adapter' => 'redis',
+            'name' => 'email_background_sender',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+        'email_verify' => array(
+            'adapter' => 'redis',
+            'name' => 'email_verify',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+        'email_error' => array(
+            'adapter' => 'redis',
+            'name' => 'email_error',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+
+         'transfer_order_logistic' => array(
+            'adapter' => 'redis',
+            'name' => 'transfer_order_logistic',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+        'transfer_order_logistic_3m' => array(
+            'adapter' => 'redis',
+            'name' => 'transfer_order_logistic_3m',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+        'transfer_order_logistic_15m' => array(
+            'adapter' => 'redis',
+            'name' => 'transfer_order_logistic_15m',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+
+        //repeat dispatch event repeat after 3 minutes
+        'dispatch_event_3m' => array(
+            'adapter' => 'redis',
+            'name' => 'dispatch_event_3m_queue',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+
+        //repeat dispatch event repeat after 15 minutes
+        'dispatch_event_15m' => array(
+            'adapter' => 'redis',
+            'name' => 'dispatch_event_15m_queue',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+
+        //barcode analysis
+        'barcode_analysis' => array(
+            'adapter' => 'redis',
+            'name' => 'barcode_analysis',
+            'config' => array(
+                'dsn' => "$host:$port/15",
+                'auth' => $auth
+            ),
+        ),
+    ),
+       'assets' => array(
+            'backend' => array(
+                'envi' => 'dev',
+                //'combine' => true,
+                //'minify' => true,
+                //'base_url' => '',
+                'assets_path' => 'E:\Copy\uwamp\www\seudo\www_html\backend\assets',
+                //'assets_dir' => 'assets',
+                'base_path' => 'E:\Copy\uwamp\www\seudo\www_html\backend\assets',
+                //'cache_dir' => 'cache',
+                'cache_path' => 'E:\Copy\uwamp\www\seudo\www_html\backend\assets\cache', //
+                //'cache_url' => 'cache', // base_url/cache_dr
+                //'js_dir' => 'js',
+                //'js_path' => 'js', //
+                //'js_url' => 'js',
+                //'css_dir' => 'css',
+                //'css_path' => 'css', //
+                //'css_url' => 'css',
+            ),
+
+
+        ),
+    'facebook' => array(
+        'appId' => '1449847118569980',
+        'secret' => '1215c11931ce68b775da3fa0af11278a'
+    ),
+);

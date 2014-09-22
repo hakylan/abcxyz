@@ -1,0 +1,45 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: none !important; height: 100% !important; font-family:arial; width: 100% !important; min-width: 100% !important; background-color: #dddddd; margin: 0; padding: 0;";>
+<center>
+    <table border="1" style="width: 80%;" cellspacing="0" cellpadding="0">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã đơn hàng</th>
+                <th>Vấn đề</th>
+                <th>Thời gian</th>
+                <th>Link đơn hàng</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if(sizeof($data) > 0){ ?>
+                <?php $count = 0; ?>
+                <?php foreach((array)$data as $item){ ?>
+                    <tr>
+                        <?php
+                            $count++;
+                            $order_id = isset($item['order_id']) ? (int)$item['order_id'] : 0;
+                            $order_code = isset($item['order_code']) ? $item['order_code'] : "";
+                            $problems = isset($item['problems']) ? $item['problems'] : "";
+                            $time = isset($item['time']) ? $item['time'] : "";
+                            $link_order = "http://seudo.vn/backend/order/detail/" . $order_id;
+                        ?>
+                        <td width="5%" style="text-align: center"><?php echo $count; ?></td>
+                        <td width="15%" style="text-align: center"><?php echo $order_code ?></td>
+                        <td width="30%" style="text-align: left"><?php echo $problems ?></td>
+                        <td width="20%" style="text-align: center"><?php echo $time ?></td>
+                        <td width="30%" style="text-align: left">
+                            <a target="_blank" href="<?php echo $link_order ?>" title="<?php echo $order_code ?>"><?php echo $link_order ?></a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            <?php }else{ ?>
+                <tr>
+                    <td colspan="5" style="text-align: center">Không có đơn hàng nào!</td>
+                </tr>
+            <?php } ?>
+
+        </tbody>
+    </table>
+</center>
